@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: Mystic-Poe/cellestial-studio
+  branch: main
+  auth_type: pkce
+  app_id: Ov23liGhNy5svNQkVD3Y
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "home"
+    label: "Homepage"
+    files:
+      - label: "Homepage content"
+        name: "home"
+        file: "src/content/home.json"
+        fields:
+          - { label: "Headline", name: "headline", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }

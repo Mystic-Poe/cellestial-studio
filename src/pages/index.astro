@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import home from '../content/home.json';
 ---
 
 <html lang="en">
@@ -12,7 +13,7 @@ import '../styles/global.css';
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1 class="text-4xl text-blue-600 font-bold mt-8">Cellestial Studio</h1>
-		<p class="p-6 text-gray-700">Claim your place among the stars</p>
+		<h1 class="text-4xl text-blue-600 font-bold mt-8">{home.headline}</h1>
+		<p class="p-6 text-gray-700">{home.tagline}</p>
 	</body>
 </html>
