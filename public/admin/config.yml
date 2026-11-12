@@ -2,8 +2,8 @@ backend:
   name: github
   repo: Mystic-Poe/cellestial-studio
   branch: main
-  auth_type: pkce
-  app_id: Ov23liGhNy5svNQkVD3Y
+  base_url: https://cellestialstudio.com
+  auth_endpoint: api/auth
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
