@@ -1,0 +1,78 @@
+---
+/**
+ * Primary CTA — the star-glow button.
+ *
+ * Built to the Cellestial design doc's locked direction (bioluminescent night,
+ * glow teal #5ef2d6) rather than to the Nov 12 design sheet, which lives on
+ * Gro's machine and is not readable from here. Reconciliation worth noting: the
+ * Mystic Tech parent sheet forbids neon glow, while this CTA is specced as
+ * "star-glow". Bioluminescence is the resolution -- the light is small, warm-
+ * cool, and sits on the edge of the shape, never a bloom behind it.
+ *
+ * Motion is a layer: strip every transition and the button is still complete,
+ * and it respects prefers-reduced-motion.
+ */
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<a class="star-glow" href={href}>
+  <span class="star-glow__star" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="14" height="14" focusable="false">
+      <path
+        d="M12 2.5 13.6 9.2 20.5 10.8 13.6 12.4 12 19.1 10.4 12.4 3.5 10.8 10.4 9.2Z"
+        fill="currentColor"
+      />
+    </svg>
+  </span>
+  <span>{label}</span>
+</a>
+
+<style>
+  .star-glow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid color-mix(in oklab, var(--color-glow) 45%, transparent);
+    border-radius: 999px;
+    color: var(--color-starlight);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    background-color: color-mix(in oklab, var(--color-glow) 7%, transparent);
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease;
+  }
+
+  /* The glow is a hairline on the edge, not a wash behind the content. */
+  .star-glow:hover {
+    border-color: var(--color-glow);
+    background-color: color-mix(in oklab, var(--color-glow) 12%, transparent);
+  }
+
+  .star-glow__star {
+    color: var(--color-glow);
+    display: inline-flex;
+    transition: transform 400ms ease;
+  }
+
+  .star-glow:hover .star-glow__star {
+    transform: scale(1.15);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star-glow,
+    .star-glow__star {
+      transition: none;
+    }
+    .star-glow:hover .star-glow__star {
+      transform: none;
+    }
+  }
+</style>

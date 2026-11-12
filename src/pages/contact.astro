@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Set at build time once Gabriel creates the Turnstile widget. Until then the
+// form renders in a clearly disabled state rather than shipping something that
+// silently fails on submit.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const ready = turnstileSiteKey !== '';
+---
+
+<Base title="Contact — Cellestial Studio" description="Start a project with Cellestial Studio.">
+	{ready && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
+
+	<main class="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-8 px-6 py-16">
+		<header class="flex flex-col gap-3">
+			<a class="text-sm text-silver underline" href="/">Cellestial Studio</a>
+			<h1 class="text-3xl font-semibold tracking-tight">Start a project</h1>
+			<p class="text-silver">
+				Tell us what you need built. We answer every message ourselves.
+			</p>
+		</header>
+
+		{
+			!ready && (
+				<p class="rounded-md border border-silver/30 px-4 py-3 text-sm text-silver">
+					This form is not live yet — its spam protection key has not been set.
+					Email us in the meantime.
+				</p>
+			)
+		}
+
+		<form id="contact-form" method="POST" action="/api/contact" class="flex flex-col gap-5" novalidate>
+			<div class="flex flex-col gap-2">
+				<label class="text-sm" for="name">Your name</label>
+				<input
+					class="rounded-md border border-silver/30 bg-surface px-3 py-2 text-starlight"
+					id="name"
+					name="name"
+					type="text"
+					required
+					maxlength="120"
+					autocomplete="name"
+				/>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<label class="text-sm" for="email">Email</label>
+				<input
+					class="rounded-md border border-silver/30 bg-surface px-3 py-2 text-starlight"
+					id="email"
+					name="email"
+					type="email"
+					required
+					maxlength="254"
+					autocomplete="email"
+				/>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<label class="text-sm" for="message">What do you need built?</label>
+				<textarea
+					class="rounded-md border border-silver/30 bg-surface px-3 py-2 text-starlight"
+					id="message"
+					name="message"
+					rows="6"
+					required
+					maxlength="5000"
+				></textarea>
+			</div>
+
+			{ready && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark" />}
+
+			<button
+				class="self-start rounded-full border border-glow/45 bg-glow/7 px-5 py-2.5 text-starlight disabled:cursor-not-allowed disabled:opacity-50"
+				type="submit"
+				disabled={!ready}
+			>
+				Send
+			</button>
+
+			<p id="contact-status" class="text-sm" role="status" aria-live="polite"></p>
+		</form>
+	</main>
+
+	<script>
+		const form = document.querySelector<HTMLFormElement>('#contact-form');
+		const status = document.querySelector<HTMLParagraphElement>('#contact-status');
+
+		form?.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			if (!form.reportValidity() || !status || !button) return;
+
+			button.disabled = true;
+			status.textContent = 'Sending…';
+
+			try {
+				const response = await fetch(form.action, {
+					method: 'POST',
+					headers: { accept: 'application/json' },
+					body: new FormData(form),
+				});
+				const body = (await response.json().catch(() => ({}))) as { error?: string };
+
+				if (response.ok) {
+					form.reset();
+					status.textContent = 'Sent. We will reply by email.';
+					return;
+				}
+				status.textContent = body.error ?? 'That did not send. Please try again.';
+			} catch {
+				status.textContent = 'That did not send. Please check your connection.';
+			} finally {
+				button.disabled = false;
+			}
+		});
+	</script>
+</Base>

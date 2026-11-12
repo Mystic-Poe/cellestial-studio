@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cellestial-contact",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-10",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "observability": { "enabled": true },
+  // Narrow on purpose: this Worker must never shadow the site.
+  "routes": [
+    {
+      "pattern": "cellestialstudio.com/api/contact",
+      "zone_name": "cellestialstudio.com"
+    }
+  ]
+  // All four of TURNSTILE_SECRET_KEY, RESEND_API_KEY, CONTACT_TO and
+  // CONTACT_FROM are set by Gabriel on this Worker. Until they are, the
+  // endpoint returns 503 and the form says it is not configured.
+}

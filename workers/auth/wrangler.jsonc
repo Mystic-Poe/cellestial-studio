@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cellestial-auth",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-10",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "observability": { "enabled": true },
+  // Narrow on purpose: this Worker must never shadow the site.
+  "routes": [
+    {
+      "pattern": "cellestialstudio.com/api/auth",
+      "zone_name": "cellestialstudio.com"
+    },
+    {
+      "pattern": "cellestialstudio.com/api/auth/callback",
+      "zone_name": "cellestialstudio.com"
+    }
+  ],
+  // Public identifier, not a secret: it is already in public/admin/config.yml
+  // and in every authorize URL the browser sees.
+  "vars": {
+    "OAUTH_GITHUB_CLIENT_ID": "Ov23liGhNy5svNQkVD3Y"
+  }
+  // OAUTH_GITHUB_CLIENT_SECRET is deliberately NOT here. It is a secret, set
+  // by Gabriel at activation: Workers & Pages -> cellestial-auth -> Settings
+  // -> Variables and Secrets (or `wrangler secret put`).
+}

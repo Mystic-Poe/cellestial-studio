@@ -1,19 +1,16 @@
 ---
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
 import home from '../content/home.json';
+import StarGlowButton from '../components/StarGlowButton.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1 class="text-4xl text-blue-600 font-bold mt-8">{home.headline}</h1>
-		<p class="p-6 text-gray-700">{home.tagline}</p>
-	</body>
-</html>
+<Base
+	title={`Cellestial Studio — ${home.tagline}`}
+	description={`${home.headline} — ${home.tagline}`}
+>
+	<main class="mx-auto flex min-h-screen max-w-2xl flex-col justify-center gap-6 px-6 py-16">
+		<h1 class="text-4xl font-semibold tracking-tight">{home.headline}</h1>
+		<p class="text-lg text-silver">{home.tagline}</p>
+		<p><StarGlowButton href="/contact" label={home.cta_label} /></p>
+	</main>
+</Base>

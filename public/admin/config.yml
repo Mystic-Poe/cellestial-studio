@@ -18,3 +18,4 @@ collections:
         fields:
           - { label: "Headline", name: "headline", widget: "string" }
           - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Button text", name: "cta_label", widget: "string" }
