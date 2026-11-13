@@ -11,12 +11,12 @@ Resend. Spam can never spend the mail quota, and a misconfigured Worker returns
 
 ## Variables — all four are Gabriel's to set
 
-| Name | Kind | Value |
-| --- | --- | --- |
-| `TURNSTILE_SECRET_KEY` | secret | From the Turnstile widget (below) |
-| `RESEND_API_KEY` | secret | From the Resend dashboard |
-| `CONTACT_TO` | var | Where enquiries land |
-| `CONTACT_FROM` | var | A verified sender on the Resend domain |
+| Name                   | Kind   | Value                                  |
+| ---------------------- | ------ | -------------------------------------- |
+| `TURNSTILE_SECRET_KEY` | secret | From the Turnstile widget (below)      |
+| `RESEND_API_KEY`       | secret | From the Resend dashboard              |
+| `CONTACT_TO`           | var    | Where enquiries land                   |
+| `CONTACT_FROM`         | var    | A verified sender on the Resend domain |
 
 ```
 pnpm dlx wrangler secret put TURNSTILE_SECRET_KEY --config workers/contact/wrangler.jsonc

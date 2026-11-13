@@ -6,28 +6,28 @@
    #04070a; the star-board #070a14 is kept as a raised surface rather than a
    second background. */
 @theme {
-  --color-sky: #04070a;
-  --color-surface: #070a14;
-  --color-starlight: #eef0f3;
-  --color-silver: #b8bec9;
-  --color-glow: #5ef2d6;
-  --color-rust: #c4553d;
+	--color-sky: #04070a;
+	--color-surface: #070a14;
+	--color-starlight: #eef0f3;
+	--color-silver: #b8bec9;
+	--color-glow: #5ef2d6;
+	--color-rust: #c4553d;
 
-  /* Plex Mono everywhere, per the Nov 12 font decision. */
-  --font-sans: var(--font-plex-mono);
-  --font-mono: var(--font-plex-mono);
+	/* Plex Mono everywhere, per the Nov 12 font decision. */
+	--font-sans: var(--font-plex-mono);
+	--font-mono: var(--font-plex-mono);
 }
 
 body {
-  background-color: var(--color-sky);
-  color: var(--color-starlight);
-  font-family: var(--font-plex-mono);
-  -webkit-font-smoothing: antialiased;
+	background-color: var(--color-sky);
+	color: var(--color-starlight);
+	font-family: var(--font-plex-mono);
+	-webkit-font-smoothing: antialiased;
 }
 
 /* Visible focus is non-negotiable for the keyboard pass and for WCAG 2.2 AA.
    Electric-blue-adjacent glow teal reads as "live", which is what focus is. */
 :focus-visible {
-  outline: 2px solid var(--color-glow);
-  outline-offset: 3px;
+	outline: 2px solid var(--color-glow);
+	outline-offset: 3px;
 }

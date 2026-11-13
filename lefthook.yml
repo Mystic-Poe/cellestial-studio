@@ -1,0 +1,9 @@
+# Pre-commit gate. Deliberately narrow: it checks only what is being committed,
+# and only files Biome understands, so it never blocks a commit over a file
+# type it cannot parse (.astro templates included).
+pre-commit:
+  parallel: true
+  jobs:
+    - name: biome
+      glob: "*.{js,ts,mjs,cjs,json,jsonc,css}"
+      run: pnpm exec biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
