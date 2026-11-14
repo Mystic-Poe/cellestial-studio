@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // The site itself: an assets-only Worker serving Astro's static build.
+  // Without this file, `wrangler deploy` in Workers Builds guessed the setup
+  // each run and tried `astro add cloudflare`, which pnpm refuses once
+  // pnpm-workspace.yaml exists. Values match the live Worker as of 2026-11-13.
+  // The API Workers live in workers/auth and workers/contact with their own
+  // configs and are deployed separately.
+  "name": "cellestial-studio",
+  "compatibility_date": "2026-11-10",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "assets": {
+    "directory": "./dist"
+  }
+  // No routes on purpose: the cellestialstudio.com custom domain is bound in
+  // the dashboard, and a config without routes leaves it untouched (as every
+  // successful deploy so far has). Listing it here would also need zone
+  // permissions the build token may not have.
+}
