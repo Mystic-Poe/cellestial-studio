@@ -1,10 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 
-// Set at build time once Gabriel creates the Turnstile widget. Until then the
-// form renders in a clearly disabled state rather than shipping something that
-// silently fails on submit.
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+// Public site key of the Turnstile widget "cellestial-contact-form". It is not
+// a secret (it ships in the page HTML anyway), so it lives in the repo where a
+// rebuild can't lose it. PUBLIC_TURNSTILE_SITE_KEY overrides it, e.g. with
+// Cloudflare's always-pass test key for local work. An empty key renders the
+// form disabled rather than shipping something that silently fails on submit.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAAGAXa00iSv2HhMz-';
 const ready = turnstileSiteKey !== '';
 ---
 
