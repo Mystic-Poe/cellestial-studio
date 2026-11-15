@@ -5,13 +5,17 @@
   "compatibility_date": "2026-11-10",
   "compatibility_flags": ["global_fetch_strictly_public"],
   "observability": { "enabled": true },
-  // Narrow on purpose: this Worker must never shadow the site.
+  // Trailing * so a query string still reaches the Worker (a route without
+  // it does not match one). The Worker refuses anything but POST.
   "routes": [
     {
-      "pattern": "cellestialstudio.com/api/contact",
+      "pattern": "cellestialstudio.com/api/contact*",
       "zone_name": "cellestialstudio.com"
     }
-  ]
+  ],
+  // CONTACT_TO and CONTACT_FROM were set in the dashboard, not here. Without
+  // this, `wrangler deploy` would delete them.
+  "keep_vars": true
   // All four of TURNSTILE_SECRET_KEY, RESEND_API_KEY, CONTACT_TO and
   // CONTACT_FROM are set by Gabriel on this Worker. Until they are, the
   // endpoint returns 503 and the form says it is not configured.

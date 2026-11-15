@@ -5,14 +5,14 @@
   "compatibility_date": "2026-11-10",
   "compatibility_flags": ["global_fetch_strictly_public"],
   "observability": { "enabled": true },
-  // Narrow on purpose: this Worker must never shadow the site.
+  // The trailing * is required: a route without it does not match a URL with
+  // a query string, and every real request here has one (Decap sends
+  // ?provider=github&site_id=..., GitHub returns ?code=...&state=...). It
+  // also matches /api/authX, which the Worker refuses with its own 404, so
+  // it still never shadows the site.
   "routes": [
     {
-      "pattern": "cellestialstudio.com/api/auth",
-      "zone_name": "cellestialstudio.com"
-    },
-    {
-      "pattern": "cellestialstudio.com/api/auth/callback",
+      "pattern": "cellestialstudio.com/api/auth*",
       "zone_name": "cellestialstudio.com"
     }
   ],
