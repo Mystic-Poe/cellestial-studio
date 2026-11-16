@@ -1,0 +1,120 @@
+---
+import home from '../../content/home.json';
+const s = home.soil;
+---
+
+<section id="systems" class="soil" aria-labelledby="soil-title">
+  <p class="eyebrow">{s.eyebrow}</p>
+  <h2 id="soil-title" class="display soil__title">{s.title}</h2>
+  <p class="soil__intro">{s.intro}</p>
+  <div class="soil__roots" data-roots>
+    {
+      s.tiers.map((t, i) => (
+        <article class:list={['root', { 'root--featured': i === 1 }]} data-root-card data-tier={t.star}>
+          <p class="eyebrow root__label">
+            <span class={`root__star root__star--${t.star}`} aria-hidden="true" />
+            {t.root}
+          </p>
+          <h3 class="root__name">{t.name}</h3>
+          <p class="root__tagline">{t.tagline}</p>
+          <ul class="root__list">{t.includes.map((x) => <li>{x}</li>)}</ul>
+          {t.price && <p class="root__price">{t.price}</p>}
+          <a class="pill pill--secondary root__cta" href="/contact" data-claim>{t.cta}</a>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .soil {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 5rem;
+  }
+  .soil__title {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    margin: 0.5rem 0 1rem;
+  }
+  .soil__intro {
+    max-width: 48ch;
+    color: var(--color-secondary);
+    line-height: 1.6;
+    font-size: 0.9375rem;
+  }
+  /* Space above the cards is where the mycelium grows. */
+  .soil__roots {
+    display: grid;
+    gap: 1rem;
+    margin-top: 10rem;
+  }
+  @media (min-width: 48rem) {
+    .soil__roots {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: var(--color-root);
+  }
+  .root--featured {
+    border-color: var(--color-moss);
+    background: var(--color-root-featured);
+  }
+  .root__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+  }
+  .root__star {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .root__star--site {
+    background: var(--color-tier-site);
+    box-shadow: 0 0 10px var(--color-tier-site);
+  }
+  .root__star--systems {
+    background: var(--color-tier-systems);
+    box-shadow: 0 0 10px var(--color-tier-systems);
+  }
+  .root__star--app {
+    background: var(--color-tier-app);
+    box-shadow: 0 0 10px var(--color-tier-app);
+  }
+  .root__name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--color-heading);
+    margin: 0;
+  }
+  .root__tagline {
+    color: var(--color-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  .root__list {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+  }
+  .root__price {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-heading);
+    margin: 0;
+  }
+  .root__cta {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+</style>

@@ -10,18 +10,49 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" data-motion="on">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#04070a" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<Font cssVariable="--font-plex-mono" preload />
+		<Font cssVariable="--font-instrument-serif" preload />
+		<script is:inline>
+			// Before first paint, so a reduced-motion visitor never sees a frame of motion.
+			(() => {
+				let v = null;
+				try { v = localStorage.getItem('cellestial:motion'); } catch {}
+				if (v !== 'on' && v !== 'off') {
+					v = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
+				}
+				document.documentElement.dataset.motion = v;
+			})();
+		</script>
+		<slot name="head" />
 	</head>
 	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
 		<slot />
+		<style is:global>
+			.skip-link {
+				position: absolute;
+				left: 1rem;
+				top: -4rem;
+				z-index: 50;
+				padding: 0.6rem 1rem;
+				border-radius: 999px;
+				background: var(--color-glow);
+				color: var(--color-night);
+				font-size: 0.8rem;
+			}
+			.skip-link:focus {
+				top: 1rem;
+			}
+		</style>
 	</body>
 </html>

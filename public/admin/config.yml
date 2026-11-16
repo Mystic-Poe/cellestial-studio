@@ -16,6 +16,121 @@ collections:
         name: "home"
         file: "src/content/home.json"
         fields:
-          - { label: "Headline", name: "headline", widget: "string" }
-          - { label: "Tagline", name: "tagline", widget: "string" }
-          - { label: "Button text", name: "cta_label", widget: "string" }
+          - label: "Page title & description (search results)"
+            name: "meta"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Headline", name: "headline", widget: "string" }
+              - {
+                  label: "Headline accent (teal italic)",
+                  name: "headline_accent",
+                  widget: "string",
+                }
+              - { label: "Subcopy", name: "subcopy", widget: "text" }
+              - { label: "Main button", name: "cta_primary", widget: "string" }
+              - { label: "Second button", name: "cta_secondary", widget: "string" }
+              - {
+                  label: "Proof chips",
+                  name: "chips",
+                  widget: "list",
+                  field: { label: "Chip", name: "chip", widget: "string" },
+                }
+          - label: "Work"
+            name: "work"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - label: "Star 00 (this site)"
+                name: "star00"
+                widget: "object"
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "Summary", name: "summary", widget: "text" }
+                  - {
+                      label: "Stats",
+                      name: "stats",
+                      widget: "list",
+                      field: { label: "Stat", name: "stat", widget: "string" },
+                    }
+                  - { label: "Repo link", name: "repo_url", widget: "string" }
+              - {
+                  label: "Open card title (after 'Star 0N')",
+                  name: "open_card_title",
+                  widget: "string",
+                }
+              - { label: "Open card text", name: "open_card_body", widget: "text" }
+          - label: "Horizon"
+            name: "horizon"
+            widget: "object"
+            fields:
+              - { label: "Line", name: "line", widget: "string" }
+          - label: "Systems (the soil)"
+            name: "soil"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro", name: "intro", widget: "text" }
+              - label: "Tiers"
+                name: "tiers"
+                widget: "list"
+                allow_add: false
+                fields:
+                  - { label: "Root label", name: "root", widget: "string" }
+                  - { label: "Name", name: "name", widget: "string" }
+                  - {
+                      label: "Star",
+                      name: "star",
+                      widget: "select",
+                      options: ["site", "systems", "app"],
+                    }
+                  - { label: "Tagline", name: "tagline", widget: "string" }
+                  - {
+                      label: "Includes",
+                      name: "includes",
+                      widget: "list",
+                      field: { label: "Item", name: "item", widget: "string" },
+                    }
+                  - {
+                      label: "Price (leave empty to hide)",
+                      name: "price",
+                      widget: "string",
+                      required: false,
+                    }
+                  - { label: "Button", name: "cta", widget: "string" }
+          - label: "Ownership"
+            name: "ownership"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Title accent (teal italic)", name: "title_accent", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+              - {
+                  label: "Points",
+                  name: "points",
+                  widget: "list",
+                  field: { label: "Point", name: "point", widget: "string" },
+                }
+          - label: "Closing"
+            name: "closing"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Title accent (teal italic)", name: "title_accent", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+              - { label: "Button", name: "cta", widget: "string" }
+          - label: "Footer"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Line", name: "line", widget: "string" }

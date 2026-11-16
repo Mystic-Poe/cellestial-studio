@@ -1,0 +1,25 @@
+---
+import home from '../../content/home.json';
+---
+
+<footer class="footer">
+  <p>{home.footer.line}</p>
+  <p><a href="/admin/">Studio login</a></p>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+    border-top: 1px solid var(--color-hairline);
+    color: var(--color-faint);
+    font-size: 0.75rem;
+  }
+  .footer a {
+    color: var(--color-faint);
+  }
+</style>

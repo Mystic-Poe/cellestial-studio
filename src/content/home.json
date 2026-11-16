@@ -1,5 +1,97 @@
 {
-  "headline": "Cellestial Studio",
-  "tagline": "Your node among the stars",
-  "cta_label": "Claim your star"
+  "meta": {
+    "title": "Cellestial Studio — Your node among the stars",
+    "description": "Showpiece websites from Denver, Colorado. Hand-built, fast, and owned by you forever."
+  },
+  "hero": {
+    "eyebrow": "Showpiece websites · Denver, CO",
+    "headline": "Your node among",
+    "headline_accent": "the stars",
+    "subcopy": "Websites built to be remembered, and owned by you forever: code, domain and hosting in your name from day one.",
+    "cta_primary": "Claim your star",
+    "cta_secondary": "See the work",
+    "chips": ["Lighthouse 100", "You own the code"]
+  },
+  "work": {
+    "eyebrow": "Work",
+    "title": "The sky so far",
+    "star00": {
+      "label": "Star 00",
+      "title": "cellestialstudio.com",
+      "summary": "The first star is this site. Hand-built with Astro on Cloudflare, with a sky drawn live in your browser. No templates, no page builder.",
+      "stats": ["Accessibility 100", "Loads in under a second", "Public repo: go look"],
+      "repo_url": "https://github.com/Mystic-Poe/cellestial-studio"
+    },
+    "open_card_title": "could be yours",
+    "open_card_body": "The next star in the sky is the next business we build for."
+  },
+  "horizon": { "line": "As above, so below" },
+  "soil": {
+    "eyebrow": "Systems",
+    "title": "What grows underneath",
+    "intro": "The site is the part people see. Below it are the roots: the systems that bring the work in.",
+    "tiers": [
+      {
+        "root": "Root 01",
+        "name": "Site",
+        "star": "site",
+        "tagline": "A showpiece site that loads fast and gets found.",
+        "includes": [
+          "Custom design, no templates",
+          "Edit it yourself from a simple dashboard",
+          "Contact form with spam protection",
+          "Fast, accessible, search-ready"
+        ],
+        "price": "",
+        "cta": "Claim your star"
+      },
+      {
+        "root": "Root 02",
+        "name": "Site + Systems",
+        "star": "systems",
+        "tagline": "The site, plus the machinery behind it.",
+        "includes": [
+          "Everything in Site",
+          "Booking and scheduling",
+          "Lead tracking (CRM)",
+          "Automations that follow up for you"
+        ],
+        "price": "",
+        "cta": "Claim your star"
+      },
+      {
+        "root": "Root 03",
+        "name": "Site + App",
+        "star": "app",
+        "tagline": "When your business needs its own software.",
+        "includes": [
+          "Everything in Site + Systems",
+          "A custom web app or client portal",
+          "Logins for your customers or staff",
+          "Built to grow with you"
+        ],
+        "price": "",
+        "cta": "Claim your star"
+      }
+    ]
+  },
+  "ownership": {
+    "eyebrow": "Ownership",
+    "title": "You own it.",
+    "title_accent": "Forever.",
+    "body": "Your code, your domain, your hosting, your repository, all in your name from day one. If you ever leave, you take everything with you. We'd rather earn your stay.",
+    "points": [
+      "Code and repo in your GitHub",
+      "Domain registered to you",
+      "Hosting on your account",
+      "A care plan you can cancel anytime"
+    ]
+  },
+  "closing": {
+    "title": "There's room in",
+    "title_accent": "the sky",
+    "body": "Tell us what you want to build. We answer every message ourselves.",
+    "cta": "Claim your star"
+  },
+  "footer": { "line": "Cellestial Studio · Denver, Colorado" }
 }

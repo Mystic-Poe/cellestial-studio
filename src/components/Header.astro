@@ -1,0 +1,76 @@
+---
+import MotionSwitch from './MotionSwitch.astro';
+interface Props {
+  cta: string;
+}
+const { cta } = Astro.props;
+---
+
+<header class="site-header">
+  <a class="wordmark" href="/">Cellestial <span>Studio</span></a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#systems">Systems</a></li>
+      <li><a href="#ownership">Ownership</a></li>
+    </ul>
+  </nav>
+  <div class="site-header__actions">
+    <MotionSwitch />
+    <a class="pill pill--primary site-header__cta" href="/contact" data-claim>{cta}</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1rem 1rem;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-heading);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .wordmark span {
+    font-family: var(--font-plex-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-label);
+    margin-left: 0.25rem;
+  }
+  nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: var(--color-secondary);
+    font-size: 0.8125rem;
+    text-decoration: none;
+  }
+  nav a:hover {
+    color: var(--color-heading);
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  /* Phones: the nav and CTA give way; the hero's own CTA is right below. */
+  @media (max-width: 47.99rem) {
+    nav,
+    .site-header__cta {
+      display: none;
+    }
+  }
+</style>

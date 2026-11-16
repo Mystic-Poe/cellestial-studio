@@ -1,0 +1,113 @@
+---
+import home from '../../content/home.json';
+const w = home.work;
+const s = w.star00;
+---
+
+<section id="work" class="work" aria-labelledby="work-title">
+  <p class="eyebrow">{w.eyebrow}</p>
+  <h2 id="work-title" class="display work__title">{w.title}</h2>
+  <div class="work__grid">
+    <article class="card card--star">
+      <p class="eyebrow card__label"><span class="dot" aria-hidden="true"></span>{s.label}</p>
+      <h3 class="card__title">{s.title}</h3>
+      <p class="card__body">{s.summary}</p>
+      <ul class="card__stats">{s.stats.map((x) => <li>{x}</li>)}</ul>
+      <a class="card__link" href={s.repo_url} rel="noopener">See the code →</a>
+    </article>
+    {
+      ['01', '02'].map((n) => (
+        <a class="card card--open" href="/contact" data-claim>
+          <p class="eyebrow card__label">Star {n}</p>
+          <p class="card__title">Star {n} {w.open_card_title}</p>
+          <p class="card__body">{w.open_card_body}</p>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .work {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 5rem 1rem;
+  }
+  .work__title {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    margin: 0.5rem 0 2rem;
+  }
+  .work__grid {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .work__grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: color-mix(in oklab, var(--color-card) 88%, transparent);
+    color: inherit;
+    text-decoration: none;
+  }
+  .card--open {
+    border-style: dashed;
+    border-color: color-mix(in oklab, var(--color-tier-slot) 40%, transparent);
+    background: transparent;
+  }
+  .card--open:hover {
+    border-color: var(--color-glow);
+  }
+  .card__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-tier-site);
+    box-shadow: 0 0 8px var(--color-tier-site);
+  }
+  .card__title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-heading);
+    margin: 0;
+  }
+  .card__body {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .card__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .card__stats li {
+    font-size: 0.6875rem;
+    color: var(--color-glow);
+    border: 1px solid color-mix(in oklab, var(--color-glow) 30%, transparent);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+  }
+  .card__link {
+    color: var(--color-secondary);
+    font-size: 0.8125rem;
+    margin-top: auto;
+  }
+</style>

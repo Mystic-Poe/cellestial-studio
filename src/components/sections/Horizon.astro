@@ -1,0 +1,30 @@
+---
+import home from '../../content/home.json';
+---
+
+<div class="horizon" data-horizon>
+  <span class="horizon__line" aria-hidden="true"></span>
+  <p class="horizon__text display"><em>{home.horizon.line}</em></p>
+  <span class="horizon__line" aria-hidden="true"></span>
+</div>
+
+<style>
+  .horizon {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+  .horizon__line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-moss), transparent);
+  }
+  .horizon__text {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    margin: 0;
+    white-space: nowrap;
+  }
+</style>

@@ -1,16 +1,25 @@
 ---
-import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Closing from '../components/sections/Closing.astro';
+import Footer from '../components/sections/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import Horizon from '../components/sections/Horizon.astro';
+import Ownership from '../components/sections/Ownership.astro';
+import Soil from '../components/sections/Soil.astro';
+import Work from '../components/sections/Work.astro';
 import home from '../content/home.json';
-import StarGlowButton from '../components/StarGlowButton.astro';
+import Base from '../layouts/Base.astro';
 ---
 
-<Base
-	title={`Cellestial Studio — ${home.tagline}`}
-	description={`${home.headline} — ${home.tagline}`}
->
-	<main class="mx-auto flex min-h-screen max-w-2xl flex-col justify-center gap-6 px-6 py-16">
-		<h1 class="text-4xl font-semibold tracking-tight">{home.headline}</h1>
-		<p class="text-lg text-silver">{home.tagline}</p>
-		<p><StarGlowButton href="/contact" label={home.cta_label} /></p>
-	</main>
+<Base title={home.meta.title} description={home.meta.description}>
+  <Header cta={home.hero.cta_primary} />
+  <main id="main">
+    <Hero />
+    <Work />
+    <Horizon />
+    <Soil />
+    <Ownership />
+    <Closing />
+  </main>
+  <Footer />
 </Base>
