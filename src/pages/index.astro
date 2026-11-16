@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import Sky from '../components/Sky.astro';
 import Closing from '../components/sections/Closing.astro';
 import Footer from '../components/sections/Footer.astro';
 import Hero from '../components/sections/Hero.astro';
@@ -12,6 +13,7 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title={home.meta.title} description={home.meta.description}>
+  <Sky />
   <Header cta={home.hero.cta_primary} />
   <main id="main">
     <Hero />

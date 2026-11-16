@@ -1,0 +1,14 @@
+---
+// The living sky. The canvas is created by script, so the no-JS page has no
+// empty element and nothing to hide.
+---
+
+<script>
+  import { bootSky } from '../sky/index.ts';
+  const canvas = document.createElement('canvas');
+  canvas.className = 'sky-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+  window.cellestialSky = bootSky(canvas);
+  window.dispatchEvent(new Event('cellestial:sky-ready'));
+</script>
