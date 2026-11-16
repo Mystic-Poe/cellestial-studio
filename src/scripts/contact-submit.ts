@@ -4,6 +4,7 @@ export function wireContactForm(
 	form: HTMLFormElement,
 	status: HTMLElement,
 	onSent?: () => void,
+	onFail?: () => void,
 ): void {
 	form.addEventListener('submit', async (event) => {
 		event.preventDefault();
@@ -12,6 +13,7 @@ export function wireContactForm(
 
 		button.disabled = true;
 		status.textContent = 'Sending…';
+		let sent = false;
 		try {
 			const response = await fetch(form.action, {
 				method: 'POST',
@@ -22,6 +24,7 @@ export function wireContactForm(
 			if (response.ok) {
 				form.reset();
 				status.textContent = 'Sent. We will reply by email.';
+				sent = true;
 				onSent?.();
 				return;
 			}
@@ -29,7 +32,11 @@ export function wireContactForm(
 		} catch {
 			status.textContent = 'That did not send. Please check your connection.';
 		} finally {
-			button.disabled = false;
+			// Stays disabled after a success; the owner re-enables it when the form is reopened.
+			if (!sent) {
+				button.disabled = false;
+				onFail?.();
+			}
 		}
 	});
 }

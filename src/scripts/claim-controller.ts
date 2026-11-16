@@ -40,6 +40,8 @@ const slots = () => [...document.querySelectorAll<HTMLAnchorElement>('[data-sky-
 
 let state: ClaimState = loadClaim(store);
 let widgetId: string | null = null;
+let sentThisOpen = false;
+let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
 function paint() {
 	for (const el of slots()) {
@@ -61,6 +63,7 @@ function ensureTurnstile() {
 		s.async = true;
 		s.dataset.turnstileApi = '';
 		s.addEventListener('load', ensureTurnstile, { once: true });
+		s.addEventListener('error', () => s.remove(), { once: true });
 		document.head.append(s);
 		return;
 	}
@@ -74,12 +77,16 @@ function open(id: SlotId) {
 		location.href = '/contact';
 		return;
 	}
+	clearTimeout(closeTimer);
+	sentThisOpen = false;
+	form.querySelector<HTMLButtonElement>('button[type="submit"]')?.removeAttribute('disabled');
 	state = startClaim(state, id);
 	if (starInput) starInput.value = id;
 	if (status) status.textContent = '';
 	paint();
 	window.cellestialSky?.ignite(id);
 	dialog.showModal();
+	form.querySelector<HTMLInputElement>('[name="name"]')?.focus();
 	ensureTurnstile();
 }
 
@@ -117,14 +124,26 @@ document
 	?.addEventListener('click', () => dialog?.close('cancel'));
 
 dialog?.addEventListener('close', () => {
-	state = dialog.returnValue === 'sent' ? confirmClaim(state) : cancelClaim(state);
+	clearTimeout(closeTimer);
+	state = sentThisOpen || dialog.returnValue === 'sent' ? confirmClaim(state) : cancelClaim(state);
 	saveClaim(store, state);
 	dialog.returnValue = '';
 	paint();
 });
 
 if (form && status) {
-	wireContactForm(form, status, () => setTimeout(() => dialog?.close('sent'), 1400));
+	wireContactForm(
+		form,
+		status,
+		() => {
+			sentThisOpen = true;
+			clearTimeout(closeTimer);
+			closeTimer = setTimeout(() => dialog?.close('sent'), 1400);
+		},
+		() => {
+			if (widgetId) window.turnstile?.reset(widgetId);
+		},
+	);
 }
 
 // Paint the held star from a previous visit once the sky is up.

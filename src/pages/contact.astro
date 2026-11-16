@@ -34,6 +34,6 @@ const ready = TURNSTILE_SITE_KEY !== '';
 		import { wireContactForm } from '../scripts/contact-submit.ts';
 		const form = document.querySelector<HTMLFormElement>('#contact-form');
 		const status = form?.querySelector<HTMLElement>('[data-status]');
-		if (form && status) wireContactForm(form, status);
+		if (form && status) wireContactForm(form, status, undefined, () => (window as unknown as { turnstile?: { reset(): void } }).turnstile?.reset());
 	</script>
 </Base>
