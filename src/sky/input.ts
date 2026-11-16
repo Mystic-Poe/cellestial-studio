@@ -25,6 +25,28 @@ export function approach(current: number, target: number, dtMs: number, halfLife
 	return current + (target - current) * k;
 }
 
+export interface LightPick {
+	pointer: { x: number; y: number } | null;
+	pointerType: string;
+	fresh: boolean;
+	touching: boolean;
+	tilt: { x: number; y: number } | null;
+	wander: { x: number; y: number };
+}
+
+/**
+ * Priority: a touch under the finger, then a fresh mouse, then tilt, then a
+ * lingering touch, then wander. A desktop with orientation data still follows
+ * its cursor.
+ */
+export function pickLight(s: LightPick): { x: number; y: number; active: boolean } {
+	if (s.pointer && s.touching) return { ...s.pointer, active: true };
+	if (s.pointer && s.fresh && s.pointerType === 'mouse') return { ...s.pointer, active: true };
+	if (s.tilt) return { ...s.tilt, active: true };
+	if (s.pointer && s.fresh) return { ...s.pointer, active: true };
+	return { ...s.wander, active: false };
+}
+
 export interface LightInput {
 	target(tSec: number): { x: number; y: number; active: boolean };
 	requestTilt(): void;
@@ -38,6 +60,7 @@ type OrientationCtor = typeof DeviceOrientationEvent & {
 export function createInput(win: Window): LightInput {
 	let pointer: { x: number; y: number } | null = null;
 	let pointerAt = Number.NEGATIVE_INFINITY;
+	let pointerType = '';
 	let touching = false;
 	let tilt: { x: number; y: number } | null = null;
 	let tiltRequested = false;
@@ -47,6 +70,7 @@ export function createInput(win: Window): LightInput {
 	const onMove = (e: PointerEvent) => {
 		pointer = norm(e.clientX, e.clientY);
 		pointerAt = performance.now();
+		pointerType = e.pointerType;
 	};
 	const onDown = (e: PointerEvent) => {
 		if (e.pointerType === 'touch') touching = true;
@@ -67,11 +91,14 @@ export function createInput(win: Window): LightInput {
 
 	const api: LightInput = {
 		target(tSec) {
-			const fresh = performance.now() - pointerAt < 3000;
-			if (pointer && (touching || (fresh && !tilt))) return { ...pointer, active: true };
-			if (tilt) return { ...tilt, active: true };
-			if (pointer && fresh) return { ...pointer, active: true };
-			return { ...wanderLight(tSec), active: false };
+			return pickLight({
+				pointer,
+				pointerType,
+				fresh: performance.now() - pointerAt < 3000,
+				touching,
+				tilt,
+				wander: wanderLight(tSec),
+			});
 		},
 		requestTilt() {
 			if (tiltRequested || !('DeviceOrientationEvent' in globalThis)) return;
