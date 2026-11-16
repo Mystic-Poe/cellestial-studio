@@ -44,11 +44,14 @@ const t = async (name, fn) => {
 
 const realFetch = globalThis.fetch;
 let calls = [];
+let bodies = [];
 const stub = ({ turnstile = true, resend = true } = {}) => {
 	calls = [];
-	globalThis.fetch = async (url) => {
+	bodies = [];
+	globalThis.fetch = async (url, init) => {
 		const u = String(url);
 		calls.push(u);
+		if (u.includes('resend')) bodies.push(JSON.parse(init.body));
 		if (u.includes('turnstile'))
 			return new Response(JSON.stringify({ success: turnstile }), {
 				headers: { 'content-type': 'application/json' },
@@ -152,6 +155,24 @@ await t('error text is escaped into the HTML response', async () => {
 	);
 	const html = await r.text();
 	assert.ok(!html.includes('<script>'));
+});
+await t('star: a valid slot id is named in the email', async () => {
+	stub();
+	const r = await post(body({ star: 'slot-3' }));
+	assert.equal(r.status, 200);
+	assert.ok(bodies[0].text.endsWith('\n\nClaimed: open star 3'), bodies[0].text);
+});
+await t('star: an invalid value is ignored, not reflected', async () => {
+	stub();
+	const r = await post(body({ star: 'slot-3<img src=x>' }));
+	assert.equal(r.status, 200);
+	assert.ok(!bodies[0].text.includes('Claimed'));
+	assert.ok(!bodies[0].text.includes('<img'));
+});
+await t('star: absent field leaves the email unchanged', async () => {
+	stub();
+	await post();
+	assert.equal(bodies[0].text, 'From: Ada <ada@example.com>\n\nNeed a site.');
 });
 globalThis.fetch = realFetch;
 console.log(`\n${pass} checks passed`);

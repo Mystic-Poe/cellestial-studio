@@ -84,6 +84,12 @@ export default {
 		const name = String(form.get('name') ?? '').trim();
 		const email = String(form.get('email') ?? '').trim();
 		const message = String(form.get('message') ?? '').trim();
+		// From the homepage's claim-your-star flow. Strictly validated: anything
+		// but slot-N is dropped, so the field can never inject into the email.
+		const starRaw = String(form.get('star') ?? '');
+		const starLine = /^slot-[1-9]\d?$/.test(starRaw)
+			? `\n\nClaimed: open star ${starRaw.slice(5)}`
+			: '';
 
 		if (!name || !email || !message) {
 			return reply(request, 400, { error: 'Please fill in every field.' });
@@ -126,7 +132,7 @@ export default {
 				to: [env.CONTACT_TO],
 				reply_to: email,
 				subject: `Cellestial Studio enquiry — ${name}`,
-				text: `From: ${name} <${email}>\n\n${message}`,
+				text: `From: ${name} <${email}>\n\n${message}${starLine}`,
 			}),
 		});
 
