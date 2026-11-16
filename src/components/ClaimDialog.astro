@@ -1,0 +1,77 @@
+---
+import ContactForm from './ContactForm.astro';
+---
+
+<dialog id="claim-dialog" class="claim" aria-labelledby="claim-title">
+  <div class="claim__head">
+    <span class="claim__star" aria-hidden="true"></span>
+    <h2 id="claim-title" class="display claim__title">Claim <em>your star</em></h2>
+    <button class="claim__close" type="button" data-claim-close aria-label="Close">×</button>
+  </div>
+  <p class="claim__lede">Tell us what you want to build. Your star stays lit while you write.</p>
+  <ContactForm id="claim-form" turnstile="explicit" withStar />
+</dialog>
+
+<style>
+  .claim {
+    width: min(32rem, calc(100vw - 2rem));
+    max-height: calc(100svh - 2rem);
+    margin: auto auto 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-moss);
+    border-radius: 18px;
+    background: color-mix(in oklab, var(--color-night) 92%, transparent);
+    color: var(--color-body);
+    backdrop-filter: blur(6px);
+  }
+  @media (min-width: 48rem) {
+    .claim {
+      margin: auto;
+    }
+  }
+  .claim::backdrop {
+    background: rgb(4 7 10 / 0.35);
+  }
+  .claim[open] {
+    animation: claim-rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes claim-rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+  .claim__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .claim__star {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow:
+      0 0 10px 3px var(--color-glow),
+      0 0 28px 8px color-mix(in oklab, var(--color-glow) 35%, transparent);
+  }
+  .claim__title {
+    font-size: 2.25rem;
+    margin: 0;
+    flex: 1;
+  }
+  .claim__close {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+  .claim__lede {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+</style>

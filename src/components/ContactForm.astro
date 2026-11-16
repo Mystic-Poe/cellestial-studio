@@ -1,0 +1,77 @@
+---
+import { TURNSTILE_SITE_KEY } from '../config.ts';
+
+interface Props {
+  id: string;
+  turnstile: 'implicit' | 'explicit';
+  withStar?: boolean;
+}
+const { id, turnstile, withStar = false } = Astro.props;
+const ready = TURNSTILE_SITE_KEY !== '';
+---
+
+<form id={id} method="POST" action="/api/contact" class="cform" novalidate>
+  <div class="cform__field">
+    <label for={`${id}-name`}>Your name</label>
+    <input id={`${id}-name`} name="name" type="text" required maxlength="120" autocomplete="name" />
+  </div>
+  <div class="cform__field">
+    <label for={`${id}-email`}>Email</label>
+    <input id={`${id}-email`} name="email" type="email" required maxlength="254" autocomplete="email" />
+  </div>
+  <div class="cform__field">
+    <label for={`${id}-message`}>What do you need built?</label>
+    <textarea id={`${id}-message`} name="message" rows="5" required maxlength="5000"></textarea>
+  </div>
+  {withStar && <input type="hidden" name="star" value="" data-star-input />}
+  {
+    ready &&
+      (turnstile === 'implicit' ? (
+        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" />
+      ) : (
+        <div data-turnstile-slot data-sitekey={TURNSTILE_SITE_KEY} />
+      ))
+  }
+  <button class="pill pill--primary cform__send" type="submit" disabled={!ready}>Send</button>
+  <p class="cform__status" data-status role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .cform {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .cform__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cform label {
+    font-size: 0.8125rem;
+    color: var(--color-secondary);
+  }
+  .cform input,
+  .cform textarea {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-card);
+    color: var(--color-body);
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+  }
+  .cform__send {
+    align-self: flex-start;
+    border: 0;
+    cursor: pointer;
+  }
+  .cform__send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .cform__status {
+    font-size: 0.8125rem;
+    min-height: 1.2em;
+    margin: 0;
+  }
+</style>

@@ -1,4 +1,5 @@
 ---
+import ClaimDialog from '../components/ClaimDialog.astro';
 import Header from '../components/Header.astro';
 import Sky from '../components/Sky.astro';
 import Closing from '../components/sections/Closing.astro';
@@ -24,4 +25,8 @@ import Base from '../layouts/Base.astro';
     <Closing />
   </main>
   <Footer />
+  <ClaimDialog />
+  <script>
+    import '../scripts/claim-controller.ts';
+  </script>
 </Base>
