@@ -26,9 +26,15 @@ const c = home.closing;
     margin: 0 auto;
     padding: 7rem 1rem 6rem;
   }
+  /* Above the text so slots stay tappable; only the slots take pointer events. */
   .closing__sky {
     position: absolute;
     inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .closing__sky :global(.sky-slot) {
+    pointer-events: auto;
   }
   .closing__title {
     position: relative;

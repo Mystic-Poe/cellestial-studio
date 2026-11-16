@@ -84,6 +84,7 @@ collections:
                 name: "tiers"
                 widget: "list"
                 allow_add: false
+                allow_remove: false
                 fields:
                   - { label: "Root label", name: "root", widget: "string" }
                   - { label: "Name", name: "name", widget: "string" }
