@@ -65,7 +65,15 @@ export function createInput(win: Window): LightInput {
 	let tilt: { x: number; y: number } | null = null;
 	let tiltRequested = false;
 
-	const norm = (cx: number, cy: number) => ({ x: cx / win.innerWidth, y: cy / win.innerHeight });
+	// Normalise by the layout viewport (excludes classic scrollbars) so the light
+	// lines up with the canvas, which is sized from the same box.
+	const norm = (cx: number, cy: number) => {
+		const el = win.document?.documentElement;
+		return {
+			x: cx / (el?.clientWidth || win.innerWidth),
+			y: cy / (el?.clientHeight || win.innerHeight),
+		};
+	};
 
 	const onMove = (e: PointerEvent) => {
 		pointer = norm(e.clientX, e.clientY);

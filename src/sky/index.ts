@@ -34,6 +34,7 @@ export interface SkyApi {
 }
 
 const IGNITE_MS = 1200;
+const slotSeed = (id: string) => [...id].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 interface Anchor {
 	el: HTMLElement;
@@ -65,6 +66,10 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	let claim: ClaimState = INITIAL_CLAIM;
 	const igniteAt = new Map<SlotId, number>();
 	let anchors: Anchor[] = [];
+	let horizonEl: HTMLElement | null = null;
+	let rootsEl: HTMLElement | null = null;
+	let cardEls: HTMLElement[] = [];
+	let growKey = '';
 	let roots: Branch[] = [];
 	let rootsBox = { left: 0, top: 0, height: 1 };
 	let horizonTop = Number.POSITIVE_INFINITY;
@@ -81,41 +86,56 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	function resize() {
 		const q = QUALITY_LEVELS[governor.level];
 		dpr = Math.min(devicePixelRatio || 1, q.maxDpr);
-		w = innerWidth;
-		h = innerHeight;
+		// Layout viewport, not innerWidth: the CSS box excludes classic scrollbars.
+		w = root.clientWidth;
+		h = root.clientHeight;
 		canvas.width = Math.round(w * dpr);
 		canvas.height = Math.round(h * dpr);
 		ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+		collect();
 		measure(true);
+		kick(); // assigning canvas.width cleared the bitmap; redraw even with motion off
 	}
 
-	/** Read anchor/section positions. Cheap rect reads, once per frame at most. */
+	/** Cache element references once at boot and on resize. */
+	function collect() {
+		anchors = [...document.querySelectorAll<HTMLElement>('[data-sky-star]')].map((el) => ({
+			el,
+			kind: el.dataset.skyStar ?? 'site',
+			slot: (el.dataset.slot as SlotId | undefined) ?? null,
+			x: 0,
+			y: 0,
+			visible: false,
+		}));
+		horizonEl = document.querySelector<HTMLElement>('[data-horizon]');
+		rootsEl = document.querySelector<HTMLElement>('[data-roots]');
+		cardEls = [...document.querySelectorAll<HTMLElement>('[data-root-card]')];
+	}
+
+	/** Read positions. Elements are cached; rects are fresh because they track scroll. */
 	function measure(regrowRoots = false) {
-		anchors = [...document.querySelectorAll<HTMLElement>('[data-sky-star]')].map((el) => {
-			const r = el.getBoundingClientRect();
-			const x = r.left + r.width / 2;
-			const y = r.top + r.height / 2;
-			return {
-				el,
-				kind: el.dataset.skyStar ?? 'site',
-				slot: (el.dataset.slot as SlotId | undefined) ?? null,
-				x,
-				y,
-				visible: y > -50 && y < h + 50,
-			};
-		});
-		const horizon = document.querySelector<HTMLElement>('[data-horizon]');
-		const cards = [...document.querySelectorAll<HTMLElement>('[data-root-card]')];
-		if (horizon) horizonTop = horizon.getBoundingClientRect().top;
-		if (horizon && cards.length) {
-			const hb = horizon.getBoundingClientRect();
-			const top = hb.bottom;
-			const targets = cards.map((c) => {
+		for (const a of anchors) {
+			const r = a.el.getBoundingClientRect();
+			a.x = r.left + r.width / 2;
+			a.y = r.top + r.height / 2;
+			a.visible = a.y > -50 && a.y < h + 50;
+		}
+		const hb = horizonEl?.getBoundingClientRect();
+		if (hb) horizonTop = hb.top;
+		if (cardEls.length && (hb || rootsEl)) {
+			// Roots start at the top of the gap above the cards, clear of the section text.
+			const top = rootsEl
+				? rootsEl.getBoundingClientRect().top -
+					(Number.parseFloat(getComputedStyle(rootsEl).marginTop) || 0)
+				: (hb?.bottom ?? 0);
+			const targets = cardEls.map((c) => {
 				const r = c.getBoundingClientRect();
 				return { x: r.left + r.width / 2, y: r.top - top };
 			});
 			const height = Math.max(1, ...targets.map((t) => t.y));
-			if (regrowRoots || roots.length === 0) {
+			const key = targets.map((t) => `${Math.round(t.x)},${Math.round(t.y)}`).join('|');
+			if (regrowRoots || roots.length === 0 || key !== growKey) {
+				growKey = key;
 				roots = growMycelium({
 					width: w,
 					targets,
@@ -197,6 +217,16 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 					const ey = site.y + (a.y - site.y) * p;
 					drawLine(ctx, site.x, site.y, ex, ey, STAR_COLORS.site, 0.55, 1);
 				}
+				if (p > 0 && p < 1 && moving) {
+					const rr = mulberry32(slotSeed(a.slot));
+					for (let k = 0; k < 8; k++) {
+						const ang = rr() * Math.PI * 2 + tSec * 0.6;
+						const d = 40 * (1 - p) * (0.6 + rr() * 0.4);
+						const dx = a.x + Math.cos(ang) * d;
+						const dy = a.y + Math.sin(ang) * d;
+						drawDot(ctx, dx, dy, 1.6, STAR_COLORS.site, 0.2 + p * 0.7);
+					}
+				}
 				const pulse = moving ? 1 + (p >= 1 ? 0.18 : 0.1) * Math.sin(tSec * (p >= 1 ? 2 : 1)) : 1;
 				const color = p > 0 ? STAR_COLORS.site : STAR_COLORS.slot;
 				drawGlowStar(
@@ -210,7 +240,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 					sprites.slot,
 				);
 			} else {
-				const breathe = moving ? 1 + 0.12 * Math.sin(tSec * 0.9) : 1;
+				const breathe = moving && a.kind === 'site' ? 1 + 0.12 * Math.sin(tSec * 0.9) : 1;
 				const color = STAR_COLORS[a.kind as 'site' | 'systems' | 'app'] ?? STAR_COLORS.site;
 				drawGlowStar(ctx, a.x, a.y, 4 * breathe, color, 0.9, near * 0.4, sprites[a.kind]);
 			}
@@ -244,11 +274,11 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	});
 
 	resize();
-	kick();
 
 	const api: SkyApi = {
 		setClaim(s) {
 			claim = s;
+			for (const id of [...igniteAt.keys()]) if (!isLit(s, id)) igniteAt.delete(id);
 			kick();
 		},
 		ignite(id) {
