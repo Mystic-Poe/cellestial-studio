@@ -14,7 +14,7 @@ import {
 import { wireContactForm } from './contact-submit.ts';
 
 type Turnstile = {
-	render(el: HTMLElement, opts: { sitekey: string; theme: 'dark' }): string;
+	render(el: HTMLElement, opts: { sitekey: string; theme: 'dark'; size: 'flexible' }): string;
 	reset(id: string): void;
 };
 declare global {
@@ -41,12 +41,22 @@ const slots = () => [...document.querySelectorAll<HTMLAnchorElement>('[data-sky-
 let state: ClaimState = loadClaim(store);
 let widgetId: string | null = null;
 let sentThisOpen = false;
+let submitGen = 0; // bumped on every open; a send from an older open is ignored
 let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
 function paint() {
 	for (const el of slots()) {
 		const id = el.dataset.slot as SlotId;
+		const n = id.replace(/\D+/g, '') || id;
 		el.dataset.state = state.pending === id ? 'pending' : state.held === id ? 'held' : 'open';
+		el.setAttribute(
+			'aria-label',
+			state.pending === id
+				? `Claiming star ${n}`
+				: state.held === id
+					? `Your star (star ${n})`
+					: `Claim open star ${n}`,
+		);
 	}
 	window.cellestialSky?.setClaim(state);
 }
@@ -68,7 +78,11 @@ function ensureTurnstile() {
 		return;
 	}
 	if (window.turnstile && tsSlot.dataset.sitekey) {
-		widgetId = window.turnstile.render(tsSlot, { sitekey: tsSlot.dataset.sitekey, theme: 'dark' });
+		widgetId = window.turnstile.render(tsSlot, {
+			sitekey: tsSlot.dataset.sitekey,
+			theme: 'dark',
+			size: 'flexible',
+		});
 	}
 }
 
@@ -79,6 +93,7 @@ function open(id: SlotId) {
 	}
 	clearTimeout(closeTimer);
 	sentThisOpen = false;
+	submitGen++;
 	form.querySelector<HTMLButtonElement>('button[type="submit"]')?.removeAttribute('disabled');
 	state = startClaim(state, id);
 	if (starInput) starInput.value = id;
@@ -142,6 +157,10 @@ if (form && status) {
 		},
 		() => {
 			if (widgetId) window.turnstile?.reset(widgetId);
+		},
+		() => {
+			const gen = submitGen;
+			return () => gen !== submitGen;
 		},
 	);
 }

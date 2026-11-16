@@ -25,6 +25,11 @@ import home from '../../content/home.json';
   .horizon__text {
     font-size: clamp(1.5rem, 4vw, 2.25rem);
     margin: 0;
-    white-space: nowrap;
+    text-align: center;
+  }
+  @media (min-width: 48rem) {
+    .horizon__text {
+      white-space: nowrap;
+    }
   }
 </style>

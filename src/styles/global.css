@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
 /* Cellestial Studio — palette roles from the Nov 9 design doc, confirmed in
-   the Nov 15 homepage spec. The older tokens (sky, surface, starlight, silver)
-   stay as aliases so /contact keeps working unchanged. */
+   the Nov 15 homepage spec. */
 @theme {
 	--color-night: #04070a;
 	--color-soil: #050806;
@@ -26,20 +25,15 @@
 	--color-tier-companion: #ffd27a;
 	--color-tier-slot: #a3b8c2;
 
-	/* Aliases kept for /contact. */
-	--color-sky: #04070a;
-	--color-surface: #070a14;
-	--color-starlight: #eef0f3;
-	--color-silver: #b8bec9;
-	--color-rust: #c4553d;
-
 	--font-sans: var(--font-plex-mono);
 	--font-mono: var(--font-plex-mono);
 	--font-display: var(--font-instrument-serif);
 }
 
-html {
-	scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 body {

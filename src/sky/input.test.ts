@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { approach, pickLight, tiltToLight, wanderLight } from './input.ts';
+import { approach, createTiltGate, pickLight, tiltToLight, wanderLight } from './input.ts';
 
 test('tiltToLight maps a held phone into the unit square and clamps', () => {
 	assert.equal(tiltToLight(null, 10), null);
@@ -92,4 +92,55 @@ test('pickLight: a stale mouse with no tilt wanders and is inactive', () => {
 		wander: WANDER,
 	});
 	assert.deepEqual(r, { x: 0.5, y: 0.5, active: false });
+});
+
+test('createTiltGate: no requestPermission listens once', () => {
+	let listens = 0;
+	const g = createTiltGate(undefined, () => listens++);
+	g.ask();
+	g.ask();
+	assert.equal(listens, 1);
+});
+
+test('createTiltGate: retries after a rejection, stops after granted or denied', async () => {
+	let listens = 0;
+	let calls = 0;
+	const answers: Array<() => Promise<string>> = [
+		() => Promise.reject(new Error('not a gesture')),
+		() => Promise.resolve('granted'),
+	];
+	const g = createTiltGate(
+		() => answers[calls++](),
+		() => listens++,
+	);
+	g.ask();
+	await new Promise((r) => setTimeout(r, 0));
+	assert.equal(listens, 0);
+	g.ask();
+	await new Promise((r) => setTimeout(r, 0));
+	assert.equal(listens, 1);
+	g.ask();
+	assert.equal(calls, 2);
+
+	let dCalls = 0;
+	const d = createTiltGate(
+		() => (dCalls++, Promise.resolve('denied')),
+		() => listens++,
+	);
+	d.ask();
+	await new Promise((r) => setTimeout(r, 0));
+	d.ask();
+	assert.equal(dCalls, 1);
+	assert.equal(listens, 1);
+});
+
+test('createTiltGate: does not stack asks while one is in flight', async () => {
+	let calls = 0;
+	const g = createTiltGate(
+		() => (calls++, new Promise(() => {})),
+		() => {},
+	);
+	g.ask();
+	g.ask();
+	assert.equal(calls, 1);
 });

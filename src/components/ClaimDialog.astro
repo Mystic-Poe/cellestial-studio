@@ -24,6 +24,18 @@ import ContactForm from './ContactForm.astro';
     color: var(--color-body);
     backdrop-filter: blur(6px);
   }
+  /* Turnstile's iframe never goes below 300px wide, even with size: 'flexible'.
+     Below ~364px the dialog content is narrower, so tighten padding and scale it. */
+  @media (max-width: 22.75rem) {
+    .claim {
+      padding: 1rem;
+    }
+    .claim :global([data-turnstile-slot]) {
+      height: 56px;
+      transform: scale(0.85);
+      transform-origin: top left;
+    }
+  }
   @media (min-width: 48rem) {
     .claim {
       margin: auto;

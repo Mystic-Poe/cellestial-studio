@@ -3,7 +3,7 @@
 // reduced-motion setting (set in Base.astro's head script); remembers a choice.
 ---
 
-<button class="motion-switch" type="button" aria-pressed="true" data-motion-switch>
+<button class="motion-switch" type="button" aria-pressed="true" data-motion-switch hidden>
   <span class="motion-switch__dot" aria-hidden="true"></span>
   <span class="motion-switch__label">Motion</span>
 </button>
@@ -23,6 +23,9 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
+  }
+  .motion-switch[hidden] {
+    display: none;
   }
   .motion-switch__dot {
     width: 0.5rem;
@@ -45,6 +48,7 @@
   const root = document.documentElement;
   const sync = () => btn?.setAttribute('aria-pressed', String(root.dataset.motion !== 'off'));
   sync();
+  if (btn) btn.hidden = false;
   btn?.addEventListener('click', () => {
     const on = root.dataset.motion === 'off';
     root.dataset.motion = on ? 'on' : 'off';

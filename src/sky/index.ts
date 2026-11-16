@@ -86,10 +86,18 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 
 	function resize(redraw = true) {
 		const q = QUALITY_LEVELS[governor.level];
-		dpr = Math.min(devicePixelRatio || 1, q.maxDpr);
+		const nextDpr = Math.min(devicePixelRatio || 1, q.maxDpr);
 		// Layout viewport, not innerWidth: the CSS box excludes classic scrollbars.
-		w = root.clientWidth;
-		h = root.clientHeight;
+		const nextW = root.clientWidth;
+		const nextH = root.clientHeight;
+		// Mobile URL-bar show/hide fires resize without changing the layout box.
+		if (nextW === w && nextH === h && nextDpr === dpr) {
+			if (redraw) kick();
+			return;
+		}
+		dpr = nextDpr;
+		w = nextW;
+		h = nextH;
 		canvas.width = Math.round(w * dpr);
 		canvas.height = Math.round(h * dpr);
 		ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);

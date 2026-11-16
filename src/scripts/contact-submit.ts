@@ -5,6 +5,8 @@ export function wireContactForm(
 	status: HTMLElement,
 	onSent?: () => void,
 	onFail?: () => void,
+	/** Called when a submit starts; returns a check that is true once that submit is superseded. */
+	onStart?: () => () => boolean,
 ): void {
 	form.addEventListener('submit', async (event) => {
 		event.preventDefault();
@@ -13,6 +15,7 @@ export function wireContactForm(
 
 		button.disabled = true;
 		status.textContent = 'Sending…';
+		const stale = onStart?.() ?? (() => false);
 		let sent = false;
 		try {
 			const response = await fetch(form.action, {
@@ -21,6 +24,11 @@ export function wireContactForm(
 				body: new FormData(form),
 			});
 			const body = (await response.json().catch(() => ({}))) as { error?: string };
+			// A superseded submit (dialog closed and reopened) must not touch the new form.
+			if (stale()) {
+				sent = true;
+				return;
+			}
 			if (response.ok) {
 				form.reset();
 				status.textContent = 'Sent. We will reply by email.';
@@ -30,9 +38,14 @@ export function wireContactForm(
 			}
 			status.textContent = body.error ?? 'That did not send. Please try again.';
 		} catch {
+			if (stale()) {
+				sent = true;
+				return;
+			}
 			status.textContent = 'That did not send. Please check your connection.';
 		} finally {
 			// Stays disabled after a success; the owner re-enables it when the form is reopened.
+			// (`sent` is also set for a stale response, which leaves the new form alone.)
 			if (!sent) {
 				button.disabled = false;
 				onFail?.();
