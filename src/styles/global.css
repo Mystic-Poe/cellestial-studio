@@ -1,33 +1,134 @@
 @import "tailwindcss";
 
-/* Cellestial Studio — design locks.
-   Palette from the Nov 9 design doc (bioluminescent night) with role names
-   from the Mystic Tech parent sheet. Sky unified on the homepage value
-   #04070a; the star-board #070a14 is kept as a raised surface rather than a
-   second background. */
+/* Cellestial Studio — palette roles from the Nov 9 design doc, confirmed in
+   the Nov 15 homepage spec. The older tokens (sky, surface, starlight, silver)
+   stay as aliases so /contact keeps working unchanged. */
 @theme {
+	--color-night: #04070a;
+	--color-soil: #050806;
+	--color-card: #070c10;
+	--color-root: #08100c;
+	--color-root-featured: #0a1510;
+	--color-hairline: #12201a;
+	--color-border: #1c2e27;
+	--color-moss: #2c5a46;
+	--color-heading: #f2f8f5;
+	--color-body: #e6f1ec;
+	--color-secondary: #c4d6cf;
+	--color-muted: #a9c2ba;
+	--color-label: #8fa8a0;
+	--color-faint: #6f8a81;
+
+	--color-glow: #5ef2d6;
+	--color-tier-site: #5ef2d6;
+	--color-tier-systems: #8be9ff;
+	--color-tier-app: #c3a6ff;
+	--color-tier-companion: #ffd27a;
+	--color-tier-slot: #a3b8c2;
+
+	/* Aliases kept for /contact. */
 	--color-sky: #04070a;
 	--color-surface: #070a14;
 	--color-starlight: #eef0f3;
 	--color-silver: #b8bec9;
-	--color-glow: #5ef2d6;
 	--color-rust: #c4553d;
 
-	/* Plex Mono everywhere, per the Nov 12 font decision. */
 	--font-sans: var(--font-plex-mono);
 	--font-mono: var(--font-plex-mono);
+	--font-display: var(--font-instrument-serif);
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 body {
-	background-color: var(--color-sky);
-	color: var(--color-starlight);
+	background-color: var(--color-night);
+	color: var(--color-body);
 	font-family: var(--font-plex-mono);
 	-webkit-font-smoothing: antialiased;
 }
 
-/* Visible focus is non-negotiable for the keyboard pass and for WCAG 2.2 AA.
-   Electric-blue-adjacent glow teal reads as "live", which is what focus is. */
 :focus-visible {
 	outline: 2px solid var(--color-glow);
 	outline-offset: 3px;
+}
+
+/* The sky: fixed behind everything. Absent without JS (it is inserted by
+   Sky.astro's script), so the no-JS page is plain night. */
+.sky-canvas {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	pointer-events: none;
+}
+
+/* Motion switch off, or reduced motion before the switch is touched. */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+	animation: none !important;
+	transition: none !important;
+}
+html[data-motion="off"] {
+	scroll-behavior: auto;
+}
+
+/* Shared pill buttons (spec: pill, uppercase mono, accent fill, dark text;
+   secondary gets a moss outline). */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	padding: 0 1.25rem;
+	border-radius: 999px;
+	font-family: var(--font-plex-mono);
+	font-weight: 500;
+	font-size: 0.75rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition:
+		background-color 200ms ease,
+		border-color 200ms ease,
+		color 200ms ease;
+}
+.pill--primary {
+	background: var(--color-glow);
+	color: var(--color-night);
+}
+.pill--primary:hover {
+	background: #8af7e3;
+}
+.pill--secondary {
+	border: 1px solid var(--color-moss);
+	color: var(--color-secondary);
+}
+.pill--secondary:hover {
+	border-color: var(--color-glow);
+	color: var(--color-heading);
+}
+
+.eyebrow {
+	font-family: var(--font-plex-mono);
+	font-weight: 500;
+	font-size: 0.6875rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--color-label);
+}
+
+.display {
+	font-family: var(--font-display);
+	font-weight: 400;
+	line-height: 0.98;
+	letter-spacing: -0.01em;
+	color: var(--color-heading);
+}
+.display em {
+	font-style: italic;
+	color: var(--color-glow);
 }
