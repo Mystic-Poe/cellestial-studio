@@ -62,8 +62,9 @@ const n = id.slice(5);
   .sky-slot[data-state='held'] .sky-slot__label {
     opacity: 1;
   }
+  /* Only without JS: when JS runs, Base's boot script sets data-motion and the switch governs. */
   @media (prefers-reduced-motion: reduce) {
-    .sky-slot__ring {
+    :global(html:not([data-motion])) .sky-slot__ring {
       animation: none;
     }
   }
