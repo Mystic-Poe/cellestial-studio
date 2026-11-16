@@ -70,6 +70,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	let rootsEl: HTMLElement | null = null;
 	let cardEls: HTMLElement[] = [];
 	let growKey = '';
+	let rootsMargin = 0;
 	let roots: Branch[] = [];
 	let rootsBox = { left: 0, top: 0, height: 1 };
 	let horizonTop = Number.POSITIVE_INFINITY;
@@ -83,7 +84,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 
 	const motionOn = () => root.dataset.motion !== 'off';
 
-	function resize() {
+	function resize(redraw = true) {
 		const q = QUALITY_LEVELS[governor.level];
 		dpr = Math.min(devicePixelRatio || 1, q.maxDpr);
 		// Layout viewport, not innerWidth: the CSS box excludes classic scrollbars.
@@ -94,7 +95,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
 		collect();
 		measure(true);
-		kick(); // assigning canvas.width cleared the bitmap; redraw even with motion off
+		if (redraw) kick(); // assigning canvas.width cleared the bitmap; redraw even with motion off
 	}
 
 	/** Cache element references once at boot and on resize. */
@@ -109,6 +110,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		}));
 		horizonEl = document.querySelector<HTMLElement>('[data-horizon]');
 		rootsEl = document.querySelector<HTMLElement>('[data-roots]');
+		rootsMargin = rootsEl ? Number.parseFloat(getComputedStyle(rootsEl).marginTop) || 0 : 0;
 		cardEls = [...document.querySelectorAll<HTMLElement>('[data-root-card]')];
 	}
 
@@ -124,10 +126,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		if (hb) horizonTop = hb.top;
 		if (cardEls.length && (hb || rootsEl)) {
 			// Roots start at the top of the gap above the cards, clear of the section text.
-			const top = rootsEl
-				? rootsEl.getBoundingClientRect().top -
-					(Number.parseFloat(getComputedStyle(rootsEl).marginTop) || 0)
-				: (hb?.bottom ?? 0);
+			const top = rootsEl ? rootsEl.getBoundingClientRect().top - rootsMargin : (hb?.bottom ?? 0);
 			const targets = cardEls.map((c) => {
 				const r = c.getBoundingClientRect();
 				return { x: r.left + r.width / 2, y: r.top - top };
@@ -157,7 +156,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		if (moving) {
 			const before = governor.level;
 			governor.sample(dt, now);
-			if (governor.level !== before) resize();
+			if (governor.level !== before) resize(false);
 		}
 		const q = QUALITY_LEVELS[governor.level];
 		measure();
@@ -257,7 +256,7 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		if (!raf) raf = requestAnimationFrame(frame);
 	};
 
-	addEventListener('resize', resize, { passive: true });
+	addEventListener('resize', () => resize(), { passive: true });
 	addEventListener('scroll', () => !motionOn() && kick(), { passive: true });
 	addEventListener('cellestial:motion', () => {
 		last = performance.now();
