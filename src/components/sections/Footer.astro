@@ -4,14 +4,17 @@ import home from '../../content/home.json';
 
 <footer class="footer">
   <p>{home.footer.line}</p>
+  <p>Stars: Yale Bright Star Catalog · lines: d3-celestial</p>
   <p><a href="/admin/">Studio login</a></p>
 </footer>
 
 <style>
   .footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    align-items: center;
+    gap: 0 1.5rem;
     max-width: 72rem;
     margin: 0 auto;
     padding: 2rem 1rem 3rem;

@@ -114,3 +114,35 @@ export function drawMycelium(
 		x.stroke();
 	}
 }
+
+/** A constellation line, drawn in from its first star as `progress` goes 0 → 1. */
+export function drawPolyline(
+	x: Ctx,
+	pts: { x: number; y: number }[],
+	progress: number,
+	dy: number,
+	color: string,
+	alpha: number,
+): void {
+	if (alpha <= 0 || pts.length < 2) return;
+	const segs = pts.length - 1;
+	const reach = Math.max(0, Math.min(1, progress)) * segs;
+	x.strokeStyle = `rgba(${color},${alpha})`;
+	x.lineWidth = 0.9;
+	x.beginPath();
+	x.moveTo(pts[0].x, pts[0].y + dy);
+	for (let i = 1; i <= segs; i++) {
+		if (i <= reach) {
+			x.lineTo(pts[i].x, pts[i].y + dy);
+		} else {
+			const t = reach - (i - 1);
+			if (t > 0) {
+				const a = pts[i - 1];
+				const b = pts[i];
+				x.lineTo(a.x + (b.x - a.x) * t, a.y + dy + (b.y - a.y) * t);
+			}
+			break;
+		}
+	}
+	x.stroke();
+}

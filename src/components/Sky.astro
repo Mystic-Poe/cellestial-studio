@@ -11,4 +11,25 @@
   document.body.prepend(canvas);
   window.cellestialSky = bootSky(canvas);
   window.dispatchEvent(new Event('cellestial:sky-ready'));
+
+  // "The sky over Denver · 9:12 PM", once the real sky is drawn.
+  const caption = document.querySelector<HTMLElement>('[data-sky-caption]');
+  const time = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Denver',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+  const stamp = () => {
+    if (caption) caption.textContent = `The sky over Denver · ${time.format(new Date())}`;
+  };
+  addEventListener(
+    'cellestial:sky-placed',
+    () => {
+      if (!caption) return;
+      stamp();
+      caption.hidden = false;
+      setInterval(stamp, 60_000);
+    },
+    { once: true },
+  );
 </script>

@@ -2,17 +2,11 @@
 // computed by the pure modules and drawn by render.ts.
 
 import { type ClaimState, INITIAL_CLAIM, isLit, type SlotId } from './claim.ts';
-import {
-	type DustStar,
-	makeDust,
-	mulberry32,
-	STAR_COLORS,
-	selectThreads,
-	wakeLevel,
-} from './field.ts';
+import { mulberry32, STAR_COLORS, wakeLevel } from './field.ts';
 import { approach, createInput } from './input.ts';
 import { type Branch, growMycelium } from './mycelium.ts';
 import { createGovernor, QUALITY_LEVELS } from './quality.ts';
+import { constellationWake, type PlacedSky, placeSky, type SkyData, viewFor } from './realsky.ts';
 import {
 	drawBackground,
 	drawDot,
@@ -20,6 +14,7 @@ import {
 	drawHalo,
 	drawLine,
 	drawMycelium,
+	drawPolyline,
 } from './render.ts';
 
 /** Filled in when the Higgsfield renders land in public/stars/. Empty = code-drawn. */
@@ -49,9 +44,17 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	const ctx = canvas.getContext('2d');
 	const root = document.documentElement;
 	const isPhone = () => innerWidth < 768;
-	const baseDust = () => (isPhone() || (navigator.hardwareConcurrency ?? 8) <= 4 ? 70 : 160);
+	const lowEnd = () => isPhone() || (navigator.hardwareConcurrency ?? 8) <= 4;
+	/** Faintest magnitude drawn: naked-eye-ish on desktop, brighter-only on phones and when throttled. */
+	const magLimit = (dustScale: number) => (lowEnd() ? 4.3 : 5.0) - (dustScale < 1 ? 0.7 : 0);
 
-	const allDust: DustStar[] = makeDust(160, mulberry32(20261115));
+	let skyData: SkyData | null = null;
+	let placed: PlacedSky = { stars: [], constellations: [] };
+	let placedKey = '';
+	let placedAt = 0;
+	let starsIn = 0; // fade-in once the catalog arrives
+	const figureLevel = new Map<string, number>();
+	let labelFont = '500 10px monospace';
 	const input = createInput(window);
 	const governor = createGovernor();
 	const sprites: Record<string, HTMLImageElement> = {};
@@ -154,6 +157,16 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		}
 	}
 
+	/** Re-place the catalog when the screen, quality or minute changes (the sky turns 0.25°/min). */
+	function placeIfNeeded(magCap: number) {
+		if (!skyData) return;
+		const key = `${w}x${h}|${magCap}`;
+		if (key === placedKey && Date.now() - placedAt < 60_000) return;
+		placedKey = key;
+		placedAt = Date.now();
+		placed = placeSky(skyData, placedAt, viewFor(w, h), magCap);
+	}
+
 	function frame(now: number) {
 		raf = 0;
 		if (!ctx) return;
@@ -184,25 +197,50 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		drawBackground(ctx, w, h, soilT);
 		if (moving) drawHalo(ctx, lx, ly, reach, lightAlpha);
 
-		// Dust with parallax (deeper = slower) and wake-up.
-		const count = Math.round(baseDust() * q.dustScale);
-		const scroll = moving ? scrollY : 0;
-		const lit: { x: number; y: number; wake: number }[] = [];
-		for (let i = 0; i < count; i++) {
-			const s = allDust[i];
-			const px = s.x * w;
-			const py = (((s.y * h - scroll * 0.15 * s.depth) % h) + h) % h;
-			const wake = moving ? wakeLevel(Math.hypot(px - lx, py - ly), reach) * lightAlpha : 0;
-			const twinkle = moving ? 0.06 * Math.sin(tSec * 2 + s.phase) : 0;
-			const fade = 1 - soilT * 0.6;
-			drawDot(ctx, px, py, s.r + wake * 1.6, s.color, (0.22 + twinkle + wake * 0.75) * fade);
-			if (wake > 0.25) lit.push({ x: px, y: py, wake });
-		}
-		if (q.threads && moving) {
-			for (const th of selectThreads(lit, isPhone() ? 70 : 110)) {
-				const a = lit[th.a];
-				const b = lit[th.b];
-				drawLine(ctx, a.x, a.y, b.x, b.y, STAR_COLORS.site, th.alpha * 0.5, 0.8);
+		// The real sky over Denver, with a little parallax.
+		placeIfNeeded(magLimit(q.dustScale));
+		starsIn = skyData ? (moving ? approach(starsIn, 1, dt, 350) : 1) : 0;
+		const shift = (moving ? scrollY : 0) * 0.1;
+		const fade = (1 - soilT * 0.6) * starsIn;
+		const wakeAt = (d: number) => wakeLevel(d, reach) * lightAlpha;
+		if (fade > 0.01) {
+			for (const s of placed.stars) {
+				const py = s.y - shift;
+				if (py < -20 || py > h + 20) continue;
+				const wake = moving ? wakeAt(Math.hypot(s.x - lx, py - ly)) : 0;
+				const twinkle = moving ? 1 + 0.14 * Math.sin(tSec * 1.7 + s.phase) : 1;
+				drawDot(
+					ctx,
+					s.x,
+					py,
+					s.r * (1 + wake * 0.5),
+					s.color,
+					Math.min(1, s.alpha * twinkle + wake * 0.35) * fade,
+				);
+			}
+			// Constellation figures draw themselves in when the light reaches them.
+			if (q.threads) {
+				ctx.lineCap = 'round';
+				ctx.font = labelFont;
+				ctx.textAlign = 'center';
+				for (const c of placed.constellations) {
+					const target = moving ? constellationWake(c, lx, ly + shift, wakeAt) : 1;
+					const prev = figureLevel.get(c.name) ?? 0;
+					const level = moving ? approach(prev, target, dt, target > prev ? 260 : 700) : 1;
+					figureLevel.set(c.name, level);
+					if (level < 0.01) continue;
+					const alpha = (moving ? 0.55 * level : 0.16) * fade;
+					for (const poly of c.polys)
+						drawPolyline(ctx, poly, moving ? level : 1, -shift, STAR_COLORS.site, alpha);
+					if (moving && level > 0.3) {
+						ctx.fillStyle = `rgba(${STAR_COLORS.white},${((0.55 * (level - 0.3)) / 0.7) * fade})`;
+						// Keep the name on screen even when the figure runs off the edge.
+						const text = c.name.toUpperCase().split('').join('\u2009');
+						const half = ctx.measureText(text).width / 2 + 12;
+						const tx = Math.min(w - half, Math.max(half, c.label.x));
+						ctx.fillText(text, tx, c.label.y - shift + 22);
+					}
+				}
 			}
 		}
 
@@ -281,6 +319,22 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	});
 
 	resize();
+
+	// The catalog loads after first paint, so it never competes with the page.
+	const loadSky = () =>
+		fetch('/sky/sky.json')
+			.then((r) => (r.ok ? r.json() : null))
+			.then((d: SkyData | null) => {
+				if (!d) return;
+				skyData = d;
+				labelFont = `500 10px ${getComputedStyle(document.body).fontFamily}`;
+				placedKey = '';
+				kick();
+				dispatchEvent(new Event('cellestial:sky-placed'));
+			})
+			.catch(() => {});
+	if (document.readyState === 'complete') loadSky();
+	else addEventListener('load', loadSky, { once: true });
 
 	const api: SkyApi = {
 		setClaim(s) {

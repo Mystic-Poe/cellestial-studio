@@ -22,6 +22,7 @@ const h = home.hero;
     <SkySlot id="slot-1" left="70%" top="24%" />
     <SkySlot id="slot-2" left="84%" top="58%" />
     <SkySlot id="slot-3" left="56%" top="78%" />
+    <p class="sky-caption" data-sky-caption hidden></p>
   </div>
 </section>
 
@@ -66,5 +67,15 @@ const h = home.hero;
     position: relative;
     min-height: 18rem;
     height: 100%;
+  }
+  .sky-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-label);
   }
 </style>

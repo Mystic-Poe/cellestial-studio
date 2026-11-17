@@ -9,7 +9,8 @@
       "!pnpm-lock.yaml",
       "!**/*.astro",
       "!claude-vault",
-      "!public/favicon.svg"
+      "!public/favicon.svg",
+      "!public/sky/sky.json"
     ]
   },
   "formatter": {
