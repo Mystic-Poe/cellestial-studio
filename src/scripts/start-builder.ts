@@ -45,7 +45,7 @@ export function wireBuilder(form: HTMLFormElement): void {
 			t: Number(get('tier')) as Tier,
 			m: get('mode') as Mode,
 		};
-		current = `${ORIGIN}/start#${encodeConfig(config)}`;
+		current = `${ORIGIN}/start/#${encodeConfig(config)}`;
 		link.href = current;
 		link.textContent = current;
 
