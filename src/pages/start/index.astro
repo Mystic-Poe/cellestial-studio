@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Getting started — Cellestial Studio" description="Your guided setup with Cellestial Studio.">
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	<meta slot="head" name="referrer" content="no-referrer" />
+	<main id="main" class="mx-auto flex min-h-dvh max-w-md flex-col gap-5 px-5 py-10" data-flow>
+		<p class="text-secondary">Loading your setup…</p>
+		<noscript><p class="text-secondary">This page needs JavaScript turned on.</p></noscript>
+	</main>
+	<script>
+		import { startFlow } from '../../scripts/start-flow.ts';
+		const root = document.querySelector<HTMLElement>('[data-flow]');
+		if (root) startFlow(root);
+	</script>
+</Base>
