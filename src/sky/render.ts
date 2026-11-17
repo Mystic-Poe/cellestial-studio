@@ -146,3 +146,62 @@ export function drawPolyline(
 	}
 	x.stroke();
 }
+
+/** Paint the Milky Way blobs onto an offscreen layer (done once a minute, not per frame). */
+export function paintMilkyWay(
+	x: Ctx,
+	blobs: { x: number; y: number; r: number; a: number }[],
+	faint: { x: number; y: number; r: number; a: number }[],
+	w: number,
+	h: number,
+): void {
+	x.clearRect(0, 0, w, h);
+	x.globalCompositeOperation = 'lighter';
+	for (const b of blobs) {
+		const g = x.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+		g.addColorStop(0, `rgba(196,212,238,${0.16 * b.a})`);
+		g.addColorStop(0.5, `rgba(176,196,232,${0.07 * b.a})`);
+		g.addColorStop(1, 'rgba(176,196,232,0)');
+		x.fillStyle = g;
+		x.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+	}
+	x.globalCompositeOperation = 'source-over';
+	for (const f of faint) drawDot(x, f.x, f.y, f.r, '214,226,240', 0.32 * f.a);
+}
+
+/**
+ * A bright catalog star: soft bloom in its own colour and, for the very
+ * brightest, a thin four-point sparkle echoing the studio star shape.
+ */
+export function drawBrightStar(
+	x: Ctx,
+	px: number,
+	py: number,
+	r: number,
+	color: string,
+	alpha: number,
+	sparkle: number,
+): void {
+	const R = r * 6;
+	const g = x.createRadialGradient(px, py, 0, px, py, R);
+	g.addColorStop(0, `rgba(${color},${0.42 * alpha})`);
+	g.addColorStop(0.25, `rgba(${color},${0.12 * alpha})`);
+	g.addColorStop(1, `rgba(${color},0)`);
+	x.fillStyle = g;
+	x.fillRect(px - R, py - R, R * 2, R * 2);
+	if (sparkle > 0) {
+		const L = r * 7 * sparkle;
+		const t = Math.max(0.6, r * 0.32);
+		x.fillStyle = `rgba(${color},${0.75 * alpha})`;
+		x.beginPath();
+		// Four tapered rays, the same pinched curve as star-basic.svg.
+		x.moveTo(px, py - L);
+		x.quadraticCurveTo(px + t, py - t, px + L, py);
+		x.quadraticCurveTo(px + t, py + t, px, py + L);
+		x.quadraticCurveTo(px - t, py + t, px - L, py);
+		x.quadraticCurveTo(px - t, py - t, px, py - L);
+		x.fill();
+	}
+	drawDot(x, px, py, r, '255,255,255', Math.min(1, alpha * 1.1));
+	drawDot(x, px, py, r * 1.4, color, 0.35 * alpha);
+}

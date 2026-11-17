@@ -99,7 +99,7 @@ export function bvToRgb(bv: number): string {
 
 /** Dot radius in CSS px from apparent magnitude: brighter = bigger. */
 export function magToRadius(mag: number): number {
-	return Math.max(0.45, 0.5 + (4.8 - mag) * 0.42);
+	return Math.max(0.5, 0.55 + (4.8 - mag) * 0.48);
 }
 
 /** Base opacity from magnitude, dimmed near the horizon (atmospheric extinction). */
@@ -107,4 +107,42 @@ export function magToAlpha(mag: number, altDeg: number): number {
 	const base = Math.max(0.25, Math.min(1, 0.35 + (4.8 - mag) * 0.16));
 	const ext = altDeg >= 12 ? 1 : Math.max(0, altDeg / 12);
 	return base * (0.35 + 0.65 * ext);
+}
+
+// J2000 galactic frame: north galactic pole and the galactic longitude of the celestial pole.
+const NGP_RA = 192.85948;
+const NGP_DEC = 27.12825;
+const L_NCP = 122.93192;
+
+/** Galactic (l, b) to equatorial (RA, Dec), all degrees. Used to place the Milky Way. */
+export function galacticToEquatorial(lDeg: number, bDeg: number): { ra: number; dec: number } {
+	const b = bDeg * RAD;
+	const dl = (L_NCP - lDeg) * RAD;
+	const dp = NGP_DEC * RAD;
+	const sinDec = Math.sin(dp) * Math.sin(b) + Math.cos(dp) * Math.cos(b) * Math.cos(dl);
+	const dec = Math.asin(Math.max(-1, Math.min(1, sinDec)));
+	const ra =
+		NGP_RA +
+		Math.atan2(
+			Math.cos(b) * Math.sin(dl),
+			Math.cos(dp) * Math.sin(b) - Math.sin(dp) * Math.cos(b) * Math.cos(dl),
+		) /
+			RAD;
+	return { ra: ((ra % 360) + 360) % 360, dec: dec / RAD };
+}
+
+/**
+ * Milky Way surface brightness, 0–1, at galactic (l, b): brightest toward the
+ * centre in Sagittarius, a second swell through Cygnus, faint at the anticentre,
+ * with the Great Rift's dark lane from Cygnus down to Sagittarius.
+ */
+export function milkyWayBrightness(lDeg: number, bDeg: number): number {
+	const l = (((lDeg % 360) + 540) % 360) - 180; // −180…180, 0 = galactic centre
+	const core = Math.exp(-((l / 38) ** 2));
+	const cygnus = 0.45 * Math.exp(-(((l - 75) / 30) ** 2));
+	const along = 0.4 + 0.6 * Math.min(1, core + cygnus);
+	const width = 6 + 9 * core + 8 * (cygnus / 0.45);
+	const across = Math.exp(-((bDeg / width) ** 2));
+	const rift = l > -10 && l < 85 ? 1 - 0.7 * Math.exp(-(((bDeg - 1.5) / 2.2) ** 2)) : 1;
+	return along * across * rift;
 }

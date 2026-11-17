@@ -57,6 +57,16 @@ const lines = JSON.parse(readFileSync(join(dir, 'constellations.lines.json'), 'u
 	}),
 );
 
+// Serpens is one IAU constellation drawn in two halves; d3-celestial names both halves alike.
+const merged = new Map();
+for (const c of lines) {
+	const n = c.n.startsWith('Serpens') ? 'Serpens' : c.n;
+	if (merged.has(n)) merged.get(n).p.push(...c.p);
+	else merged.set(n, { n, p: [...c.p] });
+}
+lines.length = 0;
+lines.push(...merged.values());
+
 mkdirSync('public/sky', { recursive: true });
 const out = JSON.stringify({
 	credit:

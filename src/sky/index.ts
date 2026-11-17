@@ -6,21 +6,35 @@ import { mulberry32, STAR_COLORS, wakeLevel } from './field.ts';
 import { approach, createInput } from './input.ts';
 import { type Branch, growMycelium } from './mycelium.ts';
 import { createGovernor, QUALITY_LEVELS } from './quality.ts';
-import { constellationWake, type PlacedSky, placeSky, type SkyData, viewFor } from './realsky.ts';
+import {
+	constellationWake,
+	makeFaintField,
+	type PlacedSky,
+	placeFaintField,
+	placeMilkyWay,
+	placeSky,
+	type SkyData,
+	viewFor,
+} from './realsky.ts';
 import {
 	drawBackground,
+	drawBrightStar,
 	drawDot,
 	drawGlowStar,
 	drawHalo,
 	drawLine,
 	drawMycelium,
 	drawPolyline,
+	paintMilkyWay,
 } from './render.ts';
 
-/** Filled in when the Higgsfield renders land in public/stars/. Empty = code-drawn. */
+/** Star art in public/stars/. A kind with no entry is drawn in code. */
 export const STAR_SPRITES: Partial<
 	Record<'site' | 'systems' | 'app' | 'companion' | 'slot', string>
-> = {};
+> = {
+	site: '/stars/star-00.svg',
+	slot: '/stars/star-basic.svg',
+};
 
 export interface SkyApi {
 	setClaim(s: ClaimState): void;
@@ -55,6 +69,10 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 	let starsIn = 0; // fade-in once the catalog arrives
 	const figureLevel = new Map<string, number>();
 	let labelFont = '500 10px monospace';
+	// The Milky Way lives on its own layer, repainted only when the stars are re-placed.
+	const milky = document.createElement('canvas');
+	const milkyCtx = milky.getContext('2d');
+	let faintField: ReturnType<typeof makeFaintField> | null = null;
 	const input = createInput(window);
 	const governor = createGovernor();
 	const sprites: Record<string, HTMLImageElement> = {};
@@ -164,7 +182,20 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		if (key === placedKey && Date.now() - placedAt < 60_000) return;
 		placedKey = key;
 		placedAt = Date.now();
-		placed = placeSky(skyData, placedAt, viewFor(w, h), magCap);
+		const view = viewFor(w, h);
+		placed = placeSky(skyData, placedAt, view, magCap);
+		if (milkyCtx) {
+			milky.width = w;
+			milky.height = Math.ceil(h * 1.6);
+			faintField ??= makeFaintField(lowEnd() ? 2200 : 4000);
+			paintMilkyWay(
+				milkyCtx,
+				placeMilkyWay(placedAt, view, lowEnd() ? 4 : 3),
+				placeFaintField(faintField, placedAt, view),
+				milky.width,
+				milky.height,
+			);
+		}
 	}
 
 	function frame(now: number) {
@@ -204,25 +235,31 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 		const fade = (1 - soilT * 0.6) * starsIn;
 		const wakeAt = (d: number) => wakeLevel(d, reach) * lightAlpha;
 		if (fade > 0.01) {
+			ctx.globalAlpha = fade;
+			ctx.drawImage(milky, 0, -shift);
+			ctx.globalAlpha = 1;
 			for (const s of placed.stars) {
 				const py = s.y - shift;
-				if (py < -20 || py > h + 20) continue;
+				if (py < -40 || py > h + 40) continue;
 				const wake = moving ? wakeAt(Math.hypot(s.x - lx, py - ly)) : 0;
-				const twinkle = moving ? 1 + 0.14 * Math.sin(tSec * 1.7 + s.phase) : 1;
-				drawDot(
-					ctx,
-					s.x,
-					py,
-					s.r * (1 + wake * 0.5),
-					s.color,
-					Math.min(1, s.alpha * twinkle + wake * 0.35) * fade,
-				);
+				// Bright stars scintillate harder, the way they do low over the Front Range.
+				const amp = s.mag < 2 ? 0.26 : 0.14;
+				const twinkle = moving ? 1 + amp * Math.sin(tSec * (1.4 + (s.phase % 1)) + s.phase) : 1;
+				const r = s.r * (1 + wake * 0.5);
+				const alpha = Math.min(1, s.alpha * twinkle + wake * 0.35) * fade;
+				if (s.mag < 2.2) {
+					const sparkle = s.mag < 1.2 ? (moving ? 0.8 + 0.2 * twinkle : 1) : 0;
+					drawBrightStar(ctx, s.x, py, r, s.color, alpha, sparkle);
+				} else {
+					drawDot(ctx, s.x, py, r, s.color, alpha);
+				}
 			}
 			// Constellation figures draw themselves in when the light reaches them.
 			if (q.threads) {
 				ctx.lineCap = 'round';
 				ctx.font = labelFont;
 				ctx.textAlign = 'center';
+				const labelBoxes: { x: number; y: number; half: number }[] = [];
 				for (const c of placed.constellations) {
 					const target = moving ? constellationWake(c, lx, ly + shift, wakeAt) : 1;
 					const prev = figureLevel.get(c.name) ?? 0;
@@ -238,7 +275,14 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 						const text = c.name.toUpperCase().split('').join('\u2009');
 						const half = ctx.measureText(text).width / 2 + 12;
 						const tx = Math.min(w - half, Math.max(half, c.label.x));
-						ctx.fillText(text, tx, c.label.y - shift + 22);
+						const ty = c.label.y - shift + 22;
+						// Skip a name that would sit on top of one already drawn this frame.
+						if (
+							labelBoxes.some((b) => Math.abs(b.x - tx) < b.half + half && Math.abs(b.y - ty) < 14)
+						)
+							continue;
+						labelBoxes.push({ x: tx, y: ty, half });
+						ctx.fillText(text, tx, ty);
 					}
 				}
 			}
@@ -280,14 +324,14 @@ export function bootSky(canvas: HTMLCanvasElement): SkyApi {
 					a.y,
 					(2.6 + p * 2.4) * pulse,
 					color,
-					0.45 + near * 0.3 + p * 0.5,
+					Math.min(1, 0.3 + near * 0.35 + p * 0.7),
 					p * (1 - p) * 4,
 					sprites.slot,
 				);
 			} else {
 				const breathe = moving && a.kind === 'site' ? 1 + 0.12 * Math.sin(tSec * 0.9) : 1;
 				const color = STAR_COLORS[a.kind as 'site' | 'systems' | 'app'] ?? STAR_COLORS.site;
-				drawGlowStar(ctx, a.x, a.y, 4 * breathe, color, 0.9, near * 0.4, sprites[a.kind]);
+				drawGlowStar(ctx, a.x, a.y, 5.2 * breathe, color, 0.95, near * 0.4, sprites[a.kind]);
 			}
 		}
 

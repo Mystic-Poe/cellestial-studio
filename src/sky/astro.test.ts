@@ -3,10 +3,12 @@ import { test } from 'node:test';
 import {
 	bvToRgb,
 	DENVER,
+	galacticToEquatorial,
 	julianDate,
 	localSiderealDeg,
 	magToAlpha,
 	magToRadius,
+	milkyWayBrightness,
 	project,
 	toHorizontal,
 } from './astro.ts';
@@ -109,4 +111,23 @@ test('magToRadius / magToAlpha: brighter stars are bigger and brighter; low star
 	assert.ok(magToRadius(6) >= 0.45);
 	assert.ok(magToAlpha(0, 45) > magToAlpha(4.5, 45));
 	assert.ok(magToAlpha(1, 3) < magToAlpha(1, 45));
+});
+
+test('galacticToEquatorial: the galactic centre is in Sagittarius', () => {
+	const c = galacticToEquatorial(0, 0);
+	near(c.ra, 266.4, 0.2);
+	near(c.dec, -28.94, 0.2);
+});
+
+test('galacticToEquatorial: b = 90 is the north galactic pole in Coma Berenices', () => {
+	const p = galacticToEquatorial(0, 90);
+	near(p.ra, 192.86, 0.2);
+	near(p.dec, 27.13, 0.2);
+});
+
+test('milkyWayBrightness: brightest at the centre, faint at the anticentre and off the plane', () => {
+	assert.ok(milkyWayBrightness(0, -4) > milkyWayBrightness(180, 0));
+	assert.ok(milkyWayBrightness(0, -4) > milkyWayBrightness(0, 30));
+	assert.ok(milkyWayBrightness(75, 6) > milkyWayBrightness(140, 0), 'Cygnus swell');
+	assert.ok(milkyWayBrightness(60, 1.5) < milkyWayBrightness(60, -5), 'Great Rift dark lane');
 });

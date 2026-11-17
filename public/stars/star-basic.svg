@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="sb-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#5ef2d6" stop-opacity=".45"/>
+      <stop offset=".4" stop-color="#5ef2d6" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#5ef2d6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="32" fill="url(#sb-glow)"/>
+  <path d="M32 10 C33.92 26.50 37.50 30.07 54.00 32.00 C37.50 33.92 33.92 37.50 32.00 54.00 C30.07 37.50 26.50 33.92 10.00 32.00 C26.50 30.07 30.07 26.50 32.00 10.00Z" fill="#5ef2d6"/>
+  <circle cx="32" cy="32" r="2.6" fill="#f6fdfc"/>
+</svg>
