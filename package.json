@@ -12,7 +12,7 @@
     "astro": "astro",
     "lint": "biome check .",
     "format": "biome check --write .",
-    "test": "node --test 'src/sky/*.test.ts' 'src/onboard/*.test.ts' && node workers/contact/test/contact.test.mjs && node workers/auth/test/broker.test.mjs"
+    "test": "node --test 'src/sky/*.test.ts' 'src/onboard/*.test.ts' && node workers/contact/test/contact.test.mjs && node workers/auth/test/broker.test.mjs && node workers/onboard/test/onboard.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.5",
