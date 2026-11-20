@@ -1,19 +1,99 @@
 ---
-// PLACEHOLDER for the loading screen (A1 → A5). The loader scene replaces this
-// file and src/experience/loader/index.ts.
+// The loading screen (A1 → A5): a black cover over the whole page, the unlit
+// C on it from the first paint, and the canvas the scene is drawn on
+// (src/experience/loader/index.ts).
 //
-// A black cover over the whole page and nothing on it. The stub loader is
-// over the moment it mounts, and the shell (index.astro) takes #loader off
-// the page whenever the scene is not `loading`.
+// The <img> is the same picture the canvas opens on, put by CSS exactly where
+// the canvas draws it (framing A: the numbers below are FRAME in
+// src/experience/loader/layout.ts and the C's box in src/experience/assets.ts;
+// change one, change both). So the emblem is on screen before any script has
+// run, and the canvas takes over without a jump. A return visit in the same
+// session opens on the short version, where the C is somewhere else: the
+// inline script takes the picture away before it is painted.
+//
+// The scene has no words and nothing to focus: all of it is aria-hidden.
+//
+// If the page's script never mounts the loader, the stylesheet retires the
+// cover by itself (the scene adds .is-live the moment it mounts, which calls
+// that off). The shell has its own guard for a script that never ran at all.
+import { ASSETS } from '../../experience/assets.ts';
+
+const c = ASSETS.loader.cUnlit;
+/** Framing A, as in layout.ts. */
+const FRAME = { cHeight: 0.806, cWidthMax: 0.62, middle: 0.47 };
+const pct = (v: number) => `${(v * 100).toFixed(3)}`;
+const vars = [
+	// The picture's side: the C is cHeight of the height, at most cWidthMax of the width.
+	`--loader-by-height: ${pct((FRAME.cHeight * c.h) / c.c.h)}cqh`,
+	`--loader-by-width: ${pct((FRAME.cWidthMax * c.w) / c.c.w)}cqw`,
+	// Where the C's middle is inside the picture.
+	`--loader-cx: ${((c.c.x + c.c.w / 2) / c.w).toFixed(6)}`,
+	`--loader-cy: ${((c.c.y + c.c.h / 2) / c.h).toFixed(6)}`,
+	`--loader-middle: ${pct(FRAME.middle)}cqh`,
+].join('; ');
 ---
 
-<div id="loader" aria-hidden="true"></div>
+<div id="loader" aria-hidden="true" style={vars}>
+	<img
+		class="loader-poster"
+		src={c.url}
+		width={c.w}
+		height={c.h}
+		alt=""
+		fetchpriority="high"
+		decoding="async"
+	/>
+	<canvas class="loader-canvas"></canvas>
+</div>
+<script is:inline>
+	try {
+		if (sessionStorage.getItem('cellestial:loader') !== null)
+			document.getElementById('loader').classList.add('is-return');
+	} catch {}
+</script>
 
 <style is:global>
 	#loader {
 		position: fixed;
 		inset: 0;
 		z-index: 50;
+		overflow: hidden;
 		background: #000;
+		container-type: size;
+		/* A tap here is a skip, never a scroll, a zoom or a text selection. */
+		touch-action: none;
+		user-select: none;
+		-webkit-user-select: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+	/* Nobody mounted the scene: the cover lifts by itself. */
+	#loader:not(.is-live) {
+		animation: loader-retire 1ms linear 12s forwards;
+	}
+	@keyframes loader-retire {
+		to {
+			visibility: hidden;
+		}
+	}
+
+	.loader-poster {
+		--side: min(var(--loader-by-height), var(--loader-by-width));
+		position: absolute;
+		left: calc(50cqw - var(--side) * var(--loader-cx));
+		top: calc(var(--loader-middle) - var(--side) * var(--loader-cy));
+		width: var(--side);
+		height: var(--side);
+		max-width: none;
+	}
+	#loader:is(.is-drawn, .is-return) .loader-poster {
+		display: none;
+	}
+
+	.loader-canvas {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 </style>

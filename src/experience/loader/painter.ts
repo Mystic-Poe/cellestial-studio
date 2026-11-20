@@ -192,10 +192,18 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 
 	function into(c: CanvasRenderingContext2D, space: Space, unit: number): void {
 		if (space === 'screen') c.setTransform(unit, 0, 0, unit, 0, 0);
-		else if (space === 'word') c.setTransform(unit * cam.k, 0, 0, unit * cam.k, unit * cam.x, unit * cam.y);
+		else if (space === 'word')
+			c.setTransform(unit * cam.k, 0, 0, unit * cam.k, unit * cam.x, unit * cam.y);
 		else {
 			const s = cam.k * E.scale;
-			c.setTransform(unit * s, 0, 0, unit * s, unit * (cam.x + E.x * cam.k), unit * (cam.y + E.y * cam.k));
+			c.setTransform(
+				unit * s,
+				0,
+				0,
+				unit * s,
+				unit * (cam.x + E.x * cam.k),
+				unit * (cam.y + E.y * cam.k),
+			);
 		}
 	}
 	/** CSS pixels per unit of a space. */
@@ -395,14 +403,20 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		for (let i = 0; i < count; i++) {
 			const a = random() * TAU;
 			const reach = r * (0.3 + (0.35 + 0.95 * random() ** 2) * reachLevel);
-			const lines = bolt(LENS.x, LENS.y, LENS.x + Math.cos(a) * reach, LENS.y + Math.sin(a) * reach, {
-				seed: mix(22, frame, i),
-				sway: 0.27,
-				roughness: 0.62,
-				detail: 7,
-				branches: random() < 0.5 ? 1 : 0,
-				branchLength: 0.45,
-			});
+			const lines = bolt(
+				LENS.x,
+				LENS.y,
+				LENS.x + Math.cos(a) * reach,
+				LENS.y + Math.sin(a) * reach,
+				{
+					seed: mix(22, frame, i),
+					sway: 0.27,
+					roughness: 0.62,
+					detail: 7,
+					branches: random() < 0.5 ? 1 : 0,
+					branchLength: 0.45,
+				},
+			);
 			strokeBolt(main, lines, {
 				width: atLeast(2.3, 'sprite'),
 				alpha: 0.7 + 0.3 * random(),
@@ -467,7 +481,12 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				alpha: Math.min(1, light * 1.5),
 				forks: 0.45,
 			});
-			glow('screen', [nr * 0.34, nr * 1.1, nr * 3.4], [0.9 * light, 0.7 * light, 0.5 * light], lines);
+			glow(
+				'screen',
+				[nr * 0.34, nr * 1.1, nr * 3.4],
+				[0.9 * light, 0.7 * light, 0.5 * light],
+				lines,
+			);
 
 			// The blue wash: a column of light along the bolt, across the frame.
 			const flood =
@@ -733,7 +752,12 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				letter.lines.forEach((line, n) => {
 					const part = stretch(line, stroke.w - 0.34, stroke.w + 0.07);
 					if (part.length < 4) return;
-					const jag = crackle(part, { seed: mix(42, j, n, frame), reach: 8.5, detail: 6, pin: 'start' });
+					const jag = crackle(part, {
+						seed: mix(42, j, n, frame),
+						reach: 8.5,
+						detail: 6,
+						pin: 'start',
+					});
 					strokeBolt(main, [jag], { width: thin(2.6), alpha: 0.9 });
 					arcs.push(jag);
 				});
@@ -763,12 +787,18 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				for (let n = 0; n < 2; n++) {
 					const angle = random() * TAU;
 					const reach = 22 + 40 * random();
-					const lines = bolt(end.x, end.y, end.x + Math.cos(angle) * reach, end.y + Math.sin(angle) * reach, {
-						seed: mix(48, j, n, frame),
-						sway: 0.32,
-						roughness: 0.62,
-						detail: 6,
-					});
+					const lines = bolt(
+						end.x,
+						end.y,
+						end.x + Math.cos(angle) * reach,
+						end.y + Math.sin(angle) * reach,
+						{
+							seed: mix(48, j, n, frame),
+							sway: 0.32,
+							roughness: 0.62,
+							detail: 6,
+						},
+					);
 					strokeBolt(main, lines, { width: thin(2), alpha: 0.85 * fade });
 					arcs.push(...lines);
 				}
@@ -988,7 +1018,9 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			}
 			c.fillStyle = across;
 			c.fillRect(0, 0, 256, 64);
-			const at = clamp01((next.cy + (LENS_W.y - (E.y + E.scale * (SPRITE.c.y + SPRITE.c.h / 2))) * next.kA) / next.h);
+			const at = clamp01(
+				(next.cy + (LENS_W.y - (E.y + E.scale * (SPRITE.c.y + SPRITE.c.h / 2))) * next.kA) / next.h,
+			);
 			const down = c.createLinearGradient(0, 0, 0, 64);
 			down.addColorStop(0, 'rgb(0 0 0 / 0.9)');
 			down.addColorStop(Math.max(0.01, at - 0.2), 'rgb(0 0 0)');

@@ -14,22 +14,28 @@
 
 ## Exact next step
 
-**Loading scene, step 1: make the parked loader run.**
+**Loading scene, step 2 of 4: make it match the reference video at 1440×900.**
 
-1. Move `wip/loader/src/experience/loader/*` over `src/experience/loader/`, and
-   `wip/loader/scripts/assets/loader.mjs` and
-   `wip/loader/public/cellestial/loader/wordmark-matte.webp` to the same paths without `wip/loader/`.
-2. Write what is missing: `src/experience/loader/index.ts` (export `mount`, typed `MountLoader`
-   in `src/experience/contracts.ts`: the clock, skip on tap/click/key, full or short version,
-   `seek`, the hand-off to the sky through `ctx.when('sky')`), and the real
-   `src/components/scenes/Loader.astro` (the `#loader` overlay with the unlit C server-rendered).
-   The scene brief is `refs/briefs/cellestial-loader-wf_1b90f24d-47e.js` (the `WHAT` text).
-3. Run it: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`,
-   open `/?scene=loading&t=3.0` (frozen at second 3) and `/` (plays through).
-4. Screenshot at both sizes with `node scripts/shot.mjs` (flags are in its header) at the times
-   listed under "Loading" below, and set each beside `refs/loading-video/f12/f_NNN.jpg`
-   (frame N is second (N−1)/12 of the reference video).
-5. Fix what differs, then checkpoint.
+The scene now runs (step 1, see the table). It does not yet look like the reference.
+
+1. Start the dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
+2. `node tools/loader/compare.mjs --only desk` writes `refs/loading/compare/desk-1.jpg` and
+   `desk-2.jpg`: the reference frame on the left, the build frozen at the same second on the
+   right. Look at both sheets.
+3. Fix what differs most, in `src/experience/loader/painter.ts` (how it is drawn) and
+   `timeline.ts` (when). Known from the first sheets, worst first:
+   - the neon is too fat, too white-blue and too saturated, in the C's circuits (1.33, 1.58)
+     and in the letters (3.83 onward); the reference is a thin white line with a soft halo;
+   - the overload bolt (3.0, 3.33) is too thick, and its blue wash is a narrow saturated
+     column where the reference has a broad soft wash over the right half of the frame;
+   - the haze behind the letters is a hard-edged blue blob; the reference's is wide and soft;
+   - the "s" is written later than in the reference (compare 4.75);
+   - the reference's circuits have begun to cool by 1.58; the build's are still at full heat;
+   - faint sparks still fall at 3.67 and 3.83; the reference has none by then;
+   - at 6.2 the reference's main node glows more strongly than the build's.
+4. Re-run the sheets, look again, repeat until a hard judge would accept them. Commit the sheets.
+5. Then step 3 (the phone, and the rules measured in real time with
+   `node tools/loader/measure.mjs`) and step 4 (the A5 star-drop: `compare.mjs --only a5`).
 
 ## Where things stand
 
@@ -40,7 +46,7 @@
 | UI kit: Quicksand, brass button (5 forms), panel, both dialogs; `/contact` and `/start` restyled | done | Screenshots looked at, both sizes: `refs/foundation/kit/`. Contrast measured (all AA). Protected files: only class and style lines changed. |
 | Experience core: scene director, claims store, claim flow, page shell with placeholder scenes | done | Build, 96 tests + worker checks, lint all pass. Walk-through at both sizes looked at: `refs/foundation/walk/` (sky → exit button → roots → build request → star; menu to all four destinations; reduced motion; no JavaScript). |
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
-| Loading (A1–A5) | **parked, unfinished** — `wip/loader/`, about 3,300 lines | Never run. The C-to-wordmark alignment it depends on passed (see harness below). |
+| Loading (A1–A5) | **runs; does not match the reference yet** — `src/experience/loader/` (the parked code, moved in and finished with `index.ts`: canvas, clock, skip, full or short version, freeze, hand-off) and `src/components/scenes/Loader.astro` | Run for the first time. Frozen at 14 times at 1440×900 with no console errors and set beside the reference: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (looked at: right composition, order and timing; the light itself is too heavy, see the next step). Real-time runs, 1440×900: full version 7.80 s from mount to done, short version on reload 3.54 s, tap at 1 s ends at 2.79 s; each ends on the sky with the overlay gone. Phone, the rules and A5 not checked yet. |
 | Sky (B, G1) | **parked, unverified** — `wip/sky/`, about 4,800 lines including the scene entry and a test page | Never looked at by anyone but its builder. No beads (B8), no panels (B10), no exit button wiring yet. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
 | Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
@@ -96,7 +102,8 @@ The site on this branch today is the plain placeholder version described in the 
   UI kit: `src/components/ui/`. Tile copy: `src/content/offers.ts`. Stars: `src/content/constellations.ts`.
 - Without JavaScript the page is the logo, the five tiles and two links to `/contact`
   (`html:not([data-scene])`; anything that needs script is marked `data-needs-js`).
-- Debug: `?scene=sky|roots|loading`, `?t=3.2` freezes the loader, `?rm=1` forces reduced
+- Debug: `?scene=sky|roots|loading`, `?t=3.2` freezes the loader (past 6.2 it runs on into
+  the hand-off: `t=6.975` is halfway through A5), `?rm=1` forces reduced
   motion, `?debug` puts the live stage on `window.__cellestial`.
 - Screenshots and smoke test: `node scripts/shot.mjs` (read its header).
 - Checks: `pnpm build`, `pnpm test`, `pnpm lint`.
@@ -131,7 +138,10 @@ The site on this branch today is the plain placeholder version described in the 
 - `refs/alignment/` — the harness report and overlays. `refs/fx-wip/` — the effects builder's captures.
 - `refs/briefs/` — the full written brief for each scene (inside workflow scripts; read the
   text between the backticks of `WHAT` and `VERIFY`). Roots and Chrome briefs are there too.
-- `tools/alignment/` — the harness. `wip/` — parked scene code (see the table).
+- `refs/loading/compare/` — the loading scene beside its reference (written by `tools/loader/compare.mjs`).
+- `tools/alignment/` — the harness. `tools/loader/` — `compare.mjs` (comparison sheets) and
+  `measure.mjs` (the loader's rules, timed in real time); each explains itself in its header.
+  `wip/` — parked scene code (see the table).
 
 ## Log
 
@@ -143,3 +153,5 @@ The site on this branch today is the plain placeholder version described in the 
   not started (the effects layer was written). Everything is now on `redesign-build` and
   pushed: reference frames and evidence moved from `/tmp` into `refs/`, the unfinished scene
   code parked in `wip/`, the alignment harness run once (pass) and kept in `tools/`.
+- 2026-11-20 — Loading, step 1: the parked loader moved into `src/`, its mount and markup
+  written, and run for the first time. It plays, skips, shortens on return and hands over.

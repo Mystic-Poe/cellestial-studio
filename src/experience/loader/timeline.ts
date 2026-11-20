@@ -6,7 +6,7 @@
 // frames at 24 fps; the camera's path was measured on them (the C's size and
 // its left edge in every frame from 3.42 s to 5.83 s).
 
-export const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+export const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 /** 0 below `a`, 1 above `b`, a smooth S between. */
 export function smoothstep(a: number, b: number, x: number): number {
