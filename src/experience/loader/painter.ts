@@ -34,6 +34,7 @@ import {
 	hazeSprite,
 	hotSprite,
 	makeCanvas,
+	mistSprite,
 	type Pieces,
 } from './sprites';
 import {
@@ -84,6 +85,8 @@ const LENS = SPRITE.core;
 /** The same light in wordmark pixels. */
 const LENS_W = { x: E.x + E.scale * LENS.x, y: E.y + E.scale * LENS.y };
 const TAU = Math.PI * 2;
+/** The light the letters throw into the air: navy, paler than the circuits' and the bolts' blue. */
+const LETTER_AIR = ['rgb(90 130 255)', 'rgb(70 120 245)', 'rgb(58 110 235)'] as const;
 /** How hot a letter stays once it has been written, against the moment of writing. */
 const SETTLED = 0.72;
 
@@ -182,6 +185,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	const hot = hotSprite();
 	const haze = hazeSprite();
 	const disc = discSprite();
+	const mist = mistSprite();
 	const pieces: Pieces = cutWordmark(images.wordmark, images.matte);
 
 	let layout: Layout;
@@ -380,6 +384,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		widths: readonly number[],
 		gains: readonly number[],
 		shape: Path2D | readonly (readonly number[])[],
+		colours?: readonly string[],
 	): void {
 		const scale = scaleOf(space);
 		for (let i = 0; i < levels.length; i++) {
@@ -388,7 +393,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const { ctx: c, texel, colour } = levels[i];
 			into(c, space, 1 / texel);
 			c.globalCompositeOperation = 'lighter';
-			c.strokeStyle = colour;
+			c.strokeStyle = colours?.[i] ?? colour;
 			c.lineCap = 'round';
 			c.lineJoin = 'round';
 			const path = shape instanceof Path2D ? shape : null;
@@ -802,50 +807,75 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			}
 			// White-hot as it is written, then it settles to a steady glow.
 			const h = heat * lerp(1, SETTLED, smoothstep(0.04, 0.55, t - script.letters[j][1]));
+			// The brass round the tube catches its light: a faint warm edge where
+			// the bevels turn towards it…
 			main.globalCompositeOperation = 'lighter';
-			// The air right against the glass.
-			main.strokeStyle = `rgb(66 100 255 / ${0.13 * h ** 1.3})`;
-			main.lineWidth = LETTER_WEIGHT + 26;
+			main.strokeStyle = `rgb(255 176 160 / ${0.2 * h})`;
+			main.lineWidth = LETTER_WEIGHT + 2;
 			main.stroke(tube);
-			main.strokeStyle = `rgb(130 150 255 / ${0.1 * h ** 1.2})`;
-			main.lineWidth = LETTER_WEIGHT + 9;
-			main.stroke(tube);
-			// The skin: the whole width of the letter, white with a breath of violet…
-			main.strokeStyle = `rgb(234 233 255 / ${0.8 * h})`;
-			main.lineWidth = LETTER_WEIGHT + 3;
-			main.stroke(tube);
-			// …and the letter's own brass laid back down the middle of it.
 			if (brass) {
+				// …and the face of the letter, its own brass, inside that edge,
 				main.globalCompositeOperation = 'source-over';
-				main.globalAlpha = lerp(0.97, 0.78, h);
 				main.strokeStyle = brass;
-				main.lineWidth = LETTER_WEIGHT - 6.5;
+				main.lineWidth = LETTER_WEIGHT - 5;
 				main.stroke(tube);
-				main.globalAlpha = 1;
+				// …in shadow against the tube,
+				main.strokeStyle = `rgb(4 8 40 / ${0.55 * h})`;
+				main.stroke(tube);
 				main.globalCompositeOperation = 'lighter';
 			}
-			// The filament, and the ring nodes.
-			main.strokeStyle = `rgb(244 247 255 / ${Math.min(1, h * 1.5)})`;
-			main.lineWidth = atLeast(lerp(1.8, 3.2, h), 'word', 0.9);
+			// and blue in its light.
+			main.strokeStyle = `rgb(60 90 255 / ${0.34 * h})`;
+			main.lineWidth = LETTER_WEIGHT - 5;
 			main.stroke(tube);
-			main.lineWidth = atLeast(lerp(2, 4, h), 'word', 0.8);
+			// The tube: one thin white line down the middle of the letter, with a
+			// close bloom. As it cools it thins and turns to the blue of the circuit
+			// line it leaves behind.
+			const white = h ** 0.6;
+			main.strokeStyle = `rgb(150 175 255 / ${0.55 * h})`;
+			main.lineWidth = atLeast(lerp(5, 16, h), 'word', 2.4);
+			main.stroke(tube);
+			main.strokeStyle = `rgb(${Math.round(lerp(120, 238, white))} ${Math.round(lerp(150, 242, white))} 255 / ${Math.min(1, h * 1.5)})`;
+			main.lineWidth = atLeast(lerp(2.2, 7.6, h ** 0.8), 'word', 1.3);
+			main.stroke(tube);
+			main.strokeStyle = `rgb(255 255 255 / ${h})`;
+			main.lineWidth = atLeast(lerp(1, 4, h), 'word', 0.7);
+			main.stroke(tube);
+			// The ring nodes at the ends of the strokes.
+			main.strokeStyle = `rgb(116 146 255 / ${0.4 * h})`;
+			main.lineWidth = atLeast(lerp(4, 9, h), 'word', 1.6);
+			main.stroke(rings);
+			main.strokeStyle = `rgb(244 247 255 / ${Math.min(1, h * 1.5)})`;
+			main.lineWidth = atLeast(lerp(2.4, 6, h), 'word', 0.9);
 			main.stroke(rings);
 			const shine = air * clamp01((h / heat - 0.2) / 0.8) ** 1.5;
-			glow('word', [46, 120, 320], [0.3 * shine, 0.3 * shine, 0.22 * shine], tube);
+			glow('word', [40, 120, 320], [0.1 * shine, 0.15 * shine, 0.26 * shine], tube, LETTER_AIR);
 			into(main, 'word', dpr);
 		}
 		main.globalCompositeOperation = 'source-over';
 		const lit = t >= script.star;
 		if (!any && !lit) return;
 		if (any) {
-			// Blue air: over the whole of what is lit, wide and soft, and deeper
-			// round the letter that has just been written.
+			// Blue air: a wide, soft navy haze over most of the frame, lying over
+			// what is lit and a little deeper round the letter just written. Its
+			// size goes by the screen, not by the word.
 			const left = WORD.letters[0].x;
-			const middle = WORD.letters[0].y + WORD.letters[0].h / 2;
-			spot(haze, 'word', (left + right) / 2, middle, (right - left) / 2 + 560, 0.5 * air, 520);
+			const middle = cam.y + (WORD.letters[0].y + WORD.letters[0].h / 2) * cam.k;
+			const wide = Math.min(layout.w, 1.6 * layout.h);
+			const tall = Math.min(layout.h, 0.9 * layout.w);
+			const span = ((right - left) / 2) * cam.k;
+			spot(
+				mist,
+				'screen',
+				cam.x + ((left + right) / 2) * cam.k + 0.1 * wide,
+				middle,
+				span + 0.55 * wide,
+				0.2 * air,
+				1.2 * tall,
+			);
 			const fresh = WORD.letters[newest];
 			const young = 1 - smoothstep(0.1, 0.7, t - script.letters[newest][1]);
-			spot(haze, 'word', fresh.x + fresh.w / 2, middle, 460, 0.8 * air * young);
+			spot(mist, 'word', fresh.x + fresh.w / 2, fresh.y + fresh.h / 2, 300, 0.36 * air * young);
 		}
 		if (lit) {
 			// The star lights with the word: its brass warmed white, a small glow.
@@ -853,11 +883,11 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const flash = 1 + 0.8 * (1 - smoothstep(script.star, script.star + 0.14, t));
 			into(main, 'word', dpr);
 			main.globalCompositeOperation = 'lighter';
-			main.globalAlpha = Math.min(1, 0.3 * heat * flash);
+			main.globalAlpha = Math.min(1, 0.17 * heat * flash);
 			main.drawImage(s.light, s.x, s.y);
 			main.globalAlpha = 1;
 			main.globalCompositeOperation = 'source-over';
-			spot(hot, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 1.5 * flash, 0.3 * heat * flash);
+			spot(hot, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 1.5 * flash, 0.15 * heat * flash);
 			spot(haze, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 3.4, 0.4 * air);
 		}
 	}
@@ -1347,6 +1377,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			hot,
 			haze,
 			disc,
+			mist,
 			...levels.map((l) => l.canvas),
 			pieces.emblem.canvas,
 			pieces.emblem.light,

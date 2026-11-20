@@ -54,6 +54,18 @@ export const discSprite = () =>
 		[1, 'rgb(40 80 255 / 0)'],
 	]);
 
+/** Navy haze: light hanging in the air a long way from what glows. It falls off slowly. */
+export const mistSprite = () =>
+	radial(160, [
+		[0, 'rgb(50 104 255 / 0.6)'],
+		[0.2, 'rgb(50 104 255 / 0.49)'],
+		[0.35, 'rgb(50 104 255 / 0.36)'],
+		[0.5, 'rgb(50 104 255 / 0.24)'],
+		[0.7, 'rgb(50 104 255 / 0.13)'],
+		[0.85, 'rgb(50 104 255 / 0.06)'],
+		[1, 'rgb(50 104 255 / 0)'],
+	]);
+
 /** Blue air: the soft light around something that glows. */
 export const hazeSprite = () =>
 	radial(128, [
