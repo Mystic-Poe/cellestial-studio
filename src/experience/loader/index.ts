@@ -31,7 +31,7 @@ import { FADE_OUT, FULL, HANDOFF, HOLD_MAX, type Script, SETTLE, SHORT } from '.
 /** Set once a run has finished or been skipped: the next visit this session is the short one. */
 const SEEN_KEY = 'cellestial:loader';
 /** The clock never jumps further than this in one frame, so a stall is not a skip. */
-const STEP_MAX = 0.05;
+const STEP_MAX = 0.08;
 /** The server-rendered C has been on screen already: at most this much of the script is credited. */
 const POSTER_CREDIT = 0.25;
 /** The pictures are given this long, in seconds on screen, before the loader lets go. */

@@ -47,7 +47,7 @@ const only = new Set(values.big ? [] : values.only.split(','));
 const custom = values.times?.split(',').map(Number);
 const TIMES = custom ?? [0, 0.67, 1.33, 1.58, 2.75, 3.0, 3.33, 3.67, 3.83, 4.25, 4.75, 5.25, 5.75, 6.2];
 const END = 6.2;
-const HANDOFF = 1.55;
+const HANDOFF = 1.5;
 const A5 = [0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0];
 
 const SIZES = {

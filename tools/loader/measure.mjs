@@ -14,6 +14,10 @@
 //   broken      one picture answers 404             must still end (one run per picture)
 //   resize      the window changes size twice mid-run: must keep the time (same length as full)
 //   no-storage  sessionStorage throws               must play the full version and end
+//   no-sky      the sky's script fails to load      must fade out by itself after the wordmark
+//   late-sky    the sky's script takes 30 s         must hold the wordmark at most 6 s, then go
+//
+// --throttle 4 slows the CPU four times (Chrome DevTools) for the frame times.
 //
 // Also prints the frame times of each run (average and 95th percentile, ms).
 // Exits non-zero if a rule is broken.
@@ -194,6 +198,27 @@ if (want('no-storage')) {
 	await page.goto(home);
 	const r = await result(page);
 	report('sessionStorage blocked', r, 'full version, ends', r.mode === 'full' && r.seconds >= 6 && ended(r) && !errors.length, errors);
+	await context.close();
+}
+
+if (want('no-sky')) {
+	const { context, page } = await open();
+	await page.route('**/experience/sky/index.ts*', (route) => route.abort());
+	await page.goto(home);
+	const r = await result(page);
+	report('sky fails to load', r, 'ends by itself', r.overlay === 'none' && r.seconds >= 6 && r.seconds < 8);
+	await context.close();
+}
+
+if (want('late-sky')) {
+	const { context, page } = await open();
+	await page.route('**/experience/sky/index.ts*', async (route) => {
+		await new Promise((done) => setTimeout(done, 30000));
+		await route.continue().catch(() => {});
+	});
+	await page.goto(home);
+	const r = await result(page);
+	report('sky 30 s late', r, 'holds at most 6 s, then goes', r.overlay === 'none' && r.seconds > 12 && r.seconds < 13.5);
 	await context.close();
 }
 

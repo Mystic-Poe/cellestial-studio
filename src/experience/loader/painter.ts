@@ -154,7 +154,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	// The halo. Three small canvases, each a quarter of the one before; what
 	// glows is stroked into them fat and blue, and they are scaled back up
 	// into each other and then over the frame. `texel` is CSS px per pixel.
-	const levels = [3, 12, 48].map((texel) => {
+	const TEXELS = [3, 12, 48];
+	const levels = TEXELS.map((texel) => {
 		const c = makeCanvas(1, 1);
 		return { canvas: c, ctx: context(c), texel, colour: '' };
 	});
@@ -386,7 +387,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		main.lineWidth = 18;
 		main.stroke(path);
 		main.strokeStyle = `rgb(96 126 255 / ${0.34 * heat})`;
-		main.lineWidth = atLeast(7, 'sprite', 2.2);
+		main.lineWidth = atLeast(7, 'sprite', 1.7);
 		main.stroke(path);
 		main.strokeStyle = `rgb(240 244 255 / ${heat ** 0.7})`;
 		main.lineWidth = atLeast(lerp(1.8, 3.8, heat), 'sprite', 1);
@@ -1070,6 +1071,12 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		dpr = next.dpr;
 		canvas.width = Math.max(1, Math.round(next.w * dpr));
 		canvas.height = Math.max(1, Math.round(next.h * dpr));
+		// The halo's grain follows the screen: on a phone the word is small, and
+		// a halo as coarse as the desktop's would swallow it.
+		const grain = Math.max(0.42, Math.min(1, Math.min(next.w, next.h) / 900));
+		levels.forEach((level, i) => {
+			level.texel = TEXELS[i] * grain;
+		});
 		let w = next.w / levels[0].texel;
 		let h = next.h / levels[0].texel;
 		for (const level of levels) {
@@ -1092,9 +1099,11 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			wash = makeCanvas(256, 64);
 			const c = context(wash);
 			const across = c.createLinearGradient(0, 0, 256, 0);
-			for (let i = 0; i <= 32; i++) {
-				const f = Math.abs(i / 16 - 1);
-				across.addColorStop(i / 32, `rgb(46 117 255 / ${(0.86 / (1 + 8 * f)) * (1 - f * f)})`);
+			for (let i = 0; i <= 64; i++) {
+				const f = Math.abs(i / 32 - 1);
+				// Flat across the bolt itself, so the column has no bright seam down its middle.
+				const d = Math.max(f, 0.035);
+				across.addColorStop(i / 64, `rgb(46 117 255 / ${(0.78 / (1 + 8 * d)) * (1 - f * f)})`);
 			}
 			c.fillStyle = across;
 			c.fillRect(0, 0, 256, 64);
@@ -1105,8 +1114,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			down.addColorStop(0, 'rgb(0 0 0 / 0.9)');
 			down.addColorStop(Math.max(0.01, at - 0.2), 'rgb(0 0 0)');
 			down.addColorStop(at, 'rgb(0 0 0)');
-			down.addColorStop(Math.min(0.99, at + 0.14), 'rgb(0 0 0 / 0.6)');
-			down.addColorStop(1, 'rgb(0 0 0 / 0.5)');
+			down.addColorStop(Math.min(0.99, at + 0.14), 'rgb(0 0 0 / 0.5)');
+			down.addColorStop(1, 'rgb(0 0 0 / 0.28)');
 			c.globalCompositeOperation = 'destination-in';
 			c.fillStyle = down;
 			c.fillRect(0, 0, 256, 64);

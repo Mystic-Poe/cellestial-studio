@@ -122,7 +122,7 @@ export const SHORT: Script = {
 };
 
 /** A5, the hand-off to the sky, in seconds. */
-export const HANDOFF = 1.55;
+export const HANDOFF = 1.5;
 /** The longest the finished wordmark waits for a sky that is not ready. */
 export const HOLD_MAX = 6;
 /** Then the overlay fades away by itself, over this long. */
