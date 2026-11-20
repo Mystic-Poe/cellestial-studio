@@ -12,6 +12,27 @@
 - Build order: one scene at a time — Loading, Sky, Roots, Close and chrome. Per scene: build,
   screenshot at 390×844 and 1440×900, compare against its reference assets, fix, checkpoint.
 
+## Open review notes on Loading (from the orchestrator, 20 Nov, after the step-2 sheets)
+
+**State: not done yet.** The orchestrator looked at `refs/loading/compare/desk-1.jpg` and
+`desk-2.jpg` and accepted A1–A2, the overload bolt and the cooled wordmark as they are. Two
+differences are still to fix at 1440×900; then re-run the desk sheets once and checkpoint.
+
+1. The letters while they are being written (3.83, 4.25, 4.75, 5.25 s) are bluer and fatter
+   than the reference. The reference's tube is a thin near-white core with a soft blue halo and
+   a faint pink-violet edge; the build reads as a saturated blue stroke with a wide glow. Thin
+   the core, whiten it, and pull the halo's saturation and reach down until the pairs match.
+2. At 3.67 s the reference shows one long jagged arc leaping from the main node up and to the
+   right (about as tall as the C's lower half) before it resolves into the "e"; the build shows
+   a small crackle beside the node. Make the first arc as tall and as open as the reference's.
+
+Nothing else needs changing at 1440×900.
+
+Why this sits apart from the steps below: two runs of the loading-scene builder were working
+in this checkout at the same time, and the orchestrator's message reached only one of them.
+The run doing steps 3 to 5 did not receive it. Whoever fixes the two items: delete this
+section and say so in the Loading row of the table.
+
 ## Exact next step
 
 **Sky scene (B, G1). The Loading scene is done as far as it can be without the real sky.**
