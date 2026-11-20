@@ -49,6 +49,8 @@ export interface Script {
 	readonly energy: readonly (readonly [number, number])[];
 	/** Small arcs play at the main node between these. */
 	readonly arcs: readonly [number, number];
+	/** The rings and tracks on the node's face lit white, as `[time, strength]` keys. */
+	readonly rings: readonly (readonly [number, number])[];
 	/** When each of the nine letters is written: e, l, l, e, s, t, i, a, l. */
 	readonly letters: readonly (readonly [number, number])[];
 	/** The star above the i lights. */
@@ -80,6 +82,12 @@ export const FULL: Script = {
 		[6.17, 0.32],
 	],
 	arcs: [2.0, 5.72],
+	rings: [
+		[2.875, 0],
+		[2.93, 1],
+		[5.6, 1],
+		[6.1, 0],
+	],
 	// Each letter is written in about a tenth of a second, then the lightning
 	// plays over it for as long again before it jumps on (read off the frames).
 	letters: [
@@ -113,6 +121,12 @@ export const SHORT: Script = {
 		[1.68, 0],
 	],
 	arcs: [0.06, 1.34],
+	rings: [
+		[0.06, 0],
+		[0.22, 1],
+		[1.3, 1],
+		[1.66, 0],
+	],
 	letters: Array.from({ length: 9 }, (_, i): [number, number] => [
 		0.3 + i * 0.105,
 		0.425 + i * 0.105,

@@ -221,6 +221,22 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	let washReach = 0;
 
 	const circuitPath = whole(CIRCUIT);
+	/** The circuit lines on the face of the main node (its rings and tracks), and its rim. */
+	const nodeFace = new Path2D();
+	for (const line of CIRCUIT) {
+		let open = false;
+		for (let i = 0; i < line.length; i += 3) {
+			if (Math.hypot(line[i] - NODE.x, line[i + 1] - NODE.y) > NODE.r) {
+				open = false;
+				continue;
+			}
+			if (open) nodeFace.lineTo(line[i], line[i + 1]);
+			else nodeFace.moveTo(line[i], line[i + 1]);
+			open = true;
+		}
+	}
+	const nodeRim = new Path2D();
+	nodeRim.arc(NODE.x, NODE.y, NODE.r - 7, 0, TAU);
 	/** The A4 picture as paint: a stroke in wordmark pixels lays down the picture's own pixels. */
 	const brass = main.createPattern(images.wordmark, 'no-repeat');
 	const letterPaths = LETTERS.map((l) => whole(l.lines));
@@ -546,7 +562,32 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const energy = level * (1 - calm / 2 + calm * random());
 		const r = NODE.r;
 		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), Math.min(0.75, 0.55 * energy));
-		spot(hot, 'sprite', LENS.x, LENS.y, r * (0.4 + 0.42 * Math.min(energy, 1.2)), energy);
+		// Once it has been struck the node's face is white-hot: the rings and
+		// tracks cut in it are lit white, its rim catches the light, and the
+		// light in the lens draws in so that they can be seen.
+		const face = keyed(script.rings, t);
+		const lens = lerp(0.4 + 0.42 * Math.min(energy, 1.2), 0.26 + 0.2 * Math.min(energy, 1.2), face);
+		spot(hot, 'sprite', LENS.x, LENS.y, r * lens, energy * lerp(1, 0.7, face));
+		if (face > 0) {
+			// A wash of the lens's light over the whole face, and its white heart.
+			spot(disc, 'sprite', NODE.x, NODE.y, r * 1.02, 0.17 * face * Math.min(1, energy));
+			spot(disc, 'sprite', LENS.x, LENS.y, r * 0.2, 0.6 * face * Math.min(1, energy));
+			into(main, 'sprite', dpr);
+			main.globalCompositeOperation = 'lighter';
+			main.lineCap = 'round';
+			main.lineJoin = 'round';
+			main.strokeStyle = `rgb(255 208 196 / ${0.15 * face})`;
+			main.lineWidth = atLeast(8, 'sprite', 1.4);
+			main.stroke(nodeRim);
+			main.strokeStyle = `rgb(120 150 255 / ${0.36 * face})`;
+			main.lineWidth = atLeast(10, 'sprite', 2.2);
+			main.stroke(nodeFace);
+			main.strokeStyle = `rgb(244 247 255 / ${face})`;
+			main.lineWidth = atLeast(4.2, 'sprite', 1);
+			main.stroke(nodeFace);
+			main.globalCompositeOperation = 'source-over';
+			glow('sprite', [20, 60, 0], [0.26 * face, 0.14 * face, 0], nodeFace);
+		}
 		if (energy > 1.15) {
 			// Overload: the node is lost in a white disc about its own size.
 			const over = Math.min(1, (energy - 1.15) / 1.1);
