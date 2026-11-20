@@ -562,6 +562,21 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const energy = level * (1 - calm / 2 + calm * random());
 		const r = NODE.r;
 		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), Math.min(0.75, 0.55 * energy));
+		// Overload: the node is lost in its own light. The white of it lies over
+		// the lens and the side the struts come in on, and draws in as it fades,
+		// so the rings on the far side of the face show through from the first.
+		const over = energy > 1.15 ? Math.min(1, (energy - 1.15) / 1.1) : 0;
+		if (over > 0) {
+			spot(
+				disc,
+				'sprite',
+				LENS.x - 0.3 * r * over,
+				LENS.y,
+				r * (0.5 + 0.6 * over),
+				Math.min(1, over * 1.4),
+			);
+			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.5 + over), 0.6 * over);
+		}
 		// Once it has been struck the node's face is white-hot: the rings and
 		// tracks cut in it are lit white, its rim catches the light, and the
 		// light in the lens draws in so that they can be seen.
@@ -570,7 +585,14 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		spot(hot, 'sprite', LENS.x, LENS.y, r * lens, energy * lerp(1, 0.7, face));
 		if (face > 0) {
 			// A wash of the lens's light over the whole face, and its white heart.
-			spot(disc, 'sprite', NODE.x, NODE.y, r * 1.02, 0.17 * face * Math.min(1, energy));
+			spot(
+				disc,
+				'sprite',
+				NODE.x,
+				NODE.y,
+				r * 1.02,
+				0.17 * face * Math.min(1, energy) * (1 - over),
+			);
 			spot(disc, 'sprite', LENS.x, LENS.y, r * 0.2, 0.6 * face * Math.min(1, energy));
 			into(main, 'sprite', dpr);
 			main.globalCompositeOperation = 'lighter';
@@ -587,12 +609,6 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			main.stroke(nodeFace);
 			main.globalCompositeOperation = 'source-over';
 			glow('sprite', [20, 60, 0], [0.26 * face, 0.14 * face, 0], nodeFace);
-		}
-		if (energy > 1.15) {
-			// Overload: the node is lost in a white disc about its own size.
-			const over = Math.min(1, (energy - 1.15) / 1.1);
-			spot(disc, 'sprite', LENS.x, LENS.y, r * (0.8 + 0.3 * over), Math.min(0.82, over * 1.2));
-			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.4 + 0.9 * over), 0.45 * over);
 		}
 		const [from, to] = script.arcs;
 		if (t < from || t > to) return;
@@ -707,7 +723,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		for (let i = 0; i < 420; i++) {
 			const spark = seeded(mix(31, i));
 			const born = first + 0.36 * spark() ** 1.8;
-			const life = 0.18 + 0.3 * spark() ** 2;
+			// None outlives the bolt's last filament by much: the reference has none by 3.5 s.
+			const life = Math.min(0.18 + 0.3 * spark() ** 2, k.gone - 0.08 - born);
 			let a = spark() * TAU;
 			// Most of them go down and out.
 			if (Math.sin(a) < -0.2 && spark() < 0.6) a = -a;
@@ -1373,19 +1390,32 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				const f = Math.abs(i / 32 - 1);
 				// Flat across the bolt itself, so the column has no bright seam down its middle.
 				const d = Math.max(f, 0.035);
-				across.addColorStop(i / 64, `rgb(46 117 255 / ${(0.78 / (1 + 8 * d)) * (1 - f * f)})`);
+				// Further out the light holds up and fills the half of the frame the
+				// bolt is in (measured on the reference at 3.0 s, as the falloff was).
+				const far = Math.abs(f - 0.4) < 0.4 ? 0.045 * (1 - ((f - 0.4) / 0.4) ** 2) : 0;
+				across.addColorStop(
+					i / 64,
+					`rgb(46 117 255 / ${(0.78 / (1 + 8 * d)) * (1 - f * f) + far})`,
+				);
 			}
 			c.fillStyle = across;
 			c.fillRect(0, 0, 256, 64);
 			const at = clamp01(
 				(next.cy + (LENS_W.y - (E.y + E.scale * (SPRITE.c.y + SPRITE.c.h / 2))) * next.kA) / next.h,
 			);
+			// Top to bottom it is nearly even, a little less below the node. On a
+			// tall screen there is a long way below the node, and there it fades.
 			const down = c.createLinearGradient(0, 0, 0, 64);
-			down.addColorStop(0, 'rgb(0 0 0 / 0.9)');
-			down.addColorStop(Math.max(0.01, at - 0.2), 'rgb(0 0 0)');
+			down.addColorStop(0, 'rgb(0 0 0)');
 			down.addColorStop(at, 'rgb(0 0 0)');
-			down.addColorStop(Math.min(0.99, at + 0.14), 'rgb(0 0 0 / 0.5)');
-			down.addColorStop(1, 'rgb(0 0 0 / 0.28)');
+			const below = Math.min(0.99, at + 0.14);
+			down.addColorStop(below, 'rgb(0 0 0 / 0.8)');
+			const far = at + (2.6 * w0) / next.h;
+			if (far < 0.97) {
+				down.addColorStop(Math.max(below, far), 'rgb(0 0 0 / 0.74)');
+				down.addColorStop(Math.min(1, at + (7.5 * w0) / next.h), 'rgb(0 0 0 / 0.3)');
+				down.addColorStop(1, 'rgb(0 0 0 / 0.3)');
+			} else down.addColorStop(1, 'rgb(0 0 0 / 0.72)');
 			c.globalCompositeOperation = 'destination-in';
 			c.fillStyle = down;
 			c.fillRect(0, 0, 256, 64);
