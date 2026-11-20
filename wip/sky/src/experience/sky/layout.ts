@@ -1,0 +1,353 @@
+// Where everything is: the twelve figures in world space, the station each
+// one is framed from, and the path the camera flies between them. Pure
+// geometry, no rendering.
+//
+// The flight is measured by `pos`, the distance flown along -z: the camera is
+// at z = -pos, and layer k is at pos = k * SPACING. Layers run on for ever in
+// both directions and show figure k mod 12.
+
+import { CONSTELLATIONS } from '../../content/constellations.ts';
+import type { SlotId } from '../contracts.ts';
+import { B3, FIGURES, FOCAL, MAG, SAFE, SPACING, STAR_PX } from './config.ts';
+
+export const mod = (n: number, m: number) => ((n % m) + m) % m;
+export const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
+export const smooth = (t: number) => {
+	const c = clamp(t);
+	return c * c * (3 - 2 * c);
+};
+export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+/** How much bigger than the base a star of this magnitude is drawn. */
+export function magScale(mag: number): number {
+	const t = clamp((mag - MAG.bright) / (MAG.faint - MAG.bright));
+	return lerp(MAG.brightScale, MAG.faintScale, t);
+}
+
+export interface PlanStar {
+	/** World x, y in the plane of its layer; the flight axis is the origin. */
+	readonly x: number;
+	readonly y: number;
+	/** Size as a multiple of the figure's base star radius. */
+	readonly scale: number;
+	/** Null for Cellestial's own star. */
+	readonly slot: SlotId | null;
+	/** A fixed pseudo-random number in 0..1, for phases and delays. */
+	readonly seed: number;
+}
+
+/** A figure, laid out about the flight axis. The same for every viewport. */
+export interface FigurePlan {
+	readonly index: number;
+	readonly name: string;
+	readonly stars: readonly PlanStar[];
+	readonly lines: readonly (readonly [number, number])[];
+	/** Index of the star that is B3, or -1. It sits on the axis. */
+	readonly epicentre: number;
+	/** Where the camera's path goes through the plane: clear of every star. */
+	readonly pass: { readonly x: number; readonly y: number };
+	/** How far the nearest star is from `pass`. */
+	readonly clearance: number;
+}
+
+/** A pseudo-random number in 0..1 from two integers. The same every time. */
+export function hash2(a: number, b: number): number {
+	let h = (Math.imul(a + 1, 0x9e3779b1) ^ Math.imul(b + 7, 0x85ebca6b)) >>> 0;
+	h ^= h >>> 15;
+	h = Math.imul(h, 0x2c1b3c6d) >>> 0;
+	h ^= h >>> 12;
+	h = Math.imul(h, 0x297a2d39) >>> 0;
+	h ^= h >>> 15;
+	return (h >>> 0) / 4294967296;
+}
+
+function distanceToSegment(
+	px: number,
+	py: number,
+	ax: number,
+	ay: number,
+	bx: number,
+	by: number,
+): number {
+	const dx = bx - ax;
+	const dy = by - ay;
+	const len2 = dx * dx + dy * dy;
+	const t = len2 > 0 ? clamp(((px - ax) * dx + (py - ay) * dy) / len2) : 0;
+	return Math.hypot(px - ax - dx * t, py - ay - dy * t);
+}
+
+/**
+ * The twelve figures about the flight axis. `cells` are the centres of the
+ * honeycomb's cells: the path goes through the middle of one, so that no
+ * lattice line ever meets the lens either.
+ */
+export function planFigures(cells: Float32Array): FigurePlan[] {
+	return CONSTELLATIONS.map((figure, index) => {
+		const epicentre = figure.epicentre ?? -1;
+		const origin = epicentre >= 0 ? figure.stars[epicentre] : undefined;
+		const ox = origin?.x ?? 0;
+		const oy = origin?.y ?? 0;
+		const stars: PlanStar[] = figure.stars.map((s, i) => ({
+			x: s.x - ox,
+			y: s.y - oy,
+			scale: magScale(s.mag),
+			slot: s.slot,
+			seed: hash2(index, i),
+		}));
+
+		let best = { x: 0, y: 0, score: -Infinity, clearance: 0 };
+		for (let c = 0; c < cells.length; c += 2) {
+			const cx = cells[c] as number;
+			const cy = cells[c + 1] as number;
+			const off = Math.hypot(cx, cy);
+			if (off > 1.3) continue;
+			let clearance = Infinity;
+			let blocked = false;
+			for (const [i, s] of stars.entries()) {
+				const d = Math.hypot(s.x - cx, s.y - cy);
+				if (i === epicentre && d < B3.clearance) blocked = true;
+				clearance = Math.min(clearance, d);
+			}
+			if (blocked) continue;
+			let wire = Infinity;
+			for (const [p, q] of figure.lines) {
+				const a = stars[p] as PlanStar;
+				const b = stars[q] as PlanStar;
+				wire = Math.min(wire, distanceToSegment(cx, cy, a.x, a.y, b.x, b.y));
+			}
+			// Clear of the stars first; then near the axis, so the swerve is small;
+			// then, a little, clear of the lines.
+			const score = Math.min(clearance, 0.5) - 0.3 * off + 0.15 * Math.min(wire, 0.2);
+			if (score > best.score) best = { x: cx, y: cy, score, clearance };
+		}
+
+		return {
+			index,
+			name: figure.name,
+			stars,
+			lines: figure.lines,
+			epicentre,
+			pass: { x: best.x, y: best.y },
+			clearance: best.clearance,
+		};
+	});
+}
+
+/** How one figure is framed in one viewport. */
+export interface FigureFit {
+	/** Pixels per world unit in the figure's plane, seen from its station. */
+	readonly scale: number;
+	/** How far in front of the plane the station is. */
+	readonly dist: number;
+	/** The camera's x, y at the station. */
+	readonly sx: number;
+	readonly sy: number;
+	/** The base radius of this figure's stars, world units. */
+	readonly starR: number;
+}
+
+export interface Camera {
+	x: number;
+	y: number;
+	z: number;
+}
+
+export interface Projected {
+	/** Viewport pixels. */
+	x: number;
+	y: number;
+	/** Pixels per world unit at that depth. Zero or less: behind the lens. */
+	scale: number;
+	/** Distance in front of the lens. */
+	depth: number;
+}
+
+export interface Layout {
+	readonly w: number;
+	readonly h: number;
+	/** Focal length, pixels. */
+	readonly focal: number;
+	readonly safe: { top: number; bottom: number; side: number };
+	/** The centre of the safe area, viewport pixels. */
+	readonly safeX: number;
+	readonly safeY: number;
+	/** Radius of a base star's disc at its station, pixels. */
+	readonly starPx: number;
+	readonly plans: readonly FigurePlan[];
+	readonly fits: readonly FigureFit[];
+	/** `pos` of layer k's station. */
+	station(k: number): number;
+	/** The station nearest a position. */
+	nearestStation(pos: number): number;
+	/** Position as a layer number: whole at a station, fractions between two. */
+	coordOf(pos: number): number;
+	posOf(coord: number): number;
+	/** The camera on the flight path at `pos`. */
+	cameraAt(pos: number, out?: Camera): Camera;
+	/** A world point on screen, for a camera anywhere. */
+	project(cam: Camera, x: number, y: number, z: number, out?: Projected): Projected;
+}
+
+const GLOW_PAD = 1.3;
+/** The furthest a station may stand from its plane. */
+const MAX_DIST = 0.8 * SPACING;
+
+export function createLayout(w: number, h: number, plans: readonly FigurePlan[]): Layout {
+	const width = Math.max(1, w);
+	const height = Math.max(1, h);
+	const focal = FOCAL * Math.max(width, height);
+	const side = width <= SAFE.narrow ? SAFE.sidePhone : SAFE.sideDesktop;
+	// On a very short viewport (a phone on its side) the chrome's room is cut down in proportion.
+	const safe = {
+		top: Math.min(SAFE.top, 0.16 * height),
+		bottom: Math.min(SAFE.bottom, 0.2 * height),
+		side,
+	};
+	const starPx = clamp(
+		STAR_PX.base + STAR_PX.slope * Math.min(width, height),
+		STAR_PX.min,
+		STAR_PX.max,
+	);
+
+	// Room about the middle of the viewport, to each side.
+	const right = Math.max(40, width / 2 - side);
+	const up = Math.max(40, height / 2 - safe.top);
+	const down = Math.max(40, height / 2 - safe.bottom);
+
+	const fits: FigureFit[] = plans.map((plan) => {
+		const pinned = plan.epicentre >= 0;
+		// The figure's padded extent in pixels at scale s, about the axis.
+		const extent = (s: number) => {
+			let minX = Infinity;
+			let maxX = -Infinity;
+			let minY = Infinity;
+			let maxY = -Infinity;
+			for (const star of plan.stars) {
+				const pad = starPx * star.scale * GLOW_PAD;
+				minX = Math.min(minX, star.x * s - pad);
+				maxX = Math.max(maxX, star.x * s + pad);
+				minY = Math.min(minY, star.y * s - pad);
+				maxY = Math.max(maxY, star.y * s + pad);
+			}
+			return { minX, maxX, minY, maxY };
+		};
+		const fitsAt = (s: number) => {
+			const e = extent(s);
+			// B3 stays in the very middle of the screen, so Virgo is fitted about it.
+			if (pinned) return e.maxX <= right && -e.minX <= right && e.maxY <= up && -e.minY <= down;
+			return e.maxX - e.minX <= 2 * right && e.maxY - e.minY <= up + down;
+		};
+		let lo = 1;
+		let hi = 4 * Math.max(width, height);
+		for (let i = 0; i < 40; i++) {
+			const mid = (lo + hi) / 2;
+			if (fitsAt(mid)) lo = mid;
+			else hi = mid;
+		}
+		// A station is never further from its plane than this: the layer before it stays behind the lens.
+		const scale = Math.max(lo, focal / MAX_DIST);
+		const e = extent(scale);
+		// Centre the padded figure in the safe area, whose middle is a little above the screen's.
+		const sx = pinned ? 0 : (e.minX + e.maxX) / 2 / scale;
+		const sy = pinned ? 0 : ((e.minY + e.maxY) / 2 - (up - down) / 2) / scale;
+		return { scale, dist: focal / scale, sx, sy, starR: starPx / scale };
+	});
+
+	const fitOf = (k: number) => fits[mod(k, FIGURES)] as FigureFit;
+	const planOf = (k: number) => plans[mod(k, FIGURES)] as FigurePlan;
+	const station = (k: number) => k * SPACING - fitOf(k).dist;
+
+	const nearestStation = (pos: number) => {
+		let k = Math.round(pos / SPACING);
+		while (Math.abs(station(k + 1) - pos) < Math.abs(station(k) - pos)) k++;
+		while (Math.abs(station(k - 1) - pos) < Math.abs(station(k) - pos)) k--;
+		return k;
+	};
+
+	const coordOf = (pos: number) => {
+		let k = Math.floor(pos / SPACING);
+		if (pos >= station(k + 1)) k++;
+		const a = station(k);
+		return k + (pos - a) / (station(k + 1) - a);
+	};
+
+	const posOf = (coord: number) => {
+		const k = Math.floor(coord);
+		return lerp(station(k), station(k + 1), coord - k);
+	};
+
+	const cameraAt = (pos: number, out: Camera = { x: 0, y: 0, z: 0 }) => {
+		const k = Math.floor(pos / SPACING);
+		const plane = k * SPACING;
+		const next = fitOf(k + 1);
+		const stop = station(k + 1);
+		let ax: number;
+		let ay: number;
+		let bx: number;
+		let by: number;
+		let t: number;
+		if (pos <= stop) {
+			// Out of the plane just crossed, towards the next station.
+			({ x: ax, y: ay } = planOf(k).pass);
+			bx = next.sx;
+			by = next.sy;
+			t = (pos - plane) / (stop - plane);
+		} else {
+			// From the station into its plane, easing round whatever stands in the way.
+			ax = next.sx;
+			ay = next.sy;
+			({ x: bx, y: by } = planOf(k + 1).pass);
+			t = (pos - stop) / next.dist;
+		}
+		const e = smooth(t);
+		out.x = lerp(ax, bx, e);
+		out.y = lerp(ay, by, e);
+		out.z = -pos;
+		return out;
+	};
+
+	const project = (
+		cam: Camera,
+		x: number,
+		y: number,
+		z: number,
+		out: Projected = { x: 0, y: 0, scale: 0, depth: 0 },
+	) => {
+		const depth = cam.z - z;
+		out.depth = depth;
+		if (depth <= 1e-6) {
+			out.scale = 0;
+			out.x = Number.NaN;
+			out.y = Number.NaN;
+			return out;
+		}
+		const s = focal / depth;
+		out.scale = s;
+		out.x = width / 2 + (x - cam.x) * s;
+		out.y = height / 2 - (y - cam.y) * s;
+		return out;
+	};
+
+	return {
+		w: width,
+		h: height,
+		focal,
+		safe,
+		safeX: width / 2,
+		safeY: height / 2 - (up - down) / 2,
+		starPx,
+		plans,
+		fits,
+		station,
+		nearestStation,
+		coordOf,
+		posOf,
+		cameraAt,
+		project,
+	};
+}
+
+/** The layer nearest in front of the lens: its plane is at least `gap` ahead. */
+export function layerAhead(camZ: number, gap: number): number {
+	return Math.ceil((-camZ + gap) / SPACING);
+}
