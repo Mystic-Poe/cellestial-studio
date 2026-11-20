@@ -169,7 +169,8 @@ export function createStarButtons(
 					entry.el.style.height = `${size}px`;
 					entry.el.style.margin = `${-size / 2}px 0 0 ${-size / 2}px`;
 				}
-				if (Math.abs(spot.x - entry.x) > 0.05 || Math.abs(spot.y - entry.y) > 0.05) {
+				// Written so that a button with no place yet (NaN) is given one.
+				if (!(Math.abs(spot.x - entry.x) <= 0.05 && Math.abs(spot.y - entry.y) <= 0.05)) {
 					entry.x = spot.x;
 					entry.y = spot.y;
 					entry.el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0)`;

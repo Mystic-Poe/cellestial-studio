@@ -14,23 +14,21 @@
 
 ## Exact next step
 
-**Sky scene (B, G1), part A: the world, the flight, the exit button, the hand-off. Steps 1
-and 2 of 5 are done (it runs on the real page; it has been judged against its references:
-see "Sky, part A" below the table). Next is step 3: make sure it flies right.**
+**Sky scene (B, G1), part A: the world, the flight, the exit button, the hand-off. Steps 1,
+2 and 3 of 5 are done (it runs on the real page; it has been judged against its references;
+the flight, the round, the guards, reduced motion, frame times, the governor and picking are
+measured: see "Sky, part A" below the table). Next is step 4: the hand-off from the loader.**
 
 The sky's code is in `src/experience/sky/` (entry `index.ts`, three.js in `gl/`), its markup
 in `src/components/scenes/Sky.astro`. Its brief: `refs/briefs/cellestial-sky-1-*.js` (the
 strings `WHAT` and `VERIFY_A`). Drive it on the real page: `/?scene=sky&debug`, then
 `window.__cellestial.sky` is the scene, `.sky.hooks` its internal hooks (`hooks.ts`) and
 `.sky.debug` has `setCoord(layer)`, `setClock(seconds)`, `setLevel(n)`, `stats()`.
-The comparison sheets are rebuilt by `node tools/sky/compare.mjs` (real GPU; read its header).
+Two tools, both needing the dev server: `node tools/sky/compare.mjs` rebuilds the comparison
+sheets in `refs/sky/compare/`; `node tools/sky/measure.mjs` drives the page with real wheel,
+key, touch and mouse events and writes what it measured to `refs/sky/measure.txt` (86 checks;
+it exits non-zero if one fails). Run both after any change to the sky.
 
-3. **It flies right.** Wheel, swipe, keys, both ways; speed builds and has a ceiling; a tap
-   stops it dead; it rests on a station; endless both ways; `roundComplete()` only after all
-   twelve, then the exit button appears and stays; no flight input under a dialog, in a form
-   field or outside the sky; reduced motion is still. Frame times on the real GPU and with
-   the CPU slowed 4× (the governor must step down by itself). Star buttons: offset from the
-   star, `claims.pick` / `claims.place` / `focusStar`. Numbers into this file. Checkpoint.
 4. **The hand-off.** `node tools/loader/compare.mjs --only a5`, look at
    `refs/loading/compare/a5-*.jpg`; fix on the sky's side. Check `fall()` and `restore()`.
 5. **Last.** Nothing under `src/pages/dev` or `wip/sky`; this section rewritten to point at
@@ -48,7 +46,7 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | Experience core: scene director, claims store, claim flow, page shell with placeholder scenes | done | Build, 96 tests + worker checks, lint all pass. Walk-through at both sizes looked at: `refs/foundation/walk/` (sky → exit button → roots → build request → star; menu to all four destinations; reduced motion; no JavaScript). |
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
 | Loading (A1–A5) | **done against the reference, polish pass included, except what is listed here; A5 seen only over the placeholder sky** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (run by `node scripts/build-assets.mjs modules`; it writes `geometry.ts` and the matte, and run again it reproduces both) | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (six rounds of fixes, then the polish pass of four items, each looked at close up: see the section below the table). Matches: the C's place and size; the order and tempo the circuits light in (a thin white wire with a blue glow); the cooling before the charge; the overload (a thin white-hot bolt from the top edge, the node lost in white with its rings showing through, a blue wash filling the bolt's half of the frame, spark dust); the camera pulling back; the first "e" thrown from the node by one tall arc and written in the reference's order; each letter written at the reference's moment as one thin white tube on its brass, with white ring nodes, in a wide navy haze; the node's rings lit white while the word is written; the cooling into the A4 picture itself. The two soft fields (the haze behind the letters, the overload's wash) were also measured, reference against build: `refs/loading/compare/light.txt`, written by `node tools/loader/light.mjs`. **Still different:** the lit circuits (1.33) are whiter, with less blue around them; the first arc (3.67) is less wild and the first piece of the "e" bolder; the overload's white has a more definite edge than the reference's bloom, and its sparks are coarser and fewer; close to the letter being written the haze is a little weaker (3.83) and the letters' edges cooler; once a letter is written the reference lets lightning play over it for longer, and it strikes the star (5.25) where the build only lights it; the node's lens keeps a darker blue ring round its white heart. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done) after the polish pass, desktop / phone:** full version 7.74 s / 7.73 s (must be 6.0–8.0); short version on a same-session reload 3.49 s / 3.47 s; tap at 1 s ends at 2.76 s / 2.76 s, the "a" key at 1 s 2.74 s / 2.75 s; Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.75 s / 7.73 s); resize twice mid-run keeps the time (7.74 s / 7.75 s). Desktop only: each of the four pictures answering 404 in turn, the loader ends at once (0.01 s) and the sky is shown; sessionStorage blocked plays the full version (7.71 s); the sky's script failing to load, the loader fades out by itself at 6.62 s and the page opens on the Roots; the sky 30 s late, the wordmark holds 6 s and the loader goes at 12.65 s. Frame times 16.8–17.1 ms average at both sizes; phone with the CPU slowed 4×: 26.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at again after the polish pass, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
-| Sky (B, G1) | **part A in progress: it runs on the real page and has been judged against its references; flight, performance, picking and the hand-off not yet measured** — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/compare.mjs`. Part B (beads B8, pulse B9, panels B10) not started. | See "Sky, part A" below the table: what was run, looked at and measured at each step, and what still differs. Sheets: `refs/sky/compare/`. |
+| Sky (B, G1) | **part A in progress: it runs on the real page, has been judged against its references, and its flight, round, guards, reduced motion, frame times, governor and picking are measured; the hand-off from the loader and the fall not yet looked at** — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/compare.mjs`, `tools/sky/measure.mjs`. Part B (beads B8, pulse B9, panels B10) not started. | See "Sky, part A" below the table: what was run, looked at and measured at each step, and what still differs. Sheets: `refs/sky/compare/`. Numbers: `refs/sky/measure.txt`. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
 | Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
 | Close (F1, F2) | placeholder (the two real buttons, wired to the existing flows) | Walk-through above. |
@@ -101,6 +99,66 @@ star too far away to show its sphere is a small steel-blue point (`LOOK.farGain`
 figure lines keep more of their light (`LOOK.lineThin`), so the constellations ahead can be
 seen waiting; B4's picture is lifted (`LOOK.body`) and its rim made thinner so it reads as a
 sphere and not as a ring; the halo round the core is a little wider.
+
+**Step 3, it flies right (20 Nov).** Driven for real by `node tools/sky/measure.mjs`; the
+full output is `refs/sky/measure.txt`, 86 checks, all passing. The numbers:
+- **Speed.** With the wheel turned without stopping, world units a second (a layer is 6):
+  1.5 at 0.3 s, 3.5 at 1 s, 6.5 at 2 s, 7.9 at 3 s, then 8.00 and no more (the ceiling). On
+  the phone, swipes of a fifth of a second with a third of a second between them: 1.9 after
+  the first, then 3.5, 5.4, 7.1, 7.9, 8.0, 8.0.
+- **Stopping.** When the input stops it glides and stands exactly on a station 2.5 to 3.3 s
+  later. A click or tap on empty sky stops it dead: speed 0 on the press, and 1.2 s later it
+  is still where it was, between two stations.
+- **Keys.** ArrowDown, PageDown and Space fly forward, ArrowUp and PageUp back, each to rest
+  on a station; Home returns to the nearest Virgo with Cellestial's star at the middle of
+  the screen.
+- **Endless.** Thirty-one layers forward in 23.5 s of holding the key, sixteen back in 12.2 s;
+  every station passed in order, the figures repeating every twelve; afterwards every star
+  is where it is in the first round to 4e-12 px.
+- **The round.** `roundComplete()` stays false over five layers out and back (7 figures) and
+  turns true on arriving at the twelfth figure; the exit button appears then (its words are
+  exactly "See what holds up the sky", centred, 32 px above the bottom edge), stays while
+  flying on, is there from the start after a reload in the same session, and leads to the Roots.
+- **Guards.** With a dialog open (`:modal`), with focus in a form field, with focus on the
+  menu button, and on the Roots, wheel and keys do not move the sky (on the Roots they scroll
+  the page). With none of those the same wheel flies.
+- **Reduced motion** (`/?rm=1`, both sizes): 0 `requestAnimationFrame` calls in 3 s at rest;
+  the exit button present with no round flown; no flight; a star is still picked by a click
+  or a tap.
+- **Frame times, real GPU** (4.6 layers forward, 1.6 back, about 730 frames): 1440×900
+  average 16.67 ms, 95th percentile 16.8 ms, worst 16.8 ms; 390×844 at pixel ratio 2 the
+  same (16.67 / 16.7 / 16.8). The governor stayed at level 0.
+- **The governor** (390×844, software rendering, CPU slowed 4×, 24 s of flying): 52 to 56 ms
+  a frame over the first two seconds, in which it steps down by itself from level 0 to 3 of
+  4 (pixel ratio 2 to 1, then fewer honeycomb planes); from then on 17.5 to 19 ms a frame,
+  worst 33 ms. In one of two runs it tried a level up at 12 s, found it too slow and stepped
+  back down (a 36 ms average for those two seconds), then waits twice as long before trying again.
+- **Picking.** Every star of the figure in front has a real `<button>` over it (checked at
+  four stations: 12 of 12, 14 of 14, 5 of 5, 22 of 22), named "Empty star in Virgo" or
+  "Claimed star in Virgo", never under 44 px. Its centre is within 0.11 px of the star's at
+  rest and within 0.07 px in flight (every frame for 3 s). An empty star calls
+  `claims.pick(slot)` and nothing is claimed; with an ask waiting it calls
+  `claims.place(slot)` and the star ignites; a lit star calls `focusStar(slot)`, which brings
+  it to a radius of 108 px (62 px on the phone) at the middle of the safe area, and Escape
+  lets it go.
+
+Faults found by driving it, and fixed: the star buttons were never put in place until the
+camera first moved, so at the opening pose and under reduced motion no star could be picked
+(a comparison with NaN); on a phone each new swipe stopped the flight before speeding it up,
+so speed could never build (a finger's press now waits 90 ms to see whether it is a swipe, a
+swipe counts as continued scrolling for half a second, and built-up speed is forgotten over
+3 s instead of 1.6); the wheel flew the sky while a form field had focus.
+
+**Hooks for part B** (in `src/experience/sky/hooks.ts`, reached with `hooksOf(scene)` from
+`index.ts`): events `open-empty` `{ slot, circle }` (an empty star was picked and no ask was
+waiting: open the preview panel B10 here), `open-lit` `{ slot, circle, ignited }` (the
+camera has come to rest on a lit star: open the lit-star panel here), `dismiss` `{ reason }`
+(close whatever is open: the visitor flew on, or the scene was paused, reset or began to
+fall), `tap-empty` `{ x, y, wasMoving }` (start the beads B8 here), `star-pick`, `station`,
+`round-complete`, `ignite`, `focus`, `frame`; and `starCircle(slot)`, `nearestEmptyStar(x, y)`,
+`setStarGlow(slot, level)` (the B9 pulse), `lattice.nearestVertex(x, y)`,
+`lattice.nearestVertexToStar(slot)`, `lattice.path(from, to)`, `lattice.pulseEdge(layer, edge)`,
+`lattice.vertexScreen(layer, vertex)`, `claims`, `ui`, `keepAwake()`, `requestFrame()`.
 
 **Still different from the assets (after step 2):** B4's brass traces cannot be seen at the
 size a star has at its station (16 px radius: the sphere is 32 px across and the traces are
@@ -275,3 +333,6 @@ than two tries. All four were reached.
   to it, and run for the first time on the real page at both sizes.
 - 2026-11-20 — Sky, part A, step 2: judged against the constellation sheet and B3, B4, B5 at
   both sizes; honeycomb given depth, far figures made visible, the empty star made a sphere.
+- 2026-11-20 — Sky, part A, step 3: the flight driven for real and measured (86 checks);
+  three faults found and fixed (star buttons not placed at rest, swipes that could not build
+  speed, the wheel flying under a focused form field); the hooks for part B named.

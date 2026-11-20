@@ -33,8 +33,11 @@ export interface Flight {
 	readonly boost: number;
 	/** The station a glide is heading for, else null. */
 	readonly target: number | null;
-	/** One input event (a wheel tick, a swipe sample) in a direction: +1 forward, -1 back. */
-	push(dir: 1 | -1): void;
+	/**
+	 * One input event (a wheel tick, a swipe sample) in a direction: +1 forward, -1 back.
+	 * The input counts as continuing for `linger` seconds after it (FLIGHT.hold if left out).
+	 */
+	push(dir: 1 | -1, linger?: number): void;
 	/** A key went down: input in that direction until release(). */
 	hold(dir: 1 | -1): void;
 	release(): void;
@@ -108,10 +111,11 @@ export function createFlight(initial: Stations, start = 0): Flight {
 		get target() {
 			return target;
 		},
-		push(d) {
+		push(d, linger = FLIGHT.hold) {
 			if (d !== dir && held === 0) boost = 0;
 			dir = d;
-			lastInput = time;
+			// Never shorten what an earlier push is still owed.
+			lastInput = Math.max(lastInput, time + linger - FLIGHT.hold);
 		},
 		hold(d) {
 			if (d !== dir) boost = 0;

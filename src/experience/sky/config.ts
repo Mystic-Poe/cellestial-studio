@@ -84,11 +84,16 @@ export const FLIGHT = {
 	/** Seconds of continued input from cruise to max. */
 	build: 2.6,
 	/** How quickly built-up speed is forgotten once the input stops. */
-	forget: 1.6,
+	forget: 3,
 	/** Time constant of the pull towards the wanted speed. */
 	response: 0.3,
 	/** Input counts as continuing for this long after its last event. */
 	hold: 0.16,
+	/**
+	 * The same for a swipe. A finger leaves the screen between two swipes, and that is still
+	 * continued scrolling: a swipe counts for this long after its last movement.
+	 */
+	touchHold: 0.5,
 	/** The glide stops over at least this long, and averages at least `glideSpeed`. */
 	decel: 1.6,
 	glideSpeed: 1.9,

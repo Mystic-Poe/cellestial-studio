@@ -21,9 +21,29 @@ export interface SkyEvents {
 	/**
 	 * A star was clicked, tapped or activated from the keyboard. Fired before
 	 * the sky acts on it (claims.pick or claims.place for an empty star,
-	 * focusStar for a lit one).
+	 * focusStar for a lit one). `circle` is the star's disc on screen then.
 	 */
-	'star-pick': { slot: SlotId; lit: boolean };
+	'star-pick': { slot: SlotId; lit: boolean; circle: ScreenCircle | null };
+	/**
+	 * PART B OPENS THE PREVIEW PANEL (B10) HERE. An empty star was picked and
+	 * no ask was waiting for a star: claims.pick(slot) has just been called.
+	 * `circle` is the star's disc on screen (viewport pixels) to place the
+	 * panel beside; ask starCircle(slot) again on later frames if it must follow.
+	 */
+	'open-empty': { slot: SlotId; circle: ScreenCircle | null };
+	/**
+	 * PART B OPENS THE LIT-STAR PANEL HERE. The camera has closed in on a lit
+	 * star and come to rest (focusStar has resolved). `ignited` is true when
+	 * the claim was just played there (the visitor's own request, a moment ago).
+	 */
+	'open-lit': { slot: SlotId; circle: ScreenCircle | null; ignited: boolean };
+	/**
+	 * Whatever part B has open should close: the visitor flew on, the scene
+	 * was paused, reset or handed to the loader, or the stars began to fall.
+	 * (A tap on empty sky is 'tap-empty', and letting a close-up go is
+	 * 'focus' with slot null: part B decides what those close.)
+	 */
+	dismiss: { reason: 'flight' | 'inactive' | 'reset' | 'fall' };
 	/** The camera is at, or has just flown through, a layer's station. */
 	station: { layer: number; figure: number };
 	/** All twelve figures have been at their stations. Fired once per page. */

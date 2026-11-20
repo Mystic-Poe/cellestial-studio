@@ -7,8 +7,8 @@
 // a form field or the menu. Disabled, it owns nothing.
 
 export interface InputHandlers {
-	/** One sample of continuing input: +1 forward (Virgo towards Libra), -1 back. */
-	push(dir: 1 | -1): void;
+	/** One sample of continuing input: +1 forward (Virgo towards Libra), -1 back. `touch`: it is a swipe. */
+	push(dir: 1 | -1, touch: boolean): void;
 	/** A flight key went down, and came up again. */
 	hold(dir: 1 | -1): void;
 	release(): void;
@@ -16,7 +16,10 @@ export interface InputHandlers {
 	home(): void;
 	/** Escape. True if it did something. */
 	escape(): boolean;
-	/** A pointer went down on empty sky. */
+	/**
+	 * A pointer is pressing on empty sky: at once for a mouse; for a finger, when it has
+	 * rested there a moment or has come up again, but never when it turns out to be a swipe.
+	 */
 	down(x: number, y: number): void;
 	/** It came up again without having moved: a tap. */
 	tap(x: number, y: number): void;
@@ -31,12 +34,18 @@ export interface SkyInput {
 
 const ELSEWHERE =
 	'dialog, [role="dialog"], [aria-modal="true"], [role="menu"], nav, input, textarea, select, [contenteditable]:not([contenteditable="false"])';
+const FIELDS = 'input, textarea, select, [contenteditable]:not([contenteditable="false"])';
 const ACTIVATES = 'button, a[href], summary, [role="button"], [role="link"], [tabindex]';
 
 /** Travel beyond this is a swipe, not a tap. CSS pixels. */
 const SLOP = 9;
 /** A press held longer than this is not a tap. */
 const TAP_MS = 650;
+/**
+ * A finger that has rested this long is pressing, not swiping. A swipe moves
+ * sooner than this, so it never stops the flight it is about to speed up.
+ */
+const PRESS_MS = 90;
 
 export function attachInput(
 	canvas: HTMLCanvasElement,
@@ -47,6 +56,8 @@ export function attachInput(
 	let heldKey: string | null = null;
 	let wheelSum = 0;
 	let wheelAt = 0;
+	/** The timer of a finger's press that may yet be a swipe, or 0. */
+	let press = 0;
 	let pointer: {
 		id: number;
 		x: number;
@@ -86,6 +97,8 @@ export function attachInput(
 	const onWheel = (e: WheelEvent) => {
 		if (!enabled || e.ctrlKey || modalOpen()) return;
 		if (e.target instanceof Element && e.target.closest(ELSEWHERE)) return;
+		// Someone typing in a field is not flying, wherever the pointer happens to be.
+		if (document.activeElement?.closest(FIELDS)) return;
 		e.preventDefault();
 		const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
 		const dy = e.deltaY * unit;
@@ -96,7 +109,7 @@ export function attachInput(
 		wheelSum += dy;
 		// The tail of a trackpad's glide is a trickle of tiny deltas: not input.
 		if (Math.abs(wheelSum) < 4) return;
-		handlers.push(wheelSum > 0 ? 1 : -1);
+		handlers.push(wheelSum > 0 ? 1 : -1, false);
 		wheelSum = 0;
 	};
 
@@ -150,6 +163,7 @@ export function attachInput(
 			handlers.release();
 		}
 		pointer = null;
+		settlePress(false);
 	};
 
 	const onPointerDown = (e: PointerEvent) => {
@@ -168,7 +182,24 @@ export function attachInput(
 			star: on === 'star',
 			touch: e.pointerType !== 'mouse',
 		};
-		if (on === 'sky') handlers.down(e.clientX, e.clientY);
+		if (on !== 'sky') return;
+		if (e.pointerType === 'mouse') {
+			handlers.down(e.clientX, e.clientY);
+			return;
+		}
+		const { clientX: x, clientY: y } = e;
+		press = window.setTimeout(() => {
+			press = 0;
+			handlers.down(x, y);
+		}, PRESS_MS);
+	};
+
+	/** The press that was waiting to see whether it is a swipe: `now` true makes it, false forgets it. */
+	const settlePress = (now: boolean, x = 0, y = 0) => {
+		if (press === 0) return;
+		window.clearTimeout(press);
+		press = 0;
+		if (now) handlers.down(x, y);
 	};
 
 	const onPointerMove = (e: PointerEvent) => {
@@ -176,6 +207,7 @@ export function attachInput(
 		if (!p || e.pointerId !== p.id) return;
 		if (!p.moved && Math.hypot(e.clientX - p.x, e.clientY - p.y) > SLOP) {
 			p.moved = true;
+			settlePress(false);
 			if (p.star) handlers.swipeFromStar();
 			p.lastY = e.clientY;
 		}
@@ -184,7 +216,7 @@ export function attachInput(
 		p.sum += e.clientY - p.lastY;
 		p.lastY = e.clientY;
 		if (Math.abs(p.sum) < 5) return;
-		handlers.push(p.sum < 0 ? 1 : -1);
+		handlers.push(p.sum < 0 ? 1 : -1, true);
 		p.sum = 0;
 	};
 
@@ -192,13 +224,21 @@ export function attachInput(
 		const p = pointer;
 		if (!p || e.pointerId !== p.id) return;
 		pointer = null;
-		if (!enabled || p.moved || p.star) return;
+		if (!enabled || p.moved || p.star) {
+			settlePress(false);
+			return;
+		}
+		// A quick tap comes up before the press was made: it is made now.
+		settlePress(true, p.x, p.y);
 		if (performance.now() - p.t > TAP_MS) return;
 		handlers.tap(e.clientX, e.clientY);
 	};
 
 	const onPointerCancel = (e: PointerEvent) => {
-		if (pointer && e.pointerId === pointer.id) pointer = null;
+		if (pointer && e.pointerId === pointer.id) {
+			pointer = null;
+			settlePress(false);
+		}
 	};
 
 	window.addEventListener('wheel', onWheel, { passive: false });

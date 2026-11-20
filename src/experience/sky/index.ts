@@ -18,7 +18,18 @@ import type {
 	SlotId,
 } from '../contracts.ts';
 import { createStarButtons, type StarSpot } from './buttons.ts';
-import { B3, FADE, FALL, FIGURES, FOCUS, IGNITE, LATTICE, ROUND_KEY, SPACING } from './config.ts';
+import {
+	B3,
+	FADE,
+	FALL,
+	FIGURES,
+	FLIGHT,
+	FOCUS,
+	IGNITE,
+	LATTICE,
+	ROUND_KEY,
+	SPACING,
+} from './config.ts';
 import { createEmitter } from './emitter.ts';
 import { createFlight } from './flight.ts';
 import { createWorld, type Frame, LOOK, PLANE_GAP, type World } from './gl/world.ts';
@@ -526,7 +537,8 @@ export const mount: MountSky = (ctx) => {
 
 	const onPick = (slot: SlotId) => {
 		const isLit = lit.has(slot) || (claims?.isLit(slot) ?? false);
-		emitter.emit('star-pick', { slot, lit: isLit });
+		const circle = starCircle(slot);
+		emitter.emit('star-pick', { slot, lit: isLit, circle });
 		if (moving() && !(focus && focus.phase === 'travel')) flight.halt();
 		if (isLit) {
 			void scene.focusStar(slot);
@@ -542,6 +554,8 @@ export const mount: MountSky = (ctx) => {
 			placedByMe = null;
 		} else {
 			store.pick(slot);
+			// Part B opens the preview panel (B10) on this.
+			emitter.emit('open-empty', { slot, circle });
 		}
 	};
 
@@ -698,7 +712,13 @@ export const mount: MountSky = (ctx) => {
 				f.settleAt = time;
 			}
 		}
-		if (f.phase === 'held' && f.resolve && time >= f.settleAt) settleFocus(f);
+		if (f.phase === 'held' && f.resolve && time >= f.settleAt) {
+			settleFocus(f);
+			// Part B opens the lit-star panel on this.
+			if (lit.has(f.slot)) {
+				emitter.emit('open-lit', { slot: f.slot, circle: starCircle(f.slot), ignited: f.ignite });
+			}
+		}
 		if (f.phase === 'out' && offU >= 1) focus = null;
 	};
 
@@ -948,12 +968,13 @@ export const mount: MountSky = (ctx) => {
 	const thrust = (go: () => void) => {
 		if (!flying()) return;
 		if (focus) releaseFocus();
+		if (flight.mode !== 'thrust') emitter.emit('dismiss', { reason: 'flight' });
 		go();
 		wake();
 	};
 
 	const input = attachInput(canvas, ui, {
-		push: (dir) => thrust(() => flight.push(dir)),
+		push: (dir, touch) => thrust(() => flight.push(dir, touch ? FLIGHT.touchHold : FLIGHT.hold)),
 		hold: (dir) => thrust(() => flight.hold(dir)),
 		release: () => flight.release(),
 		home() {
@@ -1277,7 +1298,10 @@ export const mount: MountSky = (ctx) => {
 			if (active === on) return;
 			active = on;
 			input.setEnabled(on);
-			if (!on) flight.release();
+			if (!on) {
+				flight.release();
+				emitter.emit('dismiss', { reason: 'inactive' });
+			}
 			governor.reset();
 			last = -1;
 			requestFrame();
@@ -1286,6 +1310,7 @@ export const mount: MountSky = (ctx) => {
 		reset() {
 			if (fall) finishFall();
 			fallen = false;
+			emitter.emit('dismiss', { reason: 'reset' });
 			dropFocus();
 			introT = 1;
 			flight.place(layout.station(0));
@@ -1322,6 +1347,7 @@ export const mount: MountSky = (ctx) => {
 		introPrime(at) {
 			introAt = { x: at.x, y: at.y, r: at.r };
 			introT = 0;
+			emitter.emit('dismiss', { reason: 'reset' });
 			if (fall) finishFall();
 			fallen = false;
 			dropFocus();
@@ -1350,6 +1376,7 @@ export const mount: MountSky = (ctx) => {
 		fall({ groundY, onImpact }) {
 			if (fall) finishFall();
 			introT = 1;
+			emitter.emit('dismiss', { reason: 'fall' });
 			if (still || !ready || fallen) {
 				// Nothing to watch: the sky is simply empty.
 				dropFocus();
@@ -1415,6 +1442,9 @@ export const mount: MountSky = (ctx) => {
 				focus = make('held', false, time);
 				if (wantIgnite) showLit(slot, true);
 				emitter.emit('focus', { slot });
+				if (lit.has(slot)) {
+					emitter.emit('open-lit', { slot, circle: starCircle(slot), ignited: wantIgnite });
+				}
 				requestFrame();
 				return Promise.resolve();
 			}
