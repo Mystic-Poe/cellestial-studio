@@ -1,0 +1,101 @@
+---
+// PLACEHOLDER for the Roots (E1 → E6). The roots scene replaces this file,
+// Close.astro and src/experience/roots/index.ts.
+//
+// The ground, in the flow of the page and opaque, so the sky's canvas passes
+// behind it. On it: E6 at the top, then the five offers written out in full,
+// then the Close. The offers are real HTML, rendered here from the locked
+// copy: this is also what a visitor without script, and a search engine, read.
+import { OFFERS } from '../../content/offers.ts';
+import BrassButton from '../ui/BrassButton.astro';
+import Panel from '../ui/Panel.astro';
+import Close from './Close.astro';
+---
+
+<main id="roots" aria-label="What we build" tabindex="-1">
+	<div class="roots-top">
+		<BrassButton variant="chevron" label="Return to the sky" data-ascend data-needs-js />
+	</div>
+
+	<div class="roots-offers">
+		{
+			OFFERS.map((offer) => (
+				<Panel as="article" size="large" id={`offer-${offer.id}`}>
+					<h2 class="panel__title">{offer.title}</h2>
+					{offer.lines.map((line) => (
+						<>
+							{/* One space between lines keeps the text of the tile exact (offers.ts). */}
+							{' '}
+							<p>
+								{line.map((segment) =>
+									segment.srOnly ? (
+										<span class="sr-only">{segment.text}</span>
+									) : segment.strike ? (
+										<s class:list={['strike', segment.brass && 'brass']}>{segment.text}</s>
+									) : segment.brass ? (
+										<strong>{segment.text}</strong>
+									) : (
+										segment.text
+									),
+								)}
+							</p>
+						</>
+					))}
+				</Panel>
+			))
+		}
+	</div>
+
+	<Close />
+</main>
+
+<style is:global>
+	/* E1. The soil is mirror-tiled, so it repeats down the page without a seam. */
+	#roots {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-height: 100svh;
+		padding: 0 1rem;
+		background-color: var(--color-earth);
+		background-image: image-set(
+			url('/cellestial/roots/soil-landscape.avif') type('image/avif'),
+			url('/cellestial/roots/soil-landscape.webp') type('image/webp')
+		);
+		background-position: center top;
+		background-size: 100% auto;
+		background-repeat: repeat-y;
+	}
+	@media (orientation: portrait) {
+		#roots {
+			background-image: image-set(
+				url('/cellestial/roots/soil-portrait.avif') type('image/avif'),
+				url('/cellestial/roots/soil-portrait.webp') type('image/webp')
+			);
+		}
+	}
+
+	/* E6, at the top of the ground. The row keeps its height when the button is
+	   not there, so the first offer always starts clear of the chrome. */
+	.roots-top {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 7.5rem;
+		padding: 1.5rem 0 2rem;
+	}
+	/* With no sky to return to, there is no return. */
+	html[data-no-sky] #roots [data-ascend] {
+		display: none;
+	}
+
+	.roots-offers {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+		width: 100%;
+	}
+</style>

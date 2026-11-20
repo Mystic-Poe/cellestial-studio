@@ -1,0 +1,23 @@
+---
+// PLACEHOLDER for the Close (F1, F2). The roots scene replaces this file.
+//
+// The two closing actions, F2 directly under F1, and nothing else. Without
+// script each is a link to /contact; with it, the claim flow opens its dialog
+// instead (data-open-claim, data-open-contact).
+import BrassButton from '../ui/BrassButton.astro';
+---
+
+<div class="roots-close">
+	<BrassButton variant="primary" href="/contact" data-open-claim>Claim your star</BrassButton>
+	<BrassButton variant="quiet" href="/contact" data-open-contact>Contact me</BrassButton>
+</div>
+
+<style is:global>
+	.roots-close {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		padding: 6rem 0 7rem;
+	}
+</style>

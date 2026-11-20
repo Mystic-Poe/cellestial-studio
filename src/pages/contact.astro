@@ -11,16 +11,16 @@ const ready = TURNSTILE_SITE_KEY !== '';
 
 	<main class="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-8 px-6 py-16">
 		<header class="flex flex-col gap-3">
-			<a class="text-sm text-secondary underline" href="/">Cellestial Studio</a>
+			<a class="self-start text-sm font-semibold text-brass-text underline decoration-brass underline-offset-4 hover:text-brass-hi" href="/">Cellestial Studio</a>
 			<h1 class="display text-5xl">Start a project</h1>
-			<p class="text-secondary">
+			<p class="text-white">
 				Tell us what you need built. We answer every message ourselves.
 			</p>
 		</header>
 
 		{
 			!ready && (
-				<p class="rounded-md border border-border px-4 py-3 text-sm text-secondary">
+				<p class="rounded-xl border border-brass px-4 py-3 text-sm text-white">
 					This form is not live yet — its spam protection key has not been set.
 					Email us in the meantime.
 				</p>

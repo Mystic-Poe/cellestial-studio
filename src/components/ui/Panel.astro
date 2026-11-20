@@ -1,0 +1,336 @@
+---
+// The one panel of the site: B10 (the breakdown beside an empty star), C3 (the
+// menu), E5 (an offer) and both dialogs.
+//
+// A pure black face inside a thin band of the BRASS skin, with one thin blue
+// circuit line running in a groove down the middle of the band and a small
+// round node on it at two corners (three on a large panel). The line and its
+// nodes are painted as backgrounds of the band, so nothing is positioned over
+// it and a panel that scrolls (a dialog) keeps its frame whole.
+interface Props {
+	as?: 'div' | 'section' | 'aside' | 'article' | 'dialog';
+	size?: 'small' | 'large';
+	class?: string;
+	[attribute: string]: unknown;
+}
+
+const { as: Tag = 'div', size, class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={['panel', size && `panel--${size}`, className]} {...rest}><slot /></Tag>
+
+<style is:global>
+	/* Tailwind's own order, restated so the kit sits between the reset and the
+	   utilities whichever stylesheet the browser happens to read first. */
+	@layer theme, base, components, utilities;
+
+	@layer components {
+		.panel {
+			/* Size. */
+			--panel-band: 9px; /* the brass border */
+			--panel-radius: 16px;
+			--panel-pad-y: 1.25rem;
+			--panel-pad-x: 1.5rem;
+			--panel-node: 13px; /* a node's box: the bead is its inner third, the rest is glow */
+			/* Light. */
+			--panel-line: var(--color-blue);
+			--panel-groove: rgb(14 7 1 / 0.8);
+			--panel-bloom: color-mix(in srgb, var(--color-blue) 30%, transparent);
+			--panel-catch: color-mix(in srgb, var(--color-brass-hi) 62%, transparent); /* an edge that faces the light */
+
+			/* The line's middle, in from the outer edge; its radius at a corner;
+			   and how far in from a corner the middle of that arc is. A node
+			   sits there. */
+			--_c: calc(var(--panel-band) / 2);
+			--_r: calc(var(--panel-radius) - var(--_c));
+			--_n: calc(var(--panel-radius) - var(--_r) * 0.7071 - var(--panel-node) / 2);
+			/* The line in section, across the band: light spilt on the brass, the
+			   groove's wall, the line, the other wall, the light again. */
+			--_edge:
+				transparent calc(var(--_c) - 3.5px), var(--panel-bloom) calc(var(--_c) - 1.5px),
+				var(--panel-groove) calc(var(--_c) - 1.5px), var(--panel-groove) calc(var(--_c) - 0.5px),
+				var(--panel-line) calc(var(--_c) - 0.5px), var(--panel-line) calc(var(--_c) + 0.5px),
+				var(--panel-groove) calc(var(--_c) + 0.5px), var(--panel-groove) calc(var(--_c) + 1.5px),
+				var(--panel-bloom) calc(var(--_c) + 1.5px), transparent calc(var(--_c) + 3.5px);
+			--_arc:
+				transparent calc(var(--_r) - 3.5px), var(--panel-bloom) calc(var(--_r) - 1.5px),
+				var(--panel-groove) calc(var(--_r) - 1.5px), var(--panel-groove) calc(var(--_r) - 0.5px),
+				var(--panel-line) calc(var(--_r) - 0.5px), var(--panel-line) calc(var(--_r) + 0.5px),
+				var(--panel-groove) calc(var(--_r) + 0.5px), var(--panel-groove) calc(var(--_r) + 1.5px),
+				var(--panel-bloom) calc(var(--_r) + 1.5px), transparent calc(var(--_r) + 3.5px);
+			--_node: radial-gradient(
+				circle closest-side,
+				var(--color-blue-white) 0 20%,
+				var(--panel-line) 36% 46%,
+				var(--panel-groove) 54% 62%,
+				color-mix(in srgb, var(--panel-line) 50%, transparent) 68%,
+				transparent 100%
+			);
+			--_node-3: none; /* the third node: large panels only */
+			--_at: var(--panel-node) var(--panel-node) no-repeat border-box;
+			--_corner: var(--panel-radius) var(--panel-radius) no-repeat border-box;
+			--_side: calc(100% - 2 * var(--panel-radius));
+
+			box-sizing: border-box;
+			max-width: 100%;
+			padding: var(--panel-pad-y) var(--panel-pad-x);
+			border: var(--panel-band) solid transparent;
+			border-radius: var(--panel-radius);
+			background:
+				/* The face. */
+				linear-gradient(#000, #000) padding-box,
+				/* The nodes: upper left, lower right and, on a large panel, upper right. */
+				var(--_node) left var(--_n) top var(--_n) / var(--_at),
+				var(--_node) right var(--_n) bottom var(--_n) / var(--_at),
+				var(--_node-3) right var(--_n) top var(--_n) / var(--_at),
+				/* The line: four corners, four sides. */
+				radial-gradient(circle at 100% 100%, var(--_arc)) left top / var(--_corner),
+				radial-gradient(circle at 0 100%, var(--_arc)) right top / var(--_corner),
+				radial-gradient(circle at 100% 0, var(--_arc)) left bottom / var(--_corner),
+				radial-gradient(circle at 0 0, var(--_arc)) right bottom / var(--_corner),
+				linear-gradient(to bottom, var(--_edge)) center top / var(--_side) var(--panel-band)
+					no-repeat border-box,
+				linear-gradient(to top, var(--_edge)) center bottom / var(--_side) var(--panel-band)
+					no-repeat border-box,
+				linear-gradient(to right, var(--_edge)) left center / var(--panel-band) var(--_side)
+					no-repeat border-box,
+				linear-gradient(to left, var(--_edge)) right center / var(--panel-band) var(--_side)
+					no-repeat border-box,
+				/* The band, lit from the upper left like the wordmark. */
+				linear-gradient(
+						135deg,
+						rgb(255 244 222 / 0.42),
+						rgb(255 244 222 / 0.08) 34%,
+						rgb(24 12 2 / 0.1) 60%,
+						rgb(24 12 2 / 0.56)
+					)
+					border-box,
+				/* The skin at its own size; stretched only by a panel bigger than it,
+				   which would otherwise show where the picture ends. */
+				url('/cellestial/ui/brass-main.webp') left top / max(1024px, 100%) max(512px, 100%)
+					no-repeat border-box;
+			box-shadow:
+				/* The band stands proud of the face: its outer walls catch the light
+				   above and on the left, its inner walls below and on the right. */
+				0 -1px 0 0 var(--panel-catch),
+				-1px 0 0 0 color-mix(in srgb, var(--panel-catch) 60%, transparent),
+				inset 0 -1px 0 0 color-mix(in srgb, var(--panel-catch) 80%, transparent),
+				inset -1px 0 0 0 color-mix(in srgb, var(--panel-catch) 50%, transparent),
+				/* Its shadow on the ground. */
+				0 0 0 1px rgb(0 0 0 / 0.8),
+				0 18px 40px -12px rgb(0 0 0 / 0.85);
+			color: var(--color-white);
+			font-family: var(--font-sans);
+			font-size: 1rem;
+			font-weight: 500;
+			line-height: 1.55;
+			text-align: left;
+		}
+
+		/* A panel that is not a dialog carries its own close button's position. */
+		.panel:where(:not(dialog)) {
+			position: relative;
+		}
+
+		.panel--small {
+			--panel-radius: 14px;
+			--panel-pad-y: 0.875rem;
+			--panel-pad-x: 1.125rem;
+			--panel-node: 11px;
+			width: max-content;
+			max-width: min(19rem, 100%);
+			font-size: 0.9375rem;
+			line-height: 1.45;
+		}
+
+		.panel--large {
+			--panel-radius: 18px;
+			--panel-pad-y: 1.75rem;
+			--panel-pad-x: 2rem;
+			--_node-3: var(--_node);
+			width: min(34rem, 100%);
+			line-height: 1.6;
+		}
+
+		/* Inside: plain white lines, the key words in brass. */
+		.panel > * {
+			margin: 0;
+		}
+		.panel > * + * {
+			margin-top: 0.5em;
+		}
+		.panel strong,
+		.panel .brass {
+			color: var(--color-brass-text);
+			font-weight: 700;
+		}
+		/* An old price. */
+		.panel .strike {
+			text-decoration: line-through;
+			text-decoration-thickness: 0.09em;
+		}
+		.panel .sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			margin: -1px;
+			padding: 0;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+			border: 0;
+		}
+
+		.panel__title {
+			color: var(--color-brass-text);
+			font-size: 1.375em;
+			font-weight: 600;
+			line-height: 1.15;
+			letter-spacing: -0.01em;
+		}
+
+		/* A title with the close button beside it. It stays put when a tall
+		   panel scrolls underneath. (A sticky box is held inside its scroller's
+		   padding, so it has to be let back out into it.) */
+		.panel__head {
+			position: sticky;
+			top: calc(-1 * var(--panel-pad-y));
+			z-index: 1;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			/* One pixel short on the right: the lit edge of the band runs there. */
+			margin: calc(-1 * var(--panel-pad-y)) calc(1px - var(--panel-pad-x)) 0
+				calc(-1 * var(--panel-pad-x));
+			padding: calc(var(--panel-pad-y) - 0.375rem) calc(var(--panel-pad-x) - 0.625rem - 1px) 0.5rem
+				var(--panel-pad-x);
+			background: #000;
+		}
+
+		/* Close: two crossed brass strokes in a full-size tap target. */
+		.panel__close {
+			position: relative;
+			flex: none;
+			width: 44px;
+			height: 44px;
+			margin: 0;
+			padding: 0;
+			border: 0;
+			border-radius: 50%;
+			background: none;
+			color: var(--color-brass-text);
+			cursor: pointer;
+			-webkit-tap-highlight-color: transparent;
+			transition: color 160ms ease-out;
+		}
+		.panel__close::before,
+		.panel__close::after {
+			content: '';
+			position: absolute;
+			left: calc(50% - 9px);
+			top: calc(50% - 1px);
+			width: 18px;
+			height: 2px;
+			border-radius: 1px;
+			background: currentColor;
+			transform: rotate(45deg);
+		}
+		.panel__close::after {
+			transform: rotate(-45deg);
+		}
+		.panel__close:hover,
+		.panel__close:focus-visible {
+			color: var(--color-brass-hi);
+		}
+		/* On its own in a panel, it sits in the top right corner. */
+		.panel > .panel__close {
+			position: absolute;
+			top: 0.125rem;
+			right: 0.125rem;
+		}
+		.panel:has(> .panel__close) > .panel__title {
+			padding-right: 2rem;
+		}
+
+		/* As a modal dialog: centred, never taller or wider than the screen,
+		   scrolling inside itself and never the page behind. It fades in, and
+		   rises a little where motion is welcome. */
+		dialog.panel {
+			margin: auto;
+			max-width: calc(100vw - 1.5rem);
+			max-height: calc(100dvh - 1.5rem);
+			overflow: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
+			scrollbar-color: var(--color-brass) transparent;
+			opacity: 0;
+			transition-property: opacity, transform, display, overlay;
+			transition-duration: 260ms;
+			transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+			transition-behavior: allow-discrete;
+		}
+		dialog.panel[open] {
+			opacity: 1;
+		}
+		@starting-style {
+			dialog.panel[open] {
+				opacity: 0;
+			}
+		}
+		dialog.panel::backdrop {
+			overflow: hidden;
+			overscroll-behavior: contain;
+			background: rgb(0 0 0 / 0);
+			transition-property: background-color, display, overlay;
+			transition-duration: 260ms;
+			transition-timing-function: ease-out;
+			transition-behavior: allow-discrete;
+		}
+		dialog.panel[open]::backdrop {
+			background: rgb(0 0 0 / 0.6);
+		}
+		@starting-style {
+			dialog.panel[open]::backdrop {
+				background: rgb(0 0 0 / 0);
+			}
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			dialog.panel {
+				transform: translateY(18px);
+			}
+			dialog.panel[open] {
+				transform: none;
+			}
+			@starting-style {
+				dialog.panel[open] {
+					transform: translateY(18px);
+				}
+			}
+		}
+		dialog.panel > form {
+			margin-top: 1rem;
+		}
+
+		/* A sheet: on a phone it rises from the bottom edge; on a wider screen
+		   it is centred like any other dialog. */
+		@media (max-width: 47.99rem) {
+			dialog.panel--sheet {
+				margin-bottom: 0.75rem;
+			}
+		}
+		/* On a narrow phone a dialog gives its room to what is in it: the
+		   Turnstile widget in the forms is 300px wide and will not shrink. */
+		@media (max-width: 26rem) {
+			dialog.panel {
+				--panel-pad-x: 1rem;
+				--panel-pad-y: 1.25rem;
+				max-width: calc(100vw - 0.75rem);
+				max-height: calc(100dvh - 0.75rem);
+			}
+			dialog.panel--sheet {
+				margin-bottom: 0.375rem;
+			}
+		}
+	}
+</style>

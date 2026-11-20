@@ -6,7 +6,7 @@ A scene is **done** only when it builds, is screenshotted at 390×844 and
 
 | # | Piece | Spec elements | Status |
 |---|---|---|---|
-| 0 | Foundation: derived assets, palette, type, UI kit, scene director, claims, locked copy, constellation data | global rules, B10/B11 base components | in progress |
+| 0 | Foundation: derived assets, palette, type, UI kit, scene director, claims, locked copy, constellation data | global rules, B10/B11 base components | built; independent review running |
 | 1 | Loading | A1 A2 A3 A4 A5 | in progress |
 | 2 | Sky | B1–B6, B8–B11, G1 | in progress |
 | 3 | Roots | E1–E6 | not started |
@@ -30,3 +30,11 @@ A scene is **done** only when it builds, is screenshotted at 390×844 and
   the images, the twelve real constellation figures (147 stars, 146 claimable), the five
   Roots tiles checked character for character against the addendum, the scene contract.
   UI kit and experience core in progress; Loading and Sky started alongside on their own branches.
+- 2026-11-20 — UI kit in (Quicksand, the brass button in its five forms, the one panel, both
+  dialogs; /contact and /start restyled, their scripts and form fields untouched). Experience
+  core in: scene director, claims store, claim flow on top of the existing form submit, page
+  shell with placeholder scenes. The whole visit already works in its plain form at 390×844
+  and 1440×900: sky → exit button → roots → build request → star, menu to all four
+  destinations, reduced motion, no JavaScript. Build, tests (96 + worker checks) and lint pass.
+  The old homepage is removed. Loading, Sky and the effects layer are being built on their
+  own branches; Roots and Chrome start from this commit.

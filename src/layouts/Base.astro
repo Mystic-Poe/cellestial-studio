@@ -1,6 +1,11 @@
 ---
 import { Font } from 'astro:assets';
 import '../styles/global.css';
+// The UI kit's classes (.brass-btn, .panel) are global. Importing the two
+// components here puts their styles on every page, so the protected forms and
+// markup built by scripts get the same look as the components themselves.
+import '../components/ui/BrassButton.astro';
+import '../components/ui/Panel.astro';
 
 interface Props {
   title: string;
@@ -17,41 +22,40 @@ const { title, description } = Astro.props;
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="theme-color" content="#04070a" />
+		<meta name="theme-color" content="#000000" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<Font cssVariable="--font-plex-mono" preload={[{ weight: 400, style: 'normal' }]} />
-		<Font cssVariable="--font-instrument-serif" preload={[{ weight: 400, style: 'normal' }, { weight: 400, style: 'italic' }]} />
+		<Font cssVariable="--font-quicksand" preload />
 		<script is:inline>
 			// Before first paint, so a reduced-motion visitor never sees a frame of motion.
+			// The device's own setting decides; there is no switch. "?rm=1" forces it off.
 			(() => {
-				let v = null;
-				try { v = localStorage.getItem('cellestial:motion'); } catch {}
-				if (v !== 'on' && v !== 'off') {
-					v = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
-				}
-				document.documentElement.dataset.motion = v;
+				const forced = new URLSearchParams(location.search).get('rm') === '1';
+				const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+				const sync = () => {
+					document.documentElement.dataset.motion = forced || reduce.matches ? 'off' : 'on';
+				};
+				sync();
+				reduce.addEventListener('change', sync);
 			})();
 		</script>
 		<slot name="head" />
 	</head>
 	<body>
-		<a class="skip-link" href="#main">Skip to content</a>
+		<a class="skip-link brass-btn brass-btn--small" href="#main">Skip to content</a>
 		<slot />
 		<style is:global>
+			/* Out of sight until the keyboard reaches it; then it is the small brass button. */
 			.skip-link {
-				position: absolute;
+				position: fixed;
 				left: 1rem;
-				top: -4rem;
-				z-index: 50;
-				padding: 0.6rem 1rem;
-				border-radius: 999px;
-				background: var(--color-glow);
-				color: var(--color-night);
-				font-size: 0.8rem;
-			}
-			.skip-link:focus {
 				top: 1rem;
+				z-index: 60;
+			}
+			.skip-link:not(:focus) {
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(calc(-100% - 2rem));
 			}
 		</style>
 	</body>

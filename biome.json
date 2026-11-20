@@ -9,8 +9,12 @@
       "!pnpm-lock.yaml",
       "!**/*.astro",
       "!claude-vault",
+      "!.ua",
+      "!.superpowers",
+      "!cellestial-assets",
+      "!**/*.md",
       "!public/favicon.svg",
-      "!public/sky/sky.json"
+      "!scripts/data/sky.json"
     ]
   },
   "formatter": {

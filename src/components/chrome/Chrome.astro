@@ -1,0 +1,136 @@
+---
+// PLACEHOLDER for the chrome (C1 → C3). The chrome scene replaces this file
+// and src/experience/chrome/index.ts.
+//
+// The logo with "studio" under it, the three-bar menu button, and the menu:
+// the kit's panel, shown as a native popover, so it opens and closes with no
+// script. Each item is a real link for when there is none (#sky, #roots,
+// /contact, /contact); with script, the chrome sends it to the director.
+import { ASSETS } from '../../experience/assets.ts';
+import Panel from '../ui/Panel.astro';
+
+const logo = ASSETS.chrome.cLogo;
+---
+
+<header id="chrome">
+	<div class="chrome-logo">
+		<img src={logo.url} width={logo.w} height={logo.h} alt="Cellestial" decoding="async" />
+		<span class="chrome-studio">studio</span>
+	</div>
+
+	<button class="chrome-bars" type="button" aria-label="Menu" popovertarget="chrome-menu" data-needs-js>
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+
+	<Panel id="chrome-menu" size="small" popover>
+		<nav aria-label="Menu">
+			<ul>
+				<li><a href="#sky" data-dest="sky">The Sky</a></li>
+				<li><a href="#roots" data-dest="build">What we build</a></li>
+				<li><a href="/contact" data-dest="claim">Claim your star</a></li>
+				<li><a href="/contact" data-dest="contact">Contact me</a></li>
+			</ul>
+		</nav>
+	</Panel>
+</header>
+
+<style is:global>
+	#chrome {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 40;
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		padding: max(0.75rem, env(safe-area-inset-top)) 0 0 max(1rem, env(safe-area-inset-left));
+		transition: opacity 600ms ease-out;
+	}
+	/* The loader is the emblem alone: the chrome fades in as it ends. */
+	html[data-scene='loading'] #chrome {
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	/* C1. */
+	.chrome-logo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.125rem;
+	}
+	.chrome-logo img {
+		display: block;
+		width: auto;
+		height: 3.25rem;
+	}
+	.chrome-studio {
+		color: var(--color-brass-text);
+		font-size: 0.75rem;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.08em;
+	}
+
+	/* C2. Three short bars of the brass skin, a hair-thin blue line along each. */
+	.chrome-bars {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+		width: 44px;
+		height: 44px;
+		margin: 0.25rem 0 0;
+		padding: 0;
+		border: 0;
+		border-radius: 8px;
+		background: none;
+		cursor: pointer;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.chrome-bars span {
+		display: block;
+		width: 26px;
+		height: 5px;
+		border-radius: 3px;
+		background:
+			linear-gradient(to bottom, transparent 2px, var(--color-blue) 2px 3px, transparent 3px),
+			url('/cellestial/ui/brass-main.webp') center / 1024px 512px;
+		box-shadow: 0 1px 0 rgb(0 0 0 / 0.8);
+	}
+
+	/* C3. The popover is laid out by the browser in the middle of the screen;
+	   this puts it under the button instead. */
+	#chrome-menu {
+		position: fixed;
+		inset: auto;
+		top: calc(max(0.75rem, env(safe-area-inset-top)) + 4.75rem);
+		left: max(1rem, env(safe-area-inset-left));
+		margin: 0;
+	}
+	#chrome-menu ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#chrome-menu a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		color: inherit;
+		font-weight: 600;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	#chrome-menu a:hover,
+	#chrome-menu a:focus-visible {
+		color: var(--color-brass-text);
+	}
+	/* With no sky to go to, the menu does not offer it. */
+	html[data-no-sky] #chrome-menu li:has([data-dest='sky']) {
+		display: none;
+	}
+</style>

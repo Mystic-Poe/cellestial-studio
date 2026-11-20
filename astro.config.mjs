@@ -5,27 +5,20 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	// Astro downloads and self-hosts these at build time, so no request ever
-	// leaves the visitor's browser for a font CDN. Plex Mono is OFL, which is
-	// the licence policy's first preference.
+	// Astro downloads and self-hosts this at build time, so no request ever
+	// leaves the visitor's browser for a font CDN. Quicksand is OFL, which is
+	// the licence policy's first preference, and it is the rounded monoline
+	// face closest to the A4 wordmark. One variable file carries every weight
+	// the site uses (400 to 700).
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: 'IBM Plex Mono',
-			cssVariable: '--font-plex-mono',
-			weights: [400, 500, 600],
+			name: 'Quicksand',
+			cssVariable: '--font-quicksand',
+			weights: ['400 700'],
 			styles: ['normal'],
 			subsets: ['latin'],
-			fallbacks: ['ui-monospace', 'monospace'],
-		},
-		{
-			provider: fontProviders.google(),
-			name: 'Instrument Serif',
-			cssVariable: '--font-instrument-serif',
-			weights: [400],
-			styles: ['normal', 'italic'],
-			subsets: ['latin'],
-			fallbacks: ['Georgia', 'serif'],
+			fallbacks: ['ui-rounded', 'system-ui', 'sans-serif'],
 		},
 	],
 	vite: {

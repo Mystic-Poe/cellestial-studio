@@ -1,32 +1,140 @@
 ---
+// The shell: every layer of the one page (BLUEPRINT §3), and the stylesheet
+// that turns <html data-scene> into what is on stage.
+//
+//   header#chrome      fixed, z 40    first in the document, so the menu is
+//                                     the first thing the keyboard reaches
+//   canvas#sky-canvas  fixed, z 0
+//   div#sky-ui         fixed, z 2
+//   div#sky-window     in the flow    one screen of nothing: the sky shows through
+//   div#main           in the flow    no height: where "Skip to content" lands
+//   main#roots         in the flow, z 1
+//   canvas#fx-canvas   fixed, z 30
+//   div#loader         fixed, z 50
+//   dialog × 2         the build request and the message box
+//
+// Each scene's own look lives in its own component. What is here is only what
+// crosses scenes: the scroll model, which layers each scene shows, and the
+// page as it is when no script is running.
+//
+// THE SCRIPT IN THE HEAD runs before first paint. It is explained here and not
+// inside it, because an inline script reaches every visitor as written.
+//   1. The scene the page opens in, so the right layers are on screen from the
+//      first frame. Reduced motion never sees the loader. startScene() in
+//      src/experience/main.ts makes the same choice: change one, change both.
+//      (Base.astro has set data-motion by then.)
+//   2. Straight on the sky there is no loader to hold the screen, so
+//      data-opening keeps it black until the director has a sky to show.
+//   3. The watchdog. The page's script is deferred, so by DOMContentLoaded it
+//      has run if it ever will. If it has not (it failed to load, or this
+//      browser cannot run it), the scene is dropped, and the page is then the
+//      page without script: see the end of the stylesheet.
+import Chrome from '../components/chrome/Chrome.astro';
 import ClaimDialog from '../components/ClaimDialog.astro';
-import Header from '../components/Header.astro';
-import Sky from '../components/Sky.astro';
-import Closing from '../components/sections/Closing.astro';
-import Footer from '../components/sections/Footer.astro';
-import Hero from '../components/sections/Hero.astro';
-import Horizon from '../components/sections/Horizon.astro';
-import Ownership from '../components/sections/Ownership.astro';
-import Soil from '../components/sections/Soil.astro';
-import Work from '../components/sections/Work.astro';
+import ContactDialog from '../components/ContactDialog.astro';
+import Fx from '../components/scenes/Fx.astro';
+import Loader from '../components/scenes/Loader.astro';
+import Roots from '../components/scenes/Roots.astro';
+import Sky from '../components/scenes/Sky.astro';
 import home from '../content/home.json';
 import Base from '../layouts/Base.astro';
 ---
 
 <Base title={home.meta.title} description={home.meta.description}>
-  <Sky />
-  <Header cta={home.hero.cta_primary} />
-  <main id="main">
-    <Hero />
-    <Work />
-    <Horizon />
-    <Soil />
-    <Ownership />
-    <Closing />
-  </main>
-  <Footer />
-  <ClaimDialog />
-  <script>
-    import '../scripts/claim-controller.ts';
-  </script>
+	<script is:inline slot="head">
+		(() => {
+			const html = document.documentElement;
+			const want = new URLSearchParams(location.search).get('scene');
+			const still = html.dataset.motion === 'off';
+			const scene = want === 'roots' ? 'roots' : want === 'sky' || still ? 'sky' : 'loading';
+			html.dataset.scene = scene;
+			if (scene === 'sky') html.dataset.opening = '';
+			addEventListener('DOMContentLoaded', () => {
+				if (!('booted' in html.dataset)) delete html.dataset.scene;
+			});
+		})();
+	</script>
+
+	<Chrome />
+	<Sky />
+	<div id="sky-window" aria-hidden="true"></div>
+	<div id="main"></div>
+	<Roots />
+	<Fx />
+	<Loader />
+	<ClaimDialog />
+	<ContactDialog />
+
+	<script>
+		import '../experience/main.ts';
+	</script>
 </Base>
+
+<style is:global>
+	/* ── The scroll model ────────────────────────────────────────────────
+	   The director (src/experience/director.ts) sets data-scene and keeps
+	   scrollTop right; everything else about scrolling follows from here.
+
+	   loading, sky   nothing scrolls
+	   fall, warp     only the director scrolls, by script
+	   roots          the spacer is gone: the top of the document is the top
+	                  of the ground, and the page scrolls as pages do */
+	#sky-window {
+		height: 100svh;
+	}
+	html[data-scene='roots'] #sky-window {
+		display: none;
+	}
+	html:is([data-scene='loading'], [data-scene='sky'], [data-scene='fall'], [data-scene='warp']) {
+		overflow: hidden;
+		/* No rubber band and no pull-to-refresh under a swipe that means "fly". */
+		overscroll-behavior: none;
+	}
+
+	/* ── What is on stage ────────────────────────────────────────────────
+	   Under the sky the ground is laid out (the fall scrolls it into view) but
+	   not there: it cannot be seen, focused or read, so nothing can scroll the
+	   document to it. On the ground it is the sky that is not there. */
+	html:is([data-scene='loading'], [data-scene='sky']) #roots {
+		visibility: hidden;
+	}
+	html[data-scene='roots'] :is(#sky-canvas, #sky-ui) {
+		visibility: hidden;
+	}
+	/* The sky's buttons are not reachable before the sky is. */
+	html[data-scene='loading'] #sky-ui {
+		visibility: hidden;
+	}
+	/* Whatever became of the loader, it never covers another scene. */
+	html:not([data-scene='loading']) #loader {
+		display: none !important;
+	}
+	/* The two regions the director moves focus to are not controls. */
+	#roots:focus,
+	#sky-ui:focus {
+		outline: none;
+	}
+
+	/* Opening straight on the sky (reduced motion, ?scene=sky): black from the
+	   first frame, until the director takes the black over and lifts it. */
+	html[data-scene='sky'][data-opening]::after {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: 55;
+		background: #000;
+	}
+
+	/* ── The page without script ─────────────────────────────────────────
+	   No data-scene means no script is running: scripting is off, or the
+	   page's script never started (the watchdog in the head). Then the page
+	   is the logo, the five offers and the two links to /contact. A scene
+	   marks whatever needs script to mean anything with data-needs-js. */
+	html:not([data-scene]) :is(#loader, #sky-canvas, #sky-ui, #sky-window, #fx-canvas, [data-needs-js]) {
+		display: none !important;
+	}
+	/* The logo heads the page and scrolls away with it. */
+	html:not([data-scene]) #chrome {
+		position: absolute;
+	}
+</style>

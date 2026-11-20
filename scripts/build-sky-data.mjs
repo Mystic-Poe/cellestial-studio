@@ -1,4 +1,4 @@
-// Builds public/sky/sky.json from the raw sources. Run once when the data changes:
+// Builds scripts/data/sky.json from the raw sources. Run once when the data changes:
 //   node scripts/build-sky-data.mjs <dir-with-catalog-and-d3-celestial-files>
 //
 // Sources (raw files are not committed):
@@ -67,12 +67,12 @@ for (const c of lines) {
 lines.length = 0;
 lines.push(...merged.values());
 
-mkdirSync('public/sky', { recursive: true });
+mkdirSync('scripts/data', { recursive: true });
 const out = JSON.stringify({
 	credit:
 		'Stars: Yale Bright Star Catalog (public domain). Constellation lines: d3-celestial © Olaf Frohn, BSD 3-Clause.',
 	stars,
 	lines,
 });
-writeFileSync('public/sky/sky.json', out);
+writeFileSync('scripts/data/sky.json', out);
 console.log(`stars ${stars.length}, constellations ${lines.length}, ${out.length} bytes`);

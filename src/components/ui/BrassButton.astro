@@ -1,0 +1,372 @@
+---
+// B11, the base button of the site, and its variants: F1 (primary), F2 (quiet),
+// E6 (chevron) and a small one for inside panels.
+//
+// Everything a button is made of comes from its classes, so markup a script
+// builds (`<button class="brass-btn brass-btn--small">`) is the same button:
+// a plate of the BRASS skin with a raised rim, one thin blue circuit line in a
+// groove just inside the rim, two small round nodes on that line, and the
+// label engraved in the metal. The line and its nodes are drawn here, in code,
+// never in an image. It is made the way the letters of the wordmark are made.
+interface Props {
+	variant?: 'default' | 'primary' | 'quiet' | 'small' | 'chevron';
+	/** With an href it is a link; without, a button. */
+	href?: string;
+	type?: 'button' | 'submit';
+	/** The accessible name. Required for the chevron, which has no words. */
+	label?: string;
+	class?: string;
+	[attribute: string]: unknown;
+}
+
+const { variant = 'default', href, type, label, class: className, ...rest } = Astro.props;
+const classes = ['brass-btn', variant !== 'default' && `brass-btn--${variant}`, className];
+---
+
+{
+	href !== undefined ? (
+		<a class:list={classes} href={href} aria-label={label} {...rest}><slot /></a>
+	) : (
+		<button class:list={classes} type={type ?? 'button'} aria-label={label} {...rest}><slot /></button>
+	)
+}
+
+<style is:global>
+	/* Registered, so the line can brighten smoothly: a plain custom property
+	   cannot be transitioned. */
+	@property --bb-line {
+		syntax: '<color>';
+		inherits: true;
+		initial-value: transparent;
+	}
+	@property --bb-glow {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 0;
+	}
+
+	/* Tailwind's own order, restated so the kit sits between the reset and the
+	   utilities whichever stylesheet the browser happens to read first. */
+	@layer theme, base, components, utilities;
+
+	@layer components {
+		/* .pill and .pill--secondary are the old names protected markup still
+		   uses for this button and its quiet variant. */
+		.brass-btn,
+		.pill {
+			/* Size. */
+			--bb-h: 52px;
+			--bb-pad: 30px;
+			--bb-rim: 3px; /* the raised rim */
+			--bb-gap: 2px; /* rim to the groove the line runs in */
+			--bb-line-w: 1px;
+			--bb-depth: 2px; /* how much of the plate's side shows underneath */
+			--bb-node: 11px; /* a node's box: the bead is its inner third, the rest is glow */
+			/* Light. */
+			--bb-line: var(--color-blue);
+			--bb-glow: 0.4;
+			--bb-groove: rgb(16 8 1 / 0.74);
+			--bb-hi: 255 244 222; /* what faces the light */
+			--bb-lo: 24 12 2; /* what faces away */
+			--bb-catch: rgb(var(--bb-hi) / 0.3);
+			/* Metal. The skins are lightest at their top right and darkest at their
+			   bottom left: the label sits where it reads best. */
+			--bb-skin: url('/cellestial/ui/brass-main.webp');
+			--bb-skin-at: right 0 top -205px;
+			--bb-ink: color-mix(in srgb, var(--color-brass-lo) 30%, #000);
+			--bb-cut: 0 1px 0 rgb(var(--bb-hi) / 0.42); /* engraved: the far edge of each cut is lit */
+			/* Light from above, down the whole plate. The rim is bright on top and
+			   dark underneath; the face between is a bar of brushed metal: a band
+			   of light across its upper third, shade below, and a little light
+			   thrown back up into its lower edge. */
+			--bb-light: linear-gradient(
+				to bottom,
+				rgb(var(--bb-hi) / 0.86),
+				rgb(var(--bb-hi) / 0.48) var(--bb-rim),
+				rgb(var(--bb-hi) / 0.18) var(--bb-rim),
+				rgb(var(--bb-hi) / 0.36) 24%,
+				rgb(var(--bb-hi) / 0.06) 46%,
+				rgb(var(--bb-lo) / 0) 62%,
+				rgb(var(--bb-lo) / 0.3) 86%,
+				rgb(var(--bb-lo) / 0.15) calc(100% - var(--bb-rim)),
+				rgb(var(--bb-lo) / 0.42) calc(100% - var(--bb-rim)),
+				rgb(var(--bb-lo) / 0.72)
+			);
+			--bb-side: color-mix(in srgb, var(--color-brass-lo) 70%, #000);
+
+			/* The line's radius at a corner, to its middle; and how far in from a
+			   corner the middle of that arc is. A node sits there. */
+			--_r: calc(var(--bb-h) / 2 - var(--bb-rim) - var(--bb-gap) - var(--bb-line-w) / 2);
+			--_n: calc(var(--_r) * 0.2929);
+
+			position: relative;
+			isolation: isolate;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			box-sizing: border-box;
+			min-width: 44px;
+			min-height: var(--bb-h);
+			margin: 0;
+			padding: 6px var(--bb-pad);
+			border: var(--bb-rim) solid transparent;
+			border-radius: calc(var(--bb-h) / 2);
+			background:
+				var(--bb-light) border-box,
+				var(--bb-skin) var(--bb-skin-at) / 1024px 512px border-box,
+				/* The pressed skin, fetched ahead of the first press. */
+				url('/cellestial/ui/brass-dark.webp') 0 0 / 1024px 512px border-box;
+			box-shadow:
+				/* The step down from the rim to the face: in shadow under the top
+				   of the rim, lit along the bottom. */
+				inset 0 0 0 1px rgb(var(--bb-lo) / 0.5),
+				inset 0 2px 2px -1px rgb(var(--bb-lo) / 0.66),
+				inset 0 -1px 0 0 var(--bb-catch),
+				/* The side of the plate, then its shadow on the ground. */
+				0 var(--bb-depth) 0 0 var(--bb-side),
+				0 calc(var(--bb-depth) + 1px) 1px 0 rgb(0 0 0 / 0.9),
+				0 calc(var(--bb-depth) + 7px) 16px -3px rgb(0 0 0 / 0.72);
+			color: var(--bb-ink);
+			font-family: var(--font-sans);
+			font-size: 1rem;
+			font-weight: 700;
+			line-height: 1.15;
+			letter-spacing: 0.01em;
+			text-align: center;
+			text-decoration: none;
+			text-shadow: var(--bb-cut);
+			text-wrap: balance;
+			cursor: pointer;
+			user-select: none;
+			-webkit-tap-highlight-color: transparent;
+			touch-action: manipulation;
+			transition:
+				--bb-line 180ms ease-out,
+				--bb-glow 180ms ease-out,
+				transform 90ms ease-out;
+		}
+
+		/* The circuit line: one thin loop just inside the rim, in a groove cut
+		   for it, its light spilling a little onto the brass. */
+		.brass-btn::before,
+		.pill::before {
+			content: '';
+			position: absolute;
+			inset: var(--bb-gap);
+			z-index: -1;
+			border: var(--bb-line-w) solid var(--bb-line);
+			border-radius: calc(var(--bb-h) / 2 - var(--bb-rim) - var(--bb-gap));
+			box-shadow:
+				/* The groove, a dark hair on each side of the line. */
+				0 0 0 1px var(--bb-groove),
+				inset 0 0 0 1px var(--bb-groove),
+				/* Its two walls that face the light. */
+				0 1px 0 1px var(--bb-catch),
+				inset 0 1px 0 1px var(--bb-catch),
+				/* The glow. */
+				0 0 calc(1px + 8px * var(--bb-glow)) 0
+					color-mix(in srgb, var(--bb-line) calc(100% * var(--bb-glow)), transparent),
+				inset 0 0 calc(1px + 8px * var(--bb-glow)) 0
+					color-mix(in srgb, var(--bb-line) calc(100% * var(--bb-glow)), transparent);
+			pointer-events: none;
+		}
+
+		/* Its nodes: two small round lights set into the line, at the middle of
+		   the upper left corner and of the lower right. */
+		.brass-btn::after,
+		.pill::after {
+			--node: radial-gradient(
+				circle closest-side,
+				var(--color-blue-white) 0 20%,
+				var(--bb-line) 36% 46%,
+				var(--bb-groove) 54% 62%,
+				color-mix(in srgb, var(--bb-line) calc(20% + 50% * var(--bb-glow)), transparent) 68%,
+				transparent 100%
+			);
+			content: '';
+			position: absolute;
+			inset: calc(var(--bb-gap) + var(--bb-line-w) / 2 - var(--bb-node) / 2);
+			z-index: -1;
+			background:
+				var(--node) left var(--_n) top var(--_n) / var(--bb-node) var(--bb-node) no-repeat,
+				var(--node) right var(--_n) bottom var(--_n) / var(--bb-node) var(--bb-node) no-repeat;
+			pointer-events: none;
+		}
+
+		/* Hover and keyboard focus: the line lights up. (`:where` keeps a
+		   disabled button out of it without adding weight to the selector.) */
+		.brass-btn:hover:where(:not(:disabled, [aria-disabled='true'])),
+		.brass-btn:focus-visible:where(:not(:disabled, [aria-disabled='true'])),
+		.pill:hover:where(:not(:disabled, [aria-disabled='true'])),
+		.pill:focus-visible:where(:not(:disabled, [aria-disabled='true'])) {
+			--bb-line: color-mix(in srgb, var(--color-blue) 45%, var(--color-blue-white));
+			--bb-glow: 1;
+		}
+
+		/* Pressed, and the quiet button always: the dark skin, and the label in
+		   the brass of the wordmark. The skin is shaded behind the label, which
+		   is what carries that brass to 4.5:1 on it. */
+		.brass-btn:active:where(:not(:disabled, [aria-disabled='true'])),
+		.pill:active:where(:not(:disabled, [aria-disabled='true'])),
+		.brass-btn--quiet,
+		.pill--secondary {
+			--bb-skin: url('/cellestial/ui/brass-dark.webp');
+			--bb-skin-at: left 0 bottom 0;
+			--bb-ink: var(--color-brass-text);
+			--bb-cut: 0 -1px 0 rgb(0 0 0 / 0.8);
+			--bb-catch: rgb(var(--bb-hi) / 0.16);
+			--bb-groove: rgb(0 0 0 / 0.8);
+			--bb-light: linear-gradient(
+				to bottom,
+				rgb(var(--bb-hi) / 0.6),
+				rgb(var(--bb-hi) / 0.3) var(--bb-rim),
+				rgb(var(--bb-hi) / 0.1) var(--bb-rim),
+				rgb(var(--bb-hi) / 0.03) 16%,
+				rgb(0 0 0 / 0.3) 27%,
+				rgb(0 0 0 / 0.34) 73%,
+				rgb(0 0 0 / 0.2) calc(100% - var(--bb-rim)),
+				rgb(0 0 0 / 0.3) calc(100% - var(--bb-rim)),
+				rgb(0 0 0 / 0.62)
+			);
+			--bb-side: color-mix(in srgb, var(--color-brass-lo) 45%, #000);
+		}
+		.brass-btn:active:where(:not(:disabled, [aria-disabled='true'])),
+		.pill:active:where(:not(:disabled, [aria-disabled='true'])) {
+			--bb-depth: 1px;
+			transform: translateY(1px);
+		}
+
+		/* Disabled: the circuit is dark and the metal is dull. */
+		.brass-btn:disabled,
+		.brass-btn[aria-disabled='true'],
+		.pill:disabled,
+		.pill[aria-disabled='true'] {
+			--bb-line: color-mix(in srgb, var(--color-brass-lo) 55%, #000);
+			--bb-glow: 0;
+			filter: saturate(0.45) brightness(0.6);
+			cursor: not-allowed;
+			transform: none;
+		}
+		.brass-btn:disabled::after,
+		.brass-btn[aria-disabled='true']::after,
+		.pill:disabled::after,
+		.pill[aria-disabled='true']::after {
+			opacity: 0.3;
+		}
+
+		/* F1: the largest button on the site. Thicker brass, a stronger line. */
+		.brass-btn--primary {
+			--bb-h: 68px;
+			--bb-pad: 44px;
+			--bb-rim: 5px;
+			--bb-gap: 3px;
+			--bb-line-w: 1.5px;
+			--bb-depth: 3px;
+			--bb-node: 15px;
+			--bb-glow: 0.7;
+			--bb-skin-at: right -24px top -170px;
+			font-size: 1.3125rem;
+			letter-spacing: 0.015em;
+		}
+
+		/* F2: smaller and quieter. The dark skin (above), a dimmer line. */
+		.brass-btn--quiet,
+		.pill--secondary {
+			--bb-h: 44px;
+			--bb-pad: 24px;
+			--bb-rim: 2px;
+			--bb-depth: 1px;
+			--bb-node: 9px;
+			--bb-line: color-mix(in srgb, var(--color-blue) 62%, #000);
+			--bb-glow: 0.12;
+			font-size: 0.9375rem;
+			font-weight: 600;
+		}
+		.brass-btn--quiet:hover:where(:not(:disabled, [aria-disabled='true'])),
+		.brass-btn--quiet:focus-visible:where(:not(:disabled, [aria-disabled='true'])),
+		.pill--secondary:hover:where(:not(:disabled, [aria-disabled='true'])),
+		.pill--secondary:focus-visible:where(:not(:disabled, [aria-disabled='true'])) {
+			--bb-line: var(--color-blue);
+			--bb-glow: 0.7;
+		}
+		.brass-btn--quiet:active:where(:not(:disabled, [aria-disabled='true'])),
+		.pill--secondary:active:where(:not(:disabled, [aria-disabled='true'])) {
+			--bb-skin-at: left -160px bottom 0;
+			--bb-depth: 0px;
+		}
+
+		/* For inside panels: compact, still a full tap target. */
+		.brass-btn--small {
+			--bb-h: 44px;
+			--bb-pad: 20px;
+			--bb-rim: 2px;
+			--bb-depth: 1px;
+			--bb-node: 9px;
+			--bb-skin-at: right -180px top -196px;
+			font-size: 0.875rem;
+		}
+
+		/* E6: the same brass, cut as an upward chevron, the way a letter of the
+		   wordmark is cut: the line runs up one arm and down the other, from a
+		   node in each foot. No words; it takes its name from aria-label. */
+		.brass-btn--chevron {
+			--bb-h: 48px;
+			--bb-skin-at: right -300px top -190px;
+			--bb-light: linear-gradient(
+				to bottom,
+				rgb(var(--bb-hi) / 0.3) 20%,
+				rgb(var(--bb-hi) / 0.05) 48%,
+				rgb(var(--bb-lo) / 0.26) 84%
+			);
+			--_shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+			/* Light and shade along its edges, and the groove down its middle. */
+			--_bevel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cmask id='a'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 34.3 28 18.3 43 34.3' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3Cmask id='b'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 31.4 28 15.4 43 31.4' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='56' height='48' fill='%23fff4de' fill-opacity='.8' mask='url(%23a)'/%3E%3Crect width='56' height='48' fill='%23180c02' fill-opacity='.66' mask='url(%23b)'/%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23100801' stroke-opacity='.74' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+			/* The line, a ring and a bead in each foot, and the light around them. */
+			--_circuit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cfilter id='f' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='1.5'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='3.4' stroke-opacity='.4' filter='url(%23f)'/%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='1.2'/%3E%3Ccircle cx='13' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3Ccircle cx='43' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3C/g%3E%3Ccircle cx='13' cy='33' r='2'/%3E%3Ccircle cx='43' cy='33' r='2'/%3E%3C/svg%3E");
+			--_circuit-lit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cfilter id='f' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='5' stroke-opacity='.75' filter='url(%23f)'/%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='1.2'/%3E%3Ccircle cx='13' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.8'/%3E%3Ccircle cx='43' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.8'/%3E%3C/g%3E%3Ccircle cx='13' cy='33' r='2'/%3E%3Ccircle cx='43' cy='33' r='2'/%3E%3C/svg%3E");
+
+			width: 56px;
+			height: 48px;
+			min-height: 48px;
+			padding: 0;
+			border: 0;
+			border-radius: 14px;
+			background: none;
+			box-shadow: none;
+			/* The side of the plate and its shadow follow the cut. */
+			filter: drop-shadow(0 var(--bb-depth) 0 var(--bb-side))
+				drop-shadow(0 4px 5px rgb(0 0 0 / 0.75));
+		}
+		.brass-btn--chevron::before {
+			inset: 0;
+			border: 0;
+			border-radius: 0;
+			background:
+				var(--_bevel) center / 100% 100% no-repeat,
+				var(--bb-light),
+				var(--bb-skin) var(--bb-skin-at) / 1024px 512px;
+			box-shadow: none;
+			-webkit-mask: var(--_shape) center / 100% 100% no-repeat;
+			mask: var(--_shape) center / 100% 100% no-repeat;
+		}
+		.brass-btn--chevron::after {
+			inset: 0;
+			background:
+				radial-gradient(circle at 13px 33px, var(--color-blue-white) 0 1.1px, transparent 1.8px),
+				radial-gradient(circle at 43px 33px, var(--color-blue-white) 0 1.1px, transparent 1.8px),
+				var(--bb-line);
+			-webkit-mask: var(--_circuit) center / 100% 100% no-repeat;
+			mask: var(--_circuit) center / 100% 100% no-repeat;
+		}
+		.brass-btn--chevron:hover:where(:not(:disabled, [aria-disabled='true']))::after,
+		.brass-btn--chevron:focus-visible:where(:not(:disabled, [aria-disabled='true']))::after {
+			-webkit-mask-image: var(--_circuit-lit);
+			mask-image: var(--_circuit-lit);
+		}
+		.brass-btn--chevron:disabled,
+		.brass-btn--chevron[aria-disabled='true'] {
+			filter: saturate(0.45) brightness(0.6) drop-shadow(0 var(--bb-depth) 0 var(--bb-side))
+				drop-shadow(0 4px 5px rgb(0 0 0 / 0.75));
+		}
+	}
+</style>

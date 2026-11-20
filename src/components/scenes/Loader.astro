@@ -1,0 +1,19 @@
+---
+// PLACEHOLDER for the loading screen (A1 → A5). The loader scene replaces this
+// file and src/experience/loader/index.ts.
+//
+// A black cover over the whole page and nothing on it. The stub loader is
+// over the moment it mounts, and the shell (index.astro) takes #loader off
+// the page whenever the scene is not `loading`.
+---
+
+<div id="loader" aria-hidden="true"></div>
+
+<style is:global>
+	#loader {
+		position: fixed;
+		inset: 0;
+		z-index: 50;
+		background: #000;
+	}
+</style>

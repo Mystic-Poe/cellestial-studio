@@ -1,128 +1,96 @@
 @import "tailwindcss";
 
-/* Cellestial Studio — palette roles from the Nov 9 design doc, confirmed in
-   the Nov 15 homepage spec. */
-@theme {
-	--color-night: #04070a;
-	--color-soil: #050806;
-	--color-card: #070c10;
-	--color-root: #08100c;
-	--color-root-featured: #0a1510;
-	--color-hairline: #12201a;
-	--color-border: #1c2e27;
-	--color-moss: #2c5a46;
-	--color-heading: #f2f8f5;
-	--color-body: #e6f1ec;
-	--color-secondary: #c4d6cf;
-	--color-muted: #a9c2ba;
-	--color-label: #8fa8a0;
-	--color-faint: #6f8a81;
+/* The palette. `theme(static)` writes every token to :root whether or not this
+   stylesheet uses it: the UI kit and the scenes read the palette from their
+   own <style> blocks, which Tailwind never sees, and without it most of the
+   tokens would be dropped as unused. */
+@import "./tokens.css" theme(static);
 
-	--color-glow: #5ef2d6;
-	--color-tier-site: #5ef2d6;
-	--color-tier-systems: #8be9ff;
-	--color-tier-app: #c3a6ff;
-	--color-tier-companion: #ffd27a;
-	--color-tier-slot: #a3b8c2;
-
-	--font-sans: var(--font-plex-mono);
-	--font-mono: var(--font-plex-mono);
-	--font-display: var(--font-instrument-serif);
+/* One typeface for every word on the site (BLUEPRINT section 4). The three
+   family tokens all point at it, so the classes the protected pages and
+   scripts emit keep working. */
+@theme static {
+	--font-sans: var(--font-quicksand);
+	--font-mono: var(--font-quicksand);
+	--font-display: var(--font-quicksand);
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@layer base {
 	html {
-		scroll-behavior: smooth;
+		background-color: var(--color-black);
+		color-scheme: dark;
+	}
+
+	body {
+		background-color: var(--color-black);
+		color: var(--color-white);
+		font-family: var(--font-sans);
+		/* Quicksand's regular is a hairline on black; medium carries body copy. */
+		font-weight: 500;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-blue);
+		outline-offset: 3px;
+	}
+
+	::selection {
+		background-color: color-mix(in srgb, var(--color-blue) 45%, transparent);
+		color: #fff;
 	}
 }
 
-body {
-	background-color: var(--color-night);
-	color: var(--color-body);
-	font-family: var(--font-plex-mono);
-	-webkit-font-smoothing: antialiased;
+/* The helper classes the protected pages and scripts still emit, in the new
+   look. They sit in the components layer, so a utility on the same element
+   (`display text-4xl leading-tight`) still has the last word.
+
+   .pill, .pill--primary and .pill--secondary are the old names of the brass
+   button and its quiet variant: src/components/ui/BrassButton.astro styles
+   them, from the same rules as .brass-btn, so there is one button on the
+   site. */
+@layer components {
+	/* Headings: brass, tight. */
+	.display {
+		font-family: var(--font-display);
+		font-weight: 600;
+		line-height: 1.05;
+		letter-spacing: -0.015em;
+		color: var(--color-brass-text);
+	}
+
+	/* The small label over a heading. */
+	.eyebrow {
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: 0.75rem;
+		line-height: 1.4;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--color-brass-text);
+	}
 }
 
-:focus-visible {
-	outline: 2px solid var(--color-glow);
-	outline-offset: 3px;
-}
-
-/* The sky: fixed behind everything. Absent without JS (it is inserted by
-   Sky.astro's script), so the no-JS page is plain night. */
-.sky-canvas {
-	position: fixed;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	pointer-events: none;
-}
-
-/* Motion switch off, or reduced motion before the switch is touched. */
+/* The device asked for reduced motion. Base.astro sets the attribute before
+   first paint and keeps it in step with the setting. */
+/* biome-ignore-start lint/complexity/noImportantStyles: this has to beat every transition and animation on the site, whatever its selector */
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
-html[data-motion="off"] *::after {
+html[data-motion="off"] *::after,
+html[data-motion="off"] *::backdrop {
 	animation: none !important;
 	transition: none !important;
 }
-html[data-motion="off"] {
-	scroll-behavior: auto;
-}
 
-/* Shared pill buttons (spec: pill, uppercase mono, accent fill, dark text;
-   secondary gets a moss outline). */
-.pill {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	min-height: 44px;
-	padding: 0 1.25rem;
-	border-radius: 999px;
-	font-family: var(--font-plex-mono);
-	font-weight: 500;
-	font-size: 0.75rem;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	text-decoration: none;
-	transition:
-		background-color 200ms ease,
-		border-color 200ms ease,
-		color 200ms ease;
+/* The same, for a page whose script never ran. */
+@media (prefers-reduced-motion: reduce) {
+	html:not([data-motion]) *,
+	html:not([data-motion]) *::before,
+	html:not([data-motion]) *::after,
+	html:not([data-motion]) *::backdrop {
+		animation: none !important;
+		transition: none !important;
+	}
 }
-.pill--primary {
-	background: var(--color-glow);
-	color: var(--color-night);
-}
-.pill--primary:hover {
-	background: #8af7e3;
-}
-.pill--secondary {
-	border: 1px solid var(--color-moss);
-	color: var(--color-secondary);
-}
-.pill--secondary:hover {
-	border-color: var(--color-glow);
-	color: var(--color-heading);
-}
-
-.eyebrow {
-	font-family: var(--font-plex-mono);
-	font-weight: 500;
-	font-size: 0.6875rem;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: var(--color-label);
-}
-
-.display {
-	font-family: var(--font-display);
-	font-weight: 400;
-	line-height: 0.98;
-	letter-spacing: -0.01em;
-	color: var(--color-heading);
-}
-.display em {
-	font-style: italic;
-	color: var(--color-glow);
-}
+/* biome-ignore-end lint/complexity/noImportantStyles: see above */

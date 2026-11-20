@@ -1,0 +1,19 @@
+---
+// The message box: the same form as the build request, without a star.
+import ContactForm from './ContactForm.astro';
+import Panel from './ui/Panel.astro';
+---
+
+<Panel
+	as="dialog"
+	size="large"
+	id="contact-dialog"
+	class="panel--sheet"
+	aria-labelledby="contact-title"
+>
+	<div class="panel__head">
+		<h2 id="contact-title" class="panel__title">Contact me</h2>
+		<button class="panel__close" type="button" data-contact-close aria-label="Close"></button>
+	</div>
+	<ContactForm id="contact-box-form" turnstile="explicit" />
+</Panel>

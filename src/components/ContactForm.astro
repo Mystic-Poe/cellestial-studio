@@ -47,31 +47,64 @@ const ready = TURNSTILE_SITE_KEY !== '';
     flex-direction: column;
     gap: 0.4rem;
   }
+  /* Pale labels over black fields with a brass hairline. */
   .cform label {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
+    font-weight: 600;
     color: var(--color-secondary);
   }
   .cform input,
   .cform textarea {
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-brass);
     border-radius: 10px;
-    background: var(--color-card);
-    color: var(--color-body);
-    padding: 0.6rem 0.75rem;
+    background: var(--color-black);
+    color: var(--color-white);
+    padding: 0.65rem 0.8rem;
     font: inherit;
+    transition:
+      border-color 160ms ease-out,
+      box-shadow 160ms ease-out;
   }
+  .cform textarea {
+    min-height: 7.5rem;
+    resize: vertical;
+  }
+  .cform input:hover,
+  .cform textarea:hover {
+    border-color: var(--color-brass-text);
+  }
+  .cform input:focus-visible,
+  .cform textarea:focus-visible {
+    border-color: var(--color-blue);
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+    box-shadow: 0 0 12px 0 color-mix(in srgb, var(--color-blue) 45%, transparent);
+  }
+  /* A field the browser filled in keeps its black face. */
+  .cform input:autofill {
+    -webkit-text-fill-color: #fff;
+    box-shadow: inset 0 0 0 100px var(--color-black);
+    caret-color: #fff;
+  }
+  /* Turnstile's iframe never goes below 300px wide, even with size: 'flexible'.
+     On a screen too narrow to give it that, scale it to fit. */
+  @media (max-width: 22.75rem) {
+    .cform .cf-turnstile,
+    .cform [data-turnstile-slot] {
+      height: 56px;
+      transform: scale(0.85);
+      transform-origin: top left;
+    }
+  }
+  /* Send is the brass button: .pill is its old name (see BrassButton.astro). */
   .cform__send {
     align-self: flex-start;
-    border: 0;
-    cursor: pointer;
-  }
-  .cform__send:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
   .cform__status {
-    font-size: 0.8125rem;
-    min-height: 1.2em;
+    min-height: 1.5em;
     margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-white);
   }
 </style>
