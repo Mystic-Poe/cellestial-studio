@@ -672,6 +672,87 @@ function ringNodes(px, wm, box) {
 /** Where the writing of each letter begins: e, l, l, e, s, t, i, a, l. */
 const STARTS = ['left', 'top', 'top', 'left', 'bottomLeft', 'top', 'top', 'topLeft', 'top'];
 
+/**
+ * How the reference writes an e (read off its frames from 3.625 s to 3.833 s).
+ * The lightning lands on the left of the bowl, where the bar meets it. From
+ * there the tube shoots up and slows as it comes over the top; a little
+ * later it runs down the left side, waits, and goes round the bottom to the
+ * ring; the bar comes last, from the left. Each stretch is a row of
+ * `[how far along it, when]` keys, `when` as a part of the time the letter takes.
+ */
+const E_ORDER = {
+	upper: [
+		[0, 0],
+		[0.55, 0.2],
+		[1, 0.74],
+	],
+	lower: [
+		[0, 0.25],
+		[0.37, 0.42],
+		[0.5, 0.64],
+		[1, 1],
+	],
+	bar: [
+		[0, 0.66],
+		[1, 0.97],
+	],
+};
+
+/**
+ * An e's line and the distances along it, in E_ORDER. The bar is whatever of
+ * the line lies well inside the bowl; it is cut just short of the bowl on its
+ * right, so that it is written from the left only. The distances are scaled
+ * like any letter's: the longest is `reach`, the longest way along the line
+ * from `root`.
+ */
+function orderE(skel, w, h, root) {
+	const ry = Math.floor(root / w);
+	let x0 = w;
+	let x1 = 0;
+	let y0 = h;
+	let y1 = 0;
+	for (let p = 0; p < w * h; p++) {
+		if (!skel[p]) continue;
+		x0 = Math.min(x0, p % w);
+		x1 = Math.max(x1, p % w);
+		y0 = Math.min(y0, Math.floor(p / w));
+		y1 = Math.max(y1, Math.floor(p / w));
+	}
+	// The bowl is close to an ellipse through the line's own extremes.
+	const inside = (p) =>
+		(((p % w) - (x0 + x1) / 2) / ((x1 - x0) / 2)) ** 2 +
+			((Math.floor(p / w) - (y0 + y1) / 2) / ((y1 - y0) / 2)) ** 2 <
+		0.72;
+	let last = 0;
+	for (let p = 0; p < w * h; p++) if (skel[p] && inside(p)) last = Math.max(last, p % w);
+	const cut = Uint8Array.from(skel);
+	for (let p = 0; p < w * h; p++) if (cut[p] && inside(p) && p % w >= last - 2) cut[p] = 0;
+	const plain = flood(cut, w, h, root);
+	const part = (p) => (inside(p) ? 'bar' : Math.floor(p / w) > ry + 1 ? 'lower' : 'upper');
+	const span = { upper: [0, 0], lower: [Infinity, 0], bar: [Infinity, 0] };
+	let reach = 0;
+	for (let p = 0; p < w * h; p++) {
+		if (!cut[p]) continue;
+		const s = span[part(p)];
+		s[0] = Math.min(s[0], plain[p]);
+		s[1] = Math.max(s[1], plain[p]);
+		reach = Math.max(reach, plain[p]);
+	}
+	const dist = new Float32Array(w * h).fill(Infinity);
+	for (let p = 0; p < w * h; p++) {
+		if (!cut[p]) continue;
+		const k = part(p);
+		const keys = E_ORDER[k];
+		const along = (plain[p] - span[k][0]) / (span[k][1] - span[k][0]);
+		let i = 1;
+		while (i < keys.length - 1 && keys[i][0] < along) i++;
+		const [a0, v0] = keys[i - 1];
+		const [a1, v1] = keys[i];
+		dist[p] = reach * (v0 + ((v1 - v0) * (along - a0)) / (a1 - a0));
+	}
+	return { skel: cut, dist, reach };
+}
+
 /** The circuit line of every letter, each point with how far into the writing it comes. */
 function letters(px, wm, manifest) {
 	const n = wm.w * wm.h;
@@ -702,10 +783,11 @@ function letters(px, wm, manifest) {
 				local[y * w + x] = smooth[(box.y + y) * wm.w + box.x + x];
 			}
 		}
-		const skel = skeleton(hysteresis(px, local, w, h, 20, 45, 12), w, h, 7);
-		const pixels = [];
-		for (let i = 0; i < w * h; i++) if (skel[i]) pixels.push(i);
-		if (!pixels.length) throw new Error(`loader: no circuit line found in letter ${index}`);
+		let skel = skeleton(hysteresis(px, local, w, h, 20, 45, 12), w, h, 7);
+		const whole = [];
+		for (let i = 0; i < w * h; i++) if (skel[i]) whole.push(i);
+		if (!whole.length) throw new Error(`loader: no circuit line found in letter ${index}`);
+		let pixels = whole;
 		const score = {
 			left: (x, y) => x + Math.abs(y - h / 2) * 0.05,
 			top: (_x, y) => y,
@@ -715,13 +797,41 @@ function letters(px, wm, manifest) {
 		const at = (p) => score(p % w, Math.floor(p / w));
 		let root = pixels[0];
 		for (const p of pixels) if (at(p) < at(root)) root = p;
-		const dist = flood(skel, w, h, root);
+		let dist;
 		let reach = 0;
-		for (const p of pixels) reach = Math.max(reach, dist[p]);
-		const lines = forwardLines(skel, w, h, dist, { tol: 3, zScale: 0.5 }).map((line) =>
-			line.map(([x, y, d]) => [x + box.x, y + box.y, d / reach]),
-		);
-		for (const p of pixels)
+		if (box.ch === 'e') {
+			({ skel, dist, reach } = orderE(skel, w, h, root));
+			pixels = whole.filter((p) => skel[p]);
+		} else {
+			dist = flood(skel, w, h, root);
+			for (const p of pixels) reach = Math.max(reach, dist[p]);
+		}
+		const lines = forwardLines(skel, w, h, dist, { tol: 3, zScale: 0.5 })
+			.map((line) => line.map(([x, y, d]) => [x + box.x, y + box.y, d / reach]))
+			.flatMap((line) => {
+				// A stretch that begins later starts with a leap in its value over
+				// next to no distance. That is a break: what comes after the leap is
+				// a line of its own, and is not there before its time.
+				const parts = [];
+				let from = 0;
+				for (let i = 0; i + 1 < line.length; i++) {
+					const far = Math.hypot(line[i + 1][0] - line[i][0], line[i + 1][1] - line[i][1]);
+					if (line[i + 1][2] - line[i][2] > 0.05 && far < 3) {
+						parts.push(line.slice(from, i + 1));
+						from = i + 1;
+					}
+				}
+				if (!from) return [line];
+				parts.push(line.slice(from));
+				return parts.filter((part) => {
+					let len = 0;
+					for (let i = 1; i < part.length; i++)
+						len += Math.hypot(part[i][0] - part[i - 1][0], part[i][1] - part[i - 1][1]);
+					return len >= 4;
+				});
+			})
+			.sort((a, b) => a[0][2] - b[0][2]);
+		for (const p of whole)
 			weights.push(2 * depth[(box.y + Math.floor(p / w)) * wm.w + box.x + (p % w)]);
 		// A ring lights when the writing reaches the point of the line nearest to it.
 		const ringsOut = rings.map((r) => {

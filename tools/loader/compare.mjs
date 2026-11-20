@@ -119,7 +119,7 @@ async function sheet(name, w, h, parts) {
 		.composite(parts)
 		.jpeg({ quality: 86 })
 		.toFile(join(OUT, name));
-	console.log(`wrote refs/loading/compare/${name}`);
+	console.log(`wrote ${join(OUT, name)}`);
 }
 
 const chunks = (list, n) => {

@@ -135,6 +135,43 @@ function stretch(line: Line, from: number, to: number): number[] {
 	return out;
 }
 
+/**
+ * The stretch of a line from `behind` before to `ahead` beyond the point
+ * where its value is `at`, both measured along the line. Flat x, y pairs.
+ */
+function around(line: Line, at: number, behind: number, ahead: number): number[] {
+	const n = line.length / 3;
+	const along = [0];
+	for (let i = 1; i < n; i++)
+		along.push(
+			along[i - 1] + Math.hypot(line[3 * i] - line[3 * i - 3], line[3 * i + 1] - line[3 * i - 2]),
+		);
+	let cut = at <= line[2] ? 0 : along[n - 1];
+	for (let i = 1; i < n; i++) {
+		const v0 = line[3 * i - 1];
+		const v1 = line[3 * i + 2];
+		if (v0 <= at && v1 >= at) {
+			cut = lerp(along[i - 1], along[i], v1 > v0 ? (at - v0) / (v1 - v0) : 0);
+			break;
+		}
+	}
+	const from = Math.max(0, cut - behind);
+	const to = Math.min(along[n - 1], cut + ahead);
+	const out: number[] = [];
+	if (to - from < 0.5) return out;
+	const point = (d: number) => {
+		let i = 1;
+		while (i < n - 1 && along[i] < d) i++;
+		const f = (d - along[i - 1]) / (along[i] - along[i - 1] || 1);
+		out.push(lerp(line[3 * i - 3], line[3 * i], f), lerp(line[3 * i - 2], line[3 * i + 1], f));
+	};
+	point(from);
+	for (let i = 0; i < n; i++)
+		if (along[i] > from && along[i] < to) out.push(line[3 * i], line[3 * i + 1]);
+	point(to);
+	return out;
+}
+
 const smoother = (x: number) => {
 	const t = clamp01(x);
 	return t * t * t * (t * (t * 6 - 15) + 10);
@@ -204,6 +241,97 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		}
 		return end;
 	});
+	/**
+	 * How fast each line of a letter is written against the letter as a whole
+	 * (1 where a letter is written at one speed, as most are). The lightning
+	 * that plays along a line keeps its length whatever the line's speed.
+	 */
+	const lineRates = LETTERS.map((l) =>
+		l.lines.map((line) => {
+			let length = 0;
+			for (let i = 3; i < line.length; i += 3)
+				length += Math.hypot(line[i] - line[i - 3], line[i + 1] - line[i - 2]);
+			const rate = ((line[line.length - 1] - line[2]) * l.reach) / (length || 1);
+			return Math.abs(rate - 1) < 0.1 ? 1 : rate;
+		}),
+	);
+	/** The middle of each letter's lines, and which of them run round it at a distance (a bowl, not a bar). */
+	const letterMiddles = LETTERS.map((l) => {
+		let x0 = Number.POSITIVE_INFINITY;
+		let x1 = Number.NEGATIVE_INFINITY;
+		let y0 = Number.POSITIVE_INFINITY;
+		let y1 = Number.NEGATIVE_INFINITY;
+		for (const line of l.lines) {
+			for (let i = 0; i < line.length; i += 3) {
+				x0 = Math.min(x0, line[i]);
+				x1 = Math.max(x1, line[i]);
+				y0 = Math.min(y0, line[i + 1]);
+				y1 = Math.max(y1, line[i + 1]);
+			}
+		}
+		const x = (x0 + x1) / 2;
+		const y = (y0 + y1) / 2;
+		const round = l.lines.map((line) => {
+			let sum = 0;
+			for (let i = 0; i < line.length; i += 3) sum += Math.hypot(line[i] - x, line[i + 1] - y);
+			return sum / (line.length / 3) > 0.3 * (y1 - y0);
+		});
+		return { x, y, round };
+	});
+	/** Points (flat x, y pairs) pushed away from a middle by `by`: lightning that runs outside a tube, not in it. */
+	function outward(points: number[], middle: { x: number; y: number }, by: number): number[] {
+		const out: number[] = [];
+		for (let i = 0; i < points.length; i += 2) {
+			const dx = points[i] - middle.x;
+			const dy = points[i + 1] - middle.y;
+			const d = Math.hypot(dx, dy) || 1;
+			out.push(points[i] + (dx / d) * by, points[i + 1] + (dy / d) * by);
+		}
+		return out;
+	}
+	/** The longest line of each letter. */
+	const longest = LETTERS.map((l) => {
+		let best = 0;
+		let most = 0;
+		l.lines.forEach((line, n) => {
+			let length = 0;
+			for (let i = 3; i < line.length; i += 3)
+				length += Math.hypot(line[i] - line[i - 3], line[i + 1] - line[i - 2]);
+			if (length > most) {
+				most = length;
+				best = n;
+			}
+		});
+		return best;
+	});
+	/** The point of what is written of some lines (up to `upTo`) that lies nearest to (x, y). */
+	function nearestWritten(
+		lines: readonly Line[],
+		upTo: number,
+		x: number,
+		y: number,
+	): { x: number; y: number } {
+		let best = Number.POSITIVE_INFINITY;
+		const at = { x, y };
+		const consider = (px: number, py: number) => {
+			const d = (px - x) ** 2 + (py - y) ** 2;
+			if (d < best) {
+				best = d;
+				at.x = px;
+				at.y = py;
+			}
+		};
+		for (const line of lines) {
+			for (let i = 0; i < line.length && line[i + 2] <= upTo; i += 3) {
+				consider(line[i], line[i + 1]);
+				if (i + 5 < line.length && line[i + 5] > upTo) {
+					const f = (upTo - line[i + 2]) / (line[i + 5] - line[i + 2]);
+					consider(lerp(line[i], line[i + 3], f), lerp(line[i + 1], line[i + 4], f));
+				}
+			}
+		}
+		return at;
+	}
 	/** The node's light in the last intro frame, so A5 can let it down gently. */
 	let breath = 0;
 
@@ -748,34 +876,40 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const letter = LETTERS[j];
 			const stroke = strokes[j];
 			const from = j === 0 ? LENS_W : letterEnds[j - 1];
+			// The first letter of the full version is thrown from the main node: one
+			// tall, open arc that leaps up to where the letter begins and then stands
+			// between the node and the letter for as long as it is being written.
+			const first = j === 0 && !short;
 			// The arc that jumps to where this letter begins.
+			const rise = first ? 0.045 : lead;
 			const jump = keyed(
 				[
-					[a - lead, 0],
-					[a - lead * 0.4, 1],
+					[a - rise, 0],
+					[a - rise * (first ? 0.8 : 0.4), 1],
 					[a + 0.02, 1],
 					[a + 0.05, 0],
 				],
 				t,
 			);
 			if (jump > 0 && !(short && j > 0)) {
-				const grow = clamp01((t - (a - lead)) / (lead * 0.6));
-				const lines = bolt(
-					from.x,
-					from.y,
-					lerp(from.x, letter.start.x, grow),
-					lerp(from.y, letter.start.y, grow),
-					{
-						seed: mix(41, j, frame),
-						sway: 0.2,
-						roughness: 0.6,
-						detail: 7,
-						branches: 1,
-						branchLength: 0.3,
-					},
-				);
-				strokeBolt(main, lines, { width: thin(2.6), alpha: jump });
+				const grow = clamp01((t - (a - rise)) / (rise * (first ? 0.9 : 0.6)));
+				const tipX = lerp(from.x, letter.start.x, grow);
+				const tipY = lerp(from.y, letter.start.y, grow);
+				const lines = bolt(from.x, from.y, tipX, tipY, {
+					seed: mix(41, j, frame),
+					shape: first ? mix(51, flickerFrame(t, 84)) : undefined,
+					sway: first ? 0.27 : 0.2,
+					roughness: 0.6,
+					detail: 7,
+					branches: first ? 2 : 1,
+					branchLength: 0.3,
+				});
+				strokeBolt(main, lines, { width: thin(first ? 3.6 : 2.6), alpha: jump });
 				arcs.push(...lines);
+				if (first) {
+					spot(hot, 'word', tipX, tipY, 20, jump);
+					into(main, 'word', dpr);
+				}
 			}
 			// The leader: before the tube, a jagged arc throws itself out along the way
 			// the letter will go, and the tube then follows it.
@@ -789,7 +923,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				],
 				t,
 			);
-			if (leader > 0 && !short) {
+			if (leader > 0 && !short && !first) {
 				const ahead: number[] = [];
 				prefix(letter.lines, clamp01(written(j, t)) * 0.5 + 0.42, ahead);
 				const tail = stroke?.heads.length ? stroke.heads : j === 0 ? [LENS_W.x, LENS_W.y] : [];
@@ -813,7 +947,22 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				const random = seeded(mix(43, j, frame));
 				// The bolt that feeds the head: from the node for the first letter
 				// (and, in the short version, for every letter: one bolt writes the word).
-				if ((j === 0 || short) && stroke.heads.length) {
+				if (first) {
+					// It lands on whatever of the letter lies nearest the node: the
+					// place the writing began, then down the letter's left side.
+					const foot = nearestWritten(letter.lines, stroke.w, LENS_W.x, LENS_W.y);
+					const lines = bolt(LENS_W.x, LENS_W.y, foot.x, foot.y, {
+						seed: mix(44, j, frame),
+						shape: mix(51, flickerFrame(t, 84)),
+						sway: 0.27,
+						roughness: 0.6,
+						detail: 7,
+						branches: 2,
+						branchLength: 0.3,
+					});
+					strokeBolt(main, lines, { width: thin(3.6), alpha: 0.95 });
+					arcs.push(...lines);
+				} else if (short && stroke.heads.length) {
 					const lines = bolt(LENS_W.x, LENS_W.y, stroke.heads[0], stroke.heads[1], {
 						seed: mix(44, j, frame),
 						shape: mix(45, j, flickerFrame(t, 90)),
@@ -823,16 +972,25 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 						branches: 2,
 						branchLength: 0.22,
 					});
-					strokeBolt(main, lines, { width: thin(short ? 2.8 : 3), alpha: 0.9 });
+					strokeBolt(main, lines, { width: thin(2.8), alpha: 0.9 });
 					arcs.push(...lines);
 				}
 				// Lightning along the stroke, around the head: what resolves into the tube.
 				letter.lines.forEach((line, n) => {
-					const part = stretch(line, stroke.w - 0.2, stroke.w + 0.34);
+					// A line written at a speed of its own (the strokes of an e) is not
+					// there before its time, and its lightning is measured in length.
+					const paced = lineRates[j][n] !== 1;
+					if (paced && (stroke.w < line[2] - 0.02 || stroke.w > line[line.length - 1] + 0.1))
+						return;
+					let part = paced
+						? around(line, stroke.w, first ? 130 : 48, 62)
+						: stretch(line, stroke.w - 0.2, stroke.w + 0.34);
 					if (part.length < 4) return;
+					// Round the first letter the lightning hugs the tube from outside.
+					if (first && letterMiddles[j].round[n]) part = outward(part, letterMiddles[j], 15);
 					const jag = crackle(part, {
 						seed: mix(42, j, n, frame),
-						reach: 8,
+						reach: first ? 12 : 8,
 						detail: 6,
 						pin: 'start',
 					});
@@ -882,6 +1040,31 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				}
 				spot(hot, 'word', end.x, end.y, 22, 0.7 * fade);
 				into(main, 'word', dpr);
+				if (first) {
+					// The arc from the node lets go last.
+					const foot = nearestWritten(letter.lines, 1, LENS_W.x, LENS_W.y);
+					const lines = bolt(LENS_W.x, LENS_W.y, foot.x, foot.y, {
+						seed: mix(44, j, frame),
+						shape: mix(51, flickerFrame(t, 84)),
+						sway: 0.27,
+						roughness: 0.6,
+						detail: 7,
+						branches: 1,
+						branchLength: 0.3,
+					});
+					strokeBolt(main, lines, { width: thin(3), alpha: 0.9 * fade });
+					arcs.push(...lines);
+					// And a last run of lightning down the letter's far side.
+					const far = outward(around(letter.lines[longest[j]], 2, 130, 0), letterMiddles[j], 20);
+					const side = crackle(far, {
+						seed: mix(52, frame),
+						reach: 13,
+						detail: 6,
+						pin: 'none',
+					});
+					strokeBolt(main, [side], { width: thin(2.4), alpha: 0.85 * fade });
+					arcs.push(side);
+				}
 			}
 		}
 		if (arcs.length) glow('word', [16, 50, 0], [0.3, 0.16, 0], arcs);

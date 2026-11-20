@@ -83,7 +83,7 @@ export const FULL: Script = {
 	// Each letter is written in about a tenth of a second, then the lightning
 	// plays over it for as long again before it jumps on (read off the frames).
 	letters: [
-		[3.65, 3.84],
+		[3.62, 3.82],
 		[3.92, 4.04],
 		[4.12, 4.22],
 		[4.36, 4.52],
