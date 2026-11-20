@@ -48,6 +48,8 @@ interface Quality {
 	planes: number;
 	radius: number;
 	struts: boolean;
+	/** The honeycomb planes between two layers. */
+	between: boolean;
 	/** Trail length in the fall, 0..1. */
 	trail: number;
 	/** Idle animation (the stars' slow turn, the core's breath). */
@@ -56,11 +58,11 @@ interface Quality {
 
 /** What the governor sheds, in order: pixels first, then honeycomb, trails and idle motion. */
 const QUALITY: readonly Quality[] = [
-	{ dpr: 2, planes: 5, radius: 1, struts: true, trail: 1, idle: 1 },
-	{ dpr: 1.5, planes: 5, radius: 1, struts: true, trail: 1, idle: 1 },
-	{ dpr: 1, planes: 5, radius: 1, struts: true, trail: 1, idle: 1 },
-	{ dpr: 1, planes: 3, radius: 0.8, struts: true, trail: 0.7, idle: 1 },
-	{ dpr: 1, planes: 2, radius: 0.6, struts: false, trail: 0.45, idle: 0 },
+	{ dpr: 2, planes: 5, radius: 1, struts: true, between: true, trail: 1, idle: 1 },
+	{ dpr: 1.5, planes: 5, radius: 1, struts: true, between: true, trail: 1, idle: 1 },
+	{ dpr: 1, planes: 5, radius: 1, struts: true, between: true, trail: 1, idle: 1 },
+	{ dpr: 1, planes: 3, radius: 0.8, struts: true, between: false, trail: 0.7, idle: 1 },
+	{ dpr: 1, planes: 2, radius: 0.6, struts: false, between: false, trail: 0.45, idle: 0 },
 ];
 
 /** The levels a screen of this pixel ratio really has: steps that would change nothing are left out. */
@@ -807,6 +809,7 @@ export const mount: MountSky = (ctx) => {
 		planes: quality.planes,
 		radius: quality.radius,
 		struts: quality.struts,
+		between: quality.between,
 		trail: quality.trail,
 	};
 	const angles: [number, number, number] = [0, 0, 0];
@@ -820,6 +823,7 @@ export const mount: MountSky = (ctx) => {
 		frame.planes = quality.planes;
 		frame.radius = quality.radius;
 		frame.struts = quality.struts;
+		frame.between = quality.between;
 		frame.trail = quality.trail;
 
 		let lattice = 1;

@@ -48,6 +48,7 @@ uniform vec2 uHalfRes;
 uniform float uFocal;
 uniform float uDpr;
 uniform vec3 uWidth;
+uniform float uThin;
 uniform float uClip;
 
 varying float vSide;
@@ -96,7 +97,8 @@ void main() {
 	vHalf = 0.5 * w;
 	vDepth = depth;
 	vAlong = first ? ta : tb;
-	vThin = min(1.0, trueW / uWidth.y);
+	// Thinner than a pixel it dims, but gently: a far figure is still a figure.
+	vThin = min(1.0, pow(trueW / uWidth.y, uThin));
 	vXY = mix(wa.xy, wb.xy, vAlong);
 	vPulse = aPulse;
 }
@@ -226,6 +228,8 @@ uniform vec3 uBlue;
 uniform vec3 uBlueWhite;
 uniform vec3 uIgnite;
 uniform float uRim;
+uniform float uBody;
+uniform float uFarGain;
 uniform float uTime;
 uniform float uIdle;
 uniform float uDpr;
@@ -255,11 +259,15 @@ void main() {
 
 	// B4, asleep: the dark sphere, with a thin blue light on its edge and just
 	// off it so that it reads on black. Small and far, the whole of it is that light.
-	float rim = uRim * (1.0 + 2.4 * vBoost);
-	float limb = smoothstep(0.7, 1.0, r);
+	// From far away the sphere itself cannot be seen: what is left is its light, a
+	// small steel-blue point, so that a distant figure is still a figure of stars.
+	float small = 1.0 - smoothstep(2.0, 8.0, vTrue);
+	float rim = uRim * (1.0 + 2.4 * vBoost) * (1.0 + uFarGain * small);
+	float limb = smoothstep(0.78, 1.0, r);
 	limb = mix(limb * limb, 1.0, 1.0 - smoothstep(1.5, 5.0, vTrue));
 	float halo = exp(-max(r - 1.0, 0.0) / 0.16);
-	vec3 empty = b4.rgb * disc * (1.0 + 0.7 * vBoost) + uBlue * rim * (0.85 * limb * disc + halo * (1.0 - disc));
+	vec3 body = b4.rgb * uBody * (1.0 + 0.7 * vBoost);
+	vec3 empty = body * disc + uBlue * rim * (0.85 * limb * disc + halo * (1.0 - disc));
 
 	// B5, alive, and the claim that takes one to the other: the charge runs
 	// down the traces from the pole they fan out of, white at its head; then

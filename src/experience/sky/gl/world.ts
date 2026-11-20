@@ -64,25 +64,38 @@ const NEVER = -1000;
 export const LOOK = {
 	/** Figure lines: brass, this strong, this wide at the station (pixels). */
 	lineColor: BRASS_TEXT_RGB,
-	lineAlpha: 0.36,
+	lineAlpha: 0.4,
 	linePx: 1.4,
 	/** The honeycomb plane. */
 	latticeColor: BRASS_RGB,
-	latticeAlpha: 0.3,
-	latticePx: 1.1,
+	latticeAlpha: 0.21,
+	latticePx: 0.95,
+	/** The planes between two layers, as a share of a layer's own. */
+	betweenAlpha: 0.75,
 	/** The struts: strength, how faint between two planes, how soon they fade from a plane. */
 	strutAlpha: 0.26,
 	strutMid: 0.2,
 	strutFall: 0.14,
+	/**
+	 * A line thinner than the least width dims instead of thinning: by this power of how much
+	 * thinner it is. The figures keep more of their light than the honeycomb, so the next
+	 * constellation ahead is seen as one.
+	 */
+	lineThin: 0.3,
+	latticeThin: 0.5,
 	/** The least and most a line is ever wide, pixels. */
 	minPx: 0.9,
 	maxPx: 3.2,
 	/** B4's blue rim: "a thin blue outer glow at ~20%". */
-	rim: 0.3,
+	rim: 0.21,
+	/** B4's own picture is very dark: it is lifted by this much so the sphere reads at 30 px. */
+	body: 1.7,
+	/** How much stronger the rim's light is on a star too far away to show its sphere. */
+	farGain: 2.6,
 	/** A far star is never drawn smaller than this radius. */
 	starMinPx: 1.25,
 	/** The halo round B3's core, and the core's light on its rings. */
-	halo: 0.2,
+	halo: 0.28,
 	ringLight: 0.16,
 	/** Where the near half of a ring takes over from the far half, pixels of the ring picture. */
 	feather: 60,
@@ -129,6 +142,8 @@ export interface Frame {
 	planes: number;
 	radius: number;
 	struts: boolean;
+	/** The honeycomb planes between two layers, on or off. */
+	between: boolean;
 	trail: number;
 }
 
@@ -220,6 +235,8 @@ interface Slot {
 	plane: Mesh<InstancedBufferGeometry, ShaderMaterial>;
 	planePulse: InstancedBufferAttribute;
 	planeDirty: boolean;
+	/** The honeycomb planes between this layer and the next one. */
+	between: Mesh<InstancedBufferGeometry, ShaderMaterial>[];
 	struts: Mesh<InstancedBufferGeometry, ShaderMaterial>;
 	strutPulse: InstancedBufferAttribute;
 	strutDirty: boolean;
@@ -324,7 +341,10 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 	const strutA = new InstancedBufferAttribute(sA, 3);
 	const strutB = new InstancedBufferAttribute(sB, 3);
 
-	const lineUniforms = (color: readonly [number, number, number]) => ({
+	const lineUniforms = (
+		color: readonly [number, number, number],
+		thin: number = LOOK.latticeThin,
+	) => ({
 		uOffset: { value: new Vector3() },
 		uHalfRes,
 		uFocal,
@@ -332,6 +352,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uTime,
 		uClip,
 		uWidth: { value: new Vector3(0, LOOK.minPx, LOOK.maxPx) },
+		uThin: { value: thin },
 		uColor: { value: v3(color) },
 		uAlpha: { value: 0 },
 		uNear: { value: new Vector2(FADE.near[0], FADE.near[1]) },
@@ -408,7 +429,13 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uBlueWhite: { value: v3(BLUE_WHITE_RGB) },
 		uIgnite: { value: new Vector3(IGNITE.fire, IGNITE.flash, IGNITE.settle) },
 		uRim: { value: LOOK.rim },
+		uBody: { value: LOOK.body },
+		uFarGain: { value: LOOK.farGain },
 	});
+
+	// The planes between two layers carry no light of their own: one buffer says so for all of them.
+	const noPulse = new InstancedBufferAttribute(new Float32Array(comb.edgeCount * 2), 2);
+	for (let e = 0; e < comb.edgeCount; e++) noPulse.array[e * 2] = NEVER;
 
 	// ── the slots ──
 	const slots: Slot[] = [];
@@ -427,6 +454,20 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		plane.material.uniforms.uRadial?.value.set(0, 0, LATTICE.fadeFrom, LATTICE.radius);
 		plane.material.uniforms.uFar?.value.set(...FADE.farLattice);
 
+		const between: Slot['between'] = [];
+		for (let j = 1; j < LATTICE.between; j++) {
+			const geo = instanced(lineQuad, comb.edgeCount);
+			geo.setAttribute('aA', planeA);
+			geo.setAttribute('aB', planeB);
+			geo.setAttribute('aPulse', noPulse);
+			const mesh = new Mesh(
+				geo,
+				shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.latticeColor)),
+			);
+			mesh.material.uniforms.uFar?.value.set(...FADE.farLattice);
+			between.push(mesh);
+		}
+
 		const strutGeo = instanced(lineQuad, strutCount);
 		strutGeo.setAttribute('aA', strutA);
 		strutGeo.setAttribute('aB', strutB);
@@ -444,13 +485,13 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 
 		const lines = new Mesh(
 			lineGeo[0] as InstancedBufferGeometry,
-			shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.lineColor)),
+			shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.lineColor, LOOK.lineThin)),
 		);
 		const stars = new Mesh(
 			starGeo[0] as InstancedBufferGeometry,
 			shader(STAR_VERTEX, STAR_FRAGMENT, starUniforms()),
 		);
-		for (const m of [plane, struts, lines, stars]) {
+		for (const m of [plane, ...between, struts, lines, stars]) {
 			m.frustumCulled = false;
 			m.matrixAutoUpdate = false;
 			m.visible = false;
@@ -461,6 +502,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 			plane,
 			planePulse,
 			planeDirty: false,
+			between,
 			struts,
 			strutPulse,
 			strutDirty: false,
@@ -602,6 +644,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		const strutsShown = within(strutReach, radius);
 		for (const slot of slots) {
 			slot.plane.visible = slot.struts.visible = slot.lines.visible = slot.stars.visible = false;
+			for (const m of slot.between) m.visible = false;
 		}
 		for (let k = near - 1; k < near - 1 + POOL; k++) {
 			const depth = cam.z + k * SPACING;
@@ -625,6 +668,21 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 				slot.plane.geometry.instanceCount = planeCount;
 				slot.plane.renderOrder = order;
 				slot.plane.visible = true;
+			}
+			// The planes between this layer and the next: the same honeycomb, further on.
+			if (f.between && f.lattice > 0.001 && ahead < f.planes) {
+				for (const [j, mesh] of slot.between.entries()) {
+					const d = depth + ((j + 1) * SPACING) / LATTICE.between;
+					if (d <= PLANE_GAP) continue;
+					const u = mesh.material.uniforms;
+					u.uOffset?.value.set(0, 0, -d);
+					u.uWidth?.value.setX(LOOK.latticePx / fit.scale);
+					u.uRadial?.value.set(0, 0, LATTICE.fadeFrom * f.radius, radius);
+					if (u.uAlpha) u.uAlpha.value = LOOK.latticeAlpha * LOOK.betweenAlpha * f.lattice;
+					mesh.geometry.instanceCount = planeCount;
+					mesh.renderOrder = order - 20 + 16;
+					mesh.visible = true;
+				}
 			}
 			if (f.struts && f.lattice > 0.001 && ahead < f.planes) {
 				const u = slot.struts.material.uniforms;

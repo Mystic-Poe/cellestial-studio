@@ -40,6 +40,11 @@ export const LATTICE = {
 	/** The plane under each layer is a disc of cells this wide (radius), fading over its outer part. */
 	radius: 4.6,
 	fadeFrom: 1.4,
+	/**
+	 * Planes per layer spacing: one under each constellation and the rest evenly between it
+	 * and the next, so the honeycomb is seen to recede. Only a layer's own plane carries beads.
+	 */
+	between: 3,
 	/** Squared distances from the axis, in edges, of the vertices that carry a strut. */
 	strutRings: [4, 13, 28, 49, 76],
 } as const;
@@ -66,9 +71,9 @@ export const FADE = {
 	/** B3 is large: it lets go earlier. */
 	nearB3: [0.22, 0.75],
 	/** Figures: whole up to `far[0]`, then an exponential falloff with this length, gone at `far[2]`. */
-	far: [3.6, 5.2, 33],
+	far: [5, 6, 36],
 	/** The honeycomb lets go sooner than the figures. */
-	farLattice: [2.5, 4.2, 27],
+	farLattice: [2.5, 4.6, 27],
 } as const;
 
 /** The flight, in world units and seconds. */
