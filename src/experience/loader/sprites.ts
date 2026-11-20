@@ -43,6 +43,17 @@ export const hotSprite = () =>
 		[1, 'rgb(40 80 255 / 0)'],
 	]);
 
+/** A white disc with a soft blue rim: something lost in its own light. */
+export const discSprite = () =>
+	radial(192, [
+		[0, 'rgb(255 255 255)'],
+		[0.42, 'rgb(255 255 255)'],
+		[0.62, 'rgb(232 240 255 / 0.84)'],
+		[0.8, 'rgb(128 166 255 / 0.32)'],
+		[0.92, 'rgb(64 104 255 / 0.08)'],
+		[1, 'rgb(40 80 255 / 0)'],
+	]);
+
 /** Blue air: the soft light around something that glows. */
 export const hazeSprite = () =>
 	radial(128, [

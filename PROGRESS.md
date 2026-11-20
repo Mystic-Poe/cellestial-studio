@@ -14,28 +14,26 @@
 
 ## Exact next step
 
-**Loading scene, step 2 of 4: make it match the reference video at 1440×900.**
+**Loading scene, step 3 of 4: the phone, and the rules measured in real time.**
 
-The scene now runs (step 1, see the table). It does not yet look like the reference.
+Step 2 (matching the reference at 1440×900) is checkpointed: see the table and
+`refs/loading/compare/desk-1.jpg`, `desk-2.jpg`. What is still different from the reference
+is listed in the table row; none of it blocks step 3.
 
 1. Start the dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
-2. `node tools/loader/compare.mjs --only desk` writes `refs/loading/compare/desk-1.jpg` and
-   `desk-2.jpg`: the reference frame on the left, the build frozen at the same second on the
-   right. Look at both sheets.
-3. Fix what differs most, in `src/experience/loader/painter.ts` (how it is drawn) and
-   `timeline.ts` (when). Known from the first sheets, worst first:
-   - the neon is too fat, too white-blue and too saturated, in the C's circuits (1.33, 1.58)
-     and in the letters (3.83 onward); the reference is a thin white line with a soft halo;
-   - the overload bolt (3.0, 3.33) is too thick, and its blue wash is a narrow saturated
-     column where the reference has a broad soft wash over the right half of the frame;
-   - the haze behind the letters is a hard-edged blue blob; the reference's is wide and soft;
-   - the "s" is written later than in the reference (compare 4.75);
-   - the reference's circuits have begun to cool by 1.58; the build's are still at full heat;
-   - faint sparks still fall at 3.67 and 3.83; the reference has none by then;
-   - at 6.2 the reference's main node glows more strongly than the build's.
-4. Re-run the sheets, look again, repeat until a hard judge would accept them. Commit the sheets.
-5. Then step 3 (the phone, and the rules measured in real time with
-   `node tools/loader/measure.mjs`) and step 4 (the A5 star-drop: `compare.mjs --only a5`).
+2. `node tools/loader/compare.mjs --only phone` writes `refs/loading/compare/phone-1.jpg` and
+   `phone-2.jpg` (390×844, scale 2, mobile, touch). Look: nothing clipped, the word fits with
+   margins, the overload bolt still comes down from the top edge. Fix in
+   `src/experience/loader/layout.ts` (framing) or `painter.ts`.
+3. `node tools/loader/measure.mjs` and `node tools/loader/measure.mjs --size phone` time the
+   real runs and check the rules (full 6.0–8.0 s; short version on reload; skip by tap and by
+   key; Tab and bare modifiers do not skip; a picture that fails to load still ends; resize
+   mid-run keeps the time; storage blocked). Write the numbers into the table. Checkpoint.
+4. Then step 4, the A5 star-drop: `node tools/loader/compare.mjs --only a5` writes
+   `a5-desk.jpg` and `a5-phone.jpg` (the hand-off at 0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its
+   length). The star must break into shards cut from its own pixels, the letters bleach and
+   sink, the shards home in on `sky.coreCircle()`. The sky is still a placeholder (black,
+   core circle at the middle of the screen), so the shards arrive on black: that is expected.
 
 ## Where things stand
 
@@ -46,7 +44,7 @@ The scene now runs (step 1, see the table). It does not yet look like the refere
 | UI kit: Quicksand, brass button (5 forms), panel, both dialogs; `/contact` and `/start` restyled | done | Screenshots looked at, both sizes: `refs/foundation/kit/`. Contrast measured (all AA). Protected files: only class and style lines changed. |
 | Experience core: scene director, claims store, claim flow, page shell with placeholder scenes | done | Build, 96 tests + worker checks, lint all pass. Walk-through at both sizes looked at: `refs/foundation/walk/` (sky → exit button → roots → build request → star; menu to all four destinations; reduced motion; no JavaScript). |
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
-| Loading (A1–A5) | **runs; does not match the reference yet** — `src/experience/loader/` (the parked code, moved in and finished with `index.ts`: canvas, clock, skip, full or short version, freeze, hand-off) and `src/components/scenes/Loader.astro` | Run for the first time. Frozen at 14 times at 1440×900 with no console errors and set beside the reference: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (looked at: right composition, order and timing; the light itself is too heavy, see the next step). Real-time runs, 1440×900: full version 7.80 s from mount to done, short version on reload 3.54 s, tap at 1 s ends at 2.79 s; each ends on the sky with the overlay gone. Phone, the rules and A5 not checked yet. |
+| Loading (A1–A5) | **A1–A4 match the reference at 1440×900 (with the differences listed here); phone, rules and A5 not checked yet** — `src/experience/loader/`, `src/components/scenes/Loader.astro` | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at, six rounds of fixes: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg`. Matches: the C's place and size, the order and tempo the circuits light in (a thin white wire with a blue glow), the cooling before the charge, the overload (thin white-hot bolt from the top edge, the node lost in a white disc, a broad blue wash over the right half, spark dust), the camera pulling back, each letter written at the reference's moment as a glass tube (white skin, brass down the middle, white filament, ring nodes) with blue air round it, the cooling into the A4 picture itself. **Still different:** the first "e" is written from its crossbar, where the reference throws an arc to the top of the letter first (compare 3.67); the letters' glow is a little bluer and tighter than the reference's wide navy haze; the main node during the writing is a blue-white point where the reference shows its rings lit white. Real-time runs, 1440×900: full version 7.78 s from mount to done, short version on reload 3.54 s, tap at 1 s ends at 2.81 s; each ends on the sky with the overlay gone. |
 | Sky (B, G1) | **parked, unverified** — `wip/sky/`, about 4,800 lines including the scene entry and a test page | Never looked at by anyone but its builder. No beads (B8), no panels (B10), no exit button wiring yet. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
 | Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
@@ -155,3 +153,5 @@ The site on this branch today is the plain placeholder version described in the 
   code parked in `wip/`, the alignment harness run once (pass) and kept in `tools/`.
 - 2026-11-20 — Loading, step 1: the parked loader moved into `src/`, its mount and markup
   written, and run for the first time. It plays, skips, shortens on return and hands over.
+- 2026-11-20 — Loading, step 2: six rounds of look-and-fix against the reference at 1440×900
+  (the neon, the bolt, the wash, the letters as glass tubes, the letter timings).

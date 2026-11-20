@@ -15,7 +15,7 @@
 
 import { ASSETS } from '../assets';
 import type { ScreenCircle, SkyScene } from '../contracts';
-import { CIRCUIT, EMBLEM_ON_WORDMARK as E, LETTERS, type Line } from './geometry';
+import { CIRCUIT, EMBLEM_ON_WORDMARK as E, LETTER_WEIGHT, LETTERS, type Line } from './geometry';
 import { type Camera, camera, type Layout } from './layout';
 import {
 	bolt,
@@ -27,7 +27,15 @@ import {
 	strokeBolt,
 	trace,
 } from './lightning';
-import { context, cutWordmark, hazeSprite, hotSprite, makeCanvas, type Pieces } from './sprites';
+import {
+	context,
+	cutWordmark,
+	discSprite,
+	hazeSprite,
+	hotSprite,
+	makeCanvas,
+	type Pieces,
+} from './sprites';
 import {
 	cameraAt,
 	clamp01,
@@ -76,6 +84,8 @@ const LENS = SPRITE.core;
 /** The same light in wordmark pixels. */
 const LENS_W = { x: E.x + E.scale * LENS.x, y: E.y + E.scale * LENS.y };
 const TAU = Math.PI * 2;
+/** How hot a letter stays once it has been written, against the moment of writing. */
+const SETTLED = 0.72;
 
 /** The part of some lines whose value is at most `upTo`. `heads` collects where each was cut. */
 function prefix(lines: readonly Line[], upTo: number, heads?: number[]): Path2D {
@@ -134,6 +144,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	const main = context(canvas);
 	const hot = hotSprite();
 	const haze = hazeSprite();
+	const disc = discSprite();
 	const pieces: Pieces = cutWordmark(images.wordmark, images.matte);
 
 	let layout: Layout;
@@ -147,10 +158,15 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const c = makeCanvas(1, 1);
 		return { canvas: c, ctx: context(c), texel, colour: '' };
 	});
-	levels[0].colour = 'rgb(104 146 255)';
+	levels[0].colour = 'rgb(70 108 255)';
 	levels[1].colour = 'rgb(46 90 255)';
 	levels[2].colour = 'rgb(30 64 228)';
 	let glowing = false;
+	const FALLOFF: readonly (readonly [number, number])[] = [
+		[1, 0.24],
+		[0.6, 0.33],
+		[0.27, 0.43],
+	];
 
 	// The lit C, shown only along the circuits the light has reached.
 	const reveal = makeCanvas(1, 1);
@@ -163,6 +179,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	let washReach = 0;
 
 	const circuitPath = whole(CIRCUIT);
+	/** The A4 picture as paint: a stroke in wordmark pixels lays down the picture's own pixels. */
+	const brass = main.createPattern(images.wordmark, 'no-repeat');
 	const letterPaths = LETTERS.map((l) => whole(l.lines));
 	const letterRings = LETTERS.map((l) => {
 		const p = new Path2D();
@@ -241,15 +259,18 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const { ctx: c, texel, colour } = levels[i];
 			into(c, space, 1 / texel);
 			c.globalCompositeOperation = 'lighter';
-			c.globalAlpha = Math.min(1, gain);
 			c.strokeStyle = colour;
 			c.lineCap = 'round';
 			c.lineJoin = 'round';
-			c.lineWidth = Math.max(widths[i], (1.7 * texel) / scale);
-			if (shape instanceof Path2D) c.stroke(shape);
-			else {
-				trace(c, shape);
-				c.stroke();
+			const path = shape instanceof Path2D ? shape : null;
+			if (!path) trace(c, shape as readonly (readonly number[])[]);
+			// Three strokes, each narrower and on top of the last: light that
+			// falls off with distance, not a band with an edge.
+			for (const [part, share] of FALLOFF) {
+				c.globalAlpha = Math.min(1, gain * share);
+				c.lineWidth = Math.max(widths[i] * part, (1.7 * texel) / scale);
+				if (path) c.stroke(path);
+				else c.stroke();
 			}
 			glowing = true;
 		}
@@ -355,24 +376,29 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const heat = t <= r.hold ? 1 : (1 - (t - r.hold) / (r.gone - r.hold)) ** 1.6;
 		const heads: number[] = [];
 		const path = t >= r.end ? circuitPath : prefix(CIRCUIT, t, heads);
+		// A thin white wire with a close blue glow, as the reference draws it:
+		// the brass stays brass beside it.
 		into(main, 'sprite', dpr);
 		main.globalCompositeOperation = 'lighter';
 		main.lineCap = 'round';
 		main.lineJoin = 'round';
-		main.strokeStyle = `rgb(60 108 255 / ${0.3 * heat})`;
-		main.lineWidth = 15;
+		main.strokeStyle = `rgb(44 76 255 / ${0.34 * heat})`;
+		main.lineWidth = 18;
 		main.stroke(path);
-		main.strokeStyle = `rgb(120 162 255 / ${0.6 * heat})`;
-		main.lineWidth = atLeast(8.5, 'sprite', 2);
+		main.strokeStyle = `rgb(96 126 255 / ${0.34 * heat})`;
+		main.lineWidth = atLeast(7, 'sprite', 2.2);
 		main.stroke(path);
-		main.strokeStyle = `rgb(240 246 255 / ${heat ** 0.7})`;
-		main.lineWidth = atLeast(lerp(1.6, 4.4, heat), 'sprite', 0.8);
+		main.strokeStyle = `rgb(240 244 255 / ${heat ** 0.7})`;
+		main.lineWidth = atLeast(lerp(1.8, 3.8, heat), 'sprite', 1);
 		main.stroke(path);
 		main.globalCompositeOperation = 'source-over';
-		glow('sprite', [22, 64, 200], [0.6 * heat, 0.42 * heat, 0.3 * heat], path);
+		glow('sprite', [34, 120, 0], [0.32 * heat, 0.24 * heat, 0], path);
+		// The node the light set out from glows for as long as the lines are hot.
+		const woke = smoothstep(r.start, r.start + 0.2, t);
+		spot(haze, 'sprite', NODE.x, NODE.y, NODE.r * 2.5, 0.6 * heat * woke);
 		const flick = seeded(mix(5, flickerFrame(t)));
 		for (let i = 0; i < heads.length; i += 2)
-			spot(hot, 'sprite', heads[i], heads[i + 1], 34 + 10 * flick(), 0.95);
+			spot(hot, 'sprite', heads[i], heads[i + 1], 26 + 8 * flick(), 0.9);
 	}
 
 	// ───────────────────────────────────── the main node: charge, arcs ──
@@ -385,14 +411,13 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const calm = level > 1.2 ? 0.08 : 0.3;
 		const energy = level * (1 - calm / 2 + calm * random());
 		const r = NODE.r;
-		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), Math.min(0.95, 0.55 * energy));
-		spot(hot, 'sprite', LENS.x, LENS.y, r * (0.4 + 0.52 * Math.min(energy, 1.5)), energy * 1.1);
+		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), Math.min(0.75, 0.55 * energy));
+		spot(hot, 'sprite', LENS.x, LENS.y, r * (0.4 + 0.42 * Math.min(energy, 1.2)), energy);
 		if (energy > 1.15) {
-			// Overload: the node is lost in white, with a flare across it.
+			// Overload: the node is lost in a white disc about its own size.
 			const over = Math.min(1, (energy - 1.15) / 1.1);
-			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.3 + 1.5 * over), over);
-			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.0 + 0.5 * over), over);
-			spot(hot, 'sprite', LENS.x, LENS.y, r * (2.6 + 3.2 * over), 0.75 * over, r * 0.34);
+			spot(disc, 'sprite', LENS.x, LENS.y, r * (0.8 + 0.3 * over), Math.min(0.82, over * 1.2));
+			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.4 + 0.9 * over), 0.45 * over);
 		}
 		const [from, to] = script.arcs;
 		if (t < from || t > to) return;
@@ -431,7 +456,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 
 	function strike(t: number): void {
 		const k = script.strike;
-		if (!k || t < k.hit || t > k.gone + 0.35) return;
+		if (!k || t < k.hit || t > k.gone + 0.3) return;
 		const frame = flickerFrame(t, 42);
 		const random = seeded(mix(11, frame));
 		const s = scaleOf('sprite');
@@ -442,7 +467,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			[
 				[k.hit - 0.001, 0],
 				[k.hit, 1],
-				[k.hold, 1],
+				[k.hit + 0.2, 1],
+				[k.hold, 0.75],
 				[k.thin, 0.42],
 				[k.thin + 0.08, 0.13],
 				[k.gone, 0],
@@ -452,41 +478,25 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		if (power > 0) {
 			// It comes down from the top edge, leaning in from the right as the reference's does.
 			const lean = Math.max(0.03 * layout.w, Math.min(0.2 * ny, 0.86 * layout.w - nx));
-			const top = nx + lean + (random() - 0.5) * 0.25 * nr;
-			const detail = Math.max(3, nr * 0.055);
-			const lines = bolt(top, -0.25 * nr, nx, ny - 0.12 * nr, {
+			const top = nx + lean + (random() - 0.5) * 0.2 * nr;
+			// One strand, thin and white-hot, ragged at every scale, with a short fork or two.
+			const lines = bolt(top, -0.25 * nr, nx, ny - 0.1 * nr, {
 				seed: mix(12, frame),
 				shape: mix(13, flickerFrame(t, 125)),
-				sway: 0.075,
-				roughness: 0.6,
-				detail,
-				branches: 3,
-				branchLength: 0.13,
+				sway: 0.07,
+				roughness: 0.64,
+				detail: Math.max(2.5, nr * 0.04),
+				branches: 2,
+				branchLength: 0.09,
 			});
-			// A second strand, braided round the lower half.
-			const trunk = lines[0];
-			const at = Math.floor((trunk.length / 2) * 0.5) * 2;
-			lines.push(
-				...bolt(trunk[at], trunk[at + 1], nx, ny, {
-					seed: mix(14, frame),
-					sway: 0.1,
-					roughness: 0.6,
-					detail,
-				}),
-			);
 			const light = power * (0.88 + 0.24 * random());
 			into(main, 'screen', dpr);
 			strokeBolt(main, lines, {
-				width: Math.max(1.4, nr * 0.085 * (0.3 + 0.7 * power)),
+				width: Math.max(1.3, nr * 0.062 * (0.35 + 0.65 * power)),
 				alpha: Math.min(1, light * 1.5),
-				forks: 0.45,
+				forks: 0.4,
 			});
-			glow(
-				'screen',
-				[nr * 0.34, nr * 1.1, nr * 3.4],
-				[0.9 * light, 0.7 * light, 0.5 * light],
-				lines,
-			);
+			glow('screen', [nr * 0.36, nr * 1.0, 0], [0.5 * light, 0.26 * light, 0], lines);
 
 			// The blue wash: a column of light along the bolt, across the frame.
 			const flood =
@@ -495,7 +505,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 						[k.hit - 0.001, 0],
 						[k.hit, 0.8],
 						[k.hit + 0.045, 1],
-						[k.hold - 0.03, 1],
+						[k.hit + 0.2, 1],
+						[k.hold, 0.62],
 						[k.thin + 0.03, 0.22],
 						[k.gone - 0.02, 0],
 					],
@@ -512,27 +523,28 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			}
 		}
 
-		// Sparks: thrown off the node, slowed by the air, pulled down.
-		const first = k.hit + 0.05;
+		// Sparks: a dust of them thrown off the node, slowed by the air, falling.
+		const first = k.hit + 0.04;
 		if (t < first) return;
 		const sets = [new Path2D(), new Path2D(), new Path2D()];
 		const r = NODE.r;
 		let any = false;
-		for (let i = 0; i < 150; i++) {
+		for (let i = 0; i < 420; i++) {
 			const spark = seeded(mix(31, i));
-			const born = first + 0.42 * spark() ** 1.7;
-			const life = 0.24 + 0.62 * spark() ** 2;
+			const born = first + 0.36 * spark() ** 1.8;
+			const life = 0.18 + 0.3 * spark() ** 2;
 			let a = spark() * TAU;
-			if (Math.sin(a) < -0.55 && spark() < 0.7) a = -a;
-			const speed = r * (3 + 7.5 * spark());
+			// Most of them go down and out.
+			if (Math.sin(a) < -0.2 && spark() < 0.6) a = -a;
+			const speed = r * (1.6 + 10 * spark() ** 1.3);
 			const age = t - born;
 			if (age <= 0 || age >= life) continue;
 			const where = (time: number): [number, number] => {
-				const d = 0.78 * r + (speed * (1 - Math.exp(-3.4 * time))) / 3.4;
-				return [LENS.x + Math.cos(a) * d, LENS.y + Math.sin(a) * d + 7 * r * time * time];
+				const d = 0.7 * r + (speed * (1 - Math.exp(-3.4 * time))) / 3.4;
+				return [LENS.x + Math.cos(a) * d, LENS.y + Math.sin(a) * d + 6 * r * time * time];
 			};
 			const [x1, y1] = where(age);
-			const [x0, y0] = where(Math.max(0, age - 0.03));
+			const [x0, y0] = where(Math.max(0, age - 0.009));
 			const bright = 1 - age / life;
 			const set = sets[bright > 0.6 ? 0 : bright > 0.3 ? 1 : 2];
 			set.moveTo(x0, y0);
@@ -543,12 +555,12 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		into(main, 'sprite', dpr);
 		main.globalCompositeOperation = 'lighter';
 		main.lineCap = 'round';
-		main.lineWidth = atLeast(2.7, 'sprite', 1.1);
-		main.strokeStyle = 'rgb(236 244 255)';
+		main.lineWidth = atLeast(2.6, 'sprite', 1.3);
+		main.strokeStyle = 'rgb(232 241 255)';
 		main.stroke(sets[0]);
-		main.strokeStyle = 'rgb(150 186 255 / 0.85)';
+		main.strokeStyle = 'rgb(150 186 255 / 0.8)';
 		main.stroke(sets[1]);
-		main.strokeStyle = 'rgb(84 124 255 / 0.6)';
+		main.strokeStyle = 'rgb(84 124 255 / 0.55)';
 		main.stroke(sets[2]);
 		main.globalCompositeOperation = 'source-over';
 	}
@@ -625,66 +637,99 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		}
 	}
 
-	/** The neon in the letters: a white tube with a blue halo, ring nodes at the stroke ends. */
+	/**
+	 * The neon in the letters. In the reference a lit letter is a glass tube:
+	 * its skin white-hot, its brass still showing down the middle, a white
+	 * filament along the circuit line, ring nodes at the stroke ends, and blue
+	 * air around it. `heat` 1 is that; 0 is the plain brass.
+	 */
 	function letterNeon(t: number, strokes: (Stroke | null)[], heat: number): void {
 		if (heat <= 0) return;
-		const tubes = new Path2D();
-		const rings = new Path2D();
 		let any = false;
+		let right = WORD.letters[0].x;
+		let newest = 0;
+		// The halo goes first as the word cools.
+		const air = heat <= 0.4 ? 0 : ((heat - 0.4) / 0.6) ** 1.5;
+		into(main, 'word', dpr);
+		main.lineCap = 'round';
+		main.lineJoin = 'round';
 		for (let j = 0; j < LETTERS.length; j++) {
 			const w = written(j, t);
 			if (w <= 0) continue;
 			any = true;
-			if (w >= 1) {
-				tubes.addPath(letterPaths[j]);
-				rings.addPath(letterRings[j]);
-				continue;
+			newest = j;
+			const box = WORD.letters[j];
+			right = Math.max(right, box.x + box.w * Math.min(1, w));
+			const tube = w >= 1 ? letterPaths[j] : strokes[j]?.path;
+			if (!tube) continue;
+			let rings = letterRings[j];
+			if (w < 1) {
+				rings = new Path2D();
+				for (const r of LETTERS[j].rings) {
+					if (r.at > w) continue;
+					rings.moveTo(r.x + r.r, r.y);
+					rings.arc(r.x, r.y, r.r, 0, TAU);
+				}
 			}
-			const stroke = strokes[j];
-			if (stroke) tubes.addPath(stroke.path);
-			for (const r of LETTERS[j].rings) {
-				if (r.at > w) continue;
-				rings.moveTo(r.x + r.r, r.y);
-				rings.arc(r.x, r.y, r.r, 0, TAU);
+			// White-hot as it is written, then it settles to a steady glow.
+			const h = heat * lerp(1, SETTLED, smoothstep(0.04, 0.55, t - script.letters[j][1]));
+			main.globalCompositeOperation = 'lighter';
+			// The air right against the glass.
+			main.strokeStyle = `rgb(66 100 255 / ${0.13 * h ** 1.3})`;
+			main.lineWidth = LETTER_WEIGHT + 26;
+			main.stroke(tube);
+			main.strokeStyle = `rgb(130 150 255 / ${0.1 * h ** 1.2})`;
+			main.lineWidth = LETTER_WEIGHT + 9;
+			main.stroke(tube);
+			// The skin: the whole width of the letter, white with a breath of violet…
+			main.strokeStyle = `rgb(234 233 255 / ${0.8 * h})`;
+			main.lineWidth = LETTER_WEIGHT + 3;
+			main.stroke(tube);
+			// …and the letter's own brass laid back down the middle of it.
+			if (brass) {
+				main.globalCompositeOperation = 'source-over';
+				main.globalAlpha = lerp(0.97, 0.78, h);
+				main.strokeStyle = brass;
+				main.lineWidth = LETTER_WEIGHT - 6.5;
+				main.stroke(tube);
+				main.globalAlpha = 1;
+				main.globalCompositeOperation = 'lighter';
 			}
+			// The filament, and the ring nodes.
+			main.strokeStyle = `rgb(244 247 255 / ${Math.min(1, h * 1.5)})`;
+			main.lineWidth = atLeast(lerp(1.8, 3.2, h), 'word', 0.9);
+			main.stroke(tube);
+			main.lineWidth = atLeast(lerp(2, 4, h), 'word', 0.8);
+			main.stroke(rings);
+			const shine = air * clamp01((h / heat - 0.2) / 0.8) ** 1.5;
+			glow('word', [46, 120, 320], [0.3 * shine, 0.3 * shine, 0.22 * shine], tube);
+			into(main, 'word', dpr);
 		}
+		main.globalCompositeOperation = 'source-over';
 		const lit = t >= script.star;
 		if (!any && !lit) return;
-		const white = Math.round(lerp(128, 244, heat ** 0.6));
-		const core = `rgb(${Math.round(lerp(100, 238, heat ** 0.6))} ${white} 255 / ${Math.min(1, heat * 1.6)})`;
-		into(main, 'word', dpr);
-		main.globalCompositeOperation = 'lighter';
-		main.lineCap = 'round';
-		main.lineJoin = 'round';
-		main.strokeStyle = `rgb(62 110 255 / ${0.34 * heat ** 1.2})`;
-		main.lineWidth = 26;
-		main.stroke(tubes);
-		main.lineWidth = 9.5;
-		main.stroke(rings);
-		main.strokeStyle = `rgb(122 164 255 / ${0.6 * heat})`;
-		main.lineWidth = lerp(6, 16, heat);
-		main.stroke(tubes);
-		main.strokeStyle = core;
-		main.lineWidth = atLeast(lerp(2.6, 9.5, heat ** 0.8), 'word', 1);
-		main.stroke(tubes);
-		main.lineWidth = atLeast(lerp(2, 4.4, heat), 'word', 0.8);
-		main.stroke(rings);
-		main.globalCompositeOperation = 'source-over';
-		// The halo goes first as the word cools.
-		const air = heat <= 0.45 ? 0 : ((heat - 0.45) / 0.55) ** 1.5;
-		glow('word', [34, 84, 270], [0.5 * air, 0.36 * air, 0.34 * air], tubes);
+		if (any) {
+			// Blue air: over the whole of what is lit, wide and soft, and deeper
+			// round the letter that has just been written.
+			const left = WORD.letters[0].x;
+			const middle = WORD.letters[0].y + WORD.letters[0].h / 2;
+			spot(haze, 'word', (left + right) / 2, middle, (right - left) / 2 + 560, 0.5 * air, 520);
+			const fresh = WORD.letters[newest];
+			const young = 1 - smoothstep(0.1, 0.7, t - script.letters[newest][1]);
+			spot(haze, 'word', fresh.x + fresh.w / 2, middle, 460, 0.8 * air * young);
+		}
 		if (lit) {
-			// The star: white-hot, like the letters.
+			// The star lights with the word: its brass warmed white, a small glow.
 			const s = pieces.star;
-			const flash = 1 + 0.6 * (1 - smoothstep(script.star, script.star + 0.12, t));
+			const flash = 1 + 0.8 * (1 - smoothstep(script.star, script.star + 0.14, t));
 			into(main, 'word', dpr);
 			main.globalCompositeOperation = 'lighter';
-			main.globalAlpha = Math.min(1, heat * flash);
+			main.globalAlpha = Math.min(1, 0.3 * heat * flash);
 			main.drawImage(s.light, s.x, s.y);
 			main.globalAlpha = 1;
 			main.globalCompositeOperation = 'source-over';
-			spot(hot, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 1.7 * flash, 0.6 * heat);
-			spot(haze, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 4, 0.5 * air);
+			spot(hot, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 1.5 * flash, 0.3 * heat * flash);
+			spot(haze, 'word', WORD.star.x, WORD.star.y, WORD.star.r * 3.4, 0.4 * air);
 		}
 	}
 
@@ -728,8 +773,40 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 						branchLength: 0.3,
 					},
 				);
-				strokeBolt(main, lines, { width: thin(3.4), alpha: jump });
+				strokeBolt(main, lines, { width: thin(2.6), alpha: jump });
 				arcs.push(...lines);
+			}
+			// The leader: before the tube, a jagged arc throws itself out along the way
+			// the letter will go, and the tube then follows it.
+			const lead0 = j === 0 ? a - 0.1 : a - 0.03;
+			const leader = keyed(
+				[
+					[lead0, 0],
+					[lead0 + 0.03, 1],
+					[lerp(a, b, 0.35), 1],
+					[lerp(a, b, 0.6), 0],
+				],
+				t,
+			);
+			if (leader > 0 && !short) {
+				const ahead: number[] = [];
+				prefix(letter.lines, clamp01(written(j, t)) * 0.5 + 0.42, ahead);
+				const tail = stroke?.heads.length ? stroke.heads : j === 0 ? [LENS_W.x, LENS_W.y] : [];
+				if (ahead.length && tail.length) {
+					const lines = bolt(tail[0], tail[1], ahead[0], ahead[1], {
+						seed: mix(49, j, frame),
+						shape: mix(50, j, flickerFrame(t, 84)),
+						sway: 0.22,
+						roughness: 0.6,
+						detail: 7,
+						branches: 1,
+						branchLength: 0.25,
+					});
+					strokeBolt(main, lines, { width: thin(j === 0 ? 3.4 : 2.4), alpha: 0.95 * leader });
+					arcs.push(...lines);
+					spot(hot, 'word', ahead[0], ahead[1], 13, 0.8 * leader);
+					into(main, 'word', dpr);
+				}
 			}
 			if (stroke) {
 				const random = seeded(mix(43, j, frame));
@@ -745,16 +822,16 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 						branches: 2,
 						branchLength: 0.22,
 					});
-					strokeBolt(main, lines, { width: thin(short ? 3.2 : 3.8), alpha: 0.9 });
+					strokeBolt(main, lines, { width: thin(short ? 2.8 : 3), alpha: 0.9 });
 					arcs.push(...lines);
 				}
 				// Lightning along the stroke, around the head: what resolves into the tube.
 				letter.lines.forEach((line, n) => {
-					const part = stretch(line, stroke.w - 0.34, stroke.w + 0.07);
+					const part = stretch(line, stroke.w - 0.2, stroke.w + 0.34);
 					if (part.length < 4) return;
 					const jag = crackle(part, {
 						seed: mix(42, j, n, frame),
-						reach: 8.5,
+						reach: 8,
 						detail: 6,
 						pin: 'start',
 					});
@@ -764,9 +841,9 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				for (let i = 0; i < stroke.heads.length; i += 2) {
 					const hx = stroke.heads[i];
 					const hy = stroke.heads[i + 1];
-					spot(hot, 'word', hx, hy, 34 + 12 * random(), 1);
+					spot(hot, 'word', hx, hy, 17 + 6 * random(), 0.85);
 					into(main, 'word', dpr);
-					for (let n = 0; n < 2; n++) {
+					for (let n = 0; n < (leader > 0.5 ? 1 : 2); n++) {
 						const angle = random() * TAU;
 						const reach = 28 + 50 * random();
 						const lines = bolt(hx, hy, hx + Math.cos(angle) * reach, hy + Math.sin(angle) * reach, {
@@ -806,7 +883,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				into(main, 'word', dpr);
 			}
 		}
-		if (arcs.length) glow('word', [13, 44, 0], [0.6, 0.4, 0], arcs);
+		if (arcs.length) glow('word', [16, 50, 0], [0.3, 0.16, 0], arcs);
 	}
 
 	// ─────────────────────────────────────────────────────── frames ──
@@ -820,9 +897,9 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			into(main, 'word', dpr);
 			main.drawImage(images.wordmark, 0, 0);
 			const since = Math.max(0, t - script.end);
-			breath = 0.5 - 0.5 * Math.cos((TAU * since) / 2.6);
-			spot(haze, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 2.8, 0.5 * breath);
-			spot(hot, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 0.55, 0.3 * breath);
+			breath = 0.62 + 0.38 * (0.5 - 0.5 * Math.cos((TAU * since) / 2.6));
+			spot(haze, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 3, 0.55 * breath);
+			spot(hot, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 0.6, 0.42 * breath);
 			return;
 		}
 		breath = 0;
@@ -830,15 +907,18 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const strokes: (Stroke | null)[] = LETTERS.map(() => null);
 		emblem(t);
 		letterBrass(t, strokes);
-		if (cool > 0) {
+		// The picture comes in once the last letter is written, not before.
+		const lastWritten = script.letters[script.letters.length - 1][1] + 0.03;
+		const settled = clamp01((t - lastWritten) / (coolTo - lastWritten));
+		if (settled > 0) {
 			// The sprite and the nine cut-outs give way to the one picture they came from.
 			into(main, 'word', dpr);
-			main.globalAlpha = smoothstep(0, 0.6, cool);
+			main.globalAlpha = smoothstep(0, 0.6, settled);
 			main.drawImage(images.wordmark, 0, 0);
 			main.globalAlpha = 1;
 		}
 		circuitNeon(t);
-		letterNeon(t, strokes, 1 - cool);
+		letterNeon(t, strokes, (1 - cool) ** 1.7);
 		nodeLight(t);
 		strike(t);
 		writing(t, strokes);
@@ -904,8 +984,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			main.globalAlpha = 1;
 		}
 		const ease = 1 - smoothstep(0, 0.3, u);
-		spot(haze, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 2.8, 0.5 * breath * ease);
-		spot(hot, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 0.55, 0.3 * breath * ease);
+		spot(haze, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 3, 0.55 * breath * ease);
+		spot(hot, 'word', WORD.node.x, WORD.node.y, WORD.node.r * 0.6, 0.42 * breath * ease);
 
 		// The C and the letters: bleached by the light that spreads from the star,
 		// then sinking, one after another, and gone.
@@ -1058,6 +1138,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			scrap,
 			hot,
 			haze,
+			disc,
 			...levels.map((l) => l.canvas),
 			pieces.emblem.canvas,
 			pieces.emblem.light,

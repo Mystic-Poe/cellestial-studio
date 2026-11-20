@@ -14,6 +14,9 @@
 //   a5-desk.jpg, a5-phone.jpg  the hand-off at 0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its length
 //
 // --frames keeps every captured frame as a PNG in that folder too.
+// --big --times 3.0,3.33,4.25 [--out <dir>] is for looking closely: the
+//   reference pulled from the video itself at full size (ffmpeg), three pairs
+//   to a sheet, 790 px a frame, written as big-N.jpg.
 // --times replaces the list of seconds (the sheets are then named *-custom).
 // Exits non-zero if the page logged an error.
 
@@ -25,7 +28,8 @@ import { chromium } from 'playwright-core';
 import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const OUT = join(ROOT, 'refs/loading/compare');
+let OUT = join(ROOT, 'refs/loading/compare');
+const VIDEO = join(ROOT, 'cellestial-assets/images/a-loading/A2-A3_power-up-and-lightning-writing.mp4');
 const REF = join(ROOT, 'refs/loading-video/f12');
 
 const { values } = parseArgs({
@@ -34,9 +38,12 @@ const { values } = parseArgs({
 		only: { type: 'string', default: 'desk,phone,a5' },
 		frames: { type: 'string' },
 		times: { type: 'string' },
+		big: { type: 'boolean', default: false },
+		out: { type: 'string' },
 	},
 });
-const only = new Set(values.only.split(','));
+if (values.out) OUT = values.out;
+const only = new Set(values.big ? [] : values.only.split(','));
 const custom = values.times?.split(',').map(Number);
 const TIMES = custom ?? [0, 0.67, 1.33, 1.58, 2.75, 3.0, 3.33, 3.67, 3.83, 4.25, 4.75, 5.25, 5.75, 6.2];
 const END = 6.2;
@@ -187,6 +194,28 @@ if (only.has('a5')) {
 			parts.push({ input: await sharp(png).resize(W, H).toBuffer(), left: x, top: 20 });
 		}
 		await sheet('a5-phone.jpg', 7 * (W + 4) - 4, 20 + H, parts);
+	}
+}
+
+if (values.big) {
+	const { execFileSync } = await import('node:child_process');
+	const shots = await capture('desk', TIMES);
+	const W = 790;
+	const pairs = TIMES.map((t, i) => ({ t, png: shots[i] }));
+	for (const [n, group] of chunks(pairs, 3).entries()) {
+		const parts = [];
+		for (const [i, { t, png }] of group.entries()) {
+			const y = i * 520;
+			const ref = execFileSync(
+				'ffmpeg',
+				['-v', 'error', '-ss', String(t), '-i', VIDEO, '-frames:v', '1', '-f', 'image2pipe', '-c:v', 'png', '-'],
+				{ maxBuffer: 1 << 28 },
+			);
+			parts.push({ input: label(`${t.toFixed(2)} s   reference | build 1440x900`, W * 2 + 4), left: 0, top: y });
+			parts.push({ input: await sharp(ref).resize(W, 444).toBuffer(), left: 0, top: y + 20 });
+			parts.push({ input: await sharp(png).resize(W, 494).toBuffer(), left: W + 4, top: y + 20 });
+		}
+		await sheet(`big-${n + 1}.jpg`, W * 2 + 4, 520 * group.length, parts);
 	}
 }
 
