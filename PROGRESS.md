@@ -14,23 +14,21 @@
 
 ## Exact next step
 
-**Loading scene, step 4 of 4: the A5 star-drop, at both sizes.**
+**Sky scene (B, G1). The Loading scene is done as far as it can be without the real sky.**
 
-Steps 1–3 are checkpointed (see the table). A5 is written and plays (every real-time run
-goes through it) but nobody has yet looked at its frames.
-
-1. Start the dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
-2. `node tools/loader/compare.mjs --only a5` writes `refs/loading/compare/a5-desk.jpg` and
-   `a5-phone.jpg`: the hand-off frozen at 0, 0.15, 0.3, 0.5, 0.7, 0.9 and 1.0 of its length
-   (1.5 s; `HANDOFF` in `src/experience/loader/timeline.ts`).
-3. Look. The little star above the "i" must flash and break into shards cut from its own
-   pixels; the letters and the C must bleach towards the light and sink, gone by about 0.6;
-   the shards must sweep out and home in on `sky.coreCircle()`, arriving between 0.4 and
-   0.85. The sky is still a placeholder (black, core circle at the middle of the screen), so
-   the shards arrive on black and the last frame is black: that is expected until the real
-   sky is in. Fix in `handoff()` in `src/experience/loader/painter.ts`. Checkpoint.
-4. Then the Loading scene is done as far as it can be without the real sky. Next scene: Sky
-   (`wip/sky/`, see the table). When the real sky is mounted, capture A5 again.
+1. Read the Loading row of the table for what is and is not verified. The one thing Loading
+   still waits on: its A5 hand-off was looked at over the PLACEHOLDER sky (black, core circle
+   fixed at the middle of the screen). When the real sky is mounted, run
+   `node tools/loader/compare.mjs --only a5` again and look at `refs/loading/compare/a5-*.jpg`:
+   the sky's core must sit inside the little star at 0, travel and grow to the centre, and
+   the loader's shards must land on its rings as they fade in (the contract is `introPrime`,
+   `introProgress`, `coreCircle` in `src/experience/contracts.ts`).
+2. The sky's code is parked in `wip/sky/` (about 4,800 lines, never looked at by anyone but
+   its builder; no beads B8, no panels B10, no exit-button wiring). Its brief is in
+   `refs/briefs/`. Do as was done for Loading: checkpoint first, then move it into `src/`
+   with `git mv`, make it run on the real page (`/?scene=sky`), screenshot at 390×844 and
+   1440×900, compare against `refs/constellations/` and the B3/B4/B5 assets, fix, checkpoint.
+3. Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
 
 ## Where things stand
 
@@ -41,7 +39,7 @@ goes through it) but nobody has yet looked at its frames.
 | UI kit: Quicksand, brass button (5 forms), panel, both dialogs; `/contact` and `/start` restyled | done | Screenshots looked at, both sizes: `refs/foundation/kit/`. Contrast measured (all AA). Protected files: only class and style lines changed. |
 | Experience core: scene director, claims store, claim flow, page shell with placeholder scenes | done | Build, 96 tests + worker checks, lint all pass. Walk-through at both sizes looked at: `refs/foundation/walk/` (sky → exit button → roots → build request → star; menu to all four destinations; reduced motion; no JavaScript). |
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
-| Loading (A1–A5) | **A1–A4 match the reference at 1440×900 (with the differences listed here); phone and rules checked; A5 not looked at yet** — `src/experience/loader/`, `src/components/scenes/Loader.astro` | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at, six rounds of fixes: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg`. Matches: the C's place and size, the order and tempo the circuits light in (a thin white wire with a blue glow), the cooling before the charge, the overload (thin white-hot bolt from the top edge, the node lost in a white disc, a broad blue wash over the right half, spark dust), the camera pulling back, each letter written at the reference's moment as a glass tube (white skin, brass down the middle, white filament, ring nodes) with blue air round it, the cooling into the A4 picture itself. **Still different:** the first "e" is written from its crossbar, where the reference throws an arc to the top of the letter first (compare 3.67); the letters' glow is a little bluer and tighter than the reference's wide navy haze; the main node during the writing is a blue-white point where the reference shows its rings lit white. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done), desktop / phone:** full version 7.74 s / 7.75 s (must be 6.0–8.0); short version on a same-session reload 3.46 s / 3.47 s; tap at 1 s ends at 2.79 s / 2.90 s, the "a" key at 1 s 2.88 s / 2.78 s (measured before the hand-off was shortened by 0.05 s); Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.80 s / 7.78 s); each of the four pictures answering 404 in turn: the loader ends at once (0.01 s) and the sky is shown; resize twice mid-run keeps the time (7.78 s / 7.80 s); sessionStorage blocked plays the full version (7.78 s / 7.80 s); the sky's script failing to load: the loader fades out by itself at 6.65 s and the page opens on the Roots; the sky 30 s late: the wordmark holds 6 s and the loader goes at 12.63 s. Frame times 16.8–17.3 ms average at both sizes; phone with the CPU slowed 4×: 25.9 ms average, 50 ms at the 95th percentile, run 7.92 s. A5 plays in every run but its frames have not been looked at yet. |
+| Loading (A1–A5) | **done against the reference, except what is listed here; A5 seen only over the placeholder sky** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (re-run in place: reproduces `geometry.ts` and the matte unchanged) | | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at, six rounds of fixes: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg`. Matches: the C's place and size, the order and tempo the circuits light in (a thin white wire with a blue glow), the cooling before the charge, the overload (thin white-hot bolt from the top edge, the node lost in a white disc, a broad blue wash over the right half, spark dust), the camera pulling back, each letter written at the reference's moment as a glass tube (white skin, brass down the middle, white filament, ring nodes) with blue air round it, the cooling into the A4 picture itself. **Still different:** the first "e" is written from its crossbar, where the reference throws an arc to the top of the letter first (compare 3.67); the letters' glow is a little bluer and tighter than the reference's wide navy haze; the main node during the writing is a blue-white point where the reference shows its rings lit white. The overload's blue wash is a column that fades faster to the sides than the reference's (which fills the right half more evenly), the white disc at the node is a little larger and more solid, and the lit circuits (1.33) are whiter, with less blue around them, than the reference's. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done), desktop / phone:** full version 7.74 s / 7.75 s (must be 6.0–8.0); short version on a same-session reload 3.46 s / 3.47 s; tap at 1 s ends at 2.79 s / 2.90 s, the "a" key at 1 s 2.88 s / 2.78 s (2.76 s and 2.73 s on the desktop after the hand-off was shortened to 1.5 s); Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.80 s / 7.78 s); each of the four pictures answering 404 in turn: the loader ends at once (0.01 s) and the sky is shown; resize twice mid-run keeps the time (7.78 s / 7.80 s); sessionStorage blocked plays the full version (7.78 s / 7.80 s); the sky's script failing to load: the loader fades out by itself at 6.65 s and the page opens on the Roots; the sky 30 s late: the wordmark holds 6 s and the loader goes at 12.63 s. Frame times 16.8–17.3 ms average at both sizes; phone with the CPU slowed 4×: 25.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
 | Sky (B, G1) | **parked, unverified** — `wip/sky/`, about 4,800 lines including the scene entry and a test page | Never looked at by anyone but its builder. No beads (B8), no panels (B10), no exit button wiring yet. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
 | Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
@@ -118,6 +116,8 @@ The site on this branch today is the plain placeholder version described in the 
 5. Roots is one tile at a time: click, read, close, and the light leads to the next
    (the owner's Nov 18 notes).
 6. The loader ends as the "star-drop": the letters are drowned in the star's light and float down.
+   The loader itself draws that light (a soft blue-white swell at the sky's core for the first
+   half of A5); the star's core and rings are the sky's.
 7. Brass words use the lit faces of the wordmark's letters (`--color-brass-text`); the median
    brass is too dark to read as type.
 8. "$990 slashed → FREE": the price is struck through; the word "slashed" stays in the text
@@ -154,3 +154,6 @@ The site on this branch today is the plain placeholder version described in the 
   (the neon, the bolt, the wash, the letters as glass tubes, the letter timings).
 - 2026-11-20 — Loading, step 3: the phone sheets looked at (halo grain now follows the screen
   size; the wash lost its bright seam) and every rule timed in real time at both sizes.
+- 2026-11-20 — Loading, step 4: A5 looked at over the placeholder sky and made to read (shards
+  grow to a readable size and are lit; a light swells and drowns the word); the short version
+  looked at. Loading is done except for A5 over the real sky.

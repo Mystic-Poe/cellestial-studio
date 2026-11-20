@@ -12,6 +12,8 @@
 //   desk-1.jpg, desk-2.jpg     1440x900: reference left, build right, 7 pairs a sheet
 //   phone-1.jpg, phone-2.jpg   390x844 (scale 2, mobile, touch): reference above, build below
 //   a5-desk.jpg, a5-phone.jpg  the hand-off at 0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its length
+//   short.jpg                  (--only short) the short version of a same-session return,
+//                              both sizes, at 0.05, 0.35, 0.6, 0.9, 1.2, 1.5, 1.9 s
 //
 // --frames keeps every captured frame as a PNG in that folder too.
 // --big --times 3.0,3.33,4.25 [--out <dir>] is for looking closely: the
@@ -66,9 +68,11 @@ if (values.frames) mkdirSync(values.frames, { recursive: true });
 let errors = 0;
 const browser = await chromium.launch({ executablePath: '/usr/bin/chromium' });
 
-async function capture(size, times) {
+async function capture(size, times, short = false) {
 	const context = await browser.newContext(SIZES[size]);
 	const page = await context.newPage();
+	// A return visit in the same session plays the short version.
+	if (short) await page.addInitScript(() => sessionStorage.setItem('cellestial:loader', '1'));
 	page.on('console', (m) => {
 		if (m.type() === 'error') {
 			errors++;
@@ -217,6 +221,23 @@ if (values.big) {
 		}
 		await sheet(`big-${n + 1}.jpg`, W * 2 + 4, 520 * group.length, parts);
 	}
+}
+
+if (only.has('short')) {
+	const times = [0.05, 0.35, 0.6, 0.9, 1.2, 1.5, 1.9];
+	const desk = await capture('desk', times, true);
+	const phone = await capture('phone', times, true);
+	const W = 224;
+	const DH = Math.round((W * 900) / 1440);
+	const PH = Math.round((W * 844) / 390);
+	const parts = [];
+	for (const [i, t] of times.entries()) {
+		const x = i * (W + 4);
+		parts.push({ input: label(`short ${t.toFixed(2)} s`, W), left: x, top: 0 });
+		parts.push({ input: await sharp(desk[i]).resize(W, DH).toBuffer(), left: x, top: 20 });
+		parts.push({ input: await sharp(phone[i]).resize(W, PH).toBuffer(), left: x, top: 24 + DH });
+	}
+	await sheet('short.jpg', 7 * (W + 4) - 4, 24 + DH + PH, parts);
 }
 
 await browser.close();

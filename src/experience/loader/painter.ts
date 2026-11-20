@@ -1023,7 +1023,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		} else {
 			const T0 = BREAK / HANDOFF;
 			const since = u - BREAK;
-			const base = Math.max(s0.r * 4.2, 0.085 * Math.min(layout.w, layout.h));
+			const base = Math.max(s0.r * 4.2, 0.1 * Math.min(layout.w, layout.h));
+			const shardSize = Math.max(15, Math.min(34, 0.036 * Math.min(layout.w, layout.h)));
 			for (const f of fragments) {
 				const q = clamp01((T - T0) / (smoothstepAt(f.arrive) - T0));
 				if (q >= 1) continue;
@@ -1045,7 +1046,9 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				const y = lerp(by, ty, home);
 				const alpha = 1 - smoothstep(0.8, 1, q);
 				const size = shard.size * cam.k;
-				const grow = lerp(1, Math.min(2.8, Math.max(1.3, 12 / size)), smoothstep(0, 0.6, q));
+				// They leave at the star's own size and grow to pieces of a ring: big
+				// enough to read on any screen as brass turning in the light.
+				const grow = lerp(1, Math.max(1.3, shardSize / size), smoothstep(0, 0.5, q));
 				const face = Math.cos(f.face + f.flip * since);
 				const unit = (grow * cam.k) / shard.scale;
 				main.setTransform(dpr, 0, 0, dpr, dpr * x, dpr * y);
@@ -1053,14 +1056,27 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				main.scale(unit * Math.max(0.2, Math.abs(face)), unit);
 				main.globalAlpha = alpha;
 				main.drawImage(shard.canvas, -shard.px, -shard.py);
+				// Lit by the star they came from: the brass again, as light.
+				const glint = Math.max(0, face) ** 6;
+				main.globalCompositeOperation = 'lighter';
+				main.globalAlpha = alpha * (0.55 + 0.45 * glint);
+				main.drawImage(shard.canvas, -shard.px, -shard.py);
+				main.globalCompositeOperation = 'source-over';
 				main.globalAlpha = 1;
 				// A glint as it turns to face the light.
-				const glint = Math.max(0, face) ** 10;
-				spot(hot, 'screen', x, y, size * grow * (0.9 + 1.4 * glint), alpha * (0.25 + 0.75 * glint));
+				spot(hot, 'screen', x, y, size * grow * (0.7 + 1.1 * glint), alpha * (0.16 + 0.7 * glint));
 			}
 		}
 		const flash = u < BREAK ? u / BREAK : 1 - smoothstep(BREAK, 0.55, u);
 		spot(hot, 'word', sw.x, sw.y, sw.r * (1.3 + 3.4 * smoothstep(0, 0.22, u)), flash);
+		// The light that drowns the word: it swells from the star as the sky's core
+		// ignites there, follows the core, and is spent by the time the letters are gone.
+		const flood = smoothstep(0.02, 0.3, s) * (1 - smoothstep(0.34, 0.72, s));
+		if (flood > 0) {
+			const reach = Math.max(layout.w, layout.h) * lerp(0.2, 0.62, smoothstep(0, 0.5, s));
+			spot(haze, 'screen', core.x, core.y, reach, 0.85 * flood);
+			spot(hot, 'screen', core.x, core.y, reach * 0.3, 0.5 * flood);
+		}
 		return veil;
 	}
 
