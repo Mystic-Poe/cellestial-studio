@@ -13,6 +13,9 @@
       "!.superpowers",
       "!cellestial-assets",
       "!**/*.md",
+      "!refs",
+      "!tools",
+      "!wip",
       "!public/favicon.svg",
       "!scripts/data/sky.json"
     ]
