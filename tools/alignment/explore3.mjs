@@ -1,0 +1,18 @@
+import { createRequire } from 'node:module';
+import { thin, flood, chains, simplify } from './net.mjs';
+const require = createRequire('/home/poe/cellestial-wt/loader/package.json');
+const sharp = require('sharp');
+const px = await import('/home/poe/cellestial-wt/loader/scripts/assets/lib/px.mjs');
+const { ASSETS } = await import('/home/poe/cellestial-wt/loader/src/experience/assets.ts');
+const W = '/home/poe/cellestial-wt/loader/public/cellestial/loader/';
+const O = '/tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/loader/look/';
+const wm = await px.load(sharp, W + 'wordmark.webp');
+const { w, h } = wm; const n = w * h;
+const blue = new Float32Array(n);
+for (let i = 0; i < n; i++) blue[i] = Math.max(0, wm.b[i] - Math.max(wm.r[i], wm.g[i] * 0.9));
+const hist = new Array(20).fill(0);
+for (const L of ASSETS.loader.wordmark.letters) for (let y = L.y; y < L.y + L.h; y++) for (let x = L.x; x < L.x + L.w; x++) hist[Math.min(19, Math.floor(blue[y * w + x] / 10))]++;
+console.log('blue hist in letters', hist.join(' '));
+const sm = px.gauss(blue, w, h, 0.8);
+const buf = Buffer.alloc(n); for (let i = 0; i < n; i++) buf[i] = Math.min(255, sm[i] * 2.5);
+await sharp(buf, { raw: { width: w, height: h, channels: 1 } }).extract({ left: 560, top: 340, width: 1400, height: 420 }).jpeg({ quality: 90 }).toFile(O + 'wm_blue.jpg');

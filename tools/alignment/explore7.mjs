@@ -1,0 +1,25 @@
+import { createRequire } from 'node:module';
+const require = createRequire('/home/poe/cellestial-wt/loader/package.json');
+const sharp = require('sharp');
+const px = await import('/home/poe/cellestial-wt/loader/scripts/assets/lib/px.mjs');
+const W = '/home/poe/cellestial-wt/loader/public/cellestial/loader/';
+const O = '/tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/loader/look/';
+const lit = await px.load(sharp, W + 'c-lit.webp');
+const unlit = await px.load(sharp, W + 'c-unlit.webp');
+const { w, h } = lit; const n = w * h;
+const gain = new Float32Array(n);
+for (let i = 0; i < n; i++) gain[i] = Math.max(0, lit.b[i] - unlit.b[i] - (lit.r[i] - unlit.r[i]));
+const fine = px.gauss(gain, w, h, 1.0);
+const wide = px.gauss(gain, w, h, 5);
+const dog = new Float32Array(n);
+for (let i = 0; i < n; i++) dog[i] = Math.max(0, fine[i] - wide[i]);
+const crop = async (plane, name, k, x0, y0, cw, ch, zoom) => {
+	const buf = Buffer.alloc(cw * ch);
+	for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) buf[y * cw + x] = Math.max(0, Math.min(255, plane[(y0 + y) * w + x0 + x] * k));
+	await sharp(buf, { raw: { width: cw, height: ch, channels: 1 } }).resize(cw * zoom, ch * zoom, { kernel: 'nearest' }).png().toFile(O + name);
+};
+await crop(dog, 'dog_node.png', 3, 930, 930, 320, 320, 3);
+await crop(gain, 'gain_node.png', 1.5, 930, 930, 320, 320, 3);
+await crop(dog, 'dog_all.png', 3, 0, 0, 1400, 1400, 1);
+const hist = new Array(16).fill(0); for (let i = 0; i < n; i++) if (dog[i] > 5) hist[Math.min(15, Math.floor(dog[i] / 10))]++;
+console.log(hist.join(' '));

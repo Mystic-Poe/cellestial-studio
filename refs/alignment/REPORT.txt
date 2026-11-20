@@ -1,0 +1,29 @@
+Alignment harness: tools/alignment/register.mjs
+Run: 2026-11-20, node tools/alignment/register.mjs   (0.7 s, exit 0)
+Inputs: public/cellestial/loader/c-lit.webp (the C sprite, 1400 px frame)
+        public/cellestial/loader/wordmark.webp (the A4 wordmark, 2048 px frame)
+
+What it measures: how far the outline of the C sprite lands from the outline of
+the C emblem inside the wordmark, in wordmark pixels, for four ways of mapping one
+onto the other. 9,162 edge points.
+
+edge points 9162
+box-to-box 0.48902, 0, 24.93314, 0, 0.4905, 228.40215 rms 1.358 median 0.923 p90 2.256 max 5.04
+similarity 0.49082, 0, 22.08939, 0, 0.49082, 228.32402 rms 0.932 median 0.490 p90 1.500 max 5.08
+aniso 0.48933, 0, 22.96439, 0, 0.49135, 227.96465 rms 0.907 median 0.470 p90 1.485 max 5.27
+affine 0.48933, 0, 22.96439, 0.00041, 0.49132, 227.71465 rms 0.904 median 0.464 p90 1.469 max 5.42
+
+Pass rule: typical (median) error under 1 px and 90% of points under 2 px.
+
+RESULT: PASS for the similarity mapping (one scale, one shift):
+  scale 0.49082, shift x 22.089, shift y 228.324
+  median 0.49 px, 90% under 1.50 px, at full wordmark size. On screen the wordmark
+  is drawn smaller than 2048 px, so the error is under half a pixel on a desktop
+  and under a quarter on a phone. The few points near 5 px are the glow around the
+  main node, which differs between the two pictures by design.
+The plain box-to-box mapping from the asset manifest does NOT pass (90% only under
+2.26 px): the loader must use the fitted numbers above, and it does
+(src/experience/loader/geometry.ts once the loader is in place; today wip/loader/).
+
+Pictures: reg_similarity.jpg, reg_affine.jpg (red = wordmark emblem, cyan = C
+sprite; grey where they agree).
