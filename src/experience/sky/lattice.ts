@@ -188,7 +188,10 @@ export function createHoneycomb({ edge: a, radius, strutRings }: HoneycombOption
 			for (let s = 0; s < 3; s++) {
 				const n = neighbours[at * 6 + s * 2] as number;
 				if (n === -1 || hops[n] !== (hops[at] as number) - 1) continue;
-				const d = Math.hypot((vertices[n * 2] as number) - tx, (vertices[n * 2 + 1] as number) - ty);
+				const d = Math.hypot(
+					(vertices[n * 2] as number) - tx,
+					(vertices[n * 2 + 1] as number) - ty,
+				);
 				if (d < nextD) {
 					nextD = d;
 					next = n;

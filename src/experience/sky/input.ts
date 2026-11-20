@@ -59,7 +59,14 @@ export function attachInput(
 		touch: boolean;
 	} | null = null;
 
-	const modalOpen = () => document.querySelector('dialog[open], [aria-modal="true"]') !== null;
+	const modalOpen = () => {
+		try {
+			if (document.querySelector(':modal') !== null) return true;
+		} catch {
+			// A browser without :modal: the plain selectors below cover it.
+		}
+		return document.querySelector('dialog[open], [aria-modal="true"]') !== null;
+	};
 
 	const where = (target: EventTarget | null): 'sky' | 'star' | null => {
 		if (!(target instanceof Element)) return null;

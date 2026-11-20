@@ -18,6 +18,7 @@ import {
 	ClampToEdgeWrapping,
 	CustomBlending,
 	DataTexture,
+	DoubleSide,
 	DynamicDrawUsage,
 	InstancedBufferAttribute,
 	InstancedBufferGeometry,
@@ -187,6 +188,8 @@ function shader(
 		fragmentShader,
 		uniforms,
 		transparent: true,
+		// Nothing here has a back: the ring's quad is laid out with y down, which turns its winding.
+		side: DoubleSide,
 		depthTest: false,
 		depthWrite: false,
 		toneMapped: false,
@@ -417,7 +420,10 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		planePulse.setUsage(DynamicDrawUsage);
 		for (let e = 0; e < comb.edgeCount; e++) planePulse.array[e * 2] = NEVER;
 		planeGeo.setAttribute('aPulse', planePulse);
-		const plane = new Mesh(planeGeo, shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.latticeColor)));
+		const plane = new Mesh(
+			planeGeo,
+			shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.latticeColor)),
+		);
 		plane.material.uniforms.uRadial?.value.set(0, 0, LATTICE.fadeFrom, LATTICE.radius);
 		plane.material.uniforms.uFar?.value.set(...FADE.farLattice);
 
@@ -428,7 +434,10 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		strutPulse.setUsage(DynamicDrawUsage);
 		for (let s = 0; s < strutCount; s++) strutPulse.array[s * 2] = NEVER;
 		strutGeo.setAttribute('aPulse', strutPulse);
-		const struts = new Mesh(strutGeo, shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.latticeColor)));
+		const struts = new Mesh(
+			strutGeo,
+			shader(LINE_VERTEX, LINE_FRAGMENT, lineUniforms(LOOK.latticeColor)),
+		);
 		struts.material.uniforms.uRadial?.value.set(0, 0, LATTICE.fadeFrom, LATTICE.radius);
 		struts.material.uniforms.uFar?.value.set(...FADE.farLattice);
 		struts.material.uniforms.uStrut?.value.setX(1);

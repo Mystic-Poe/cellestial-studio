@@ -379,8 +379,8 @@ void main() {
 	vec2 pixel = position.xy * uSize;
 	vec2 t = vec2(pixel.x - uRing.x, uRing.y - pixel.y);
 	float across = dot(t, uAxis);
-	vec2 flat = t + (uSquash - 1.0) * across * uAxis;
-	vec2 off = rot(flat, uAngle) * (uScale / uRing.z);
+	vec2 laid = t + (uSquash - 1.0) * across * uAxis;
+	vec2 off = rot(laid, uAngle) * (uScale / uRing.z);
 	vec4 v = viewMatrix * vec4(uCentre + vec3(off, 0.0), 1.0);
 	gl_Position = projectionMatrix * v;
 	vUv = position.xy;

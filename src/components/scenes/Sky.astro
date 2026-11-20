@@ -1,10 +1,14 @@
 ---
-// PLACEHOLDER for the sky (B1 → B11, G1). The sky scene replaces this file and
-// src/experience/sky/index.ts.
+// The Sky (B): the canvas the flight is drawn on, and the layer its controls
+// live in. src/experience/sky/index.ts mounts on these two elements.
 //
-// A black canvas, and over it the layer that will hold the star buttons, B10
-// and B11. Only B11 is here: hidden until the visitor has flown the round,
-// which the stub counts as the first wheel, swipe or flight key.
+// The canvas is the picture and is hidden from assistive tech; every star of
+// the layer in front has a real, transparent <button> in #sky-ui, kept over
+// it by the scene, and that is what a visitor picks with.
+//
+// B11, the exit button, is the only words in the sky. It is in the markup from
+// the start and hidden: the scene shows it once one full round has been flown
+// (or at once under reduced motion), and it stays.
 import BrassButton from '../ui/BrassButton.astro';
 ---
 
@@ -24,14 +28,62 @@ import BrassButton from '../ui/BrassButton.astro';
 		width: 100%;
 		height: 100%;
 		background: #000;
+		/* The flight owns a touch that begins on the sky. */
+		touch-action: none;
+		-webkit-tap-highlight-color: transparent;
+		user-select: none;
+		-webkit-user-select: none;
 	}
 
-	/* The layer itself lets a click through to the canvas; what is on it does not. */
 	#sky-ui {
 		position: fixed;
 		inset: 0;
 		z-index: 2;
+		overflow: hidden;
 		pointer-events: none;
+	}
+
+	#sky-ui .sky-stars {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	#sky-ui .sky-stars[hidden] {
+		display: none;
+	}
+
+	/* One per star of the layer in front. The scene sets its size and place. */
+	#sky-ui .sky-star {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 44px;
+		height: 44px;
+		margin: -22px 0 0 -22px;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		appearance: none;
+		-webkit-appearance: none;
+		cursor: pointer;
+		pointer-events: auto;
+		touch-action: none;
+		-webkit-tap-highlight-color: transparent;
+		outline: none;
+		will-change: transform;
+	}
+
+	#sky-ui .sky-star[hidden] {
+		display: none;
+	}
+
+	#sky-ui .sky-star:focus-visible {
+		outline: 2px solid var(--color-brass-hi, #d5ae88);
+		outline-offset: 3px;
 	}
 
 	/* B11: bottom centre. The button is centred by its row, not by a transform,
@@ -45,5 +97,23 @@ import BrassButton from '../ui/BrassButton.astro';
 	}
 	.sky-exit > * {
 		pointer-events: auto;
+	}
+	/* It comes up out of the black once, when the round is flown. */
+	.sky-exit > [data-arriving] {
+		animation: sky-exit-in 900ms ease-out both;
+	}
+	@keyframes sky-exit-in {
+		from {
+			opacity: 0;
+			translate: 0 0.5rem;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.sky-exit > [data-arriving] {
+			animation: none;
+		}
+	}
+	html[data-motion='off'] .sky-exit > [data-arriving] {
+		animation: none;
 	}
 </style>
