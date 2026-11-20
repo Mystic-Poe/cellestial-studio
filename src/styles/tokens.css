@@ -1,0 +1,72 @@
+/* The Cellestial palette, as Tailwind 4 theme tokens.
+
+   Every colour here is sampled from the pack images, not chosen. The
+   sampling is in scripts/build-assets.mjs (see `palette`): it names each
+   region, prints each sample, and checks them against the mirror of this
+   file for canvas and WebGL, src/experience/tokens.ts. Change one, change
+   the other.
+
+   Contrast, measured: the brass of the pack is a dark bronze. As text it is
+   3.2:1 on black and 2.7:1 on the earth, which is enough for lines, borders
+   and fills and for no words at all. Words in brass use --color-brass-text
+   (the lit faces of the same letters: 6.7:1 on black, 5.6:1 on the earth).
+   The highlight is 10.2:1 on black and 8.6:1 on the earth. Blue is 5.5:1
+   and 4.6:1. */
+@theme {
+	/* The sky's ground. */
+	--color-black: #000;
+
+	/* Brass: the faces of the nine letters of A4, 6 px in from their edges,
+	   circuit lines and their glow left out. Median. */
+	--color-brass: #74573f;
+	/* Its highlight: the lit bevels of those letters, the 95th to 99th
+	   percentile of their luminance. Median of that band. */
+	--color-brass-hi: #d5ae88;
+	/* Its shadow: the far sides of the bevels, the 5th to 15th percentile. */
+	--color-brass-lo: #493321;
+	/* Brass for words: the lit faces of those letters, the 85th to 92nd
+	   percentile. Median. Every brass word on the site is this colour;
+	   --color-brass itself is for lines, borders and fills. */
+	--color-brass-text: #ae8a68;
+	/* Brass at 20%: honeycomb and constellation lines. */
+	--color-brass-dim: rgb(116 87 63 / 0.2);
+
+	/* The lit circuit lines of A1 lit, along the struts: the ridge of each
+	   line (the bluest pixel of every 5×5 block). Median. */
+	--color-blue: #6480ce;
+	/* The disc of the B3 core, out to three quarters of its radius. Median. */
+	--color-blue-white: #daeff8;
+
+	/* Body copy: white at 90%. */
+	--color-white: rgb(255 255 255 / 0.9);
+
+	/* The Roots' ground behind the soil photo: the average of both soil
+	   tiles as cropped. */
+	--color-earth: #1d1817;
+
+	/* The old token names, kept because /start, /contact and the scripts
+	   behind them emit these classes. Each is one of the colours above, or a
+	   stated tint of one. */
+	--color-night: #000;
+	--color-soil: #1d1817;
+	/* Panel faces, near black: the earth at 40%, 60% and 80% of its level. */
+	--color-card: #0c0a09;
+	--color-root: #110e0e;
+	--color-root-featured: #171312;
+	/* Brass at 14% and at 32%. */
+	--color-hairline: rgb(116 87 63 / 0.14);
+	--color-border: rgb(116 87 63 / 0.32);
+	--color-moss: #493321;
+	--color-heading: #ae8a68;
+	--color-body: rgb(255 255 255 / 0.9);
+	--color-secondary: rgb(255 255 255 / 0.76);
+	--color-muted: rgb(255 255 255 / 0.66);
+	--color-label: #ae8a68;
+	--color-faint: rgb(255 255 255 / 0.5);
+	--color-glow: #6480ce;
+	--color-tier-site: #6480ce;
+	--color-tier-systems: #6480ce;
+	--color-tier-app: #6480ce;
+	--color-tier-companion: #6480ce;
+	--color-tier-slot: #6480ce;
+}
