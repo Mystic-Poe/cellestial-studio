@@ -466,6 +466,34 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		main.globalCompositeOperation = 'source-over';
 	}
 
+	/**
+	 * A round glow laid into the halo instead of onto the frame: for light so
+	 * soft that the halo's coarse grain is all it needs. It costs next to
+	 * nothing there, where on the frame it would be a full screen to fill.
+	 */
+	function fog(
+		sprite: HTMLCanvasElement,
+		space: Space,
+		x: number,
+		y: number,
+		rx: number,
+		alpha: number,
+		ry = rx,
+	): void {
+		if (alpha <= 0.004 || rx <= 0) return;
+		const { ctx: c, texel } = levels[1];
+		into(c, space, 1 / texel);
+		c.globalCompositeOperation = 'lighter';
+		c.globalAlpha = Math.min(1, alpha);
+		// Said here, every time: a context forgets it when its canvas is resized,
+		// and the same second must draw the same picture whatever came before.
+		c.imageSmoothingEnabled = true;
+		c.imageSmoothingQuality = 'high';
+		c.drawImage(sprite, x - rx, y - ry, rx * 2, ry * 2);
+		c.globalAlpha = 1;
+		glowing = true;
+	}
+
 	/** Never thinner on screen than `px` CSS pixels. */
 	const atLeast = (width: number, space: Space, px = 0.9) => Math.max(width, px / scaleOf(space));
 
@@ -922,7 +950,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const wide = Math.min(layout.w, 1.6 * layout.h);
 			const tall = Math.min(layout.h, 0.9 * layout.w);
 			const span = ((right - left) / 2) * cam.k;
-			spot(
+			fog(
 				mist,
 				'screen',
 				cam.x + ((left + right) / 2) * cam.k + 0.1 * wide,
@@ -933,7 +961,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			);
 			const fresh = WORD.letters[newest];
 			const young = 1 - smoothstep(0.1, 0.7, t - script.letters[newest][1]);
-			spot(mist, 'word', fresh.x + fresh.w / 2, fresh.y + fresh.h / 2, 300, 0.36 * air * young);
+			fog(mist, 'word', fresh.x + fresh.w / 2, fresh.y + fresh.h / 2, 300, 0.36 * air * young);
 		}
 		if (lit) {
 			// The star lights with the word: its brass warmed white, a small glow.
@@ -1190,7 +1218,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			main.globalAlpha = 1;
 		}
 		circuitNeon(t);
-		letterNeon(t, strokes, (1 - cool) ** 1.7);
+		letterNeon(t, strokes, (1 - cool) ** 1.2);
 		nodeLight(t);
 		strike(t);
 		writing(t, strokes);
@@ -1409,13 +1437,16 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			down.addColorStop(0, 'rgb(0 0 0)');
 			down.addColorStop(at, 'rgb(0 0 0)');
 			const below = Math.min(0.99, at + 0.14);
-			down.addColorStop(below, 'rgb(0 0 0 / 0.8)');
 			const far = at + (2.6 * w0) / next.h;
 			if (far < 0.97) {
-				down.addColorStop(Math.max(below, far), 'rgb(0 0 0 / 0.74)');
-				down.addColorStop(Math.min(1, at + (7.5 * w0) / next.h), 'rgb(0 0 0 / 0.3)');
-				down.addColorStop(1, 'rgb(0 0 0 / 0.3)');
-			} else down.addColorStop(1, 'rgb(0 0 0 / 0.72)');
+				down.addColorStop(below, 'rgb(0 0 0 / 0.62)');
+				down.addColorStop(Math.max(below, far), 'rgb(0 0 0 / 0.5)');
+				down.addColorStop(Math.min(1, at + (7.5 * w0) / next.h), 'rgb(0 0 0 / 0.2)');
+				down.addColorStop(1, 'rgb(0 0 0 / 0.2)');
+			} else {
+				down.addColorStop(below, 'rgb(0 0 0 / 0.8)');
+				down.addColorStop(1, 'rgb(0 0 0 / 0.72)');
+			}
 			c.globalCompositeOperation = 'destination-in';
 			c.fillStyle = down;
 			c.fillRect(0, 0, 256, 64);

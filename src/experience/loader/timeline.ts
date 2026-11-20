@@ -102,7 +102,7 @@ export const FULL: Script = {
 		[5.56, 5.68],
 	],
 	star: 5.2,
-	cool: [5.6, 6.17],
+	cool: [5.66, 6.17],
 };
 
 /** A return visit in the same session: the C is already lit and in its place; one fast bolt writes the word. */
