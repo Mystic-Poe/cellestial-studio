@@ -91,7 +91,7 @@ const vars = [
 								<p>
 									{line.map((segment) =>
 										segment.srOnly ? (
-											<span class="sr-only">{segment.text}</span>
+											<span class:list={['sr-only', segment.brass && 'brass']}>{segment.text}</span>
 										) : segment.strike ? (
 											<s class:list={['strike', segment.brass && 'brass']}>{segment.text}</s>
 										) : segment.brass ? (
@@ -286,6 +286,15 @@ const vars = [
 	}
 	.roots-tile__body > p + p {
 		margin-top: 0.7em;
+	}
+	/* On a wide screen there is room: larger type, a wider tile, more air. */
+	@media (min-width: 64rem) {
+		.roots-tile {
+			--panel-pad-x: 2.5rem;
+			--panel-pad-y: 2.125rem;
+			width: min(37rem, 100% - 2rem);
+			font-size: 1.0625rem;
+		}
 	}
 	@media (max-width: 26rem) {
 		.roots-tile {

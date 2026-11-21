@@ -33,7 +33,8 @@ interface Stop {
 const CHROME = { w: 126, h: 92 };
 /** A tile beside a node is never narrower than this; else it goes under it. */
 const BESIDE_MIN = 352;
-const TILE_MAX_W = 544;
+/** A tile's width at most: 34rem, and 37rem on a wide screen (Roots.astro agrees). */
+const tileMaxWidth = (width: number): number => (width >= 1024 ? 592 : 544);
 /** Which stop the light leads to once every tile is read: the Close. */
 const CLOSE = 5;
 
@@ -136,10 +137,10 @@ export const mount: MountRoots = (ctx) => {
 		let x: number;
 		if (beside) {
 			const right = roomRight >= roomLeft;
-			w = Math.min(TILE_MAX_W, right ? roomRight : roomLeft);
+			w = Math.min(tileMaxWidth(width), right ? roomRight : roomLeft);
 			x = right ? b.right - g.left + gap : b.left - g.left - gap - w;
 		} else {
-			w = Math.min(TILE_MAX_W, width - 2 * margin);
+			w = Math.min(tileMaxWidth(width), width - 2 * margin);
 			x = clamp(b.left - g.left + b.width / 2 - w / 2, margin, width - margin - w);
 		}
 		// Never taller than the screen, and never under the logo.
