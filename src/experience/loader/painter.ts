@@ -1249,17 +1249,29 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		}));
 
 	const BREAK = 0.14;
+	/** The most the star's light takes of a letter's brass: the rest stays brass until it is gone. */
+	const BLEACH_MAX = 0.2;
+	/** Copies of itself a piece lays along its ring behind it. */
+	const TRAIL = 8;
+	/** How far apart on the circle, in radians. */
+	const TRAIL_STEP = 0.075;
+	/** Where a shard's flight ends and its ride on the ring begins and ends, as the sky's own progress. */
+	const LAND = [0.46, 0.64] as const;
 	const fragments = pieces.shards.map((shard, i) => {
 		const random = seeded(mix(71, i));
+		const n = pieces.shards.length;
+		const way = random() < 0.5 ? -1 : 1;
 		return {
 			shard,
-			/** When it reaches the ring, as the sky's own progress: 0.44 to 0.85, in a shuffled order. */
-			arrive: 0.44 + 0.41 * (((i * 5) % pieces.shards.length) / (pieces.shards.length - 1)),
+			/** When it reaches its ring, in a shuffled order: inside the window the sky gathers its rings in. */
+			arrive: lerp(LAND[0], LAND[1], ((i * 5) % n) / (n - 1)),
 			throwFar: 0.75 + 0.8 * random(),
 			side: (random() < 0.5 ? -1 : 1) * (0.35 + 0.4 * random()),
-			place: (i / pieces.shards.length) * TAU + (random() - 0.5) * 0.5,
-			wind: (random() < 0.5 ? -1 : 1) * (0.8 + 0.8 * random()),
-			ring: 2.0 + 0.55 * random(),
+			/** Which of the three rings takes it, and where on that ring's circle it lands. */
+			ring: i % 3,
+			place: (Math.floor(i / 3) / Math.ceil(n / 3)) * TAU + (i % 3) * 0.7 + (random() - 0.5) * 0.5,
+			way,
+			wind: way * (0.9 + 0.7 * random()),
 			turn: random() * TAU,
 			spin: (random() < 0.5 ? -1 : 1) * (5 + 6 * random()),
 			face: random() * TAU,
@@ -1303,7 +1315,8 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			main.globalAlpha = alpha;
 			main.drawImage(piece.canvas, piece.x, piece.y);
 			if (bleach > 0) {
-				main.globalAlpha = alpha * bleach;
+				// Lit, not whitened: under the light the brass is still brass when it sinks.
+				main.globalAlpha = alpha * bleach * BLEACH_MAX;
 				main.drawImage(piece.light, piece.x, piece.y);
 			}
 			main.globalAlpha = 1;
@@ -1324,10 +1337,31 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			const since = u - BREAK;
 			const base = Math.max(s0.r * 4.2, 0.1 * Math.min(layout.w, layout.h));
 			const shardSize = Math.max(15, Math.min(34, 0.036 * Math.min(layout.w, layout.h)));
+			// The circles the pieces end on: the sky's three rings as they stand on screen now.
+			const rings = sky.introRings?.() ?? [];
 			for (const f of fragments) {
-				const q = clamp01((T - T0) / (smoothstepAt(f.arrive) - T0));
-				if (q >= 1) continue;
 				const { shard } = f;
+				const ring = rings[f.ring] ?? {
+					x: core.x,
+					y: core.y,
+					a: core.r * (3.4 - 0.6 * f.ring),
+					b: core.r * (1.7 - 0.2 * f.ring),
+					turn: f.ring * 1.1,
+				};
+				const cr = Math.cos(ring.turn);
+				const sr = Math.sin(ring.turn);
+				const onRing = (at: number) => {
+					const ex = Math.cos(at) * ring.a;
+					const ey = Math.sin(at) * ring.b;
+					return { x: ring.x + ex * cr - ey * sr, y: ring.y + ex * sr + ey * cr };
+				};
+				// The flight, 0 to 1, and then the ride along the ring.
+				const q = clamp01((T - T0) / (smoothstepAt(f.arrive) - T0));
+				const ride = Math.max(0, s - f.arrive);
+				const alpha = 1 - smoothstep(f.arrive + 0.1, Math.min(0.9, f.arrive + 0.3), s);
+				if (alpha <= 0) continue;
+				// Where on the circle it is: it comes in along the ring's own turn and runs on round it.
+				const at = f.place - f.wind * (1 - q) * 1.3 + f.way * ride * 3.2;
 				// Thrown outwards on a bend…
 				const out = 1 - (1 - Math.min(1, q / 0.42)) ** 3;
 				const far = base * f.throwFar * out;
@@ -1336,34 +1370,52 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 				const sa = Math.sin(shard.angle);
 				const bx = s0.x + (shard.x - sw.x) * cam.k + ca * far - sa * bend;
 				const by = s0.y + (shard.y - sw.y) * cam.k + sa * far + ca * bend;
-				// …then drawn in, winding, to its place on a ring round the sky's core.
-				const home = smoother((q - 0.3) / 0.7);
-				const place = f.place + f.wind * (1 - q) * 1.5;
-				const tx = core.x + Math.cos(place) * core.r * f.ring;
-				const ty = core.y + Math.sin(place) * core.r * f.ring * 0.92;
-				const x = lerp(bx, tx, home);
-				const y = lerp(by, ty, home);
-				const alpha = 1 - smoothstep(0.8, 1, q);
+				// …then drawn in, on an arc, to its place on its ring's circle.
+				const home = smoother((q - 0.22) / 0.78);
+				const target = onRing(at);
+				const x = lerp(bx, target.x, home);
+				const y = lerp(by, target.y, home);
+				// The way the circle runs under it there: it lies down along the band.
+				const ahead = onRing(at + f.way * 0.05);
+				const along = Math.atan2(ahead.y - target.y, ahead.x - target.x);
+				const lie = home * home;
 				const size = shard.size * cam.k;
 				// They leave at the star's own size and grow to pieces of a ring: big
 				// enough to read on any screen as brass turning in the light.
 				const grow = lerp(1, Math.max(1.3, shardSize / size), smoothstep(0, 0.5, q));
 				const face = Math.cos(f.face + f.flip * since);
+				const edge = lerp(Math.max(0.2, Math.abs(face)), 1, lie);
 				const unit = (grow * cam.k) / shard.scale;
-				main.setTransform(dpr, 0, 0, dpr, dpr * x, dpr * y);
-				main.rotate(f.turn + f.spin * since);
-				main.scale(unit * Math.max(0.2, Math.abs(face)), unit);
-				main.globalAlpha = alpha;
-				main.drawImage(shard.canvas, -shard.px, -shard.py);
-				// Lit by the star they came from: the brass again, as light.
-				const glint = Math.max(0, face) ** 6;
+				const piece = (px: number, py: number, angle: number, a: number, k: number) => {
+					main.setTransform(dpr, 0, 0, dpr, dpr * px, dpr * py);
+					main.rotate(angle);
+					main.scale(unit * k, unit * k * edge);
+					main.globalAlpha = a;
+					main.drawImage(shard.canvas, -shard.px, -shard.py);
+				};
+				// What it lays down behind it on the circle: itself, again and again, fading,
+				// each copy turned so that its length lies along the band.
+				const laid = smoothstep(0.7, 1, q);
+				if (laid > 0) {
+					for (let k = TRAIL; k >= 1; k--) {
+						const behind = at - f.way * k * TRAIL_STEP * laid;
+						const back = onRing(behind);
+						const next = onRing(behind + f.way * 0.05);
+						const dir = Math.atan2(next.y - back.y, next.x - back.x) - shard.angle;
+						piece(back.x, back.y, dir, alpha * laid * 0.7 * (1 - k / (TRAIL + 1)), 0.72);
+					}
+				}
+				const angle = lerp(f.turn + f.spin * Math.min(since, 0.5), along - shard.angle, lie);
+				piece(x, y, angle, alpha, lerp(1, 0.8, lie));
+				// Catching the light as it turns: the brass again, a little brighter. Never white.
+				const glint = Math.max(0, face) ** 6 * (1 - lie);
 				main.globalCompositeOperation = 'lighter';
-				main.globalAlpha = alpha * (0.55 + 0.45 * glint);
+				main.globalAlpha = alpha * (0.22 + 0.4 * glint);
 				main.drawImage(shard.canvas, -shard.px, -shard.py);
 				main.globalCompositeOperation = 'source-over';
 				main.globalAlpha = 1;
-				// A glint as it turns to face the light.
-				spot(hot, 'screen', x, y, size * grow * (0.7 + 1.1 * glint), alpha * (0.16 + 0.7 * glint));
+				if (glint > 0.05)
+					spot(hot, 'screen', x, y, size * grow * (0.4 + 0.5 * glint), alpha * 0.3 * glint);
 			}
 		}
 		const flash = u < BREAK ? u / BREAK : 1 - smoothstep(BREAK, 0.55, u);
@@ -1372,9 +1424,9 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		// ignites there, follows the core, and is spent by the time the letters are gone.
 		const flood = smoothstep(0.02, 0.3, s) * (1 - smoothstep(0.34, 0.72, s));
 		if (flood > 0) {
-			const reach = Math.max(layout.w, layout.h) * lerp(0.2, 0.62, smoothstep(0, 0.5, s));
-			spot(haze, 'screen', core.x, core.y, reach, 0.85 * flood);
-			spot(hot, 'screen', core.x, core.y, reach * 0.3, 0.5 * flood);
+			const reach = Math.max(layout.w, layout.h) * lerp(0.16, 0.4, smoothstep(0, 0.5, s));
+			spot(haze, 'screen', core.x, core.y, reach, 0.5 * flood);
+			spot(hot, 'screen', core.x, core.y, reach * 0.22, 0.3 * flood);
 		}
 		return veil;
 	}

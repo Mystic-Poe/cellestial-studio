@@ -30,3 +30,24 @@ code 6 (MINOR, a tool) — the transitions suite died once waiting for Cloudflar
   tools/transitions/measure.mjs opened /contact and went back to it waiting for "load"; it now waits for
   "domcontentloaded" there, so a stalled third-party script cannot stop the run. Checked: the fall part,
   which holds that step, run twice: 34 of 34 both times.
+
+look 6 (MAJOR) — A5: the star's pieces never became the rings.  FIXED.
+  Reproduced: refs/verification/matrix/loader/a5-desk.jpg (0.3: white triangles; 0.5: a grey ghost of the
+  word under a blue-white wash; 0.7: the rings already whole). The shards were drawn twice over with
+  additive light and a hot glint each, so they were white; they homed in on one circle round the core and
+  were gone before the rings showed; the letters took the star's light at full strength (flat white).
+  Done: the sky tells the loader where its three rings stand on screen at each moment (a new optional method
+  of the contract, introRings(): the middle of each band as an ellipse, with the sky's own turn, tilt and
+  size during the hand-off; checked by drawing the ellipses over the rings: they lie on the bands). In
+  src/experience/loader/painter.ts each of the star's nine pieces, still a clip of the star's own brass and
+  drawn as brass (a small lift when it turns to the light, never white), is thrown out on a bend, swings in
+  on an arc and lands on one of the three rings' circles between 0.46 and 0.64 of the hand-off, lies down
+  along the band, runs on round it laying copies of itself behind, and fades between 0.56 and 0.9 while the
+  sky's ring fades in under it (0.4 to 0.85, as the contract says) and begins to turn. The letters take at
+  most a fifth of the star's light (BLEACH_MAX), so they are still brass as they sink; the flood of light
+  from the core is narrower and weaker (it had been a wash over two-thirds of the screen).
+  Checked: node tools/loader/compare.mjs --only a5 (the sheets now show every tenth of the hand-off):
+  refs/loading/compare/a5-desk.jpg and a5-phone.jpg looked at, and full-size crops of 0.3 to 0.9 on the
+  desktop: brass pieces leave the star, circle the core on three ellipses with brass trails, the rings come
+  up under them; the word is brass until it is gone. Not yet re-measured in real time (the loader's timing
+  is the next fix).

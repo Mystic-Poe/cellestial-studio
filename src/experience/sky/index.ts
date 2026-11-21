@@ -9,6 +9,7 @@
 // A frame is: step the clock, work out the camera, draw.
 
 import { slotToStar } from '../../content/constellations.ts';
+import { ASSETS } from '../assets.ts';
 import type {
 	ClaimsEvent,
 	ClaimsStore,
@@ -102,6 +103,14 @@ const INTRO = {
 	spin: 2.2,
 	/** The loop keeps running this long after the hand-off, until the stage activates the sky. */
 	holdMs: 2500,
+} as const;
+
+/** The middle of the ring picture's band: its half-axes as fractions of the outer long one, and the way its long axis lies (x right, y up). */
+const RING_BAND = ASSETS.sky.b3Ring;
+const RING_MID = {
+	long: (RING_BAND.outer.rx + RING_BAND.inner.rx) / 2 / RING_BAND.outer.rx,
+	short: (RING_BAND.outer.ry + RING_BAND.inner.ry) / 2 / RING_BAND.outer.rx,
+	lie: (-RING_BAND.outer.angle * Math.PI) / 180,
 } as const;
 
 /** Each ring's tilt breathes a little: amount, rate (rad/s), phase. */
@@ -1414,6 +1423,27 @@ export const mount: MountSky = (ctx) => {
 			const virgo = FIGURES * Math.ceil(nearLayer() / FIGURES);
 			layout.project(cam, 0, 0, -virgo * SPACING, tmp);
 			return { x: tmp.x, y: tmp.y, r: B3.ring * B3.core * tmp.scale };
+		},
+
+		introRings() {
+			const core = scene.coreCircle();
+			const settle = introOn() ? smooth((introT - 0.4) / 0.45) : 1;
+			const grown = introOn() ? lerp(INTRO.ringFrom, 1, settle) : 1;
+			const whirl = introOn() ? INTRO.spin * (1 - settle) ** 2 : 0;
+			const outer = core.r / B3.core;
+			return B3.rings.map((ring, i) => {
+				const tilt = TILT[i] ?? TILT[0];
+				const angle = ring.rest + (still ? 0 : ring.rate * time) + whirl * Math.sign(ring.rate);
+				const squash = ring.squash * (still ? 1 : 1 + tilt[0] * Math.sin(time * tilt[1] + tilt[2]));
+				const size = outer * ring.scale * grown;
+				return {
+					x: core.x,
+					y: core.y,
+					a: size * RING_MID.long,
+					b: size * RING_MID.short * squash,
+					turn: -(RING_MID.lie + angle),
+				};
+			});
 		},
 
 		fall({ groundY, onImpact, onLand }) {

@@ -11,7 +11,7 @@
 //
 //   desk-1.jpg, desk-2.jpg     1440x900: reference left, build right, 7 pairs a sheet
 //   phone-1.jpg, phone-2.jpg   390x844 (scale 2, mobile, touch): reference above, build below
-//   a5-desk.jpg, a5-phone.jpg  the hand-off at 0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its length
+//   a5-desk.jpg, a5-phone.jpg  the hand-off at every tenth of its length, 0 to 1
 //   short.jpg                  (--only short) the short version of a same-session return,
 //                              both sizes, at 0.05, 0.35, 0.6, 0.9, 1.2, 1.5, 1.9 s
 //
@@ -50,7 +50,7 @@ const custom = values.times?.split(',').map(Number);
 const TIMES = custom ?? [0, 0.67, 1.33, 1.58, 2.75, 3.0, 3.33, 3.67, 3.83, 4.25, 4.75, 5.25, 5.75, 6.2];
 const END = 6.2;
 const HANDOFF = 1.5;
-const A5 = [0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0];
+const A5 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
 
 const SIZES = {
 	desk: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
@@ -185,7 +185,7 @@ if (only.has('a5')) {
 			parts.push({ input: label(`A5 at ${A5[i]} (1440x900)`, W), left: x, top: y });
 			parts.push({ input: await sharp(png).resize(W, H).toBuffer(), left: x, top: y + 20 });
 		}
-		await sheet('a5-desk.jpg', 4 * (W + 4) - 4, 2 * (H + 24), parts);
+		await sheet('a5-desk.jpg', 4 * (W + 4) - 4, 3 * (H + 24), parts);
 	}
 	{
 		const shots = await capture('phone', times);
@@ -193,11 +193,12 @@ if (only.has('a5')) {
 		const H = Math.round((W * 844) / 390);
 		const parts = [];
 		for (const [i, png] of shots.entries()) {
-			const x = i * (W + 4);
-			parts.push({ input: label(`A5 at ${A5[i]}`, W), left: x, top: 0 });
-			parts.push({ input: await sharp(png).resize(W, H).toBuffer(), left: x, top: 20 });
+			const x = (i % 6) * (W + 4);
+			const y = Math.floor(i / 6) * (H + 24);
+			parts.push({ input: label(`A5 at ${A5[i]}`, W), left: x, top: y });
+			parts.push({ input: await sharp(png).resize(W, H).toBuffer(), left: x, top: y + 20 });
 		}
-		await sheet('a5-phone.jpg', 7 * (W + 4) - 4, 20 + H, parts);
+		await sheet('a5-phone.jpg', 6 * (W + 4) - 4, 2 * (H + 24), parts);
 	}
 }
 

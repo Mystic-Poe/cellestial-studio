@@ -26,6 +26,15 @@ export interface ScreenCircle {
 	r: number;
 }
 
+/** An ellipse on screen, in CSS pixels: half-axes `a` and `b`, `a` turned by `turn` radians (clockwise, y down). */
+export interface ScreenEllipse {
+	x: number;
+	y: number;
+	a: number;
+	b: number;
+	turn: number;
+}
+
 // ───────────────────────────────────────────────────────────── claims ──
 
 /** A lit star. `ask` is exactly what was asked: no name, no added fields. */
@@ -102,6 +111,13 @@ export interface SkyScene {
 	introProgress(t: number): void;
 	/** Where B3's core disc is on screen right now. The loader's shards home in on it. */
 	coreCircle(): ScreenCircle;
+	/**
+	 * Optional. B3's three rings as they stand on screen right now, outermost
+	 * first: the middle of each band as an ellipse. During the hand-off they are
+	 * the circles the loader's shards end on, so that the pieces of the little
+	 * star are seen to become the rings.
+	 */
+	introRings?(): ScreenEllipse[];
 
 	/**
 	 * D1. Every star accelerates straight down with a trail, all alike; the
