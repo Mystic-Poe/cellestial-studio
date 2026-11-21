@@ -237,6 +237,9 @@ import Panel from '../ui/Panel.astro';
 		scrollbar-width: thin;
 		scrollbar-color: var(--color-brass) transparent;
 	}
+	.sky-ask[data-more] {
+		mask-image: linear-gradient(to bottom, #000 calc(100% - 2.25rem), transparent);
+	}
 	.sky-ask:focus-visible {
 		outline: 2px solid var(--color-brass-hi, #d5ae88);
 		outline-offset: 2px;

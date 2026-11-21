@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -36,6 +36,8 @@
 //   panel     the empty-star panel (B10): its words against src/content/offers.ts,
 //             where it stands beside every one of the 146 stars, focus, everything
 //             that closes it, and the button that opens the build request
+//   lit       the lit-star panel: exactly the claim's ask as plain text and nothing
+//             else, a long ask scrolling inside it, and the camera let go when it closes
 //   words     the pulse and the words "claim yours" (B9): what they are, where they
 //             stand, the pulse's period, everything that ends them, and the still sky
 //
@@ -51,7 +53,7 @@ import { chromium } from 'playwright-core';
 import { OFFERS } from '../../src/content/offers.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -94,10 +96,10 @@ async function browser(gpu) {
 }
 
 /** The real page on the sky, up and ready. `init` runs before any of its scripts. */
-async function open(size, { gpu = true, query = '?scene=sky&debug', init, context } = {}) {
+async function open(size, { gpu = true, query = '?scene=sky&debug', init, initArg, context } = {}) {
 	const ctx = context ?? (await (await browser(gpu)).newContext(SIZES[size]));
 	const page = await ctx.newPage();
-	if (init) await page.addInitScript(init);
+	if (init) await page.addInitScript(init, initArg);
 	// Astro's dev toolbar sits at bottom centre, over the exit button. Gone on every load.
 	await page.addInitScript(() =>
 		addEventListener('DOMContentLoaded', () => {
@@ -1461,6 +1463,125 @@ if (only.has('panel')) {
 		log(`THE EMPTY-STAR PANEL on a shorter screen, ${w}x${h}`);
 		check('whole on the screen and clear of the logo and menu beside every star', sweep.off === 0 && sweep.chrome === 0 && sweep.wide === 0, `${Math.round(sweep.w)}x${Math.round(sweep.h)} px; least room to a screen edge ${f2(sweep.least)} px`);
 		log(`        (there is not always room beside the star there: the panel lies partly over its star for ${sweep.covering} of ${sweep.stars} stars)`);
+		await view.close();
+		log();
+	}
+}
+
+// ─────────────────────────────────────────────────── the lit-star panel ──
+
+if (only.has('lit')) {
+	const LONG = `${'We are a family plumbing business, three vans, twenty-two years in the same town.\n\n'.repeat(2)}What we need:\n- a site that says who we are\n- a way to book a visit\n\n${'Plain, on time, and there when you call. '.repeat(14)}`;
+	const ASKS = {
+		'slot-3': "A site for my bakery, with the week's bread on the first page.",
+		'slot-53': LONG,
+		'slot-110': '<b>Bold</b> ideas & a shop <img src=x onerror="window.__ran = true"> for <i>hats</i>',
+	};
+	for (const size of ['desk', 'phone']) {
+		log(`THE LIT-STAR PANEL, ${size === 'desk' ? '1440x900' : '390x844'}`);
+		const view = await open(size, {
+			init: (asks) => {
+				localStorage.setItem('cellestial:claims', JSON.stringify(Object.entries(asks).map(([slot, ask]) => ({ slot, ask }))));
+			},
+			initArg: ASKS,
+		});
+		const { page } = view;
+		const press = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		const panel = (slot) => page.evaluate(PANEL, ['lit', slot]);
+		const focused = () => page.evaluate(() => window.__cellestial.sky.hooks.focused());
+		/** Click a lit star and wait for the panel. */
+		const fly = async (slot) => {
+			const c = await page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+			await press(c.x, c.y);
+			const t0 = Date.now();
+			await page.waitForFunction(() => window.__cellestial.sky.panels.open()?.kind === 'lit', null, { timeout: 8000 });
+			await sleep(300);
+			return (Date.now() - t0 - 300) / 1000;
+		};
+		/** Wait until the camera is back on the flight path. */
+		const home = async () => {
+			await sleep(1200);
+			return page.evaluate(() => {
+				const { hooks } = window.__cellestial.sky;
+				const cam = hooks.camera();
+				const path = hooks.layout().cameraAt(hooks.flight().pos);
+				return Math.hypot(cam.x - path.x, cam.y - path.y, cam.z - path.z);
+			});
+		};
+
+		let took = await fly('slot-3');
+		let p = await panel('slot-3');
+		const star = await page.evaluate(() => window.__cellestial.sky.hooks.starCircle('slot-3'));
+		check('a click on a lit star flies in on it, then the panel opens beside it', p.shown && (await focused()) === 'slot-3' && p.gap > 4 && p.gap < 24, `${f2(took)} s after the click; the star's disc is ${Math.round(star.r)} px in radius, the panel ${f2(p.gap)} px from it`);
+		const inside = await page.evaluate(() => {
+			const el = document.querySelector('#sky-ui [data-sky-panel="lit"]');
+			const ask = el.querySelector('[data-sky-ask]');
+			return {
+				text: el.innerText,
+				ask: ask.textContent,
+				children: ask.childElementCount,
+				kids: [...el.children].map((c) => c.tagName + (c.getAttribute('aria-label') ? `[${c.getAttribute('aria-label')}]` : '')),
+				name: document.getElementById(el.getAttribute('aria-labelledby'))?.textContent,
+			};
+		});
+		check('it shows exactly what was asked and nothing else: no title, name, date or label, only a close button named "Close"', inside.text === ASKS['slot-3'] && inside.ask === ASKS['slot-3'] && inside.kids.join(' ') === 'BUTTON[Close] P' && inside.name === ASKS['slot-3'], `"${inside.text}"`);
+		check('focus goes into it; it is whole on the screen and clear of the logo', p.focusInside && p.margin >= 11.5 && !p.overChrome);
+		await page.locator('#sky-ui [data-sky-panel="lit"] .panel__close').click();
+		await sleep(100);
+		p = await panel('slot-3');
+		let off = await home();
+		check('its close button closes it and lets the camera go', !p.shown && (await focused()) === null && off < 1e-6, `the camera is ${off.toExponential(1)} from the flight path 1.3 s later; focus on ${p.focusOn}`);
+
+		took = await fly('slot-53');
+		const long = await page.evaluate(() => {
+			const ask = document.querySelector('#sky-ui [data-sky-ask]');
+			const before = ask.scrollTop;
+			ask.scrollTop = 1e6;
+			const out = { text: ask.textContent, scroll: ask.scrollHeight, client: ask.clientHeight, moved: ask.scrollTop - before, focusable: ask.tabIndex === 0 };
+			return out;
+		});
+		p = await panel('slot-53');
+		check('a long ask scrolls inside the panel, which stays whole on the screen', long.text === LONG && long.scroll > long.client + 20 && long.moved > 20 && long.focusable && p.margin >= 11.5, `${LONG.length} characters: ${long.scroll} px of text in a window of ${long.client} px; the panel is ${Math.round(p.w)}x${Math.round(p.h)} px`);
+		await page.keyboard.press('Escape');
+		await sleep(100);
+		p = await panel('slot-53');
+		off = await home();
+		check('Escape closes it and lets the camera go', !p.shown && (await focused()) === null && off < 1e-6);
+
+		await fly('slot-110');
+		const raw = await page.evaluate(() => {
+			const el = document.querySelector('#sky-ui [data-sky-panel="lit"]');
+			return { text: el.querySelector('[data-sky-ask]').textContent, tags: el.querySelectorAll('b, i, img').length, ran: window.__ran === true };
+		});
+		check('an ask written as markup is shown as the text it is, never as markup', raw.text === ASKS['slot-110'] && raw.tags === 0 && !raw.ran, raw.text);
+		const out = await page.evaluate(EMPTY_NEAR, size === 'desk' ? [0.15, 0.8] : [0.5, 0.13]);
+		await press(...out);
+		await sleep(150);
+		p = await panel('slot-110');
+		const beads = await page.evaluate(() => window.__cellestial.sky.answer.run() !== null);
+		off = await home();
+		check('a press outside closes it and lets the camera go (and sends no beads)', !p.shown && (await focused()) === null && off < 1e-6 && !beads);
+
+		await fly('slot-3');
+		if (size === 'desk') {
+			await page.mouse.move(200, 700);
+			await page.mouse.wheel(0, 100);
+		} else {
+			const cdp = await view.ctx.newCDPSession(page);
+			const touch = (type, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x: 195, y }] });
+			await touch('touchStart', 330);
+			for (let n = 1; n <= 6; n++) {
+				await touch('touchMove', 330 - n * 30);
+				await sleep(20);
+			}
+			await touch('touchEnd', 0);
+			await cdp.detach();
+		}
+		await sleep(200);
+		p = await panel('slot-3');
+		check('flying on closes it and lets the camera go', !p.shown && (await focused()) === null);
+		const claimed = await page.evaluate(() => window.__cellestial.claims.all().size);
+		check('and the three stars are still lit, no more', claimed === 3);
 		await view.close();
 		log();
 	}

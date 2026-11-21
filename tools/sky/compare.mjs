@@ -36,6 +36,10 @@
 //                             and the lowest of a figure), the whole screen, and the panel
 //                             itself pixel for pixel. Prints where each panel was put and
 //                             whether it is whole on the screen and clear of the logo.
+//   lit.jpg                   (--only lit) a lit star clicked: the camera flown in and the
+//                             panel with what was asked, for a short ask, a long one (it must
+//                             scroll inside the panel) and one written as markup (it must show
+//                             as the text it is), both sizes, and the long one pixel for pixel
 //   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
@@ -110,7 +114,11 @@ async function open(size, lit = [], query = '') {
 		await page.addInitScript((slots) => {
 			localStorage.setItem(
 				'cellestial:claims',
-				JSON.stringify(slots.map((slot) => ({ slot, ask: 'A site for my bakery.' }))),
+				JSON.stringify(
+					slots.map((s) =>
+						typeof s === 'string' ? { slot: s, ask: 'A site for my bakery.' } : { slot: s[0], ask: s[1] },
+					),
+				),
 			);
 		}, lit);
 	}
@@ -787,6 +795,56 @@ if (only.has('panel')) {
 		await view.close();
 	}
 	await sheet('panel.jpg', cells, 4);
+}
+
+// ─────────────────────────────────────────────────── the lit-star panel ──
+
+const ASKS = [
+	['slot-3', 'A site for my bakery, with the week\'s bread on the first page.'],
+	[
+		'slot-53',
+		`We are a family plumbing business, three vans, twenty-two years in the same town.\n\nWhat we need:\n- a site that says who we are and shows the work\n- a way to book a visit without ringing us\n- reminders the day before, so nobody forgets\n- a page for emergencies, with the number in large type\n\nWhat we do not need: a blog, a chat bubble, or anything that moves when you scroll past it. My father started this business with one van and a notebook, and the site should feel like him: plain, on time, and there when you call. We would like to be able to change the prices ourselves, and to add a photograph when a job turns out well. If it can be ready before the cold weather, that would be the best thing of all.`,
+	],
+	['slot-110', '<b>Bold</b> ideas & a shop <img src=x onerror="document.title=\'broken\'"> for <i>hats</i>'],
+];
+
+if (only.has('lit')) {
+	const cells = [];
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size, ASKS);
+		const [fw, fh] = size === 'desk' ? [400, 250] : [150, 325];
+		let close = null;
+		await view.page.evaluate(() => window.__cellestial.sky.debug.setClock(null));
+		for (const [slot, ask] of ASKS) {
+			const c = await view.page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+			if (size === 'desk') await view.page.mouse.click(c.x, c.y);
+			else await view.page.touchscreen.tap(c.x, c.y);
+			await view.page.waitForFunction(() => window.__cellestial.sky.panels.open()?.kind === 'lit', null, { timeout: 8000 });
+			await view.page.waitForTimeout(400);
+			const p = await view.page.evaluate(PANEL, ['lit', slot]);
+			const png = await view.page.screenshot({ type: 'png' });
+			const same = p.text === ask;
+			const ok = !p.hidden && p.whole && !p.overChrome && p.gap > 0 && same;
+			if (!ok) errors++;
+			console.log(
+				`[${size}] ${slot}, an ask of ${ask.length} characters: the star at ${p.star.x.toFixed(0)}, ${p.star.y.toFixed(0)} r ${p.star.r.toFixed(0)}; panel ${p.box.w.toFixed(0)}x${p.box.h.toFixed(0)} at ${p.box.x.toFixed(0)}, ${p.box.y.toFixed(0)}, ${p.gap.toFixed(0)} px from the star; its text is ${same ? 'exactly the ask' : 'NOT the ask'}${ok ? '' : '   WRONG'}`,
+			);
+			cells.push({ img: await fit(png, fw, fh), w: fw, h: fh, caption: `${size}: ${ask.length} characters` });
+			if (ask.length > 300) {
+				close = await cut(png, view.scale, { x: Math.max(0, p.box.x - 8), y: p.box.y - 8, w: p.box.w + 16, h: p.box.h + 16 }, 330, 325);
+			}
+			await view.page.keyboard.press('Escape');
+			await view.page.waitForTimeout(1300);
+		}
+		cells.push({ img: close, w: 330, h: 325, caption: `${size}: the long ask, pixel for pixel` });
+		const title = await view.page.title();
+		if (title === 'broken') {
+			errors++;
+			console.error(`[${size}] the ask's markup was run`);
+		}
+		await view.close();
+	}
+	await sheet('lit.jpg', cells, 4);
 }
 
 // ───────────────────────────────────────────────────────── the fall ──

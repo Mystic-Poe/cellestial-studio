@@ -160,7 +160,16 @@ export function createPanels(hooks: SkyHooks, ctx: SceneContext): Panels {
 		// A long ask scrolls inside the panel; the keyboard can then reach it.
 		if (askEl.scrollHeight > askEl.clientHeight + 1) askEl.tabIndex = 0;
 		else askEl.removeAttribute('tabindex');
+		moreBelow();
 	});
+
+	/** While there is more of the ask below, its last line fades out (Sky.astro, [data-more]). */
+	const moreBelow = () => {
+		if (!askEl) return;
+		const more = askEl.scrollTop + askEl.clientHeight < askEl.scrollHeight - 2;
+		askEl.toggleAttribute('data-more', more);
+	};
+	askEl?.addEventListener('scroll', moreBelow, { passive: true });
 
 	hooks.on('dismiss', () => close());
 	hooks.on('star-pick', () => close());
