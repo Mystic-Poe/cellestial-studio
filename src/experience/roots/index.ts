@@ -18,7 +18,7 @@
 
 import { ASSETS } from '../assets.ts';
 import type { MountRoots, RootsScene } from '../contracts.ts';
-import { EDGE, EDGE_MEAN, edgeY } from './edge.ts';
+import { EDGE, EDGE_MEAN } from './edge.ts';
 import { createNet, type Layout, type Pt } from './net.ts';
 
 interface Stop {
@@ -55,7 +55,16 @@ export const mount: MountRoots = (ctx) => {
 		if (node && bulb && tile) stops.push({ el, id: el.dataset.offer ?? '', node, bulb, tile });
 	}
 
-	const net = createNet(host);
+	/** The guided light has arrived: its target answers with a moment of brightness. */
+	let hotTimer = 0;
+	function arrive(to: number): void {
+		const target = to === CLOSE ? f1() : stops[to]?.node;
+		if (!target) return;
+		target.setAttribute('data-hot', '');
+		window.clearTimeout(hotTimer);
+		hotTimer = window.setTimeout(() => target.removeAttribute('data-hot'), 900);
+	}
+	const net = createNet(host, arrive);
 	const f1 = () => ground.querySelector<HTMLElement>('[data-open-claim]');
 	const f2 = () => ground.querySelector<HTMLElement>('[data-open-contact]');
 	const docY = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
@@ -100,7 +109,7 @@ export const mount: MountRoots = (ctx) => {
 		return {
 			width,
 			height: ground.offsetHeight,
-			surface: { x: surfaceX, y: edgeY(surfaceX) + 1 },
+			surfaceX,
 			nodes,
 			close: button
 				? { x: button.left - g.left + button.width / 2, y: button.top - g.top + 3 }
@@ -111,6 +120,8 @@ export const mount: MountRoots = (ctx) => {
 	let measureTimer = 0;
 	function remeasure(): void {
 		net.layout(measure());
+		// A growth caught by a resize is finished by it.
+		if (grown) for (let i = 0; i < stops.length; i++) light(i);
 		if (opened) place(opened);
 		guide();
 	}

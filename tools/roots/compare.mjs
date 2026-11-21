@@ -93,6 +93,22 @@ if (only.has('tiles')) {
 	await sheet(join(OUT, 'tile-close.jpg'), close, { cols: 4, cellW: 392, cellH: 560, enlarge: false });
 }
 
+if (only.has('descent')) {
+	for (const size of ['desk', 'phone']) {
+		const run = await openPage(browser, size, URL);
+		const { page } = run;
+		await rootsReady(page);
+		await page.addStyleTag({ content: '.roots-node__glow,.roots-node::before{animation:none!important}' });
+		await page.waitForTimeout(1200); // every band drawn
+		console.log(`  ${size}: ${JSON.stringify(await page.evaluate(() => window.__cellestial.roots.debug.net.debug.stats()))}`);
+		const cells = await pieces(page, size);
+		if (size === 'desk') {
+			for (let i = 0; i < cells.length; i += 2) await sheet(join(OUT, `descent-desk-${i / 2 + 1}.jpg`), cells.slice(i, i + 2), { cols: 1, cellW: 1440, cellH: 900, max: 1600 });
+		} else await sheet(join(OUT, 'descent-phone.jpg'), cells, { cols: 5, cellW: 312, cellH: 675 });
+		await done(run);
+	}
+}
+
 await browser.close();
 if (bad) console.error(`${bad} page error(s)`);
 process.exit(bad ? 1 : 0);

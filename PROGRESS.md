@@ -17,24 +17,26 @@
 **The Roots (E1 to E6) and the Close (F1, F2) are being built, one step at a time. Step 1 of
 five is done: the real structure runs on the real page (see "Roots: what was done, looked at
 and measured" below the table), and so is step 2: the words are checked against the addendum
-in the browser. Next is STEP 3, THE MYCELIUM AND THE GUIDED LIGHT.**
+in the browser. STEP 3, THE MYCELIUM AND THE GUIDED LIGHT, is under way: the network itself
+is built and looked at (3a, below); the guided light and the growth are written in
+`net.ts` and run, but have not been looked at frame by frame yet.**
 
 The five steps, as the orchestrator set them (each ends with `pnpm build`, `pnpm test`,
 `pnpm lint`, a commit, a push and this file updated):
 
 1. **It runs. DONE.**
 2. **The words. DONE.** `node tools/roots/words.mjs` (output kept in `refs/roots/words.txt`).
-3. **The mycelium (E2) and the guided light (E3).** `src/experience/roots/net.ts` today draws
-   only a plain trunk (a wandering line from the surface through the five nodes to F1) and
-   grows it top to bottom; `guide()` and `stopGuide()` are empty. To be built there: branches
-   that taper to hair-fine tips, glowing joints, the light sitting IN the soil; the nodes'
-   breathing judged beside `E4_node.jpg`; the travelling pulse from the node last read to the
-   next unread one (index.ts already calls `net.guide(from, to, atOnce)` at the right
-   moments and marks the target `data-next`); `growFrom(x)` as a burst sideways under the
-   surface and down the trunk. Sheets: the whole descent in viewport-sized pieces, a node
-   close up beside the picture, a burst of frames of the pulse, growFrom at three x.
-   Known fault to fix here: on a desktop the soil's mirror line shows as a symmetric
-   pattern (see `refs/roots/compare/step1-desk.jpg`).
+3. **The mycelium (E2) and the guided light (E3). PART DONE.** Done: the network (3a in the
+   section below). Still to do, in this order: (i) the soil's mirror line shows as a
+   symmetric pattern on a desktop (see `refs/roots/compare/descent-desk-2.jpg`, upper piece,
+   lower third): derive a tile that does not mirror through `scripts/assets/roots.mjs`, or
+   leave it and say so; (ii) add to `tools/roots/compare.mjs` the sections `node` (a node
+   close up beside `E4_node.jpg`: idle at four moments of its breathing, hover, read),
+   `pulse` (frames of the guided light with `net.debug.pulseAt(from, to, k)`, after tile 1
+   is closed and after all five) and `grow` (frames with `net.debug.growAt(x, ms)` at three
+   x), look at them and fix what is thin or wrong; (iii) check that the pulse sets off at
+   once when a tile is closed, never scrolls and never opens anything (a check in
+   `measure.mjs`).
 4. **Phones, keys, stillness, weight.** Extend `tools/roots/measure.mjs` (sections `keys`,
    `phones`, `still`, `frames` are named in its header and not written yet).
 5. **Last.** `git status` clean, this file complete, and "Exact next step" pointing at the
@@ -160,6 +162,44 @@ off.
 - **Changed for it:** on a screen 1024 px wide or more the tile is wider (37rem), its type
   17 px and its padding larger; the hidden word "slashed" carries the brass class like its
   neighbours, so the brass run is whole.
+
+**Step 3a, the mycelium itself (20 Nov).** `src/experience/roots/net.ts` is the whole of it.
+- **How it is grown.** From the measured positions of the nodes and a seeded generator (the
+  same network every visit and after a resize): a runner of fine roots just under the
+  surface, the whole width; a trunk that leaves it beside E6 and wanders, as one smooth cord
+  with two fine strands winding round it, into the top thread of node 1, out along its lower
+  thread, and so on through the five nodes to the top of "Claim your star"; branches leaving
+  the trunk at uneven distances and angles, bending, thinning to a hair (0.35 px) and forking
+  up to three times; a small glowing joint at every fork; here and there a tip fused to a
+  neighbouring thread, so it is a net and not a tree. At 1440×900: 1,950 threads, 32,156
+  points, 1,922 joints, in six bands of 800 px. At 390×844: 626 threads, 9,170 points.
+- **How it is drawn, in the soil and not on it.** Each line three times: the soil picture
+  itself, each channel multiplied up (color-dodge) and let through a soft mask, so the grains
+  round a thread are lit and stay grains; a faint blue bloom; and the thread, blue with a
+  white heart where it is thick. Brightness rises and falls along a line. Drawn once into
+  transparent canvases over the soil: no blend modes on the page, nothing redrawn on scroll.
+- **Looked at:** `refs/roots/compare/descent-desk-1.jpg`, `-2`, `-3` and `descent-phone.jpg`
+  (the whole descent in screen-sized pieces, `node tools/roots/compare.mjs --only descent`),
+  and close crops at device pixels. Four rounds: the first read as forked lightning (white,
+  jagged, branches running parallel to the trunk); fixed by smoothing the trunk and the
+  branches' wander, wider angles and less pull downwards, bluer and finer branches, a white
+  heart only in thick threads, a narrower halo, closer branches and longer reach on a phone,
+  a long branch on each side at least every 250 px so neither side stays bare, and the
+  cross-links. The trunk runs into each sprite's threads: the picture's top and bottom edges
+  are faded (a mask) so its frame is never seen.
+- **The growth, as written** (looked at frame by frame in the next part): `growFrom(x)`
+  strikes the runner at x; light runs sideways along it at 3.2 px/ms and down the trunk at
+  1.45 px/ms, branches unfurling behind at 0.85; each newly lit stretch is hot (whiter,
+  wider) for about half a second. Node 1 lights 233 ms after an impact at 30% of the width
+  at 1440×900 (210 ms on the phone), the others at about 0.8, 1.35, 1.9 and 2.45 s, all grown
+  by 4.1 s. The promise resolves 140 ms after node 1. While it plays only the bands on
+  screen are redrawn, and of them only what is still hot. Frame times on the real GPU:
+  390×844 every frame 17 ms; 1440×900 17 ms except about twenty frames of 33 ms while the
+  densest fan is hot. In software (headless Chromium without a GPU) it runs at about 14
+  frames a second, slowed and not skipped.
+- **Seen and not yet fixed:** the soil's mirror line (above). A horizontal twig in the soil
+  picture shows twice, mirrored, where the trunk's light falls on it: it is the picture, not
+  a fault of the drawing.
 
 ## Sky, part A: what was done, looked at and measured
 
@@ -680,3 +720,6 @@ than two tries. All four were reached.
 - 2026-11-20 — Roots, step 2: the words checked in the browser against the addendum, three ways, all
   five tiles character for character; every visible string in the scene traced to its source;
   every tile looked at open at both sizes.
+- 2026-11-20 — Roots, step 3a: the mycelium grown by code from the nodes' measured positions (runner,
+  corded trunk, branches to hair-fine tips, joints, cross-links), drawn as lit soil, bloom and thread;
+  four rounds of look-and-fix; growFrom written as a real growth and timed.

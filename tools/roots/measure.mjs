@@ -138,9 +138,13 @@ if (only.has('contract')) {
 				return n;
 			};
 			const lit = () => document.querySelectorAll('.roots-node[data-lit]').length;
+			const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 			const out = {};
 			scrollTo(0, 0);
+			await sleep(400);
 			out.grown = { ink: ink(), lit: lit() };
+			out.stats = r.debug.net.debug.stats();
+			out.times = r.debug.net.debug.times(innerWidth * 0.3);
 			r.setActive(false);
 			out.off = { ink: ink(), lit: lit(), grown: r.debug.state().grown };
 			r.setActive(true);
@@ -149,19 +153,23 @@ if (only.has('contract')) {
 			const x = innerWidth * 0.3;
 			await r.growFrom(x);
 			out.resolved = { ms: performance.now() - t0, lit: lit(), first: document.querySelector('.roots-node').hasAttribute('data-lit'), ink: ink() };
-			await new Promise((res) => setTimeout(res, 4500));
+			while (r.debug.net.debug.busy() && performance.now() - t0 < 20000) await sleep(100);
+			out.grewIn = performance.now() - t0;
+			await sleep(500);
 			out.settled = { lit: lit(), ink: ink() };
 			r.setActive(false);
 			r.setActive(true);
 			r.showGrown();
+			await sleep(400);
 			out.shownAgain = { lit: lit(), ink: ink() };
 			return out;
 		});
 		check('showGrown(): the network is drawn and all five nodes are lit', g.grown.ink > 500 && g.grown.lit === 5, `${g.grown.ink} lit samples, ${g.grown.lit} nodes`);
 		check('setActive(false): the ground is bare again', g.off.ink === 0 && g.off.lit === 0 && g.off.grown === false, `${g.off.ink} samples, ${g.off.lit} nodes`);
 		check('setActive(true) alone shows nothing (the arrival grows it)', g.onAgain.ink === 0 && g.onAgain.lit === 0);
-		check('growFrom(x) resolves once the light has passed the first node', g.resolved.first && g.resolved.lit < 5 && g.resolved.ms > 150 && g.resolved.ms < 2500, `${g.resolved.ms.toFixed(0)} ms, ${g.resolved.lit} node(s) lit then`);
-		check('growFrom(x) goes on to the whole network', g.settled.lit === 5 && Math.abs(g.settled.ink - g.grown.ink) / g.grown.ink < 0.02, `${g.settled.lit} nodes, ${g.settled.ink} samples (showGrown: ${g.grown.ink})`);
+		say(`     the network: ${g.stats.strands} threads, ${g.stats.points} points, ${g.stats.joints} joints, in ${g.stats.bands} bands`);
+		check('growFrom(x) resolves once the light has passed the first node', g.resolved.first && g.resolved.lit < 5 && g.resolved.ms > 150 && g.resolved.ms < 2500, `${g.resolved.ms.toFixed(0)} ms after an impact at 30% of the width, ${g.resolved.lit} node(s) lit then; nodes light at ${g.times.nodes.map((t) => Math.round(t)).join(', ')} ms; all grown at ${Math.round(g.times.settled)} ms`);
+		check('growFrom(x) goes on to the whole network', g.settled.lit === 5 && Math.abs(g.settled.ink - g.grown.ink) / g.grown.ink < 0.02, `${g.settled.lit} nodes, ${g.settled.ink} samples (showGrown: ${g.grown.ink}), ${Math.round(g.grewIn)} ms on this machine`);
 		check('showGrown() after another arrival draws the same network', g.shownAgain.ink === g.grown.ink && g.shownAgain.lit === 5, `${g.shownAgain.ink} samples`);
 
 		// The nodes: five real buttons, named by their offer, each deeper than the last.
