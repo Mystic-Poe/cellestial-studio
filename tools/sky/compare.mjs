@@ -19,6 +19,14 @@
 //   stars.jpg                 an empty and a lit star at the size they appear and
 //                             enlarged, beside B4 and B5
 //   between.jpg               two views between stations, both sizes
+//   handoff.jpg               (--only handoff) the sky's side of the loader's hand-off, alone:
+//                             introProgress at 0, 0.3, 0.5, 0.7, 0.85 and 1, then reset().
+//                             Prints the core's circle at each and how many pixels differ
+//                             between introProgress(1) and reset() (must be 0).
+//   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
+//                             six moments against a ground line that rises (drawn in green),
+//                             then restore(). Prints when and where onImpact fired, when the
+//                             promise resolved and whether restore() put every star back.
 //
 // The dashed lines on the station cells are the safe area: 96 px at the top
 // for the logo and menu, 120 px at the bottom for the exit button. The run
@@ -370,6 +378,165 @@ if (only.has('stars')) {
 		});
 	}
 	await sheet('stars.jpg', cells, 6);
+}
+
+// ─────────────────────────────────────────────── the hand-off, alone ──
+
+/** How many pixels of two screenshots differ by more than `tol` in any channel. */
+async function differing(a, b, tol = 2) {
+	const [x, y] = await Promise.all([a, b].map((png) => sharp(png).removeAlpha().raw().toBuffer()));
+	let n = 0;
+	for (let i = 0; i < x.length; i += 3) {
+		if (
+			Math.abs(x[i] - y[i]) > tol ||
+			Math.abs(x[i + 1] - y[i + 1]) > tol ||
+			Math.abs(x[i + 2] - y[i + 2]) > tol
+		)
+			n++;
+	}
+	return n;
+}
+
+if (only.has('handoff')) {
+	const cells = [];
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size);
+		const vp = SIZES[size].viewport;
+		// About where the wordmark's little star is, and its size (the loader passes its own).
+		const star = size === 'desk' ? { x: 1108, y: 318, r: 6 } : { x: 300, y: 398, r: 2.4 };
+		const [cw, ch] = size === 'desk' ? [384, 240] : [111, 240];
+		const shotAt = async (t) => {
+			const core = await view.page.evaluate(
+				([at, u]) =>
+					new Promise((done) => {
+						const { sky } = window.__cellestial;
+						sky.debug.setClock(2);
+						if (u === 0) sky.introPrime(at);
+						if (u === 'reset') sky.reset();
+						else sky.introProgress(u);
+						sky.debug.drawNow();
+						const c = sky.coreCircle();
+						requestAnimationFrame(() => requestAnimationFrame(() => done(c)));
+					}),
+				[star, t],
+			);
+			console.log(
+				`[${size}] hand-off ${String(t).padEnd(5)} core at ${core.x.toFixed(1)}, ${core.y.toFixed(1)} r ${core.r.toFixed(2)}`,
+			);
+			return view.page.screenshot({ type: 'png' });
+		};
+		let end = null;
+		for (const t of [0, 0.3, 0.5, 0.7, 0.85, 1, 'reset']) {
+			const png = await shotAt(t);
+			if (t === 1) end = png;
+			if (t === 'reset') {
+				const n = await differing(end, png);
+				console.log(`[${size}] introProgress(1) against reset(): ${n} pixels differ`);
+				if (n > 0) errors++;
+			}
+			cells.push({
+				img: await fit(png, cw, ch),
+				w: cw,
+				h: ch,
+				caption: t === 'reset' ? 'reset()' : `t ${t}`,
+			});
+		}
+		await view.close();
+		void vp;
+	}
+	await sheet('handoff.jpg', cells.slice(0, 7), 4);
+	await sheet('handoff-phone.jpg', cells.slice(7), 7);
+}
+
+// ───────────────────────────────────────────────────────── the fall ──
+
+if (only.has('fall')) {
+	const cells = [];
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size, LIT);
+		const vp = SIZES[size].viewport;
+		const [cw, ch] = size === 'desk' ? [384, 240] : [111, 240];
+		// The ground comes up from the bottom edge to 55% of the height over 1.2 s.
+		const before = await view.at(0, 2);
+		const places = () =>
+			view.page.evaluate(() => {
+				const { hooks } = window.__cellestial.sky;
+				const out = [];
+				for (const star of hooks.layout().plans[0].stars) {
+					if (!star.slot) continue;
+					const c = hooks.starCircle(star.slot);
+					out.push(c ? [c.x, c.y, c.r] : null);
+				}
+				return out;
+			});
+		const was = await places();
+		await view.page.evaluate(() => {
+			const { sky } = window.__cellestial;
+			const { hooks } = sky;
+			const h = hooks.layout().h;
+			const t0 = hooks.time();
+			const log = { impacts: [], resolvedAt: null, t0 };
+			window.__fall = log;
+			log.ground = () => h - 0.45 * h * Math.min(1, (hooks.time() - t0) / 1.2);
+			sky
+				.fall({ groundY: log.ground, onImpact: (x) => log.impacts.push({ x, at: hooks.time() - t0 }) })
+				.then(() => {
+					log.resolvedAt = hooks.time() - t0;
+				});
+		});
+		for (const dt of [0, 0.15, 0.3, 0.45, 0.6, 0.8]) {
+			const ground = await view.page.evaluate(
+				(d) =>
+					new Promise((done) => {
+						const { sky } = window.__cellestial;
+						sky.debug.setClock(2 + d);
+						const y = window.__fall.ground();
+						requestAnimationFrame(() => requestAnimationFrame(() => done(y)));
+					}),
+				dt,
+			);
+			const png = await view.page.screenshot({ type: 'png' });
+			const k = ch / vp.height;
+			const line = Buffer.from(
+				`<svg xmlns="http://www.w3.org/2000/svg" width="${cw}" height="${ch}"><line x1="0" x2="${cw}" y1="${ground * k}" y2="${ground * k}" stroke="#5fd08a" stroke-width="1"/></svg>`,
+			);
+			cells.push({
+				img: await sharp(await fit(png, cw, ch)).composite([{ input: line }]).png().toBuffer(),
+				w: cw,
+				h: ch,
+				caption: `fall +${dt}s`,
+			});
+		}
+		// Let it run out, then put everything back.
+		const log = await view.page.evaluate(async () => {
+			const { sky } = window.__cellestial;
+			// In small steps, so that the moment the promise resolves is seen.
+			for (let d = 0.8; d <= 8 && window.__fall.resolvedAt === null; d += 0.02) {
+				sky.debug.setClock(2 + d);
+				await Promise.resolve();
+			}
+			await new Promise((r) => setTimeout(r, 50));
+			const { impacts, resolvedAt } = window.__fall;
+			return { impacts, resolvedAt };
+		});
+		const gone = await view.page.screenshot({ type: 'png' });
+		await view.page.evaluate(() => window.__cellestial.sky.restore());
+		const after = await view.at(0, 10);
+		const now = await places();
+		const moved = was.filter(
+			(c, i) => !c || !now[i] || Math.hypot(c[0] - now[i][0], c[1] - now[i][1]) > 0.01,
+		).length;
+		console.log(
+			`[${size}] fall: onImpact fired ${log.impacts.length} time(s)${log.impacts[0] ? ` at x ${log.impacts[0].x.toFixed(0)} of ${vp.width}, ${log.impacts[0].at.toFixed(2)} s in` : ''}; resolved ${log.resolvedAt === null ? 'NEVER' : `${log.resolvedAt.toFixed(2)} s in`}; after restore() ${moved} of ${was.length} stars are out of place`,
+		);
+		if (log.impacts.length !== 1 || log.resolvedAt === null || moved > 0) errors++;
+		cells.push({ img: await fit(gone, cw, ch), w: cw, h: ch, caption: 'resolved: empty' });
+		cells.push({ img: await fit(after, cw, ch), w: cw, h: ch, caption: 'restore()' });
+		void before;
+		await view.close();
+	}
+	await sheet('fall.jpg', cells.slice(0, 8), 4);
+	await sheet('fall-phone.jpg', cells.slice(8), 8);
 }
 
 await browser.close();
