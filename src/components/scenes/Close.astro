@@ -1,9 +1,11 @@
 ---
-// PLACEHOLDER for the Close (F1, F2). The roots scene replaces this file.
+// The Close (F1, F2): the bottom of the descent. The two closing actions, F2
+// directly under F1, and nothing else: no heading, no footer, no small print.
 //
-// The two closing actions, F2 directly under F1, and nothing else. Without
-// script each is a link to /contact; with it, the claim flow opens its dialog
-// instead (data-open-claim, data-open-contact).
+// Each is a link to /contact, which is what it is without script. With it,
+// the claim flow (src/experience/claim-flow.ts) hears data-open-claim and
+// data-open-contact on the document and opens the build request or the
+// message box instead. The mycelium's trunk ends at the top of F1.
 import BrassButton from '../ui/BrassButton.astro';
 ---
 
@@ -18,6 +20,10 @@ import BrassButton from '../ui/BrassButton.astro';
 		flex-direction: column;
 		align-items: center;
 		gap: 1.5rem;
-		padding: 6rem 0 7rem;
+		padding: 2rem 1rem 7.5rem;
+	}
+	/* As written (no script), the last tile is just above: give it air. */
+	#roots:not([data-live]) .roots-close {
+		padding-top: 4rem;
 	}
 </style>

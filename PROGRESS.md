@@ -14,38 +14,49 @@
 
 ## Exact next step
 
-**The Sky (B, G1) is done, parts A and B: see "Sky, part A" and "Sky, part B" below the
-table for what was run, looked at and measured, and what still differs from the spec. Next
-is the ROOTS scene (E1 to E6) and the Close (F1, F2), with the transitions that join it to
-the sky (the fall D1, the crash D2, the warp G2).**
+**The Roots (E1 to E6) and the Close (F1, F2) are being built, one step at a time. Step 1 of
+five is done: the real structure runs on the real page (see "Roots: what was done, looked at
+and measured" below the table). Next is STEP 2, THE WORDS.**
 
-1. Read the brief: `refs/briefs/cellestial-roots.js`, the text between the backticks of
-   `WHAT` and `VERIFY` (ignore the workflow code round them, and what they say about a
-   separate worktree or a stand-alone test page: build on the real page, as the Loading and
-   the Sky were). Then `BUILD_SPEC.md` sections D, E and F, and `SPEC-ADDENDUM.md`.
-2. The Roots today is a placeholder: `src/experience/roots/` and
-   `src/components/scenes/Roots.astro`, `Close.astro` (five tiles as plain panels, the two
-   real buttons). The contract it must keep is `RootsScene` in `src/experience/contracts.ts`
-   (`surfaceY`, `growFrom`, `showGrown`, `anchorY`, `focusClose`).
-3. The effects layer (C4 flash, D2 burst, G2 warp) is parked, unverified, in `wip/fx/`
-   (about 2,600 lines with a test page; the builder's own captures are in `refs/fx-wip/`,
-   its brief is `refs/briefs/cellestial-fx-*.js`). It belongs with the Roots and with the
-   chrome: move it into `src/experience/fx/` when the transitions are wired, and judge it
-   then. The contract is `FxLayer`.
-4. The transitions are written in `src/experience/director.ts` as comments where they go
-   (`toRoots`, `toSky`: search for "To be written"); until then they are fades. What the sky
-   gives them is ready and measured: `sky.fall({ groundY, onImpact })` (every star falls
-   alike with a trail, `onImpact(x)` fires once when the first star crosses `groundY()`, it
-   resolves when the sky is empty) and `sky.restore()`. See "Sky, part A", step 4.
-5. Work as before: one step at a time, each ending with `pnpm build`, `pnpm test`,
-   `pnpm lint`, a commit, a push, and this file updated. Capture at 390×844 and 1440×900
-   with `node scripts/shot.mjs --gpu` and compare against the reference assets
-   (`cellestial-assets/images/`, sections D, E, F); write a `tools/roots/compare.mjs` and
-   `measure.mjs` on the pattern of `tools/sky/`.
+The five steps, as the orchestrator set them (each ends with `pnpm build`, `pnpm test`,
+`pnpm lint`, a commit, a push and this file updated):
 
-After the Roots: the chrome (C1 to C3; brief `refs/briefs/cellestial-chrome.js`), B7 (the
-meaning written in light over a completed constellation: not built), then the independent
-review of the foundation and the final verification (see the table).
+1. **It runs. DONE.**
+2. **The words.** Write `tools/roots/words.mjs`: in the browser, for each of the five tiles,
+   the tile body's `textContent` with whitespace collapsed and trimmed must equal
+   `offerText(OFFERS[i])`, what the eye can read must equal `visibleText(OFFERS[i])`, the
+   title must equal `OFFERS[i].title`; and each compared with `SPEC-ADDENDUM.md` lines 24, 26,
+   28, 30 and 33 (strip `**` and the "N. Title:" lead-in). The brass words on screen are the
+   bold words of the addendum; "$990" and "$69/mo" struck through; "slashed" in the text and
+   invisible. List every visible string in the scene and where it comes from. Save its output
+   in `refs/roots/`. Capture every tile open at both sizes as sheets in `refs/roots/compare/`
+   and look at them (roomy, 16 px body text at least, nothing under the logo corner).
+3. **The mycelium (E2) and the guided light (E3).** `src/experience/roots/net.ts` today draws
+   only a plain trunk (a wandering line from the surface through the five nodes to F1) and
+   grows it top to bottom; `guide()` and `stopGuide()` are empty. To be built there: branches
+   that taper to hair-fine tips, glowing joints, the light sitting IN the soil; the nodes'
+   breathing judged beside `E4_node.jpg`; the travelling pulse from the node last read to the
+   next unread one (index.ts already calls `net.guide(from, to, atOnce)` at the right
+   moments and marks the target `data-next`); `growFrom(x)` as a burst sideways under the
+   surface and down the trunk. Sheets: the whole descent in viewport-sized pieces, a node
+   close up beside the picture, a burst of frames of the pulse, growFrom at three x.
+   Known fault to fix here: on a desktop the soil's mirror line shows as a symmetric
+   pattern (see `refs/roots/compare/step1-desk.jpg`).
+4. **Phones, keys, stillness, weight.** Extend `tools/roots/measure.mjs` (sections `keys`,
+   `phones`, `still`, `frames` are named in its header and not written yet).
+5. **Last.** `git status` clean, this file complete, and "Exact next step" pointing at the
+   arrival and the return (the effects layer from `wip/fx`, the choreography in
+   `src/experience/director.ts`), then the chrome and B7.
+
+How to drive it: `/?scene=roots&debug`, then `window.__cellestial.roots` is the scene and
+`.debug` has `open(id)`, `close()`, `state()`, `layout()` and `net`. Tools (dev server
+needed): `node tools/roots/measure.mjs` (`--only contract,tiles,chrome,nojs` are written);
+`tools/roots/lib.mjs` has the browser sizes and the sheet maker.
+
+After the Roots: the arrival and the return, the chrome (C1 to C3; brief
+`refs/briefs/cellestial-chrome.js`), B7 (the meaning written in light over a completed
+constellation: not built), then the independent review of the foundation and the final
+verification (see the table).
 
 Working on the sky again: its code is in `src/experience/sky/` (entry `index.ts`; three.js in
 `gl/`; `beads.ts`, `answer.ts` and `panels.ts` are part B), its markup in
@@ -73,14 +84,58 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | Loading (A1–A5) | **done against the reference, polish pass included, except what is listed here; A5 now seen over the real sky (see "Sky, part A", step 4)** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (run by `node scripts/build-assets.mjs modules`; it writes `geometry.ts` and the matte, and run again it reproduces both) | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (six rounds of fixes, then the polish pass of four items, each looked at close up: see the section below the table). Matches: the C's place and size; the order and tempo the circuits light in (a thin white wire with a blue glow); the cooling before the charge; the overload (a thin white-hot bolt from the top edge, the node lost in white with its rings showing through, a blue wash filling the bolt's half of the frame, spark dust); the camera pulling back; the first "e" thrown from the node by one tall arc and written in the reference's order; each letter written at the reference's moment as one thin white tube on its brass, with white ring nodes, in a wide navy haze; the node's rings lit white while the word is written; the cooling into the A4 picture itself. The two soft fields (the haze behind the letters, the overload's wash) were also measured, reference against build: `refs/loading/compare/light.txt`, written by `node tools/loader/light.mjs`. **Still different:** the lit circuits (1.33) are whiter, with less blue around them; the first arc (3.67) is less wild and the first piece of the "e" bolder; the overload's white has a more definite edge than the reference's bloom, and its sparks are coarser and fewer; close to the letter being written the haze is a little weaker (3.83) and the letters' edges cooler; once a letter is written the reference lets lightning play over it for longer, and it strikes the star (5.25) where the build only lights it; the node's lens keeps a darker blue ring round its white heart. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done) after the polish pass, desktop / phone:** full version 7.74 s / 7.73 s (must be 6.0–8.0); short version on a same-session reload 3.49 s / 3.47 s; tap at 1 s ends at 2.76 s / 2.76 s, the "a" key at 1 s 2.74 s / 2.75 s; Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.75 s / 7.73 s); resize twice mid-run keeps the time (7.74 s / 7.75 s). Desktop only: each of the four pictures answering 404 in turn, the loader ends at once (0.01 s) and the sky is shown; sessionStorage blocked plays the full version (7.71 s); the sky's script failing to load, the loader fades out by itself at 6.62 s and the page opens on the Roots; the sky 30 s late, the wordmark holds 6 s and the loader goes at 12.65 s. Frame times 16.8–17.1 ms average at both sizes; phone with the CPU slowed 4×: 26.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at again after the polish pass, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
 | Sky (B, G1) | **done, parts A and B, except what is listed in its two sections.** Part A: the void, the honeycomb, Cellestial's star, the twelve figures, the endless flight, the round and the exit button (B11), reduced motion, the governor, the hand-off from the loader, the fall. Part B: the beads (B8), the pulse and the words "claim yours" (B9), the empty-star panel (B10), the lit-star panel, a real send lighting the star, the waiting ask. **Not built:** B7 (the meaning written over a completed constellation); the full fall transition (it belongs to the Roots). — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/` | Every sheet in `refs/sky/compare/` rebuilt by `node tools/sky/compare.mjs` on the real GPU at 1440×900 and 390×844 and looked at. `node tools/sky/measure.mjs`: 201 checks with real wheel, key, touch and mouse events, all passing, written to `refs/sky/measure.txt`. A real send walked through `scripts/shot.mjs` with `/api/contact` stubbed (`tools/sky/claim-200.steps.json`, `claim-400.steps.json`). **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software with the CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
-| Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
-| Close (F1, F2) | placeholder (the two real buttons, wired to the existing flows) | Walk-through above. |
+| Roots (E1–E6) | **in progress: step 1 of 5 done (it runs).** The soil with an uneven top edge, E6, five nodes as real buttons in a descending line, five tiles rendered on the server from the locked copy and opened one at a time, the whole contract. The mycelium is a plain trunk only; no guided light yet. — `src/experience/roots/` (`index.ts`, `net.ts`, `edge.ts`), `src/components/scenes/Roots.astro`, `tools/roots/` | `node tools/roots/measure.mjs --only contract,tiles,chrome,nojs`: every check passing at 1440×900, 390×844 and 320×568 (numbers in the section below). Looked at: `refs/roots/compare/step1-desk.jpg`, `step1-phone.jpg`. **Not yet:** the words check, the real mycelium and guided light, keyboard, reduced motion, frame times. |
+| Close (F1, F2) | **built**: exactly the two links the brief gives, F1 "Claim your star" (259×68 px, 21 px type) and F2 "Contact me" (137×44 px, 15 px type) 24 px under it, both centred, nothing else. — `src/components/scenes/Close.astro` | Same run: F1 opens the build request, F2 the message box; the menu lands on them; without script both are links to `/contact`. Looked at in the step 1 sheets. |
 | Chrome (C1–C3) | placeholder (logo, "studio", three bars, menu with four working teleports) | Walk-through above. |
 | Transitions wired (fall, crash, warp, A5 hand-off), B7 meaning reveal | not started | — |
 | Final verification: screenshot matrix, protected-systems diff | not started | — |
 
 "Parked" means the code is in `wip/`, outside `src/`, so the site builds and runs without it.
 The site on this branch today is the plain placeholder version described in the walk-through.
+
+## Roots: what was done, looked at and measured
+
+**Step 1, it runs (20 Nov).** The placeholders are replaced by the real structure, on the real
+page, no console errors at 1440×900 and 390×844.
+- **How it is made.** `Roots.astro` writes the whole scene as a page: the soil (a strip cut
+  to an uneven edge by a mask, then the mirror-tiled picture below it), E6, five stops (a
+  node picture with its bulb as a button, and its tile, complete, from
+  `src/content/offers.ts`), then `Close.astro`. As written, every tile is open under its
+  node: that is the page without script. The scene's script (`index.ts`) marks `#roots`
+  `data-live` when it mounts, and only then is a tile closed until its node is pressed; if
+  the script never arrives the page stays as written. `net.ts` draws the light into canvases
+  cut into bands of 800 px; `edge.ts` is the surface's profile, used for the mask and by
+  `surfaceY()`.
+- **The contract, called from the page** (`--only contract`, both sizes, all passing):
+  `anchorY('top')` 0; `surfaceY()` 13 px under the top of `#roots` and following the scroll;
+  `anchorY('first-node')` puts node 1 whole on screen; `anchorY('close')` 3304 (desktop) and
+  3125 (phone) with F1 and F2 on screen; `focusClose` focuses F1 or F2 without scrolling;
+  `showGrown()` draws the network and lights five nodes; `setActive(false)` leaves the ground
+  bare (so the next arrival grows it again; what was read stays read); `growFrom(x)` resolves
+  when the light has passed node 1 and goes on to the whole network.
+- **The nodes.** Five real buttons named "Site", "Site + Systems", "Site + App",
+  "Add-ons — AI + automation", "Care" (hidden text; no label is seen). Bulb to bulb 756 px on
+  the 900 px screen and 709 px on the 844 px one; the bulb is 123 px across on the desktop,
+  92 px on the phone.
+- **The tiles** (`--only tiles`, real clicks at 1440×900, real taps at 390×844 and 320×568,
+  all passing): a press opens that tile and closes any other; focus goes into the tile; the
+  close button, Escape and a press outside close it and focus returns to its node; pressing
+  its own node closes it. Every tile is whole on the screen and clear of the logo: on the
+  desktop beside its node on the side with more room (544 px wide, 264 to 465 px tall); on
+  the phone under the bulb (366 px wide, 284 to 530 px tall); at 320×568 it is 296 px wide
+  and at most 464 px tall, scrolling inside itself.
+- **Chrome and Close** (`--only chrome`): the menu's "What we build" lands on the top of the
+  ground, "Claim your star" on F1 (focused), "Contact me" on the Close with the message box
+  open; F1 and F2 open the two dialogs; E6 returns to the sky.
+- **Without script** (`--only nojs`, script off, and with only the scene's script blocked,
+  both sizes): five tiles shown in order one under another, none overlapping, inside the
+  screen's width, the nodes as pictures, two links to `/contact`.
+- **Faults found and fixed on the way:** the node's glow was a blended layer with an
+  animated opacity, which lost its blending and showed as a dark box (it is now the same
+  picture, brightened, with no blend mode); the trunk ran behind E6 (it now leaves the
+  surface beside the button, on the side node 1 is on).
+- **Seen and not yet fixed:** on a desktop the soil's mirror line shows as a symmetric
+  pattern; the mycelium is one plain line.
 
 ## Sky, part A: what was done, looked at and measured
 
@@ -595,3 +650,6 @@ than two tries. All four were reached.
 - 2026-11-20 — Sky, part B, step B6: all 201 checks pass, every sheet rebuilt and the opening
   pose and stations looked at again; frame times during ten bead runs measured on the real GPU
   and in software with the CPU slowed 4×. The Sky is done; next is the Roots.
+- 2026-11-20 — Roots, step 1: the placeholders replaced by the real structure (soil edge, E6, five
+  nodes as buttons, five server-rendered tiles opened one at a time, the Close, the whole contract);
+  driven with real clicks and taps at three sizes; the page without script checked.

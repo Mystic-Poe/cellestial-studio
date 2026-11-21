@@ -1,101 +1,422 @@
 ---
-// PLACEHOLDER for the Roots (E1 → E6). The roots scene replaces this file,
-// Close.astro and src/experience/roots/index.ts.
+// The Roots (E1 → E6): the ground under the sky, where the offers and their
+// prices are. In the flow of the page and opaque, so the sky's canvas passes
+// behind it.
 //
-// The ground, in the flow of the page and opaque, so the sky's canvas passes
-// behind it. On it: E6 at the top, then the five offers written out in full,
-// then the Close. The offers are real HTML, rendered here from the locked
-// copy: this is also what a visitor without script, and a search engine, read.
+// From the top: the soil's uneven edge against the black; E6, the return to
+// the sky; five stops, one per offer in the order of src/content/offers.ts,
+// each a node (E4) and its tile (E5); then the Close (F1, F2).
+//
+// THE TILES ARE WRITTEN OUT HERE, all five, complete, from the locked copy.
+// That markup is the page a visitor without script and a search engine read:
+// each tile open under its node, one below another. Nothing in this file
+// hides a word. The scene's script (src/experience/roots/) marks the ground
+// `data-live` when it has mounted, and only then is a tile closed until its
+// node is pressed; if that script never arrives, the page stays as written.
+//
+// The mycelium (E2) and the guided light (E3) are light drawn by that script
+// into .roots-net. There is no picture of them.
 import { OFFERS } from '../../content/offers.ts';
+import { ASSETS } from '../../experience/assets.ts';
+import { EDGE, edgeMaskUrl } from '../../experience/roots/edge.ts';
 import BrassButton from '../ui/BrassButton.astro';
 import Panel from '../ui/Panel.astro';
 import Close from './Close.astro';
+
+const sprite = ASSETS.roots.e4NodeAlpha;
+
+// Where each node's bulb stands across the ground, as a share of its width:
+// on a phone, and on a wider screen. A wandering line, never a column.
+const ACROSS = [
+	[0.62, 0.44],
+	[0.42, 0.56],
+	[0.58, 0.43],
+	[0.43, 0.555],
+	[0.5, 0.495],
+];
+
+// The sprite's own geometry, as CSS wants it.
+const bulbX = `${((sprite.bulb.x / sprite.w) * 100).toFixed(3)}%`;
+const bulbY = `${((sprite.bulb.y / sprite.h) * 100).toFixed(3)}%`;
+const bulbD = `${(((sprite.bulb.r * 2) / sprite.w) * 100).toFixed(3)}%`;
+const vars = [
+	`--edge-h:${EDGE.height}px`,
+	`--edge-period:${EDGE.period}px`,
+	`--edge-mask:${edgeMaskUrl()}`,
+	`--sprite-ratio:${(sprite.h / sprite.w).toFixed(5)}`,
+	`--bulb-x:${(sprite.bulb.x / sprite.w).toFixed(5)}`,
+	`--bulb-y:${(sprite.bulb.y / sprite.h).toFixed(5)}`,
+	`--bulb-foot:${((sprite.bulb.y + sprite.bulb.r) / sprite.h).toFixed(5)}`,
+].join(';');
 ---
 
-<main id="roots" aria-label="What we build" tabindex="-1">
+<main id="roots" aria-label="What we build" tabindex="-1" style={vars}>
+	<div class="roots-edge" aria-hidden="true"></div>
+	<div class="roots-soil" aria-hidden="true"></div>
+	<div class="roots-net" aria-hidden="true" data-needs-js></div>
+
 	<div class="roots-top">
 		<BrassButton variant="chevron" label="Return to the sky" data-ascend data-needs-js />
 	</div>
 
-	<div class="roots-offers">
-		{
-			OFFERS.map((offer) => (
-				<Panel as="article" size="large" id={`offer-${offer.id}`}>
-					<h2 class="panel__title">{offer.title}</h2>
-					{offer.lines.map((line) => (
-						<>
-							{/* One space between lines keeps the text of the tile exact (offers.ts). */}
-							{' '}
-							<p>
-								{line.map((segment) =>
-									segment.srOnly ? (
-										<span class="sr-only">{segment.text}</span>
-									) : segment.strike ? (
-										<s class:list={['strike', segment.brass && 'brass']}>{segment.text}</s>
-									) : segment.brass ? (
-										<strong>{segment.text}</strong>
-									) : (
-										segment.text
-									),
-								)}
-							</p>
-						</>
-					))}
+	{
+		OFFERS.map((offer, i) => (
+			<div class="roots-stop" data-offer={offer.id} style={`--x:${ACROSS[i][0]};--xw:${ACROSS[i][1]}`}>
+				<div class="roots-node">
+					<img class="roots-node__sprite" src={sprite.url} width={sprite.w} height={sprite.h} alt="" decoding="async" />
+					<img class="roots-node__glow" src={sprite.url} width={sprite.w} height={sprite.h} alt="" decoding="async" data-needs-js />
+					{/* Without script it is a picture: the scene's script makes it a control. */}
+					<button
+						class="roots-node__bulb"
+						type="button"
+						aria-expanded="false"
+						aria-controls={`offer-${offer.id}`}
+						aria-hidden="true"
+						disabled
+						style={`left:${bulbX};top:${bulbY};width:${bulbD}`}
+					>
+						<span class="roots-sr">{offer.title}</span>
+					</button>
+				</div>
+				<Panel as="article" size="large" class="roots-tile" id={`offer-${offer.id}`} aria-labelledby={`offer-${offer.id}-title`} tabindex="-1">
+					<div class="panel__head">
+						<h2 class="panel__title" id={`offer-${offer.id}-title`}>{offer.title}</h2>
+						<button class="panel__close" type="button" aria-label="Close" data-tile-close data-needs-js></button>
+					</div>
+					<div class="roots-tile__body">
+						{offer.lines.map((line) => (
+							<>
+								{/* One space between lines keeps the text of the tile exact (offers.ts). */}
+								{' '}
+								<p>
+									{line.map((segment) =>
+										segment.srOnly ? (
+											<span class="sr-only">{segment.text}</span>
+										) : segment.strike ? (
+											<s class:list={['strike', segment.brass && 'brass']}>{segment.text}</s>
+										) : segment.brass ? (
+											<strong>{segment.text}</strong>
+										) : (
+											<span>{segment.text}</span>
+										),
+									)}
+								</p>
+							</>
+						))}
+					</div>
 				</Panel>
-			))
-		}
-	</div>
+			</div>
+		))
+	}
 
 	<Close />
 </main>
 
 <style is:global>
-	/* E1. The soil is mirror-tiled, so it repeats down the page without a seam. */
+	/* ── The ground ──────────────────────────────────────────────────────
+	   #roots itself paints nothing: its top few pixels are the sky's. The
+	   soil is two layers under everything else, a strip cut to the uneven
+	   edge and the rest below it. Both show the same mirror-tiled picture,
+	   set so the strip is the tile's last rows: the two meet without a seam. */
 	#roots {
+		--node-w: 132px; /* the sprite's width; the bulb is 0.698 of it */
+		--stop-h: max(33rem, 84svh); /* from one node down to the next */
+		--tile-gap: 14px; /* bulb to tile, where the tile sits under it */
+		--soil: image-set(
+			url('/cellestial/roots/soil-portrait.avif') type('image/avif'),
+			url('/cellestial/roots/soil-portrait.webp') type('image/webp')
+		);
 		position: relative;
 		z-index: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+		isolation: isolate;
 		min-height: 100svh;
-		padding: 0 1rem;
-		background-color: var(--color-earth);
-		background-image: image-set(
-			url('/cellestial/roots/soil-landscape.avif') type('image/avif'),
-			url('/cellestial/roots/soil-landscape.webp') type('image/webp')
-		);
-		background-position: center top;
-		background-size: 100% auto;
-		background-repeat: repeat-y;
+		overflow: clip;
 	}
-	@media (orientation: portrait) {
+	@media (orientation: landscape) {
 		#roots {
-			background-image: image-set(
-				url('/cellestial/roots/soil-portrait.avif') type('image/avif'),
-				url('/cellestial/roots/soil-portrait.webp') type('image/webp')
+			--soil: image-set(
+				url('/cellestial/roots/soil-landscape.avif') type('image/avif'),
+				url('/cellestial/roots/soil-landscape.webp') type('image/webp')
 			);
 		}
 	}
+	@media (min-width: 48rem) {
+		#roots {
+			--node-w: 176px;
+		}
+	}
+
+	.roots-soil,
+	.roots-edge {
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 0;
+		background-color: var(--color-earth);
+		background-image: var(--soil);
+		background-size: 100% auto;
+		background-repeat: repeat-y;
+		pointer-events: none;
+	}
+	.roots-soil {
+		top: var(--edge-h);
+		bottom: 0;
+		background-position: center top;
+	}
+	.roots-edge {
+		top: 0;
+		height: var(--edge-h);
+		background-position: center bottom;
+		-webkit-mask: var(--edge-mask) left top / var(--edge-period) 100% repeat-x;
+		mask: var(--edge-mask) left top / var(--edge-period) 100% repeat-x;
+	}
+
+	/* E2 and E3: the light the script draws. Over the soil, under everything else. */
+	.roots-net {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+	.roots-net canvas {
+		position: absolute;
+		left: 0;
+		display: block;
+	}
+
+	#roots > :is(.roots-top, .roots-stop, .roots-close) {
+		position: relative;
+		z-index: 1;
+	}
 
 	/* E6, at the top of the ground. The row keeps its height when the button is
-	   not there, so the first offer always starts clear of the chrome. */
+	   not there, so the first node always starts clear of the chrome. */
 	.roots-top {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 7.5rem;
-		padding: 1.5rem 0 2rem;
+		height: 8.5rem;
+		padding-top: var(--edge-h);
 	}
 	/* With no sky to return to, there is no return. */
 	html[data-no-sky] #roots [data-ascend] {
 		display: none;
 	}
 
-	.roots-offers {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2rem;
+	/* ── A stop: a node and its tile ─────────────────────────────────────
+	   As written (no script): the node, then its tile under the bulb, in the
+	   flow, and the next stop below that. */
+	.roots-stop {
+		padding-bottom: 3.5rem;
+	}
+
+	/* E4. The picture of the node; the bulb in it is the button. */
+	.roots-node {
+		position: relative;
+		width: var(--node-w);
+		aspect-ratio: 452 / 1008;
+		margin-left: calc(var(--x) * 100% - var(--node-w) * var(--bulb-x));
+		pointer-events: none;
+	}
+	@media (min-width: 48rem) {
+		.roots-node {
+			margin-left: calc(var(--xw) * 100% - var(--node-w) * var(--bulb-x));
+		}
+	}
+	.roots-node__sprite,
+	.roots-node__glow {
+		position: absolute;
+		inset: 0;
+		display: block;
 		width: 100%;
+		height: 100%;
+		user-select: none;
+	}
+	/* The same picture laid over itself, brighter: this is what breathes,
+	   brightens under the pointer and stays lit once read. (Not a blend mode:
+	   a blended layer whose opacity is animated loses its blending and shows
+	   as a dark box.) */
+	.roots-node__glow {
+		filter: brightness(1.75) saturate(1.15);
+		opacity: 0;
+	}
+	.roots-node__bulb {
+		position: absolute;
+		aspect-ratio: 1;
+		min-width: 44px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		transform: translate(-50%, -50%);
+		cursor: pointer;
+		pointer-events: auto;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.roots-node__bulb:disabled {
+		cursor: default;
+	}
+	.roots-node__bulb:focus-visible {
+		outline: 2px solid var(--color-blue-white);
+		outline-offset: 5px;
+	}
+	.roots-sr {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	/* E5. The site's one panel, large. As written it stands under its bulb,
+	   over the node's lower threads. */
+	.roots-tile {
+		z-index: 2;
+		width: min(34rem, 100% - 2rem);
+		margin: calc(var(--tile-gap) - var(--node-w) * var(--sprite-ratio) * (1 - var(--bulb-foot))) auto 0;
+	}
+	.roots-tile:focus {
+		outline: none;
+	}
+	.roots-tile__body > p {
+		margin: 0;
+	}
+	.roots-tile__body > p + p {
+		margin-top: 0.7em;
+	}
+	@media (max-width: 26rem) {
+		.roots-tile {
+			--panel-pad-x: 1.25rem;
+			--panel-pad-y: 1.375rem;
+			width: min(34rem, 100% - 1.5rem);
+		}
+	}
+
+	/* ── With the scene's script running ─────────────────────────────────
+	   A stop is a fixed stretch of the descent with its node at the top; the
+	   tile is closed until its node is pressed, and then lies over the soil
+	   where the script puts it (--tile-x, --tile-y, --tile-w, --tile-max). */
+	#roots[data-live] .roots-stop {
+		height: var(--stop-h);
+		padding-bottom: 0;
+	}
+	#roots[data-live] .roots-tile {
+		position: absolute;
+		left: var(--tile-x, 1rem);
+		top: var(--tile-y, 0);
+		width: var(--tile-w, calc(100% - 2rem));
+		max-height: var(--tile-max, calc(100svh - 2rem));
+		margin: 0;
+		overflow: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-brass) transparent;
+		display: none;
+		opacity: 0;
+		transition-property: opacity, transform, display;
+		transition-duration: 200ms;
+		transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+		transition-behavior: allow-discrete;
+	}
+	#roots[data-live] .roots-tile[data-open] {
+		display: block;
+		opacity: 1;
+	}
+	@starting-style {
+		#roots[data-live] .roots-tile[data-open] {
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		#roots[data-live] .roots-tile {
+			transform: translateY(10px);
+		}
+		#roots[data-live] .roots-tile[data-open] {
+			transform: none;
+		}
+		@starting-style {
+			#roots[data-live] .roots-tile[data-open] {
+				transform: translateY(10px);
+			}
+		}
+	}
+
+	/* The nodes' light. Before the network has grown there is none; an unread
+	   node breathes; under the pointer or the keyboard it is brighter; once
+	   read it stays lit. With reduced motion nothing breathes, and the node
+	   the light would lead to is marked by a steady, stronger glow. */
+	#roots[data-live] .roots-node {
+		transition: opacity 320ms ease-out;
+	}
+	#roots[data-live] .roots-node:not([data-lit]) {
+		opacity: 0;
+	}
+	#roots[data-live] .roots-node::before {
+		content: '';
+		position: absolute;
+		left: calc(var(--bulb-x) * 100%);
+		top: calc(var(--bulb-y) * 100%);
+		width: 150%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle closest-side,
+			color-mix(in srgb, var(--color-blue) 46%, transparent),
+			color-mix(in srgb, var(--color-blue) 16%, transparent) 46%,
+			transparent
+		);
+		transform: translate(-50%, -50%);
+		opacity: 0.35;
+		transition: opacity 260ms ease-out;
+	}
+	#roots[data-live] .roots-node__glow {
+		opacity: 0.1;
+		transition: opacity 260ms ease-out;
+	}
+	@keyframes roots-breathe {
+		from {
+			opacity: 0.04;
+		}
+		to {
+			opacity: 0.5;
+		}
+	}
+	@keyframes roots-breathe-halo {
+		from {
+			opacity: 0.25;
+		}
+		to {
+			opacity: 0.8;
+		}
+	}
+	#roots[data-live][data-active] .roots-node[data-lit]:not([data-read]) .roots-node__glow {
+		animation: roots-breathe 2.6s ease-in-out infinite alternate;
+	}
+	#roots[data-live][data-active] .roots-node[data-lit]:not([data-read])::before {
+		animation: roots-breathe-halo 2.6s ease-in-out infinite alternate;
+	}
+	#roots[data-live] .roots-node[data-read] .roots-node__glow {
+		opacity: 0.42;
+	}
+	#roots[data-live] .roots-node[data-read]::before {
+		opacity: 0.7;
+	}
+	#roots[data-live] .roots-node:is(:hover, :focus-within, [data-hot]) .roots-node__glow {
+		animation: none;
+		opacity: 0.85;
+	}
+	#roots[data-live] .roots-node:is(:hover, :focus-within, [data-hot])::before {
+		animation: none;
+		opacity: 1;
+	}
+	html[data-motion='off'] #roots[data-live] .roots-node[data-next]:not(:hover, :focus-within) .roots-node__glow {
+		opacity: 0.66;
+	}
+	html[data-motion='off'] #roots[data-live] .roots-node[data-next]:not(:hover, :focus-within)::before {
+		opacity: 1;
+		width: 190%;
 	}
 </style>
