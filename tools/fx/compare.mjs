@@ -6,8 +6,9 @@
 //
 // Needs the dev server running (see PROGRESS.md) AND the layer's own test page,
 // /dev/fx, which is not in the shipped site. Bring it back for a run with
-//   git checkout <commit> -- src/pages/dev/fx.astro src/experience/fx/dev/harness.ts
-// (PROGRESS.md names the last commit that had them) and remove both again afterwards.
+//   git checkout 8385356 -- src/pages/dev/fx.astro src/experience/fx/dev/harness.ts
+// (8385356 is the last commit that had them) and remove both again afterwards:
+//   git rm -r -f src/pages/dev src/experience/fx/dev
 // The test page freezes an effect at a fraction of its length (t=0..1) on a
 // clock moved by hand, over a choice of backgrounds.
 //
