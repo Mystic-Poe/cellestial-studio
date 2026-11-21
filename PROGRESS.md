@@ -53,6 +53,20 @@ made where the spec is silent" lists the decisions the owner should see.
 
 Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
 
+**How final verification is being run (started 2026-11-20, 23:35).** Three steps in sequence,
+each committing its own output, so a cut-off loses at most the step in hand:
+1. An inspector for the business and the code writes `refs/verification/business-and-code.txt`
+   (the protected-systems diff review, the three flows, every check suite rerun, a type-check).
+2. An inspector for the look writes `refs/verification/look.txt` and sheets under
+   `refs/verification/matrix/` (every element at both sizes against its asset or the spec's
+   words, a difference table, the spec's own checklist).
+3. A fixer works through both reports and records each finding's outcome in
+   `refs/verification/fixes.txt`. Three changes are decided regardless of the reports: every
+   falling star strikes the ground with its own small burst (today only the first does); the
+   logo's lit lines made visible at its real size; the teleport flash's traces thinner and bluer.
+If a report file exists, that step is done: go on from the next one. The briefs are in the
+session's workflow script `final-verification`; the same instructions in short are above.
+
 ## Where things stand
 
 | Piece | State | How it was verified |
