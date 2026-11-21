@@ -40,6 +40,9 @@
 //                             panel with what was asked, for a short ask, a long one (it must
 //                             scroll inside the panel) and one written as markup (it must show
 //                             as the text it is), both sizes, and the long one pixel for pixel
+//   ignite.jpg                (--only ignite) the claim as it plays after a send: the camera
+//                             on the star (focusStar with ignite), then B4 to B5 at seven
+//                             moments, close up, both sizes; the last with its panel
 //   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
@@ -845,6 +848,55 @@ if (only.has('lit')) {
 		await view.close();
 	}
 	await sheet('lit.jpg', cells, 4);
+}
+
+// ───────────────────────────────────────────────────────── the ignition ──
+
+if (only.has('ignite')) {
+	const SIDE = 218;
+	const cells = [];
+	const slot = 'slot-34';
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size, [[slot, 'A site for my bakery.']]);
+		await view.at(0, 2);
+		// As the director does after a send: fly to the star and play the claim there.
+		const began = await view.page.evaluate(async (s) => {
+			const { sky } = window.__cellestial;
+			let at = null;
+			sky.hooks.on('ignite', () => {
+				at = sky.hooks.time();
+			});
+			void sky.focusStar(s, { ignite: true });
+			for (let t = 2; t < 8 && at === null; t += 0.02) {
+				sky.debug.setClock(t);
+				await Promise.resolve();
+			}
+			return at;
+		}, slot);
+		if (began === null) throw new Error('the claim never played');
+		console.log(`[${size}] the camera reached the star and the claim began ${(began - 2).toFixed(2)} s after focusStar`);
+		for (const dt of [-0.02, 0.2, 0.45, 0.7, 0.95, 1.4, 2.4]) {
+			const c = await view.page.evaluate(
+				([t, s]) =>
+					new Promise((done) => {
+						const { sky } = window.__cellestial;
+						sky.debug.setClock(t);
+						const circle = sky.hooks.starCircle(s);
+						requestAnimationFrame(() => requestAnimationFrame(() => done(circle)));
+					}),
+				[began + dt, slot],
+			);
+			const png = await view.page.screenshot({ type: 'png' });
+			cells.push({
+				img: await crop(png, view.scale, c.x + c.r * 0.35, c.y, c.r * 1.75, SIDE),
+				w: SIDE,
+				h: SIDE,
+				caption: `${size} ${dt < 0 ? 'before' : `+${dt} s`}`,
+			});
+		}
+		await view.close();
+	}
+	await sheet('ignite.jpg', cells, 7);
 }
 
 // ───────────────────────────────────────────────────────── the fall ──

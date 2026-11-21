@@ -126,7 +126,9 @@ export function createFlight(initial: Stations, start = 0): Flight {
 		release() {
 			if (held === 0) return;
 			held = 0;
-			lastInput = time - FLIGHT.hold;
+			// A key let go before a single frame has passed is still a press: it counts
+			// as one sample of input, like a wheel tick, instead of being lost.
+			lastInput = mode === 'thrust' ? time - FLIGHT.hold : time;
 		},
 		halt() {
 			vel = 0;

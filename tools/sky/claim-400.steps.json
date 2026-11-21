@@ -1,0 +1,23 @@
+[
+	{ "route": { "url": "**/api/contact", "status": 400, "json": { "error": "That did not send." } } },
+	{ "ignore": "status of 400" },
+	{ "wait": 1500 },
+	{ "tap": "#sky-ui .sky-star[data-slot=\"slot-34\"]" },
+	{ "wait": 500 },
+	{ "click": "#sky-ui [data-sky-claim]" },
+	{ "wait": 600 },
+	{ "fill": ["#claim-form-name", "Test Visitor"] },
+	{ "fill": ["#claim-form-email", "visitor@example.com"] },
+	{ "fill": ["#claim-form-message", "A site for my bakery, with the week's bread on the first page."] },
+	{ "click": "#claim-form button[type=\"submit\"]" },
+	{ "wait": 700 },
+	{ "expect": "window.__cellestial.claims.all().size === 0 && window.__cellestial.claims.unplaced() === null" },
+	{ "shot": "400-1-refused" },
+	{ "key": "Escape" },
+	{ "wait": 3200 },
+	{ "expect": "!window.__cellestial.sky.hooks.isLit('slot-34') && window.__cellestial.claims.all().size === 0" },
+	{ "shot": "400-2-sky" },
+	{ "reload": true },
+	{ "wait": 2000 },
+	{ "expect": "window.__cellestial.claims.all().size === 0 && localStorage.getItem('cellestial:claims') === null" }
+]

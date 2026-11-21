@@ -15,9 +15,11 @@
 ## Exact next step
 
 **Sky scene (B, G1). Part A (the world, the flight, the exit button, the hand-off, the fall)
-is done: see "Sky, part A" below the table. PART B, what answers a touch, is under way: B1
-(the beads), B2 (the pulse and the words), B3 (the empty-star panel) and B4 (the lit-star
-panel) are done, see "Sky, part B". Next is step B5: the waiting ask, and the ignition.**
+is done: see "Sky, part A" below the table. PART B, what answers a touch, is built: B1 (the
+beads), B2 (the pulse and the words), B3 (the empty-star panel), B4 (the lit-star panel) and
+B5 (the waiting ask and the ignition after a real send) are done, see "Sky, part B". Next is
+step B6: run everything part A was judged on again, measure frame times during bead runs,
+and close the Sky.**
 
 The sky's code is in `src/experience/sky/` (entry `index.ts`, three.js in `gl/`), its markup
 in `src/components/scenes/Sky.astro`. Its brief: `refs/briefs/cellestial-sky-1-*.js` (the
@@ -28,7 +30,7 @@ comments there, they name the event each part B piece hangs on) and `.sky.debug`
 Two tools, both needing the dev server: `node tools/sky/compare.mjs` rebuilds the comparison
 sheets in `refs/sky/compare/` (`--only handoff,fall` for the two part A ones that are not in
 the default list); `node tools/sky/measure.mjs` drives the page with real wheel, key, touch
-and mouse events and writes what it measured to `refs/sky/measure.txt` (86 checks from part A; part B adds `beads`, 14, `words`, 24, `panel`, 28, and `lit`, 20; it exits non-zero if one fails). Run both after any change to the sky.
+and mouse events and writes what it measured to `refs/sky/measure.txt` (86 checks from part A; part B adds `beads`, 14, `words`, 24, `panel`, 28, `lit`, 20, and `claim`, 26; it exits non-zero if one fails). Run both after any change to the sky.
 
 Part B, in order, a checkpoint after each:
 
@@ -39,19 +41,14 @@ Part B, in order, a checkpoint after each:
   `<p data-claim-words>` in `Sky.astro`.
 - **B3. The empty-star panel (B10). DONE.** `panels.ts`; the markup is in `Sky.astro`.
 - **B4. The lit-star panel. DONE.** `panels.ts`, on the hook `open-lit`.
-- **B5. The waiting ask and the ignition.** (a) `claims.unplaced()` not null: `answer.ts`
-  already sends beads by itself from the middle of the screen 0.9 s after the sky is entered
-  (the hooks `active` and `dismiss` with reason `reset`) and 0.35 s after each rest (the hook
-  `rest`), and `index.ts` already places the ask on the next empty star clicked
-  (`claims.place`) and ignites it; none of that has been RUN yet. (b) After a send with a star
-  chosen the director calls `showStar(slot)`, which calls `focusStar(slot, { ignite: true })`.
-  To do: walk both on the real page with `/api/contact` stubbed (the `route` step of
-  `scripts/shot.mjs`, or `page.route` in `tools/sky/measure.mjs`): open the panel on an empty
-  star, press "Claim your star", fill name, email and message, send; the star must be lit
-  only after the 200 and still lit after a reload; with a 400, nothing lit. Capture the
-  ignition as a strip of frames at both sizes (an `ignite` sheet in `tools/sky/compare.mjs`).
-- **B6. Everything part A was judged on still holds;** then this section points at the Roots
-  (`refs/briefs/cellestial-roots.js`; the effects parked in `wip/fx` belong with it).
+- **B5. The waiting ask and the ignition. DONE.**
+- **B6. Everything part A was judged on still holds.** To do: `node tools/sky/measure.mjs`
+  in full (every section must pass; it then rewrites `refs/sky/measure.txt`) and
+  `node tools/sky/compare.mjs` (look at `open.jpg` and one stations sheet); add to the
+  measure tool the frame times during ten bead runs in a row, on the real GPU and in software
+  with the CPU slowed 4x; check nothing is under `src/pages/dev` or `wip/sky`; then rewrite
+  this section to point at the Roots scene (its brief is `refs/briefs/cellestial-roots.js`;
+  the effects layer parked in `wip/fx` belongs with it and with the chrome).
 
 Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4500`.
 
@@ -65,7 +62,7 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | Experience core: scene director, claims store, claim flow, page shell with placeholder scenes | done | Build, 96 tests + worker checks, lint all pass. Walk-through at both sizes looked at: `refs/foundation/walk/` (sky → exit button → roots → build request → star; menu to all four destinations; reduced motion; no JavaScript). |
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
 | Loading (A1–A5) | **done against the reference, polish pass included, except what is listed here; A5 now seen over the real sky (see "Sky, part A", step 4)** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (run by `node scripts/build-assets.mjs modules`; it writes `geometry.ts` and the matte, and run again it reproduces both) | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (six rounds of fixes, then the polish pass of four items, each looked at close up: see the section below the table). Matches: the C's place and size; the order and tempo the circuits light in (a thin white wire with a blue glow); the cooling before the charge; the overload (a thin white-hot bolt from the top edge, the node lost in white with its rings showing through, a blue wash filling the bolt's half of the frame, spark dust); the camera pulling back; the first "e" thrown from the node by one tall arc and written in the reference's order; each letter written at the reference's moment as one thin white tube on its brass, with white ring nodes, in a wide navy haze; the node's rings lit white while the word is written; the cooling into the A4 picture itself. The two soft fields (the haze behind the letters, the overload's wash) were also measured, reference against build: `refs/loading/compare/light.txt`, written by `node tools/loader/light.mjs`. **Still different:** the lit circuits (1.33) are whiter, with less blue around them; the first arc (3.67) is less wild and the first piece of the "e" bolder; the overload's white has a more definite edge than the reference's bloom, and its sparks are coarser and fewer; close to the letter being written the haze is a little weaker (3.83) and the letters' edges cooler; once a letter is written the reference lets lightning play over it for longer, and it strikes the star (5.25) where the build only lights it; the node's lens keeps a darker blue ring round its white heart. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done) after the polish pass, desktop / phone:** full version 7.74 s / 7.73 s (must be 6.0–8.0); short version on a same-session reload 3.49 s / 3.47 s; tap at 1 s ends at 2.76 s / 2.76 s, the "a" key at 1 s 2.74 s / 2.75 s; Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.75 s / 7.73 s); resize twice mid-run keeps the time (7.74 s / 7.75 s). Desktop only: each of the four pictures answering 404 in turn, the loader ends at once (0.01 s) and the sky is shown; sessionStorage blocked plays the full version (7.71 s); the sky's script failing to load, the loader fades out by itself at 6.62 s and the page opens on the Roots; the sky 30 s late, the wordmark holds 6 s and the loader goes at 12.65 s. Frame times 16.8–17.1 ms average at both sizes; phone with the CPU slowed 4×: 26.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at again after the polish pass, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
-| Sky (B, G1) | **part A done** (the world, the flight, the exit button, the hand-off, the fall: judged against its references and measured). **Part B in progress: B1 (the beads), B2 (the pulse and the words "claim yours"), B3 (the empty-star panel) and B4 (the lit-star panel) done;** the waiting ask and the ignition after a real send written but not yet run. — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/compare.mjs`, `tools/sky/measure.mjs` | See "Sky, part A" and "Sky, part B" below the table: what was run, looked at and measured at each step, and what still differs. Sheets: `refs/sky/compare/`. Numbers: `refs/sky/measure.txt`. |
+| Sky (B, G1) | **part A done** (the world, the flight, the exit button, the hand-off, the fall: judged against its references and measured). **Part B built: B1 (the beads), B2 (the pulse and the words "claim yours"), B3 (the empty-star panel), B4 (the lit-star panel) and B5 (a real send lights the star; a waiting ask) done;** the last pass over part A's checks (B6) still to run. — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/compare.mjs`, `tools/sky/measure.mjs` | See "Sky, part A" and "Sky, part B" below the table: what was run, looked at and measured at each step, and what still differs. Sheets: `refs/sky/compare/`. Numbers: `refs/sky/measure.txt`. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
 | Roots (E1–E6) | not started (placeholder shows the five tiles as plain panels) | — |
 | Close (F1, F2) | placeholder (the two real buttons, wired to the existing flows) | Walk-through above. |
@@ -317,6 +314,37 @@ flying on lets the camera go back to the flight path. A star with no ask opens n
   the camera is back on the flight path (0 away) 1.3 s later; flying on closes it; the three
   seeded stars are still the only lit ones.
 
+**B5, the waiting ask and the ignition (20 Nov).** Both walked for real on the page, with
+`/api/contact` answered by the test.
+- **A send with a star chosen.** Through the harness's route step:
+  `node scripts/shot.mjs --gpu --url "http://localhost:4500/?scene=sky&debug" --out <dir> --steps tools/sky/claim-200.steps.json`
+  (and `claim-400.steps.json`); every `expect` in them held at both sizes, and the shots are
+  laid out in `refs/sky/compare/claim-walk.jpg`: the panel on an empty star, "Claim your
+  star", the request filled, "Sent.", the camera at the star, the claim playing, the star lit
+  with its panel showing what was asked, still lit after a reload; and with a 400: the form
+  says "That did not send.", nothing is lit.
+- **Measured strictly**, `node tools/sky/measure.mjs --only claim`, 26 checks, all passing,
+  both sizes, the 200 held back 0.9 s by the test: while the request is on its way nothing
+  is lit and nothing is stored; what is posted is name, email, message and `star=slot-34`,
+  nothing added; the star ignites 2.57 s after the 200 (the "Sent." beat of 1.4 s, then the
+  flight in) and not before; its panel then shows exactly the ask; localStorage holds
+  `[{slot, ask}]` and nothing else; after a reload it is lit and its button reads "Claimed
+  star in Virgo". Answered 400: nothing lit, nothing waiting, nothing stored, also after a reload.
+- **A send with no star chosen** (from the "Claim your star" button on the Roots, same run):
+  nothing is lit and `claims.unplaced()` is the ask; the director returns to the sky and
+  0.9 s later the beads go by themselves from the middle of the screen to the nearest empty
+  star, which pulses with the words; after flying on a layer they go again 0.35 s after the
+  flight has come to rest; the next empty star clicked takes the ask at once
+  (`claims.place`) and ignites, with no panel and no second send.
+- **The ignition looked at**, `node tools/sky/compare.mjs --only ignite`:
+  `refs/sky/compare/ignite.jpg`, seven moments at both sizes, the camera closed in on the
+  star 1.16 s after `focusStar`: the empty sphere with its brass traces; the charge running
+  down the traces, white at its head (+0.2, +0.45 s); the whole sphere lit and flashing
+  (+0.7 s); settled to the steady blue of B5 (+1.4 s); then its panel.
+- **A fault found on the way and fixed** (`flight.ts`): a flight key let go before a single
+  frame had passed (a scripted key press; a very quick real one) closed whatever was open
+  but flew nowhere. It now counts as one sample of input, like a wheel tick.
+
 ## Loading: the polish pass the orchestrator asked for (done, 20 Nov)
 
 After its review the orchestrator accepted the Loading scene and asked for one polish pass on
@@ -498,3 +526,6 @@ than two tries. All four were reached.
   copy, placed beside every star and measured (28 checks). The lit-star panel is written but not run.
 - 2026-11-20 — Sky, part B, step B4: the lit-star panel: fly in, exactly the ask as plain text,
   nothing else; long asks scroll inside; closing lets the camera go (20 checks).
+- 2026-11-20 — Sky, part B, step B5: a real send walked with `/api/contact` stubbed (200: the star
+  ignites only after the answer and stays lit after a reload; 400: nothing lit); a send with no
+  star leaves the ask waiting, the beads then go by themselves, the next star clicked takes it.

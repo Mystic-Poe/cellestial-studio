@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -38,6 +38,11 @@
 //             that closes it, and the button that opens the build request
 //   lit       the lit-star panel: exactly the claim's ask as plain text and nothing
 //             else, a long ask scrolling inside it, and the camera let go when it closes
+//   claim     a build request sent for real from the panel, /api/contact answered by
+//             the test (200 after a pause, and 400): the star is lit only after the
+//             200, and after a reload; a request sent with no star leaves an ask
+//             waiting, the beads then go by themselves, and the next empty star
+//             clicked takes it
 //   words     the pulse and the words "claim yours" (B9): what they are, where they
 //             stand, the pulse's period, everything that ends them, and the still sky
 //
@@ -53,7 +58,7 @@ import { chromium } from 'playwright-core';
 import { OFFERS } from '../../src/content/offers.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -74,6 +79,8 @@ const SIZES = {
 
 const lines = [];
 let failed = 0;
+/** Set while a section answers /api/contact with 400 itself: the browser logs that as an error. */
+let expect400 = false;
 const log = (text = '') => {
 	lines.push(text);
 	console.log(text);
@@ -110,6 +117,7 @@ async function open(size, { gpu = true, query = '?scene=sky&debug', init, initAr
 	);
 	page.on('console', (m) => {
 		// The Turnstile test widget in the build-request dialog logs this from its own frame.
+		if (expect400 && /status of 400/.test(m.text())) return;
 		if (m.type() === 'error' && !/frame is sandboxed/.test(m.text())) {
 			failed++;
 			log(`  FAIL  console error: ${m.text()}`);
@@ -174,6 +182,13 @@ async function wheelFor(view, ms, dy, sampleAt = []) {
 	}
 	return speeds;
 }
+
+/** A flight key held as a hand holds it (a press shorter than a frame is no flight at all). */
+const nudge = async (page, key = 'ArrowDown') => {
+	await page.keyboard.down(key);
+	await sleep(160);
+	await page.keyboard.up(key);
+};
 
 const isWhole = (coord) => Math.abs(coord - Math.round(coord)) < 1e-3;
 
@@ -1016,7 +1031,7 @@ if (only.has('beads')) {
 		const none = await page.evaluate(CLAIMED);
 		check('and nothing is claimed or picked by it', none.lit === 0 && none.picked === null);
 		const wasPulsing = await pulsing();
-		await page.keyboard.press('ArrowDown');
+		await nudge(page);
 		await sleep(150);
 		check('flying on ends the pulse', wasPulsing !== null && (await pulsing()) === null);
 		await view.rest();
@@ -1204,7 +1219,7 @@ if (only.has('words')) {
 		const other = await send([0.85, 0.3]);
 		const moved = await page.evaluate(WORDS);
 		check('a touch elsewhere moves it to the star nearest that touch', moved.slot === other.slot && other.slot !== r.slot && moved.shown && Math.abs(moved.dx) < 0.5, `${r.slot} then ${other.slot}`);
-		await page.keyboard.press('ArrowDown');
+		await nudge(page);
 		await sleep(120);
 		let gone = await page.evaluate(WORDS);
 		check('flying away ends the pulse and the words', gone.slot === null && !gone.shown);
@@ -1582,6 +1597,155 @@ if (only.has('lit')) {
 		check('flying on closes it and lets the camera go', !p.shown && (await focused()) === null);
 		const claimed = await page.evaluate(() => window.__cellestial.claims.all().size);
 		check('and the three stars are still lit, no more', claimed === 3);
+		await view.close();
+		log();
+	}
+}
+
+// ───────────────────────────────────────────── the claim, sent for real ──
+
+if (only.has('claim')) {
+	const ASK = 'A site for my bakery,\nwith the week\'s bread on the first page.';
+	const fill = async (page) => {
+		await page.fill('#claim-form-name', 'Test Visitor');
+		await page.fill('#claim-form-email', 'visitor@example.com');
+		await page.fill('#claim-form-message', ASK);
+	};
+	const lit = (page, slot) =>
+		page.evaluate((s) => {
+			const { claims, sky } = window.__cellestial;
+			return {
+				store: claims.isLit(s),
+				sky: sky.hooks.isLit(s),
+				all: claims.all().size,
+				unplaced: claims.unplaced(),
+				stored: localStorage.getItem('cellestial:claims'),
+				label: document.querySelector(`#sky-ui .sky-star[data-slot="${s}"]`)?.getAttribute('aria-label'),
+			};
+		}, slot);
+	for (const size of ['desk', 'phone']) {
+		log(`THE CLAIM, sent for real, ${size === 'desk' ? '1440x900' : '390x844'}`);
+		const slot = 'slot-34';
+
+		// Answered 400.
+		let view = await open(size);
+		let { page } = view;
+		const press = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		await page.route('**/api/contact', (route) => route.fulfill({ status: 400, json: { error: 'That did not send.' } }));
+		let c = await page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+		await press(c.x, c.y);
+		await sleep(250);
+		await page.locator('#sky-ui [data-sky-claim]').click();
+		await sleep(400);
+		await fill(page);
+		// The 400 is logged by the browser as a failed resource: expected here.
+		expect400 = true;
+		await page.locator('#claim-form button[type="submit"]').click();
+		await sleep(700);
+		const status400 = await page.evaluate(() => document.querySelector('#claim-form [data-status]').textContent);
+		await page.keyboard.press('Escape');
+		await sleep(3200);
+		let now = await lit(page, slot);
+		check('answered 400: nothing is lit, nothing waits, nothing is stored', !now.store && !now.sky && now.all === 0 && now.unplaced === null && now.stored === null && now.label === 'Empty star in Virgo', `the form says "${status400}"`);
+		await page.reload({ waitUntil: 'networkidle' });
+		await page.waitForFunction(() => window.__cellestial?.sky?.hooks);
+		await sleep(1000);
+		now = await lit(page, slot);
+		check('and still nothing after a reload', !now.store && now.all === 0);
+		await view.close();
+		expect400 = false;
+
+		// Answered 200, after a pause in which nothing may be lit.
+		view = await open(size, {
+			init: () => {
+				window.__events = [];
+				const wait = setInterval(() => {
+					const hooks = window.__cellestial?.sky?.hooks;
+					if (!hooks) return;
+					clearInterval(wait);
+					for (const type of ['ignite', 'open-lit', 'focus']) hooks.on(type, (e) => window.__events.push({ type, at: performance.now(), ...e }));
+				}, 5);
+			},
+		});
+		page = view.page;
+		const press2 = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		let posted = null;
+		let answeredAt = 0;
+		await page.route('**/api/contact', async (route) => {
+			posted = route.request().postData() ?? '';
+			await sleep(900);
+			answeredAt = await page.evaluate(() => performance.now());
+			await route.fulfill({ status: 200, json: { ok: true } });
+		});
+		c = await page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+		await press2(c.x, c.y);
+		await sleep(250);
+		await page.locator('#sky-ui [data-sky-claim]').click();
+		await sleep(400);
+		const star = await page.evaluate(() => document.querySelector('#claim-form [data-star-input]').value);
+		await fill(page);
+		await page.locator('#claim-form button[type="submit"]').click();
+		await sleep(500);
+		const during = await lit(page, slot);
+		check('while the request is on its way, nothing is lit', !during.store && !during.sky && during.all === 0 && during.stored === null);
+		const field = (name) => new RegExp(`name="${name}"\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`).exec(posted ?? '')?.[1];
+		check('what is posted is the form and the star, nothing added', star === slot && field('star') === slot && field('message')?.replace(/\r\n/g, '\n') === ASK && field('name') === 'Test Visitor', `star=${field('star')}`);
+		await page.waitForFunction(() => window.__cellestial.sky.panels.open()?.kind === 'lit', null, { timeout: 12000 });
+		await sleep(300);
+		now = await lit(page, slot);
+		const ev = await page.evaluate(() => window.__events);
+		const ignite = ev.find((e) => e.type === 'ignite');
+		const openLit = ev.find((e) => e.type === 'open-lit');
+		check('answered 200: the camera flies to the star and it ignites, after the answer and not before', now.store && now.sky && ignite?.slot === slot && ignite.at > answeredAt, `ignited ${f2((ignite?.at - answeredAt) / 1000)} s after the 200 (the "Sent." beat, then the flight in)`);
+		const shown = await page.evaluate(() => document.querySelector('#sky-ui [data-sky-ask]').textContent);
+		check('then its panel shows exactly what was asked', openLit?.ignited === true && shown === ASK, JSON.stringify(shown));
+		check('it is stored on this device as the slot and the ask, nothing else', now.stored === JSON.stringify([{ slot, ask: ASK }]), now.stored);
+		await page.reload({ waitUntil: 'networkidle' });
+		await page.waitForFunction(() => window.__cellestial?.sky?.hooks);
+		await page.evaluate(() => window.__cellestial.sky.ready);
+		await sleep(1000);
+		now = await lit(page, slot);
+		check('still lit after a reload', now.store && now.sky && now.all === 1 && now.label === 'Claimed star in Virgo', now.label);
+		await view.close();
+
+		// Sent with no star chosen: the ask waits.
+		view = await open(size);
+		page = view.page;
+		const press3 = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		await page.route('**/api/contact', (route) => route.fulfill({ status: 200, json: { ok: true } }));
+		await page.evaluate(() => window.__cellestial.director.go('claim'));
+		await sleep(600);
+		await page.locator('#roots [data-open-claim], [data-open-claim]').first().click();
+		await sleep(400);
+		const noStar = await page.evaluate(() => document.querySelector('#claim-form [data-star-input]').value);
+		await fill(page);
+		await page.locator('#claim-form button[type="submit"]').click();
+		// "Sent." for 1.4 s, the dialog closes, the director goes to the sky, and 0.9 s later the beads set off.
+		await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky' && window.__cellestial.sky.answer.run() !== null, null, { timeout: 12000 });
+		const auto = await page.evaluate(ROUTE);
+		const mid = await page.evaluate(() => [innerWidth / 2, innerHeight / 2]);
+		const waiting = await lit(page, slot);
+		check('sent with no star chosen: nothing is lit, the ask waits', noStar === '' && waiting.all === 0 && waiting.unplaced === ASK);
+		check('back in the sky the beads go by themselves, from the middle of the screen to the nearest empty star', auto && Math.hypot(auto.from.x - mid[0], auto.from.y - mid[1]) < 1 && auto.onLattice, `${auto?.edges} edges to ${auto?.slot}`);
+		await sleep((auto?.arrive ?? 1) * 1000 + 300);
+		const shownAt = await page.evaluate(() => window.__cellestial.sky.answer.pulsing());
+		check('which then pulses with the words under it', shownAt === auto?.slot);
+		// Fly on a layer and rest: they go again.
+		await nudge(page);
+		await sleep(300);
+		await view.rest();
+		await page.waitForFunction(() => window.__cellestial.sky.answer.run() !== null, null, { timeout: 4000 }).catch(() => {});
+		const again = await page.evaluate(ROUTE);
+		check('and again each time the flight comes to rest', again !== null && again.fromLayer !== auto?.fromLayer, `at layer ${again?.fromLayer}: ${again?.edges} edges to ${again?.slot}`);
+		await sleep((again?.arrive ?? 1) * 1000 + 300);
+		// The next empty star clicked is theirs.
+		const target = again?.slot ?? auto.slot;
+		c = await page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), target);
+		await press3(c.x, c.y);
+		await sleep(400);
+		now = await lit(page, target);
+		const panelOpen = await page.evaluate(() => window.__cellestial.sky.panels.open());
+		check('the next empty star they click is theirs at once and ignites (no panel, no second send)', now.store && now.sky && now.unplaced === null && now.stored === JSON.stringify([{ slot: target, ask: ASK }]) && panelOpen === null, `${target}`);
 		await view.close();
 		log();
 	}
