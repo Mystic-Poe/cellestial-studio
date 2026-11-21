@@ -31,6 +31,11 @@
 //   pulse.jpg                 (--only pulse) the star the beads reached, close up with the
 //                             words under it, at five moments of its two-second pulse, both
 //                             sizes; and the same star marked in the still sky (reduced motion)
+//   panel.jpg                 (--only panel) the empty-star panel (B10) opened by a real click
+//                             or tap on three stars at each size (the leftmost, the rightmost
+//                             and the lowest of a figure), the whole screen, and the panel
+//                             itself pixel for pixel. Prints where each panel was put and
+//                             whether it is whole on the screen and clear of the logo.
 //   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
@@ -707,6 +712,81 @@ if (only.has('pulse')) {
 		await still.close();
 	}
 	await sheet('pulse.jpg', cells, 6);
+}
+
+// ─────────────────────────────────────────────── the empty-star panel ──
+
+/** A panel's place on screen and how it stands to its star and to the screen. */
+const PANEL = ([kind, slot]) => {
+	const { sky } = window.__cellestial;
+	const el = document.querySelector(`#sky-ui [data-sky-panel="${kind}"]`);
+	const b = el.getBoundingClientRect();
+	const c = sky.hooks.starCircle(slot);
+	const dx = Math.max(b.left - c.x, c.x - b.right, 0);
+	const dy = Math.max(b.top - c.y, c.y - b.bottom, 0);
+	return {
+		hidden: el.hidden,
+		box: { x: b.left, y: b.top, w: b.width, h: b.height },
+		star: c,
+		// From the star's disc to the panel's nearest edge.
+		gap: Math.hypot(dx, dy) - c.r,
+		whole: b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight,
+		margin: Math.min(b.left, b.top, innerWidth - b.right, innerHeight - b.bottom),
+		overChrome: b.left < 110 && b.top < 80,
+		text: el.innerText,
+	};
+};
+
+if (only.has('panel')) {
+	const cells = [];
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size);
+		const vp = SIZES[size].viewport;
+		const [fw, fh] = size === 'desk' ? [400, 250] : [150, 325];
+		let close = null;
+		// Virgo's leftmost and lowest star, and the rightmost star of Scorpius (far right on a phone).
+		for (const [station, which] of [
+			[0, 'left'],
+			[0, 'low'],
+			[2, 'right'],
+		]) {
+			await view.at(station, 2);
+			const slot = await view.page.evaluate(
+				([w]) => {
+					const { hooks } = window.__cellestial.sky;
+					const stars = hooks
+						.layout()
+						.plans[hooks.flight().figure].stars.filter((s) => s.slot)
+						.map((s) => ({ slot: s.slot, c: hooks.starCircle(s.slot) }))
+						.filter((s) => s.c);
+					const by = { left: (s) => s.c.x, right: (s) => -s.c.x, low: (s) => -s.c.y }[w];
+					return stars.sort((a, b) => by(a) - by(b))[0].slot;
+				},
+				[which],
+			);
+			const c = await view.page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+			if (size === 'desk') await view.page.mouse.click(c.x, c.y);
+			else await view.page.touchscreen.tap(c.x, c.y);
+			await view.page.waitForTimeout(350);
+			const p = await view.page.evaluate(PANEL, ['empty', slot]);
+			const png = await view.page.screenshot({ type: 'png' });
+			const ok = !p.hidden && p.whole && !p.overChrome && p.gap > 0 && p.box.w <= vp.width - 24;
+			if (!ok) errors++;
+			console.log(
+				`[${size}] ${NAMES[station]}, the ${which}most star (${slot}) at ${p.star.x.toFixed(0)}, ${p.star.y.toFixed(0)}: panel ${p.box.w.toFixed(0)}x${p.box.h.toFixed(0)} at ${p.box.x.toFixed(0)}, ${p.box.y.toFixed(0)}; ${p.gap.toFixed(0)} px from the star's disc, at least ${p.margin.toFixed(0)} px inside the screen${ok ? '' : '   WRONG'}`,
+			);
+			cells.push({ img: await fit(png, fw, fh), w: fw, h: fh, caption: `${size}: ${NAMES[station]}, ${which}most star` });
+			if (!close) {
+				close = await cut(png, view.scale, p.box.x - 8 < 0 ? { ...p.box, x: 0, y: p.box.y - 8, w: p.box.w + 16, h: p.box.h + 16 } : { x: p.box.x - 8, y: p.box.y - 8, w: p.box.w + 16, h: p.box.h + 16 }, 330, 325);
+				console.log(`[${size}] the panel's words:\n${p.text.split('\n').map((l) => `        ${l}`).join('\n')}`);
+			}
+			await view.page.keyboard.press('Escape');
+			await view.page.waitForTimeout(100);
+		}
+		cells.push({ img: close, w: 330, h: 325, caption: `${size}: the panel, pixel for pixel` });
+		await view.close();
+	}
+	await sheet('panel.jpg', cells, 4);
 }
 
 // ───────────────────────────────────────────────────────── the fall ──

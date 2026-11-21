@@ -11,6 +11,7 @@ import type { Answer } from './answer.ts';
 import type { FlightMode } from './flight.ts';
 import type { Honeycomb, LatticePath } from './lattice.ts';
 import type { Camera, Layout, Projected } from './layout.ts';
+import type { Panels } from './panels.ts';
 
 export interface SkyEvents {
 	/**
@@ -189,4 +190,6 @@ export interface SkyInternals extends SkyScene {
 	readonly debug: SkyDebug | null;
 	/** The beads, the pulse and the words (answer.ts). */
 	readonly answer: Answer | null;
+	/** The empty-star panel and the lit-star panel (panels.ts). */
+	readonly panels: Panels | null;
 }

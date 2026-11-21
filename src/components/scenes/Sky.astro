@@ -9,12 +9,47 @@
 // B11, the exit button, is the only words in the sky. It is in the markup from
 // the start and hidden: the scene shows it once one full round has been flown
 // (or at once under reduced motion), and it stays.
+//
+// The two small panels are here too, hidden: B10, what Cellestial can build,
+// beside an empty star (its five lines are the locked offer copy: each offer's
+// short name and its lead, and nothing else), and the panel beside a lit star,
+// which shows the ask of that claim and nothing else. src/experience/sky/panels.ts
+// shows and places them.
+import { OFFERS } from '../../content/offers.ts';
 import BrassButton from '../ui/BrassButton.astro';
+import Panel from '../ui/Panel.astro';
 ---
 
 <canvas id="sky-canvas" aria-hidden="true"></canvas>
 <div id="sky-ui" role="region" aria-label="The Sky" tabindex="-1">
 	<p class="sky-claim" data-claim-words hidden>claim yours</p>
+	<Panel
+		size="small"
+		class="sky-panel sky-panel--empty"
+		data-sky-panel="empty"
+		role="dialog"
+		aria-labelledby="sky-claim-star"
+		tabindex="-1"
+		hidden
+	>
+		<button class="panel__close" type="button" aria-label="Close" data-sky-close></button>
+		<ul class="sky-offers">
+			{OFFERS.map((offer) => <li><strong>{offer.short}</strong>{' '}{offer.lead}</li>)}
+		</ul>
+		<BrassButton variant="small" id="sky-claim-star" data-sky-claim>Claim your star</BrassButton>
+	</Panel>
+	<Panel
+		size="small"
+		class="sky-panel sky-panel--lit"
+		data-sky-panel="lit"
+		role="dialog"
+		aria-labelledby="sky-ask"
+		tabindex="-1"
+		hidden
+	>
+		<button class="panel__close" type="button" aria-label="Close" data-sky-close></button>
+		<p class="sky-ask" id="sky-ask" data-sky-ask></p>
+	</Panel>
 	<div class="sky-exit">
 		<BrassButton data-descend hidden>See what holds up the sky</BrassButton>
 	</div>
@@ -116,6 +151,95 @@ import BrassButton from '../ui/BrassButton.astro';
 	}
 	#sky-ui .sky-claim[hidden] {
 		display: none;
+	}
+
+	/* The two small panels. The scene puts them beside their star (transform). */
+	#sky-ui .sky-panel {
+		position: absolute;
+		top: 0;
+		left: 0;
+		max-width: min(19rem, calc(100% - 1.5rem));
+		max-height: calc(100% - 1.5rem);
+		overflow: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-brass) transparent;
+		pointer-events: auto;
+		outline: none;
+		animation: sky-panel-in 220ms ease-out both;
+	}
+	#sky-ui .sky-panel[hidden] {
+		display: none;
+	}
+	@keyframes sky-panel-in {
+		from {
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		#sky-ui .sky-panel {
+			animation: none;
+		}
+	}
+	html[data-motion='off'] #sky-ui .sky-panel {
+		animation: none;
+	}
+
+	/* B10: five lines, the offer's name in brass and its lead in white. */
+	.sky-offers {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#sky-ui .sky-panel--empty {
+		width: min(21rem, calc(100% - 1.5rem));
+		max-width: none;
+		line-height: 1.4;
+	}
+	.sky-offers li + li {
+		margin-top: 0.4em;
+	}
+	/* The close button stands in the corner beside the first line. */
+	.sky-offers li:first-child {
+		padding-right: 1.75rem;
+	}
+	.sky-offers strong {
+		margin-right: 0.3em;
+	}
+	#sky-ui .sky-panel--empty > .brass-btn {
+		margin-top: 0.875rem;
+	}
+
+	/* A short screen (a phone with its browser's bars showing): the same words,
+	   set tighter, so that there is room for the panel beside more of the stars. */
+	@media (max-height: 760px) {
+		#sky-ui .sky-panel--empty {
+			--panel-pad-y: 0.625rem;
+			font-size: 0.875rem;
+			line-height: 1.35;
+		}
+		#sky-ui .sky-panel--empty .sky-offers li + li {
+			margin-top: 0.3em;
+		}
+		#sky-ui .sky-panel--empty > .brass-btn {
+			margin-top: 0.625rem;
+		}
+	}
+
+	/* The lit star's panel: the ask, as it was written. A long one scrolls here. */
+	.sky-ask {
+		max-height: min(15rem, 45vh);
+		padding-right: 1.75rem;
+		overflow: auto;
+		overscroll-behavior: contain;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-brass) transparent;
+	}
+	.sky-ask:focus-visible {
+		outline: 2px solid var(--color-brass-hi, #d5ae88);
+		outline-offset: 2px;
 	}
 
 	/* B11: bottom centre. The button is centred by its row, not by a transform,

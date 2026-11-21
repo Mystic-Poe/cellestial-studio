@@ -49,6 +49,7 @@ import {
 	planFigures,
 	smooth,
 } from './layout.ts';
+import { createPanels } from './panels.ts';
 import { loadPictures } from './pictures.ts';
 
 // ───────────────────────────────────────────────────────────── tuning ──
@@ -171,6 +172,7 @@ function deadScene(reason: unknown): SkyInternals {
 		hooks: null,
 		debug: null,
 		answer: null,
+		panels: null,
 	};
 }
 
@@ -1302,7 +1304,11 @@ export const mount: MountSky = (ctx) => {
 	};
 
 	// ── what answers a touch: the beads, the pulse, the words ──
-	const answer = createAnswer(hooks, { spent: () => false, busy: () => false });
+	const panels = createPanels(hooks, ctx);
+	const answer = createAnswer(hooks, {
+		spent: () => panels.spent(),
+		busy: () => panels.open() !== null,
+	});
 
 	// ── the scene ──
 	const scene: SkyInternals = {
@@ -1497,6 +1503,7 @@ export const mount: MountSky = (ctx) => {
 		hooks,
 		debug,
 		answer,
+		panels,
 	};
 
 	return scene;

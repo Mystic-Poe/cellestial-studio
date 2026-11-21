@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -33,6 +33,9 @@
 //             nearest the nearest empty star; a new tap replaces the run; a tap
 //             on a star sends none; a tap in flight stops it dead and still
 //             sends them; what happens when the layer in front has no empty star
+//   panel     the empty-star panel (B10): its words against src/content/offers.ts,
+//             where it stands beside every one of the 146 stars, focus, everything
+//             that closes it, and the button that opens the build request
 //   words     the pulse and the words "claim yours" (B9): what they are, where they
 //             stand, the pulse's period, everything that ends them, and the still sky
 //
@@ -45,9 +48,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { chromium } from 'playwright-core';
+import { OFFERS } from '../../src/content/offers.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -1260,6 +1264,204 @@ if (only.has('words')) {
 		check('reduced motion: no beads travel; the nearest empty star is marked at once, with the words', !mark.run && sw.slot === want.slot && sw.shown && sw.text === 'claim yours' && Math.abs(sw.dx) < 0.5);
 		check('and nothing pulses', n1 === n0 && Number(pulseNow) === 1, `${n1 - n0} requestAnimationFrame calls in 2.5 s`);
 		await still.close();
+		log();
+	}
+}
+
+// ─────────────────────────────────────────────── the empty-star panel ──
+
+/** A panel as it is on screen now, against its star. */
+const PANEL = ([kind, slot]) => {
+	const { sky } = window.__cellestial;
+	const el = document.querySelector(`#sky-ui [data-sky-panel="${kind}"]`);
+	const b = el.getBoundingClientRect();
+	const c = slot ? sky.hooks.starCircle(slot) : null;
+	const dx = c ? Math.max(b.left - c.x, c.x - b.right, 0) : 0;
+	const dy = c ? Math.max(b.top - c.y, c.y - b.bottom, 0) : 0;
+	const active = document.activeElement;
+	return {
+		shown: !el.hidden && b.width > 0,
+		w: b.width,
+		h: b.height,
+		gap: c ? Math.hypot(dx, dy) - c.r : null,
+		margin: Math.min(b.left, b.top, innerWidth - b.right, innerHeight - b.bottom),
+		overChrome: b.left < 110 && b.top < 80,
+		text: el.innerText,
+		focusInside: el.contains(active),
+		focusOn: active?.matches?.('button.sky-star') ? active.dataset.slot : (active?.id || active?.tagName),
+		open: sky.panels.open(),
+	};
+};
+/** Open the panel on every star of every figure in turn, at its station, and note where it was put. */
+const SWEEP = () => {
+	const { sky } = window.__cellestial;
+	const { hooks, debug } = sky;
+	const el = document.querySelector('#sky-ui [data-sky-panel="empty"]');
+	const out = { stars: 0, off: 0, chrome: 0, covering: 0, wide: 0, least: Infinity, w: 0, h: 0 };
+	for (let k = 0; k < 12; k++) {
+		debug.setCoord(k);
+		debug.drawNow();
+		for (const star of hooks.layout().plans[k].stars) {
+			if (!star.slot) continue;
+			hooks.pick(star.slot);
+			const b = el.getBoundingClientRect();
+			const c = hooks.starCircle(star.slot);
+			out.stars++;
+			out.w = b.width;
+			out.h = b.height;
+			const margin = Math.min(b.left, b.top, innerWidth - b.right, innerHeight - b.bottom);
+			out.least = Math.min(out.least, margin);
+			if (el.hidden || margin < 0) out.off++;
+			if (b.left < 110 && b.top < 80) out.chrome++;
+			if (b.width > innerWidth - 24 + 0.5) out.wide++;
+			const dx = Math.max(b.left - c.x, c.x - b.right, 0);
+			const dy = Math.max(b.top - c.y, c.y - b.bottom, 0);
+			if (Math.hypot(dx, dy) < c.r) out.covering++;
+			sky.panels.close();
+		}
+	}
+	window.__cellestial.claims.pick(null);
+	debug.setCoord(0);
+	return out;
+};
+
+if (only.has('panel')) {
+	const want = [...OFFERS.map((o) => `${o.short} ${o.lead}`), 'Claim your star'];
+	for (const size of ['desk', 'phone']) {
+		log(`THE EMPTY-STAR PANEL (B10), ${size === 'desk' ? '1440x900' : '390x844'}`);
+		const view = await open(size);
+		const { page } = view;
+		const vp = SIZES[size].viewport;
+		const press = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		const panel = (slot) => page.evaluate(PANEL, ['empty', slot]);
+		const slot = 'slot-34';
+		const starAt = () => page.evaluate((s) => window.__cellestial.sky.hooks.starCircle(s), slot);
+		let c = await starAt();
+		await press(c.x, c.y);
+		await sleep(300);
+		let p = await panel(slot);
+		const claimed = await page.evaluate(CLAIMED);
+		check('a click on an empty star picks it and opens the panel beside it; nothing is claimed', p.shown && claimed.picked === slot && claimed.lit === 0 && p.gap > 4 && p.gap < 24, `${f2(p.gap)} px from the star's disc, ${Math.round(p.w)}x${Math.round(p.h)} px`);
+		const lines = p.text.split('\n').map((l) => l.trim()).filter(Boolean);
+		check('its words are the five offers (short name and lead, from offers.ts) and "Claim your star", and nothing else', JSON.stringify(lines) === JSON.stringify(want), lines.join(' | '));
+		const marks = await page.evaluate(() => {
+			const el = document.querySelector('#sky-ui [data-sky-panel="empty"]');
+			const items = [...el.querySelectorAll('li')];
+			return {
+				brass: items.every((li) => getComputedStyle(li.querySelector('strong')).color === 'rgb(174, 138, 104)'),
+				white: items.every((li) => getComputedStyle(li).color === 'rgba(255, 255, 255, 0.9)'),
+				price: /[$0-9]/.test(el.innerText),
+				close: el.querySelector('.panel__close')?.getAttribute('aria-label'),
+				button: el.querySelector('button.brass-btn.brass-btn--small')?.textContent.trim(),
+				role: el.getAttribute('role'),
+				face: getComputedStyle(el).backgroundImage.includes('brass-main'),
+			};
+		});
+		check('the names in brass, the leads in white, no price; the kit\'s small panel and small button; the close button is named "Close"', marks.brass && marks.white && !marks.price && marks.close === 'Close' && marks.button === 'Claim your star' && marks.face);
+		check('focus goes into it', p.focusInside);
+		check('it is whole on the screen, clear of the logo and menu, and no wider than the screen less its margins', p.margin >= 11.5 && !p.overChrome && p.w <= vp.width - 24 + 0.5, `at least ${f2(p.margin)} px inside`);
+
+		await page.keyboard.press('Escape');
+		await sleep(120);
+		p = await panel(slot);
+		check('Escape closes it and focus goes back to the star\'s button', !p.shown && p.focusOn === slot, `focus on ${p.focusOn}`);
+
+		// From the keyboard.
+		await page.keyboard.press('Enter');
+		await sleep(200);
+		p = await panel(slot);
+		const tabbed = [];
+		for (let i = 0; i < 2; i++) {
+			await page.keyboard.press('Tab');
+			tabbed.push(await page.evaluate(() => document.activeElement?.getAttribute('aria-label') ?? document.activeElement?.textContent.trim()));
+		}
+		check('Enter on the star opens it; Tab reaches its two buttons', p.shown && p.focusInside && tabbed.join(', ') === 'Close, Claim your star', tabbed.join(', '));
+		await page.locator('#sky-ui [data-sky-panel="empty"] .panel__close').click();
+		await sleep(120);
+		p = await panel(slot);
+		check('its close button closes it, focus back on the star', !p.shown && p.focusOn === slot);
+
+		// A press outside.
+		c = await starAt();
+		await press(c.x, c.y);
+		await sleep(250);
+		// Well clear of the panel: a finger's touch is wide, and is given to a button it nearly hits.
+		const out = await page.evaluate(EMPTY_NEAR, size === 'desk' ? [0.5, 0.86] : [0.5, 0.14]);
+		await press(...out);
+		await sleep(150);
+		p = await panel(slot);
+		const beads = await page.evaluate(() => window.__cellestial.sky.answer.run() !== null || window.__cellestial.sky.answer.pulsing() !== null);
+		check('a press outside closes it (and that press sends no beads)', !p.shown && !beads);
+
+		// Flying on.
+		c = await starAt();
+		await press(c.x, c.y);
+		await sleep(250);
+		const before = await panel(slot);
+		if (size === 'desk') {
+			await page.mouse.move(720, 800);
+			await page.mouse.wheel(0, 100);
+		} else {
+			const cdp = await view.ctx.newCDPSession(page);
+			const touch = (type, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x: 195, y }] });
+			await touch('touchStart', 800);
+			for (let n = 1; n <= 6; n++) {
+				await touch('touchMove', 800 - n * 30);
+				await sleep(20);
+			}
+			await touch('touchEnd', 0);
+			await cdp.detach();
+		}
+		await sleep(150);
+		p = await panel(slot);
+		check('flying on closes it', before.shown && !p.shown);
+		await view.rest();
+		await page.keyboard.press('Home');
+		await view.rest();
+		await sleep(300);
+
+		// The button.
+		c = await starAt();
+		await press(c.x, c.y);
+		await sleep(250);
+		await page.locator('#sky-ui [data-sky-claim]').click();
+		await sleep(500);
+		const dialog = await page.evaluate(() => ({
+			open: document.getElementById('claim-dialog')?.open === true,
+			star: document.querySelector('#claim-form [data-star-input]')?.value,
+			lit: window.__cellestial.claims.all().size,
+		}));
+		p = await panel(slot);
+		check('"Claim your star" opens the build request for that star; the panel is gone; nothing is claimed', dialog.open && dialog.star === slot && dialog.lit === 0 && !p.shown, `the hidden star field is ${dialog.star}`);
+		await page.keyboard.press('Escape');
+		await sleep(500);
+		p = await panel(slot);
+		const after = await page.evaluate(CLAIMED);
+		check('closing the request unsent claims nothing, and focus is back on the star', after.lit === 0 && p.focusOn === slot, `focus on ${p.focusOn}`);
+
+		// Every star there is.
+		const sweep = await page.evaluate(SWEEP);
+		check(
+			`beside every one of the ${sweep.stars} stars at its station it is whole on the screen, clear of the logo and menu, and never over its star`,
+			sweep.stars === 146 && sweep.off === 0 && sweep.chrome === 0 && sweep.wide === 0 && sweep.covering === 0,
+			`${Math.round(sweep.w)}x${Math.round(sweep.h)} px; least room to a screen edge ${f2(sweep.least)} px; over its star ${sweep.covering} times`,
+		);
+		await view.close();
+		log();
+	}
+	// Shorter screens, to say plainly what happens there: a phone with its browser's bars
+	// showing, and a small phone.
+	for (const [w, h] of [
+		[390, 664],
+		[360, 640],
+	]) {
+		const short = await (await browser(true)).newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+		const view = await open('phone', { context: short });
+		const sweep = await view.page.evaluate(SWEEP);
+		log(`THE EMPTY-STAR PANEL on a shorter screen, ${w}x${h}`);
+		check('whole on the screen and clear of the logo and menu beside every star', sweep.off === 0 && sweep.chrome === 0 && sweep.wide === 0, `${Math.round(sweep.w)}x${Math.round(sweep.h)} px; least room to a screen edge ${f2(sweep.least)} px`);
+		log(`        (there is not always room beside the star there: the panel lies partly over its star for ${sweep.covering} of ${sweep.stars} stars)`);
+		await view.close();
 		log();
 	}
 }
