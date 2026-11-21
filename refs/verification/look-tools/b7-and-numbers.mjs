@@ -6,14 +6,15 @@
 //    1440x900 and 390x844. Sheets: matrix/sky/b7-all-desk.jpg, b7-all-phone.jpg. For each:
 //    where the words stand, their size and colour (sampled from the screenshot), what they touch.
 // 2. Colours sampled from PNG screenshots of the real page; tap targets and overflow on the phone.
-// Output: matrix/numbers.txt
+// Output: matrix/numbers.txt (--only numbers)
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { CONSTELLATIONS } from '../../../src/content/constellations.ts';
 import { ROOT, SIZES, launch, openPage, sheet, sharp } from '../../../tools/roots/lib.mjs';
 
-const { values } = parseArgs({ options: { url: { type: 'string', default: 'http://localhost:4612' } } });
+const { values } = parseArgs({ options: { url: { type: 'string', default: 'http://localhost:4612' }, only: { type: 'string', default: 'b7,numbers' } } });
+const only = new Set(values.only.split(','));
 const OUT = join(ROOT, 'refs/verification/matrix');
 const out = [];
 const log = (s) => { console.log(s); out.push(s); };
@@ -39,8 +40,8 @@ async function sample(png, clip, keep, dpr = 1) {
 
 // ---------- 1. B7 at all twelve figures ----------
 const all = CONSTELLATIONS.flatMap((c) => c.stars.map((s) => s.slot).filter(Boolean)).map((slot) => ({ slot, ask: 'A site for my bakery' }));
-log(`B7, every figure complete (${all.length} claims seeded)`);
-for (const size of ['desk', 'phone']) {
+if (only.has('b7')) log(`B7, every figure complete (${all.length} claims seeded)`);
+for (const size of only.has('b7') ? ['desk', 'phone'] : []) {
 	const dpr = SIZES[size].deviceScaleFactor;
 	const { width: W, height: H } = SIZES[size].viewport;
 	const o = await openPage(browser, size, null);
@@ -87,6 +88,7 @@ log('COLOURS sampled from PNG screenshots (1440x900, real GPU)');
 	const o = await openPage(browser, 'desk', null);
 	await o.page.addInitScript(() => sessionStorage.setItem('cellestial:round', '1'));
 	await o.page.goto(`${values.url}/?scene=sky&debug`, { waitUntil: 'load' });
+	await o.page.waitForFunction(() => window.__cellestial?.sky?.ready);
 	await o.page.evaluate(() => window.__cellestial.sky.ready);
 	await o.page.waitForTimeout(1800);
 	let png = await o.page.screenshot({ type: 'png' });
@@ -160,6 +162,7 @@ log('PHONE 390x844: tap targets and overflow');
 	const o = await openPage(browser, 'phone', null);
 	await o.page.addInitScript(() => sessionStorage.setItem('cellestial:round', '1'));
 	await o.page.goto(`${values.url}/?scene=sky&debug`, { waitUntil: 'load' });
+	await o.page.waitForFunction(() => window.__cellestial?.sky?.ready);
 	await o.page.evaluate(() => window.__cellestial.sky.ready);
 	await o.page.waitForTimeout(1500);
 	const targets = (label) => o.page.evaluate((lab) => {
@@ -207,5 +210,5 @@ log('PHONE 390x844: tap targets and overflow');
 	log(await targets('message box open'));
 	await o.context.close();
 }
-writeFileSync(join(OUT, 'numbers.txt'), `${out.join('\n')}\n`);
+writeFileSync(join(OUT, only.has('b7') ? 'b7-all.txt' : 'numbers.txt'), `${out.join('\n')}\n`);
 await browser.close();

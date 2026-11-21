@@ -1,0 +1,69 @@
+  wrote refs/verification/matrix/walk/desk-01-loader.jpg
+desk loader: 590 frames, avg 17.3 ms, >34 ms 1, >50 ms 1, >100 ms 1, worst 350 ms at +634 ms  [desk-01-loader.jpg]
+  wrote refs/verification/matrix/walk/desk-02-handoff.jpg
+desk handoff: 603 frames, avg 17.3 ms, >34 ms 1, >50 ms 1, >100 ms 1, worst 350 ms at +634 ms  [desk-02-handoff.jpg]
+  wrote refs/verification/matrix/walk/desk-03-flight-a.jpg
+desk flight-a: 596 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6234 ms  [desk-03-flight-a.jpg]
+  wrote refs/verification/matrix/walk/desk-04-flight-b.jpg
+desk flight-b: 855 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +323 ms  [desk-04-flight-b.jpg]
+  wrote refs/verification/matrix/walk/desk-05-tap-beads.jpg
+desk tap-beads: 162 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +199 ms  [desk-05-tap-beads.jpg]
+  wrote refs/verification/matrix/walk/desk-06-empty-panel.jpg
+desk empty-panel: 96 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +83 ms  [desk-06-empty-panel.jpg]
+  wrote refs/verification/matrix/walk/desk-07-round.jpg
+desk round: 480 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +30 ms  [desk-07-round.jpg]
+  wrote refs/verification/matrix/walk/desk-08-fall.jpg
+desk fall: 197 frames, avg 18.2 ms, >34 ms 3, >50 ms 1, >100 ms 0, worst 50 ms at +1797 ms  [desk-08-fall.jpg]
+  wrote refs/verification/matrix/walk/desk-09-tiles-and-light.jpg
+  wrote refs/verification/matrix/walk/desk-10-close.jpg
+  wrote refs/verification/matrix/walk/desk-11-warp.jpg
+desk warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +594 ms  [desk-11-warp.jpg]
+  wrote refs/verification/matrix/walk/desk-12-teleport-build.jpg
+desk teleport-build: 104 frames, avg 17.8 ms, >34 ms 1, >50 ms 1, >100 ms 0, worst 83 ms at +791 ms  [desk-12-teleport-build.jpg]
+  wrote refs/verification/matrix/walk/desk-13-teleport-claim.jpg
+desk teleport-claim: 107 frames, avg 17.1 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +785 ms  [desk-13-teleport-claim.jpg]
+  wrote refs/verification/matrix/walk/desk-14-teleport-contact.jpg
+desk teleport-contact: 106 frames, avg 17.1 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +743 ms  [desk-14-teleport-contact.jpg]
+  wrote refs/verification/matrix/walk/desk-15-teleport-sky.jpg
+desk teleport-sky: 109 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +811 ms  [desk-15-teleport-sky.jpg]
+  wrote refs/verification/matrix/walk/desk-16-return-loader.jpg
+desk return-loader: 312 frames, avg 17.4 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 167 ms at +403 ms  [desk-16-return-loader.jpg]
+  wrote refs/verification/matrix/walk/desk-17-return-fall.jpg
+desk return-fall: 172 frames, avg 18.3 ms, >34 ms 2, >50 ms 0, >100 ms 0, worst 50 ms at +1920 ms  [desk-17-return-fall.jpg]
+  wrote refs/verification/matrix/walk/desk-18-return-warp.jpg
+desk return-warp: 145 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1540 ms  [desk-18-return-warp.jpg]
+  wrote refs/verification/matrix/walk/phone-01-loader.jpg
+phone loader: 594 frames, avg 17.0 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 183 ms at +440 ms  [phone-01-loader.jpg]
+  wrote refs/verification/matrix/walk/phone-02-handoff.jpg
+phone handoff: 603 frames, avg 17.0 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 183 ms at +440 ms  [phone-02-handoff.jpg]
+  wrote refs/verification/matrix/walk/phone-03-flight-a.jpg
+phone flight-a: 618 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6395 ms  [phone-03-flight-a.jpg]
+  wrote refs/verification/matrix/walk/phone-04-flight-b.jpg
+phone flight-b: 890 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +4021 ms  [phone-04-flight-b.jpg]
+  wrote refs/verification/matrix/walk/phone-05-tap-beads.jpg
+phone tap-beads: 163 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +346 ms  [phone-05-tap-beads.jpg]
+  wrote refs/verification/matrix/walk/phone-06-empty-panel.jpg
+phone empty-panel: 97 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +513 ms  [phone-06-empty-panel.jpg]
+  wrote refs/verification/matrix/walk/phone-07-round.jpg
+phone round: 494 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +110 ms  [phone-07-round.jpg]
+  wrote refs/verification/matrix/walk/phone-08-fall.jpg
+phone fall: 213 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +46 ms  [phone-08-fall.jpg]
+  wrote refs/verification/matrix/walk/phone-09-tiles-and-light.jpg
+  wrote refs/verification/matrix/walk/phone-10-close.jpg
+  wrote refs/verification/matrix/walk/phone-11-warp.jpg
+phone warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +260 ms  [phone-11-warp.jpg]
+  wrote refs/verification/matrix/walk/phone-12-teleport-build.jpg
+phone teleport-build: 111 frames, avg 17.0 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +798 ms  [phone-12-teleport-build.jpg]
+  wrote refs/verification/matrix/walk/phone-13-teleport-claim.jpg
+phone teleport-claim: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +60 ms  [phone-13-teleport-claim.jpg]
+  wrote refs/verification/matrix/walk/phone-14-teleport-contact.jpg
+phone teleport-contact: 109 frames, avg 16.8 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +1015 ms  [phone-14-teleport-contact.jpg]
+  wrote refs/verification/matrix/walk/phone-15-teleport-sky.jpg
+phone teleport-sky: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +792 ms  [phone-15-teleport-sky.jpg]
+  wrote refs/verification/matrix/walk/phone-16-return-loader.jpg
+phone return-loader: 314 frames, avg 17.5 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 217 ms at +401 ms  [phone-16-return-loader.jpg]
+  wrote refs/verification/matrix/walk/phone-17-return-fall.jpg
+phone return-fall: 190 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +126 ms  [phone-17-return-fall.jpg]
+  wrote refs/verification/matrix/walk/phone-18-return-warp.jpg
+phone return-warp: 146 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +257 ms  [phone-18-return-warp.jpg]
+exit 0

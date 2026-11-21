@@ -1,0 +1,28 @@
+
+COLOURS sampled from PNG screenshots (1440x900, real GPU)
+sky at Virgo: 76.5% of all pixels are exactly #000000
+honeycomb (a corner with nothing else, pixels of 10 or more): mean #120e0a, brightest #463426, 2.0% of the region; the rest 91.5% exactly black
+an empty star (B4) at its station: rim pixels over 120: mean #707a8c, brightest #8f9cb5
+its body (the middle 16 px): mean #141616, brightest #838990
+B11's brass face: mean #b39c79 (271x52 px)
+"studio": mean of the letters #a38264; computed colour rgb(174, 138, 104), 15px
+teleport flash about 175 ms in: bright traces crossed on four rows: 122 runs, median width 5 px, widths 2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4; mean colour of bright pixels #a4bcdc (25.2% of the frame)
+mycelium trunk 60 px under node 1: brightest pixel #d0e0f9; 1 px on that row have every channel over 200 (white)
+mycelium trunk 120 px under node 1: brightest pixel #e7efff; 1 px on that row have every channel over 200 (white)
+mycelium trunk 180 px under node 1: brightest pixel #e8f6ff; 2 px on that row have every channel over 200 (white)
+soil away from the light: mean #191514
+A1_c-emblem_lit.jpg (2048x2048): its blue line pixels (B over 150 and 50 over R): mean #5178c2, 19436 px
+
+PHONE 390x844: tap targets and overflow
+sky at Virgo: 15 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+menu open: 19 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+empty-star panel open: 17 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+build request open: 20 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+roots, top: 4 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+roots, tile 1 open: 5 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+roots, the Close: 5 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+message box open: 10 targets on screen; under 44 px: "Cellestial studio" 43x64; past the screen's sides: none; page width 390 of 390
+
+ROOTS AND CLOSE: sizes of the controls (CSS px)
+desk: E6 56x48; node bulbs 123x123 each (the 0x0 entries the selector also matched are the closed tiles' close buttons); F1 259x68 (21px), 0 px off centre; F2 137x44 (15px), 24 px under F1
+phone: E6 56x48; node bulbs 92x92 each (the 0x0 entries the selector also matched are the closed tiles' close buttons); F1 259x68 (21px), 0 px off centre; F2 137x44 (15px), 24 px under F1

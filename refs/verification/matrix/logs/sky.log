@@ -1,0 +1,130 @@
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote refs/verification/matrix/sky/open.jpg (1436x720)
+wrote refs/verification/matrix/sky/between.jpg (1436x1434)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] figure        stars  clear at top  at bottom  at the sides
+[desk] Virgo           13           101        315           200
+[desk] Libra            6           101        124           533
+[desk] Scorpius        14           101        125           396
+[desk] Sagittarius     25           100        124           432
+[desk] Capricornus     10           100        124           205
+[desk] Aquarius        15           100        124            93
+[desk] Pisces          22           100        124           182
+[desk] Aries            4           100        124           183
+[desk] Taurus          12           102        124           348
+[desk] Gemini          12           102        125           362
+[desk] Cancer           5           100        124           534
+[desk] Leo              9           108        133            69
+wrote refs/verification/matrix/sky/stations-desk-1.jpg (1594x1014)
+wrote refs/verification/matrix/sky/stations-desk-2.jpg (1594x1014)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] figure        stars  clear at top  at bottom  at the sides
+[phone] Virgo           13           305        374            22
+[phone] Libra            6            99        122            26
+[phone] Scorpius        14           231        255            23
+[phone] Sagittarius     25           206        230            22
+[phone] Capricornus     10           296        320            22
+[phone] Aquarius        15           315        339            22
+[phone] Pisces          22           300        324            22
+[phone] Aries            4           300        324            22
+[phone] Taurus          12           254        277            22
+[phone] Gemini          12           248        271            22
+[phone] Cancer           5            98        122            26
+[phone] Leo              9           320        345            23
+wrote refs/verification/matrix/sky/stations-phone.jpg (1534x1284)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote refs/verification/matrix/sky/b3.jpg (1230x658)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote refs/verification/matrix/sky/stars.jpg (1560x518)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] hand-off 0     core at 1108.0, 318.0 r 6.00
+[desk] hand-off 0.3   core at 1027.8, 330.5 r 9.15
+[desk] hand-off 0.5   core at 877.6, 371.6 r 14.40
+[desk] hand-off 0.7   core at 756.7, 422.7 r 21.75
+[desk] hand-off 0.85  core at 723.5, 445.5 r 26.49
+[desk] hand-off 1     core at 720.0, 450.0 r 27.56
+[desk] hand-off reset core at 720.0, 450.0 r 27.56
+[desk] introProgress(1) against reset(): 2 pixels differ
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] hand-off 0     core at 300.0, 398.0 r 2.40
+[phone] hand-off 0.3   core at 278.3, 400.3 r 3.50
+[phone] hand-off 0.5   core at 237.6, 407.7 r 5.20
+[phone] hand-off 0.7   core at 204.9, 417.0 r 7.42
+[phone] hand-off 0.85  core at 195.9, 421.2 r 8.76
+[phone] hand-off 1     core at 195.0, 422.0 r 9.00
+[phone] hand-off reset core at 195.0, 422.0 r 9.00
+[phone] introProgress(1) against reset(): 21 pixels differ
+wrote refs/verification/matrix/sky/handoff.jpg (1566x538)
+wrote refs/verification/matrix/sky/handoff-phone.jpg (825x272)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo          touch at 173, 720: 2 edges to slot-85, head arrives 0.69 s, last bead 0.91 s; no bead is more than 0.00 px off the route
+[desk] Sagittarius    touch at 1224, 180: 3 edges to slot-84, head arrives 0.84 s, last bead 1.16 s; no bead is more than 0.00 px off the route
+[desk] Aries          touch at 864, 558: 1 edges to slot-12, head arrives 0.50 s, last bead 0.71 s; no bead is more than 0.00 px off the route
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo, all lit touch at 432, 648: 3 edges, a strut, 1 to slot-70, head arrives 1.39 s, last bead 1.81 s; no bead is more than 0.00 px off the route
+wrote refs/verification/matrix/sky/beads-desk.jpg (1590x910)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo          touch at 47, 675: 6 edges to slot-3, head arrives 1.25 s, last bead 1.78 s; no bead is more than 0.00 px off the route
+[phone] Sagittarius    touch at 332, 169: 2 edges to slot-84, head arrives 0.65 s, last bead 1.18 s; no bead is more than 0.00 px off the route
+[phone] Aries          touch at 234, 523: 4 edges to slot-12, head arrives 1.02 s, last bead 1.60 s; no bead is more than 0.00 px off the route
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo, all lit touch at 117, 608: 1 edges, a strut, 1 to slot-70, head arrives 1.29 s, last bead 1.78 s; no bead is more than 0.00 px off the route
+wrote refs/verification/matrix/sky/beads-phone.jpg (1182x1110)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] pulse +0 s: star r 13.82 px; words "claim yours" 13px, opacity 1, centred -0.03 px off the star, 8.3 px under its disc
+[desk] pulse +1 s: star r 13.82 px; words "claim yours" 13px, opacity 1, centred -0.03 px off the star, 8.3 px under its disc
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] still sky: a touch marks slot-102 at once; beads running: false
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] pulse +0 s: star r 10.67 px; words "claim yours" 13px, opacity 1, centred 0.01 px off the star, 8.1 px under its disc
+[phone] pulse +1 s: star r 10.67 px; words "claim yours" 13px, opacity 1, centred 0.01 px off the star, 8.1 px under its disc
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] still sky: a touch marks slot-3 at once; beads running: false
+wrote refs/verification/matrix/sky/pulse.jpg (1338x490)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo, the leftmost star (slot-74) at 215, 298: panel 336x338 at 241, 129; 12 px from the star's disc, at least 129 px inside the screen
+[desk] the panel's words:
+        Site A custom site built for your business.
+        Site + Systems Everything in Site, plus the work behind it wired in.
+        Site + App Everything in Site, plus a real app your customers actually use.
+        Add-ons Upgrades that take work off your plate.
+        Care What keeps your site alive after launch.
+        Claim your star
+[desk] Virgo, the lowmost star (slot-3) at 644, 565: panel 336x338 at 676, 396; 12 px from the star's disc, at least 166 px inside the screen
+[desk] Scorpius, the rightmost star (slot-17) at 1026, 199: panel 336x338 at 1055, 30; 12 px from the star's disc, at least 30 px inside the screen
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo, the leftmost star (slot-74) at 30, 372: panel 336x338 at 12, 392; 12 px from the star's disc, at least 12 px inside the screen
+[phone] the panel's words:
+        Site A custom site built for your business.
+        Site + Systems Everything in Site, plus the work behind it wired in.
+        Site + App Everything in Site, plus a real app your customers actually use.
+        Add-ons Upgrades that take work off your plate.
+        Care What keeps your site alive after launch.
+        Claim your star
+[phone] Virgo, the lowmost star (slot-3) at 170, 459: panel 336x338 at 12, 482; 12 px from the star's disc, at least 12 px inside the screen
+[phone] Scorpius, the rightmost star (slot-17) at 358, 283: panel 336x338 at 42, 304; 12 px from the star's disc, at least 12 px inside the screen
+wrote refs/verification/matrix/sky/panel.jpg (1560x708)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] slot-3, an ask of 62 characters: the star at 720, 438 r 108; panel 304x97 at 840, 390, 12 px from the star; its text is exactly the ask
+[desk] slot-53, an ask of 709 characters: the star at 720, 438 r 108; panel 304x294 at 840, 291, 12 px from the star; its text is exactly the ask
+[desk] slot-110, an ask of 88 characters: the star at 720, 438 r 108; panel 304x141 at 840, 368, 12 px from the star; its text is exactly the ask
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] slot-3, an ask of 62 characters: the star at 195, 410 r 62; panel 304x97 at 43, 484, 12 px from the star; its text is exactly the ask
+[phone] slot-53, an ask of 709 characters: the star at 195, 410 r 62; panel 304x294 at 43, 484, 12 px from the star; its text is exactly the ask
+[phone] slot-110, an ask of 88 characters: the star at 195, 410 r 62; panel 304x141 at 43, 484, 12 px from the star; its text is exactly the ask
+wrote refs/verification/matrix/sky/lit.jpg (1560x708)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] the camera reached the star and the claim began 1.16 s after focusStar
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] the camera reached the star and the claim began 1.16 s after focusStar
+wrote refs/verification/matrix/sky/ignite.jpg (1574x494)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] fall: onImpact fired 1 time(s) at x 644 of 1440, 0.42 s in; resolved 1.46 s in; after restore() 0 of 12 stars are out of place
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] fall: onImpact fired 1 time(s) at x 170 of 390, 0.48 s in; resolved 1.32 s in; after restore() 0 of 12 stars are out of place
+wrote refs/verification/matrix/sky/fall.jpg (1566x538)
+wrote refs/verification/matrix/sky/fall-phone.jpg (942x272)
+2 problem(s)

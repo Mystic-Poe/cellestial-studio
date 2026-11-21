@@ -1,15 +1,386 @@
-LOOK INSPECTION — INTERIM (written part-way, in case the session is cut off; the final report replaces this)
-Inspector for the look, 2026-11-21. Dev server on port 4612, real GPU (RTX 3060 Ti through ANGLE), 1440x900 and 390x844 (scale 2, touch).
-Sheets made fresh by the builders' tools and by refs/verification/look-tools/*.mjs are under refs/verification/matrix/.
+FINAL VERIFICATION — THE LOOK
+Cellestial Studio redesign, branch redesign-build. Inspector for the look, independent of the builders.
+Written 2026-11-21. No file of the site was changed (nothing under src/, public/, workers/, scripts/).
 
-FINDINGS SO FAR, worst first (evidence = sheet under refs/verification/matrix/)
-1. MAJOR  The fall: one star bursts; the rest sink behind the soil with no burst. The owner said ALL the stars crash and explode into the mycelium. transitions/fall-desk.jpg, fall-phone.jpg; walk/desk-08-fall.jpg. From a small figure (Libra, 6 stars) the fall is a handful of dim grey beads, then about half a second of nearly black screen (+1000..+1500 ms) before the ground comes up.
-2. MAJOR  B7, the meaning: the cooled words are grey-lavender, not brass (sky/meaning-settled.jpg, meaning-still.jpg beside the brass of "studio" and B11); they are small (165x44 px for "the Lamb" on a 1440 px screen) and stand under the figure just above the exit button, not over the constellation; "Jesus is King." is crammed between Leo's meaning and B11.
-3. MAJOR  The teleport flash (C4): thick pale blue-white traces fill the frame; the emblem's lines are thin and saturated blue. transitions/teleport-desk.jpg, teleport-phone.jpg.
-4. MAJOR  The empty star (B4) at station size is a dark glass bead with a bright blue-white rim: none of the pack picture's brass traces can be seen (sky/stars.jpg). The rim is far stronger than the "faint blue rim glow at about 20%" the spec asks.
-5. MAJOR (low)  A5: the star's pieces are four or five small white triangles that never read as becoming the rings; the wordmark and the C bleach to flat white for about 150 ms (walk/desk-02-handoff.jpg +900..+1100; loader/a5-desk.jpg).
-6. MINOR  C1: at logo size the emblem is the unlit one with a blue glow on the node; the lit lines cannot be seen (chrome/logo.jpg).
-7. MINOR  The mycelium's trunk is nearly white and on the phone kinks at right angles like lightning (roots/descent-*.jpg).
-8. MINOR  With a figure complete, "claim yours" for a star of the next figure is drawn over the meaning's words on the phone (sky/beads-phone.jpg, bottom row, "arrived +0.3 s").
-9. MINOR  tools/sky/compare.mjs now exits 1: introProgress(1) against reset() differs in 2 px (desktop) and 21 px (phone); the builders recorded 0.
-More to come: the phone walk, B7 at all twelve figures, sampled colours, tap targets, the difference table, the checklist, the verdict.
+HOW IT WAS DONE
+- Dev server on port 4612 (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev --port 4612), system
+  Chromium, the real GPU (NVIDIA RTX 3060 Ti through ANGLE), 1440x900 and 390x844 (scale 2, mobile, touch).
+- Every sheet was made fresh from the page as it is now and looked at. None of the builders' sheets in refs/ was
+  trusted or overwritten (their folders were restored with git checkout after each tool ran).
+- The builders' tools, run fresh: tools/loader/compare.mjs (also --only short), tools/sky/compare.mjs,
+  tools/sky/meaning.mjs, tools/roots/compare.mjs --gpu, tools/transitions/strip.mjs, tools/chrome/compare.mjs,
+  tools/fx/compare.mjs --only flash,peak,impact,warp,rm (in a copy of HEAD outside the checkout with the test page
+  of 8385356 added, on port 4613; git diff 8385356 HEAD -- src/experience/fx shows the effects code is the same but
+  for the removed harness). Their output is kept in matrix/logs/.
+- My own, in refs/verification/look-tools/:
+    visit.mjs            the whole visit in real time, real wheel / touch / clicks / taps, recorded with the DevTools
+                         screencast and cut into strips; every animation frame's time logged in the page.
+    b7-and-numbers.mjs   B7 at all twelve figures (all 146 stars seeded as claimed, the camera stood at each figure);
+                         colours sampled from PNG screenshots; tap targets and overflow on the phone.
+    sizes.mjs            the sizes of the Roots' and the Close's controls.
+- Everything is under refs/verification/matrix/:
+    loader/       desk-1, desk-2, phone-1, phone-2 (reference beside build, 14 moments), a5-desk, a5-phone, short
+    sky/          open, stations-desk-1, -2, stations-phone, b3, stars, between, handoff, handoff-phone, beads-desk,
+                  beads-phone, pulse, panel, lit, ignite, fall, fall-phone, meaning-aries-desk/-phone,
+                  meaning-leo-desk/-phone, meaning-settled, meaning-still, meaning.txt (38 ok),
+                  b7-all-desk, b7-all-phone (mine), reduced-motion (mine)
+    roots/        tiles-desk, tiles-phone, tile-close, descent-desk-1..3, descent-phone, node, pulse-desk, pulse-phone,
+                  pulse-close, grow-desk, grow-phone, grow-close, still, nojs-desk, nojs-phone
+    transitions/  fall-desk, fall-phone, warp-desk, warp-phone, warp-deep-desk, warp-deep-phone, teleport-desk, -phone
+    chrome/       closed, logo, bars, menu, measure.txt (48 ok)
+    fx/           flash-up/-down/-none -desk and -phone, flash-peak, impact-desk, impact-phone, warp-desk, warp-phone,
+                  rm, flash-mid-desk (mine: the real page 175 ms into a teleport)
+    walk/         desk-01..18 and phone-01..18 (the visit, in order), still-*.jpg (full-size frames from it),
+                  frames-desk.txt, frames-phone.txt (frame times per part, where each landed)
+    b7-all.txt    where the meaning stands at each of the twelve figures, its size and its sampled colour
+    numbers.txt   sampled colours, the flash's trace widths, tap targets, overflow, control sizes
+    logs/         what each tool printed
+- Every sheet listed was opened and looked at, including the ones PROGRESS.md says its builders never opened
+  (fx: flash-up-desk, flash-none-desk, flash-down-phone, flash-none-phone, impact-phone, warp-phone; transitions:
+  fall-phone, warp-phone, warp-deep-desk; sky: meaning-aries-desk, meaning-still, meaning-leo-phone, meaning-settled).
+  Large sheets were looked at reduced, several to a picture; pulse-close.jpg and the walk's still-*.jpg other than
+  still-desk-station.jpg were not opened one by one (the same frames are in the strips). No fault below rests on a
+  detail finer than that allows, except where a number is given.
+
+WHAT THE BUILDERS' OWN CHECKS DID WHEN RUN AGAIN
+- tools/sky/meaning.mjs: 38 of 38 ok. tools/chrome/compare.mjs: 48 of 48 ok. loader, roots, strips, fx: exit 0.
+- tools/sky/compare.mjs: EXIT 1, "2 problem(s)" (matrix/logs/sky.log). "introProgress(1) against reset(): 2 pixels
+  differ" (desktop) and "21 pixels differ" (phone). PROGRESS.md records 0 and 0. Nothing of it can be seen in
+  sky/handoff.jpg; the chrome's breathing node, added later, is the likely cause, which was not proved. Finding 19.
+
+THE VISIT, WATCHED IN REAL TIME (walk/*.jpg; numbers from walk/frames-desk.txt and frames-phone.txt)
+First visit, desktop / phone.
+- Loader (desk-01, phone-01). The scene became "sky" 8204 / 7942 ms after navigation. It plays as the frozen sheets
+  show: the C dark, light running back through the circuits, a lull, the bolt from the top edge, the word written
+  letter by letter in white-blue, cooling to the brass picture. It is the strongest thing on the site and it does
+  feel like the reference video. One long frame at the very start of every load, while the C is still dark:
+  350 ms (desk) and 183 ms (phone) about half a second after navigation; 167 / 217 ms on the reload. It is not seen
+  as a stutter because nothing is moving yet, but the loader's clock loses that time (the other inspector found
+  the loader running past 8 s; 8.2 s from navigation here agrees with it).
+- Hand-off (desk-02 +600..+1300, phone-02). The star flashes, four or five small white shards fly, the letters and
+  then the whole emblem bleach to flat white (+900..+1000), grey out (+1100), and 200 ms later the sky is simply
+  there with the star and its rings at the centre. It is quick and it holds, but it reads as flash-and-cut: the
+  shards are never seen to become the rings. The logo and menu fade in 0.4 s later.
+- Flight (desk-03, -04; phone-03, -04). Smooth: 596 + 855 frames on the desktop and 618 + 890 on the phone with no
+  frame over 17 ms; the governor stayed at level 0. Forward through Virgo, Libra, Scorpius, Sagittarius,
+  Capricornus and on, one burst back, each glide ending on a station. Nothing pops: the next figure grows out of a
+  cluster of points. What it looks like is another matter: away from Virgo the screen is nearly black, a handful of
+  dark glass beads joined by faint lines (walk/still-desk-station.jpg, Aries: four beads). Thin, crisp, clean, and
+  sparse.
+- A tap and its beads (desk-05, phone-05). The flight stops; blue beads run along the honeycomb's edges to the
+  nearest empty star in about 0.9 s (desktop) and 1.4 s (phone); the star's rim brightens and "claim yours" stands
+  under it. No frame over 17 ms. This is good.
+- An empty star and its panel (desk-06, phone-06). The panel is whole by +200 ms, beside the star on the desktop,
+  under it on the phone, nearly the width of the phone's screen. Good.
+- The round and the exit button (desk-07, phone-07). B11 fades in on arriving at the twelfth figure and stays while
+  flying on. 271x52 px, 32 px above the bottom edge at both sizes.
+- The fall and the crash (desk-08, phone-08), pressed at Libra, where the walk had come to rest. For 0.3 s nothing
+  moves; six dim beads drop with short trails; ONE strikes, with a strong white burst and roots of light; the others
+  sink behind the soil with nothing; then from about +1000 to +1500 ms the screen is two-thirds black with the
+  ground low in the frame, before the view goes down to node 1. On the phone that one impact was at the left edge
+  of the screen and half of its burst was cut off by the edge (phone-08 +500..+700). Frame times: three frames over
+  34 ms, worst 50 ms (desk); none over 17 ms (phone).
+- The five tiles and the guided light (desk-09, phone-09). Each tile opens whole, reads cleanly, closes. The light
+  that leads on is a small white bead with a short tail on a trunk whose own core is already blue-white; it travels
+  for about 1.5 s and then rests for 1.5 s, so in each row of the strip it is seen in one or two frames of six.
+  It suggests, as asked, but faintly. 1814 / 1818 frames over the thirty seconds, one over 34 ms.
+- The Close (desk-10, phone-10). "Claim your star" large in the brass, "Contact me" small and dark under it; each
+  opens its dialog. Good, and the best brass on the site.
+- E6 and the warp (desk-11, phone-11). The ground drops away under streaks, a pale blue-white field covers
+  everything for about 0.2 s, and it clears on the sky with B11 there. No frame over 17 ms.
+- The four teleports (desk-12..15, phone-12..15). Each lands where the spec says: "What we build" on the top of the
+  ground, "Claim your star" on the closing buttons (scrollY 3304 / 3125), "Contact me" there with the message box
+  open, "The Sky" on Virgo. The flash is a screen of thick white-blue traces for under half a second. Sky to "What
+  we build" has one frame of 83 ms (desk) / 50 ms (phone) at the landing, and the bloom is seen to dim and come back
+  round it (desk-12 +720..+960). When the message box opens on the phone the Turnstile box is a white rectangle for
+  one recorded frame before it paints (phone-14, second row).
+Returning in the same session (reload): desk-16..18, phone-16..18.
+- The sky is back 3639 / 3704 ms after the reload: the C already lit, the word written in about a second, a short
+  hold, the same hand-off. B11 is there from the start. The fall and the warp play as before.
+Console: only the Turnstile test widget's "Blocked script execution in 'about:blank'" lines.
+
+DOES IT HOLD TOGETHER, AND THE FIRST TEN SECONDS
+It is one made thing: one brass, one family of blue light, one typeface, the same panel and button everywhere, and
+no seam where a scene was bolted on. Nothing stutters on this machine. The first ten seconds are the loader and the
+arrival at Cellestial's star, and on a desktop they do say that whoever built this can build something
+extraordinary: the writing in lightning is the real thing, and the star in its three brass rings is beautiful.
+On a phone the loader is as good, but the picture it hands over to is small: Virgo is a band 147 px tall in the
+middle of an 844 px screen, the star 83 px across, the empty stars 17 px (sky/open.jpg, stations-phone.jpg).
+Where it looks unfinished: the meaning written over a constellation (grey, small, parked above the button); the
+teleport flash (a different, heavier kind of line from everything else); the fall (one burst where all were asked
+for); an empty station, where the star that should show brass traces is a plain dark bead.
+
+RULINGS ON WHAT THE BUILDERS FLAGGED
+1. One star bursts in the fall. CONFIRMED, and it is the worst thing found. The other eleven stars of Virgo (five of
+   Libra) pass behind the soil's edge and are gone. The owner's words are "ALL the stars". Finding 1.
+2. The flash's traces are whiter and thicker than the emblem's lines. CONFIRMED. 175 ms into a real teleport the
+   bright traces are a median 5 px wide and their mean colour is #a4bcdc, a pale grey-blue covering 25% of the
+   frame (numbers.txt; fx/flash-mid-desk.jpg). The emblem's lit lines are #5178c2, a saturated blue, a pixel or two
+   wide at the size the loader shows them. At the peak the traces are white with a white bloom and the ground
+   between them is lifted from black to slate blue (fx/flash-peak.jpg). The spec asks for "glowing --blue circuit
+   lines ... on black" peaking to blue-white "at the centre". The thickness can be defended ("seen very close up");
+   the colour and the lifted ground cannot. Finding 3.
+3. At logo size the lit lines cannot be seen. CONFIRMED (chrome/logo.jpg): what is on screen is the unlit emblem
+   with a blue glow on its node. It is 52 px wide; the fault is small but it is on every scene. Finding 9.
+4. The empty star's brass traces cannot be seen at station size. CONFIRMED (sky/stars.jpg), and it matters more than
+   the builders rate it: the empty star is the most repeated thing in the sky and it does not look like its asset.
+   Its rim is not the "faint --blue outer glow at ~20%" of the spec either: sampled, the rim is #707a8c on average
+   and #8f9cb5 at its brightest, a steel grey-blue at up to 70% brightness. Finding 4.
+5. The meaning stands under its figure; nine placements never looked at. All twelve looked at at both sizes
+   (sky/b7-all-desk.jpg, b7-all-phone.jpg, b7-all.txt). Nothing is clipped, nothing covers a star, a button, the
+   logo or B11, at any figure. On the PHONE the placement is good: the words sit centred a line under the figure
+   with room round them (ten figures 33 to 38 px under the lowest star; Libra and Cancer, the tall ones, 29 px
+   above B11). On the DESKTOP it is poor: at ten figures the words stand at y 746 and Leo's two lines from y 698,
+   all eleven ending 26 px above the exit button, wherever there is a gap between the lowest stars (x from 439 to
+   738), so they read as a caption to the button; only Virgo's stand free (158 px above it). "Jesus is King." is
+   the line nearest the button. And at both sizes the cooled letters are not brass. Finding 2.
+6. Stars are small on the phone at wide figures. CONFIRMED: radius 8.6 px empty, 10.7 px lit (sky/stars.jpg); the
+   six wide figures fill a band 147 to 214 px tall of the 844 (b7-all.txt). The tap targets are still 44 px.
+   Finding 5.
+7. The trunk of the mycelium is nearly white. PARTLY. Sampled on three rows under node 1 its brightest pixel is
+   #d0e0f9 to #e8f6ff and only one or two pixels in a row have every channel over 200: a blue-white heart one to two
+   pixels wide in a blue halo, the same language as the loader's lit wires. What does read wrong is its line: on
+   the phone the trunk kinks and throws branches at near right angles, and while it grows it is thick and white,
+   so it looks like lightning before it looks like mycelium (roots/descent-phone.jpg, grow-phone.jpg). Finding 10.
+
+DIFFERENCE TABLE
+Element | the spec or asset asks | 1440x900 | 390x844 | difference | severity
+
+A1 C emblem | unlit then lit picture, centre of a black screen | the pack pictures, placed as in the reference to
+   the eye at all 14 moments | the same; 62% of the width, nothing clipped | none seen | —
+A2 lighting path | light travels back from the main node, timed to the video | same order and tempo | same |
+   the lit wires are whiter and thicker than the reference's thin blue at 0.67 and 1.33 s (loader/desk-1.jpg) | MINOR
+A3 writing | jagged bolts write the letters, hot blue-white, cooling to A4 | letter for letter at the reference's
+   moments, the haze behind the word matches | same; the word small (87% of the width) but whole |
+   at 3.0 s the node is a hard white disc where the reference blooms; the first arc at 3.67 s is tamer | MINOR
+A4 wordmark | the A4 picture, unified brass | it ends on the picture itself | same | none | —
+A5 star transformation | the brass star BREAKS APART, pieces sweep out and settle into the B3 rings, the core grows
+   into B3, rings begin spinning, camera pulls in, wordmark fades | flash, four or five small WHITE shards, the word
+   and the whole C bleach to flat white for about 150 ms, then the sky with the rings already made | same |
+   the shards never become the rings; flat white letters; reads as flash-and-cut | MAJOR
+B1+B2 sky and honeycomb | pure black; thin brass-dim lines receding, barely visible, real geometry | 76.5% of all
+   pixels exactly #000000; lines mean #120e0a, brightest #463426 (warm, dim); recedes plane behind plane | same |
+   none: thin, crisp, the right colour | —
+B3 epicentre star | core sprite, three rings at tilts, front over core and back under, spinning | three bands of
+   the pack's cracked brass, light in the cracks, 255 px across; front and back correct at 0, 4 and 9 s | the same
+   at 83 px across | the core is a soft blue-white glow without the picture's spiked corona; small on the phone |
+   MINOR
+B4 empty star | the B4 sprite (dark sphere with brass traces), faint blue rim at ~20% | a dark bead 32 px across
+   with a bright steel-blue rim (#707a8c, up to #8f9cb5); no trace visible; traces show only in the close-up before
+   a claim (sky/ignite.jpg) | 17 px across; a ring | does not read as the asset; rim too strong and not the blue |
+   MAJOR
+B5 lit star | the B5 sprite, same place, crossfade with the traces firing | blue sphere with bright traces, 40 px;
+   the ignition (charge down the traces, flash, settle) is excellent | 21 px, still reads lit | outer glow tighter
+   than the picture | —
+B6 constellations | 12 layers in order, real patterns, thin brass-dim lines, no labels | all twelve the real
+   figure, whole, in order, no labels; least clear room 100 px top, 124 px bottom | all twelve whole; side margins
+   22 px | wide figures small on the phone (finding 5) | MAJOR (phone)
+B7 meaning | bolts write the line over the constellation; each letter cools to BRASS with a thin blue line, the A4
+   letter style; "Jesus is King." after Leo | written letter by letter by a bolt from the nearest star: good. Cooled
+   letters sample #95888c (grey-mauve; the site's brass text is #ae8a68). 34 px type; at 11 of 12 figures ending
+   26 px above B11 | cooled letters #97898b; 21 px type; placed well, centred under the figure | not brass; on the
+   desktop small and in the wrong place; the final line crammed over the button | MAJOR
+B8 beads | round blue beads along the lattice edges from the touch to the nearest empty star, brightest at the head,
+   edges brighten | exactly that; 1 to 4 edges, 0.5 to 0.9 s | 1 to 6 edges, up to 1.3 s | lit edges are blue not
+   brighter brass (the spec does not say) | —
+B9 "claim yours" | B4 brightens with a slow ~2 s pulse; the words in tiny brass under it | 13 px brass words centred
+   8 px under the star; 2 s pulse | same, reads clearly | with a figure complete, the words for a star of the next
+   figure are drawn over the meaning's words (sky/beads-phone.jpg, bottom row) | MINOR
+B10 empty-star panel | black face, thin brass border, blue line inset, a few white lines with key words in brass |
+   exactly that, 336x338, beside the star | the same, under the star, nearly the screen's width | none | —
+B11 exit button | bottom centre, only after one round; brass skin, blue line inside its edge | 271x52, centred,
+   32 px up; the pack's brass (mean #b39c79), blue line with two nodes; appears on the twelfth figure | the same |
+   none | —
+C1 logo | emblem in the idle state, circuits on but calm (lit dimmed, or 60% lit over unlit); "studio" in brass |
+   52 px wide: unlit emblem, node glowing blue, no lit line visible; "studio" 15 px #ae8a68 | 43 px wide, the same;
+   its link is 43x64 px (one pixel under 44 wide) | nearer unlit than idle; over the ground the mycelium's runner
+   passes straight behind the logo and bars (chrome/closed.jpg) | MINOR
+C2+C3 menu | three short brass bars with a hair-thin blue line; panel as B10 with the four items | three bars cut
+   from the brass, 1 px blue line each, white-blue under the pointer; panel with exactly The Sky / What we build /
+   Claim your star / Contact me | the same; 44x44 button; whole at 320 px wide too | none | —
+C4 teleport flash | 300-500 ms; glowing BLUE circuit lines and round nodes on BLACK; blue-white at the centre
+   mid-flash | under half a second; right-angle traces and ring nodes, a hub at the centre; traces white-blue
+   (#a4bcdc rising to white), median 5 px wide, ground lifted to slate blue at the peak | the same, the traces
+   heavier still against the narrow screen | white and heavy, not thin blue on black; a flicker on sky to "What we
+   build" | MAJOR
+D1 falling stars | EVERY star accelerates straight down with motion trails; honeycomb and B3 fade | every star of
+   the figure in front drops, all alike, short trails; honeycomb and B3 fade | the same | trails short; the event
+   is as big as the figure you are at (4 to 25 stars) | MINOR
+D2 crash | soil rises; the stars strike its top edge and light bursts down and sideways, growing into the mycelium
+   (owner: ALL the stars crash, sink in, explode into the mycelium) | soil rises to a third of the frame; ONE star
+   bursts (and the burst is good); the rest vanish behind the edge; half a second of mostly black; the view follows
+   the trunk down | the same; at Libra the one burst was half off the left edge | one burst, not all | BLOCKER
+E1 soil | E1 landscape / portrait, dark, behind the glow | the pack's soil, no visible repeat or mirror line down
+   the descent, mean #191514 away from the light | portrait soil, the same | none | —
+E2 mycelium | branching lines in --blue, thicker trunk, thinner branches, glowing joints, soft additive glow,
+   through each node's threads | a corded trunk through all five nodes to F1, fine branches to hair, joints; the
+   outer fifth of the width on each side mostly bare | fills the screen | trunk's core blue-white and kinked: reads
+   as lightning in places, most on the phone | MINOR
+E3 guided light | a brighter segment travelling the trunk toward the next unopened node, looping every few seconds |
+   a white head with a short tail, 1.5 s of travel then 1.5 s of rest | the same | faint against a trunk that is
+   already blue-white; absent half the time | MINOR
+E4 nodes | the E4 sprite x5 in a descending line, breathing, brighter on hover | the pack picture, no box round
+   it, threads running into the trunk, breathing; 123 px bulb | 92 px bulb | the node is the picture's cyan and the
+   trunk the emblem's indigo-blue: two blues side by side (it comes from the pack) | MINOR
+E5 tiles | larger B10-style panel, plain white text, key words brass, clean and roomy, locked copy | 592 px wide,
+   17 px type, beside its node; prices struck, brass on the key words | 366 px wide, 16 px type, under the bulb;
+   Care is 530 px tall and whole | none | —
+E6 return button | B11 component as an upward chevron with the blue line rising through it, top of the Roots |
+   a brass chevron, 56x48, top centre | the same | none | —
+F1 "Claim your star" | largest button, thicker brass, stronger blue line, centred at the very bottom | 259x68,
+   21 px type, centred, the largest button on the site | the same | none | —
+F2 "Contact me" | directly under F1, noticeably smaller and quieter, dark brass, dimmer line | 137x44, 15 px type,
+   dark, 24 px under F1 | the same | none | —
+G1 flight | forward and back, medium speed building with scrolling, a tap stops it | as asked; no frame over 17 ms
+   in 24 s of flying | as asked with swipes; the same | none | —
+G2 warp | launch-up effect, streaks, speed ramp | ground drops away under streaks, blue-white flare, clears on the
+   sky in 1.5 s | the same | at the peak the frame is one opaque pale field (#5c74b2 at the edge to #dbecf7 near
+   the flare, sampled from the strip) for about 0.2 s | MINOR
+G3 reduced motion | still sky with B11 visible, no flight, no falling, fades | / with reduced motion: no loader,
+   the still sky, B11 there (sky/reduced-motion.jpg); plain fades (fx/rm.jpg); meaning simply there | the same |
+   none | —
+
+Colour, checked by sampling where the eye doubted (numbers.txt, b7-all.txt): sky ground #000000; honeycomb warm
+dim brass; B11 and "studio" brass; soil earth. Off the palette: the B7 words (#95888c, a grey-mauve) and, by
+desaturation, the empty star's rim (#707a8c). Nothing clipped or overflowing on the phone at any state tried (page
+width 390 of 390 in eight states); every tap target is 44 px or more except the logo's link at 43x64.
+No sound anywhere and no social icon (grep of src/ and public/ for audio and for the networks' names: nothing).
+No Work section and no Ownership section. The words of the tiles were not compared again here (the other
+inspector's lens); what is on the sheets reads as the addendum does.
+
+THE SPEC'S CHECKLIST (BUILD_SPEC.md section 5)
+[partly] Loading: A1 -> A2 -> A3 -> A4 -> A5. A1 to A4 done against the reference (loader/desk-1, desk-2,
+         phone-1, phone-2). A5 plays but its pieces do not become the rings (walk/desk-02-handoff.jpg).
+[partly] Sky: B1/B2 lattice · B3 assembly · B6 x12 constellations · B4/B5 claim states. Lattice, B3, the twelve
+         figures and B5 done (sky/open, stations-*, b3, ignite). B4 does not show its asset at station size
+         (sky/stars.jpg).
+[done]   Interaction: B8 beads -> B9 pulse -> B10 panel (sky/beads-*, pulse, panel; walk/desk-05, -06, phone-05, -06).
+[partly] B7 reveal per completed constellation; "Jesus is King." after Leo. Written at all twelve, the final line
+         after Leo's (sky/b7-all-*.jpg, meaning-leo-*.jpg). Not brass; misplaced on the desktop.
+[done]   B11 after one full flight (walk/desk-07, phone-07; there from the start on a same-session return).
+[partly] Chrome: C1 · C2/C3 · C4. C2/C3 done. C1 nearer unlit than idle. C4 the wrong light.
+[partly] D1 fall -> D2 crash. Plays as one event; one star bursts.
+[done]   Roots: E1 · E2 · E3 · E4 x5 · E5 panels · E6 (roots/*, walk/desk-09, phone-09), with the minor
+         differences in the table.
+[done]   Close: F1 · F2 (walk/desk-10, phone-10).
+[done]   G1 flight · G2 warp · G3 reduced motion (walk/desk-03, -04, -11; sky/reduced-motion.jpg).
+[partly] Mobile pass: portrait soil yes; panel sizing yes; tap targets yes but for one pixel on the logo; the sky's
+         figures and stars are small on the phone.
+
+FINDINGS, WORST FIRST
+
+1. BLOCKER — In the fall only one star crashes. Ranked a blocker because the owner asked for it in his own words
+   ("ALL the stars ... crashing into the ground, sinking in, and exploding into the MYCELIUM") and the fall is the
+   hinge of the site; by the letter of D2 ("A star hits the soil's top edge") it would be MAJOR.
+   Evidence: transitions/fall-desk.jpg (470 ms: one burst; 627-911 ms: the rest pass the edge with nothing),
+   fall-phone.jpg, walk/desk-08-fall.jpg, walk/phone-08-fall.jpg; logs/sky.log "onImpact fired 1 time(s)".
+   Fix: give the sky's fall an impact per star (or have the director compute each star's crossing of surfaceY()
+   from its fall curve) and fire fx.impact(x, y) for each, smaller and shorter for all but the first, staggered as
+   they land; keep one roots.growFrom from the first. fx/impact-desk.jpg shows the burst works at any x. While
+   there: keep an impact's x at least 15% in from a screen edge (phone-08: cut off at the left edge), and start
+   the view's descent as the last star lands so the half-second of black from +1000 to +1500 ms goes.
+
+2. MAJOR — B7, the meaning: the cooled words are not brass, and on the desktop they are a small caption over the
+   exit button. Evidence: b7-all.txt (mean colour of the letters #95888c desktop, #97898b phone, at every figure;
+   "studio" in the same kind of screenshot is #a38264, computed #ae8a68); sky/meaning-settled.jpg,
+   meaning-still.jpg; sky/b7-all-desk.jpg (eleven of twelve ending 26 px above B11; "the Lamb" is 165x44 px on a
+   1440 px screen).
+   Fix: cool the letters to --color-brass-text with the A4 letter's lighting (the token "studio" uses) and keep the
+   thin blue line; on screens 1024 px and wider set the line larger (48-56 px) and place it by the figure, in the
+   largest free area inside or beside the figure's own bounds, before falling back to the band above B11; give
+   "Jesus is King." its own beat and at least the first line's height of clear space above the button.
+
+3. MAJOR — The teleport flash is not the site's light. Evidence: fx/flash-peak.jpg beside A1 lit; transitions/
+   teleport-desk.jpg, teleport-phone.jpg; numbers.txt (traces median 5 px, mean #a4bcdc, 25% of the frame bright,
+   against the emblem's #5178c2). Fix: draw the traces in --blue with a narrow glow, 1.5-2 px cores, white only
+   in the hub and its nearest rings at the peak; keep the ground black (drop or shrink the bloom that lifts it to
+   slate blue). Also hold the peak steady across the swap on sky -> "What we build": walk/desk-12-teleport-build.jpg
+   +720..+960 shows the bloom dim and return round an 83 ms frame.
+
+4. MAJOR — The empty star does not show its asset. Evidence: sky/stars.jpg (as it appears, r 16.1 px and 8.6 px,
+   beside B4_star_empty-sleeping.jpg); numbers.txt (rim #707a8c, brightest #8f9cb5; body mean #141616);
+   walk/still-desk-station.jpg. Fix: lift the brass of the traces so they survive at 32 px (a brass-tinted
+   highlight pass, or a small version of B4 with its traces thickened), and bring the rim down to a thin halo of
+   the sampled --blue at about 20%, as the spec's prep note says; a larger star at its station (r 20-22 px on the
+   desktop) would let the picture do the work.
+
+5. MAJOR (phone) — The sky is small on the phone at the wide figures. Evidence: sky/stations-phone.jpg, open.jpg;
+   b7-all.txt (figure heights: Virgo 147 px, Leo 161, Aquarius 175, Aries 204, Pisces 206, Capricornus 214 of
+   844); sky/stars.jpg (r 8.6 px); sky/b3.jpg (83 px). Fix: on portrait screens give stars a floor of about 13 px
+   radius and Cellestial's star about 130 px across, independent of the figure's fit; and let a wide figure stand
+   nearer (fit its height to 45-50% of the screen and let its ends run past the side margins, panning to the
+   tapped star), or turn the six wide figures a quarter-turn for portrait.
+
+6. MAJOR — A5: the star's pieces never become the rings. Evidence: walk/desk-02-handoff.jpg +600..+1300,
+   loader/a5-desk.jpg (0.3: five white triangles; 0.5: grey ghost of the word; 0.7: the rings already whole).
+   Fix: cut the shards from the star's brass and keep them brass; fly them on arcs that end on the three rings'
+   circles while the ring sprites fade in under them (0.4-0.8 of the hand-off), then start the spin; stop the
+   bleach short of flat white on the emblem (cap it so the brass still shows).
+
+7. MINOR — The guided light is hard to see. Evidence: walk/desk-09-tiles-and-light.jpg (one or two frames in six
+   per row), roots/pulse-desk.jpg. Fix: dim the resting trunk a little more ahead of the pulse, lengthen the tail,
+   shorten the rest to about 0.8 s.
+
+8. MINOR — A complete figure plus a tap: "claim yours" for the next figure's star is drawn over the meaning's
+   words. Evidence: sky/beads-phone.jpg, bottom row, "arrived +0.3 s". Fix: have the bead target's label avoid the
+   meaning's box as it avoids the screen's edges (or skip a star whose label would fall in it).
+
+9. MINOR — C1 is nearer unlit than idle; the lit lines cannot be seen. Evidence: chrome/logo.jpg. Fix: build the
+   logo picture from the lit emblem with the blue lines widened to at least 1 device pixel at 52 px before
+   downscaling, then dim it; or draw the main strut lines in code over the picture.
+
+10. MINOR — The trunk reads as lightning in places. Evidence: roots/descent-phone.jpg (right-angle kinks),
+    roots/grow-phone.jpg (+560 ms). Fix: smooth the trunk's wander on narrow screens and limit branch angles as
+    was done for the desktop; keep the blue-white heart to one pixel.
+
+11. MINOR — The warp's peak is one flat pale field. Evidence: transitions/warp-desk.jpg 998-1099 ms (sampled
+    #5c74b2 at the edge, #dbecf7 near the flare). Fix: let the cover be black with dense streaks and the flare,
+    or darken the field's edges so it reads as light and not as a sheet.
+
+12. MINOR — The Turnstile box flashes white for a frame as the message box opens. Evidence: walk/phone-14-
+    teleport-contact.jpg (second row, third frame). Fix, surface only: keep the widget's wrapper at opacity 0 on a
+    black ground until its frame has loaded, then fade it in. No handler or logic is involved.
+
+13. MINOR — The fall is only as big as the figure in front: at Aries four stars fall, at Libra six. Evidence:
+    walk/desk-08-fall.jpg. Fix: include the stars of the layers ahead and behind (they are already drawn as points)
+    so that "every star" is a sky's worth; lengthen the trails.
+
+14. MINOR — Loader against the reference: lit wires whiter and thicker at 0.67-1.33 s, the overload's white a hard
+    disc at 3.0 s, the first arc tamer at 3.67 s. Evidence: loader/desk-1.jpg, desk-2.jpg. The builders list these;
+    they do not stop it feeling like the video. Fix: narrow the wire's white core and add blue to its glow; feather
+    the disc's edge.
+
+15. MINOR — One long frame at the start of every load (350 / 183 ms first visit, 167 / 217 ms on reload), half a
+    second in. Evidence: walk/frames-desk.txt, frames-phone.txt ("worst 350 ms at +634 ms"). Fix: start the
+    loader's clock after the first painted frame that follows the heavy module evaluation, or move that work off
+    the first second.
+
+16. MINOR — Over the top of the ground the mycelium's bright runner passes behind the logo and the menu bars.
+    Evidence: chrome/closed.jpg, chrome/menu.jpg. Fix: fade the runner's light out under the top-left 120x90 px.
+
+17. MINOR — The logo's link is 43x64 px on the phone, one pixel under 44 wide. Evidence: numbers.txt. Fix:
+    min-width 44px on .chrome-logo.
+
+18. MINOR — E4's cyan and the trunk's indigo-blue sit side by side. Evidence: roots/node.jpg. It comes from the
+    pack (E4 as supplied against the blue sampled from A1). Fix, if wanted: shift the trunk's halo a few degrees
+    toward the node's blue within 60 px of each node.
+
+19. MINOR (a tool, not the site) — tools/sky/compare.mjs exits 1: 2 px (desktop) and 21 px (phone) differ between
+    introProgress(1) and reset(), where PROGRESS.md records 0. Fix: find what moves between the two screenshots
+    (the chrome's breathing node is the first suspect), freeze it in the tool, and correct PROGRESS.md.
+
+Not looked at, by anyone: a real phone, a landscape phone, a tablet, an ultrawide screen. Every frame time here is
+from headless Chromium on a desktop GPU.
+
+VERDICT
+By the owner's definition (a scene is done when it matches its reference, not when it renders): LOADING is done for
+A1 to A4, at both sizes, and is the best work here; its last second, A5, is not, because the star's pieces do not
+become the rings. THE SKY is not done: the lattice, Cellestial's star, the twelve real figures, the flight, the
+beads, the pulse, the panels and the claim are right, but the empty star does not show its asset, the meaning is
+written in grey and on the desktop sits as a caption over the button, and on a phone the wide figures and their
+stars are small. THE FALL is not done: one star bursts where the owner asked for all of them. THE ROOTS are done:
+soil, nodes, tiles, the network and the return button match their assets and the spec, with only polish left on
+the guided light and the trunk's line. THE CLOSE is done. THE CHROME is done for the menu and its panel, nearly for
+the logo (the idle state is nearer unlit), and not for the teleport flash, which is the wrong light. THE WARP is
+done. Nothing breaks a rule on assets, the colour of the ground, sound, social icons or copy; the one blocker and
+five majors above are what stand between this build and the owner's bar.
