@@ -64,8 +64,11 @@ each committing its own output, so a cut-off loses at most the step in hand:
    `refs/verification/fixes.txt`. Three changes are decided regardless of the reports: every
    falling star strikes the ground with its own small burst (today only the first does); the
    logo's lit lines made visible at its real size; the teleport flash's traces thinner and bluer.
-If a report file exists, that step is done: go on from the next one. The briefs are in the
-session's workflow script `final-verification`; the same instructions in short are above.
+If a report file exists, that step is done: go on from the next one. Both inspections are
+done. The fixer's full brief, with the order of work and the rulings on every finding, is
+`refs/briefs/final-fixes.js` (the text between the backticks of `PROMPT`); the fixer records
+each finding's outcome in `refs/verification/fixes.txt`. If the fixer is cut off, start
+another on the same brief: it skips whatever `fixes.txt` already records as fixed.
 
 **The orchestrator's rulings on the first inspector's findings**
 (`refs/verification/business-and-code.txt`, its table, by number). The fixer follows these:
