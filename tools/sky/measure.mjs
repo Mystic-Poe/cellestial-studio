@@ -476,7 +476,7 @@ if (only.has('round')) {
 	s = await view.state();
 	check('after a reload in the same session it is there from the start', s.exit && s.round);
 	await view.page.click('[data-descend]');
-	await sleep(1500);
+	await sleep(3200); // the fall and the crash take about 2.2 s
 	s = await view.state();
 	check('pressing it leaves the sky for the Roots', s.scene === 'roots');
 	await view.close();

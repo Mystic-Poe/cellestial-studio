@@ -49,6 +49,7 @@ import {
 	planFigures,
 	smooth,
 } from './layout.ts';
+import { createMeaning } from './meaning.ts';
 import { createPanels } from './panels.ts';
 import { loadPictures } from './pictures.ts';
 
@@ -173,6 +174,7 @@ function deadScene(reason: unknown): SkyInternals {
 		debug: null,
 		answer: null,
 		panels: null,
+		meaning: null,
 	};
 }
 
@@ -1309,6 +1311,8 @@ export const mount: MountSky = (ctx) => {
 		spent: () => panels.spent(),
 		busy: () => panels.open() !== null,
 	});
+	// ── B7: a complete figure's meaning, written in light ──
+	const meaning = createMeaning(hooks);
 
 	// ── the scene ──
 	const scene: SkyInternals = {
@@ -1504,6 +1508,7 @@ export const mount: MountSky = (ctx) => {
 		debug,
 		answer,
 		panels,
+		meaning,
 	};
 
 	return scene;

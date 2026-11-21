@@ -166,6 +166,138 @@ import Panel from '../ui/Panel.astro';
 		display: none;
 	}
 
+	/* B7, a complete figure's meaning (src/experience/sky/meaning.ts makes the
+	   element and keeps it with its figure). Each letter is three things: the
+	   letter itself in brass, lit from above; over it the same letter white-hot,
+	   which is how it is struck and what cools away; and inside it the same
+	   letter again in a lighter weight, pared down to a thin blue line: the
+	   circuit in the brass, as in the wordmark's letters. */
+	#sky-ui .sky-meaning {
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0;
+		color: var(--color-brass-text);
+		font-family: var(--font-sans);
+		font-weight: 700;
+		line-height: 1.3;
+		text-align: center;
+		white-space: nowrap;
+		transform-origin: 50% 0;
+		filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.9));
+		pointer-events: none;
+		user-select: none;
+		-webkit-user-select: none;
+		will-change: transform, opacity;
+	}
+	#sky-ui .sky-meaning[hidden] {
+		display: none;
+	}
+	.sky-meaning__line {
+		display: block;
+	}
+	.sky-meaning__line + .sky-meaning__line {
+		margin-top: 0.1em;
+	}
+	/* Read, not seen. */
+	.sky-meaning__say {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.sky-meaning__word {
+		display: inline-block;
+	}
+	.sky-meaning i {
+		position: relative;
+		display: inline-block;
+		background: linear-gradient(to bottom, var(--color-brass-hi) 22%, var(--color-brass-text) 78%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		font-style: normal;
+		-webkit-text-fill-color: transparent;
+		-webkit-text-stroke: 0.03em var(--color-brass-text);
+		opacity: 0;
+	}
+	.sky-meaning i + i {
+		margin-left: 0.05em;
+	}
+	.sky-meaning i::before,
+	.sky-meaning i::after {
+		content: attr(data-ch);
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		opacity: 0;
+		pointer-events: none;
+	}
+	.sky-meaning i::before {
+		-webkit-text-fill-color: var(--color-blue-white);
+		-webkit-text-stroke: 0.03em var(--color-blue-white);
+		text-shadow:
+			0 0 0.3em var(--color-blue-white),
+			0 0 0.7em var(--color-blue);
+	}
+	.sky-meaning i::after {
+		font-weight: 400;
+		-webkit-text-fill-color: color-mix(in srgb, var(--color-blue) 88%, var(--color-blue-white));
+		-webkit-text-stroke: 0.02em var(--color-brass-text);
+		text-shadow: 0 0 0.14em color-mix(in srgb, var(--color-blue) 85%, transparent);
+		transform: scaleX(var(--sx, 1));
+	}
+	.sky-meaning i[data-on] {
+		opacity: 1;
+	}
+	.sky-meaning i[data-on]::before {
+		animation: sky-meaning-cool 1s ease-out both;
+	}
+	.sky-meaning i[data-on]::after {
+		animation: sky-meaning-line 1s ease-out both;
+	}
+	/* Written: simply there. (An element that comes back from display: none
+	   would otherwise cool all over again.) */
+	.sky-meaning[data-settled] i,
+	html[data-motion='off'] .sky-meaning i {
+		opacity: 1;
+	}
+	.sky-meaning[data-settled] i::before,
+	html[data-motion='off'] .sky-meaning i::before {
+		animation: none;
+		opacity: 0;
+	}
+	.sky-meaning[data-settled] i::after,
+	html[data-motion='off'] .sky-meaning i::after {
+		animation: none;
+		opacity: 1;
+	}
+	.sky-meaning canvas {
+		position: absolute;
+		pointer-events: none;
+	}
+	@keyframes sky-meaning-cool {
+		0%,
+		18% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+	@keyframes sky-meaning-line {
+		0%,
+		35% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
 	/* The two small panels. The scene puts them beside their star (transform). */
 	#sky-ui .sky-panel {
 		position: absolute;

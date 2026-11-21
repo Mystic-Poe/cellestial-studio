@@ -1,6 +1,6 @@
 INPUT, 1440x900 (wheel and keys)
-  wheel turned for 7.3 s: speed (world units a second) 0.3s 1.74, 1s 3.50, 2s 6.48, 3s 7.92, 4s 8.00, 5s 8.00, 6s 8.00, 7s 8.00
-  ok    the first turn of the wheel starts a medium cruise: 1.74
+  wheel turned for 7.3 s: speed (world units a second) 0.3s 1.46, 1s 3.50, 2s 6.48, 3s 7.92, 4s 8.00, 5s 8.00, 6s 8.00, 7s 8.00
+  ok    the first turn of the wheel starts a medium cruise: 1.46
   ok    speed builds with continued scrolling
   ok    and has a ceiling: 8.00 to 8.00 over the last three seconds
   ok    input stops: it glides and comes to rest on a station: layer 10.00 after 2.50 s
@@ -15,18 +15,18 @@ INPUT, 1440x900 (wheel and keys)
   ok    Space flies forward and rests on a station: layer 9.00 to 10.00
   ok    Home returns to the opening pose (the nearest Virgo, its star in the middle of the screen): from layer 14.00 to layer 12.00 in 1.71 s
 INPUT, 390x844 (touch)
-  ok    a swipe up flies forward: speed 1.89
-  ok    swipe after swipe builds speed, up to the ceiling: 1.89 after one, then 3.64, 5.40, 7.03, 7.86, 7.99, 8.00, 8.00
-  ok    and it rests on a station: layer 7.00 after 2.46 s
-  ok    a swipe down flies backward: speed -1.89
-  ok    and rests on a station behind: layer 6.00
-  ok    a tap on empty sky stops it dead: speed 3.14 before, 0 after; still at layer 6.291
+  ok    a swipe up flies forward: speed 2.43
+  ok    swipe after swipe builds speed, up to the ceiling: 2.43 after one, then 4.73, 7.10, 7.94, 8.00, 8.00, 8.00, 8.00
+  ok    and it rests on a station: layer 9.00 after 2.66 s
+  ok    a swipe down flies backward: speed -2.43
+  ok    and rests on a station behind: layer 8.00
+  ok    a tap on empty sky stops it dead: speed 4.42 before, 0 after; still at layer 8.594
   ok    the document did not scroll
 
 ENDLESS, 1440x900
   ok    thirty layers forward: at layer 31.00 after 23.52 s of holding the key
   ok    every station passed in order, the figures repeating every twelve: 31 stations, layers 1 to 31
-  ok    fifteen layers back: at layer 15.00 after 12.24 s
+  ok    fifteen layers back: at layer 15.00 after 12.23 s
   ok    every station passed in order on the way back: 16 stations
   ok    nothing drifts: every star is where it is in the first round: largest difference 4.1e-12 px (layer 31 against 7, layer 15 against 3)
 
@@ -47,7 +47,7 @@ WHEN THE SKY DOES NOT FLY, 1440x900
   ok    focus is in the menu: the keys do nothing
   ok    with none of those, the same wheel flies
   ok    the scene is the Roots: wheel and keys do not fly the sky
-  ok    they scroll the page instead: scrollY 0 to 1302
+  ok    they scroll the page instead: scrollY 0 to 1427
 
 REDUCED MOTION, 1440x900 and 390x844 ("/?rm=1")
   ok    desk: no animation frames at rest: 0 requestAnimationFrame calls in 3 s
@@ -62,33 +62,33 @@ REDUCED MOTION, 1440x900 and 390x844 ("/?rm=1")
 FRAME TIMES, real GPU: 4.6 layers forward, rest, 1.6 back, rest
   1440x900  734 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 2, pixel ratio 1
   ok    desk: smooth
-  390x844   727 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 4, pixel ratio 2
+  390x844   725 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 4, pixel ratio 2
   ok    phone: smooth
 
 THE GOVERNOR, 390x844, software rendering (SwiftShader), CPU slowed 4x
   renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
-   0- 2 s  average  54.50 ms  worst  116.60 ms  governor level 1 to 3
-   2- 4 s  average  18.52 ms  worst   33.40 ms  governor level 3
-   4- 6 s  average  17.53 ms  worst   33.40 ms  governor level 3
-   6- 8 s  average  19.21 ms  worst   33.40 ms  governor level 3
-   8-10 s  average  18.01 ms  worst   33.40 ms  governor level 3
-  10-12 s  average  17.39 ms  worst   33.30 ms  governor level 3
-  12-14 s  average  34.18 ms  worst  100.00 ms  governor level 2 to 3
-  14-16 s  average  18.17 ms  worst   33.40 ms  governor level 3
-  16-18 s  average  18.02 ms  worst   33.40 ms  governor level 3
-  18-20 s  average  18.33 ms  worst   33.40 ms  governor level 3
-  20-22 s  average  17.99 ms  worst   33.40 ms  governor level 3
-  22-24 s  average  17.70 ms  worst   33.40 ms  governor level 3
+   0- 2 s  average  51.28 ms  worst  116.60 ms  governor level 1 to 3
+   2- 4 s  average  19.20 ms  worst   33.40 ms  governor level 3
+   4- 6 s  average  17.54 ms  worst   33.40 ms  governor level 3
+   6- 8 s  average  19.39 ms  worst   33.40 ms  governor level 3
+   8-10 s  average  18.69 ms  worst   33.40 ms  governor level 3
+  10-12 s  average  17.69 ms  worst   33.40 ms  governor level 3
+  12-14 s  average  19.21 ms  worst   33.40 ms  governor level 3
+  14-16 s  average  18.67 ms  worst   33.40 ms  governor level 3
+  16-18 s  average  17.53 ms  worst   33.40 ms  governor level 3
+  18-20 s  average  19.02 ms  worst   33.40 ms  governor level 3
+  20-22 s  average  18.17 ms  worst   33.40 ms  governor level 3
+  22-24 s  average  17.38 ms  worst   33.40 ms  governor level 3
   pixel ratio at the end 1 (it began at 2); level 3 of 4
   ok    the governor stepped down by itself: to level 3
-  ok    and the frame time recovered: 54.50 ms in the first two seconds, 18.01 ms over the last six
+  ok    and the frame time recovered: 51.28 ms in the first two seconds, 18.19 ms over the last six
 
 PICKING, 1440x900
   ok    at rest, every star of the figure in front has a button over it: at four stations: 12 of 12 (layer 0), 14 of 14 (layer 2), 10 of 10 (layer 4), 22 of 22 (layer 6)
-  ok    button centre on star centre, at rest: largest offset 0.099 px
+  ok    button centre on star centre, at rest: largest offset 0.095 px
   ok    no button smaller than 44 px: smallest 43.99999237060547 px
   ok    each is a real <button> with a name: Empty star in Pisces
-  ok    button centre on star centre, in flight: largest offset 0.069 px over 181 frames
+  ok    button centre on star centre, in flight: largest offset 0.071 px over 181 frames
         (frames in which a star on screen had no button: 0; a button is withdrawn within 0.13 units of the lens)
   ok    an empty star: claims.pick(slot), and nothing is claimed
   ok    the hook for part B fires: 'open-empty' with the slot and the star's circle: {"type":"open-empty","slot":"slot-34","circle":{"x":862.4074140454127,"y":368.3530826139634,"r":16.14404939759036}}
@@ -102,10 +102,10 @@ PICKING, 1440x900
 
 PICKING, 390x844
   ok    at rest, every star of the figure in front has a button over it: at four stations: 12 of 12 (layer 0), 14 of 14 (layer 2), 10 of 10 (layer 4), 22 of 22 (layer 6)
-  ok    button centre on star centre, at rest: largest offset 0.102 px
+  ok    button centre on star centre, at rest: largest offset 0.101 px
   ok    no button smaller than 44 px: smallest 43.999969482421875 px
   ok    each is a real <button> with a name: Empty star in Pisces
-  ok    button centre on star centre, in flight: largest offset 0.079 px over 181 frames
+  ok    button centre on star centre, in flight: largest offset 0.070 px over 181 frames
         (frames in which a star on screen had no button: 0; a button is withdrawn within 0.13 units of the lens)
   ok    an empty star: claims.pick(slot), and nothing is claimed
   ok    the hook for part B fires: 'open-empty' with the slot and the star's circle: {"type":"open-empty","slot":"slot-34","circle":{"x":241.49773800141048,"y":395.3412968791913,"r":8.619134578313252}}
@@ -118,9 +118,9 @@ PICKING, 390x844
   ok    Escape lets it go: 'focus' with slot null
 
 THE FALL (the contract only; the transition belongs to the Roots), 1440x900
-  an empty star's y on screen: 9 ms 368, 142 ms 369, 275 ms 399, 409 ms 470, 542 ms 581, 675 ms 734
-  ok    onImpact fires once: [{"x":644.0019100377648,"at":425,"ground":772}]
-  ok    fall() resolves: after 1641 ms
+  an empty star's y on screen: 4 ms 368, 137 ms 369, 270 ms 399, 403 ms 470, 537 ms 581, 670 ms 734
+  ok    onImpact fires once: [{"x":644.0019100377648,"at":437,"ground":769}]
+  ok    fall() resolves: after 1620 ms
   ok    the stars are gone
   ok    an empty and a lit star fall alike: 2321 and 2328 px/s² on screen
   ok    restore() puts every star back
@@ -129,9 +129,9 @@ THE BEADS (B8), 1440x900, clicks
   ok    a touch on empty sky sends beads from the finger, along edges of the honeycomb, by a shortest walk, from the vertex nearest the finger to the vertex nearest the nearest empty star; on arrival that star pulses: layer 0: 2 edges (shortest 2) to slot-85 in 0.69 s; layer 2: 3 edges (shortest 3) to slot-31 in 0.78 s; layer 4: 3 edges (shortest 3) to slot-106 in 0.87 s
   ok    and nothing is claimed or picked by it
   ok    flying on ends the pulse
-  ok    a new touch replaces the run in progress: the first run was 0.12 s old
+  ok    a new touch replaces the run in progress: the first run was 0.13 s old
   ok    a touch on a star sends no beads (it picks the star)
-  ok    a touch in flight stops it dead and the beads set off from the finger: speed 7.65 before, 0.00 after, at layer 6.91; 5 edges to slot-68
+  ok    a touch in flight stops it dead and the beads set off from the finger: speed 7.70 before, 0.00 after, at layer 6.98; 5 edges to slot-68
   ok    with every star of the layer in front lit, the beads cross by a strut to the nearest empty star of the next layer: 12 stars lit; 3 edges, the strut at vertex 221, 1 edges, to slot-70 in 1.39 s
 
 THE BEADS (B8), 390x844, taps
@@ -238,7 +238,7 @@ THE CLAIM, sent for real, 1440x900
   ok    and still nothing after a reload
   ok    while the request is on its way, nothing is lit
   ok    what is posted is the form and the star, nothing added: star=slot-34
-  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.56 s after the 200 (the "Sent." beat, then the flight in)
+  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.57 s after the 200 (the "Sent." beat, then the flight in)
   ok    then its panel shows exactly what was asked: "A site for my bakery,\nwith the week's bread on the first page."
   ok    it is stored on this device as the slot and the ask, nothing else: [{"slot":"slot-34","ask":"A site for my bakery,\nwith the week's bread on the first page."}]
   ok    still lit after a reload: Claimed star in Virgo
@@ -264,13 +264,13 @@ THE CLAIM, sent for real, 390x844
   ok    the next empty star they click is theirs at once and ignites (no panel, no second send): slot-47
 
 FRAME TIMES WITH THE BEADS, real GPU: ten bead runs in a row
-  1440x900  10 runs, 541 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 2, pixel ratio 1
+  1440x900  10 runs, 542 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 2, pixel ratio 1
   ok    desk: ten runs, smooth
-  390x844   10 runs, 549 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 4, pixel ratio 2
+  390x844   10 runs, 559 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 4, pixel ratio 2
   ok    phone: ten runs, smooth
 
 FRAME TIMES WITH THE BEADS, 390x844, software rendering (SwiftShader), CPU slowed 4x
-  at rest, the governor settled and held at level 3 of 4, pixel ratio 1: average 16.83 ms, 95th percentile 16.80 ms, worst 33.40 ms, 0 frames over 33 ms
-  during 10 bead runs, 577 frames: average 17.19 ms, 95th percentile 16.80 ms, worst 33.40 ms, 2 frames over 33 ms
-  ok    the beads cost little: the frame time with them is within 25% of the frame time at rest: 16.83 ms at rest, 17.19 ms with the beads
+  at rest, the governor settled and held at level 3 of 4, pixel ratio 1: average 17.30 ms, 95th percentile 16.80 ms, worst 33.40 ms, 1 frames over 33 ms
+  during 10 bead runs, 556 frames: average 17.72 ms, 95th percentile 33.30 ms, worst 50.00 ms, 8 frames over 33 ms
+  ok    the beads cost little: the frame time with them is within 25% of the frame time at rest: 17.30 ms at rest, 17.72 ms with the beads
 
