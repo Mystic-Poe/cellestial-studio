@@ -1,0 +1,15 @@
+LOOK INSPECTION — INTERIM (written part-way, in case the session is cut off; the final report replaces this)
+Inspector for the look, 2026-11-21. Dev server on port 4612, real GPU (RTX 3060 Ti through ANGLE), 1440x900 and 390x844 (scale 2, touch).
+Sheets made fresh by the builders' tools and by refs/verification/look-tools/*.mjs are under refs/verification/matrix/.
+
+FINDINGS SO FAR, worst first (evidence = sheet under refs/verification/matrix/)
+1. MAJOR  The fall: one star bursts; the rest sink behind the soil with no burst. The owner said ALL the stars crash and explode into the mycelium. transitions/fall-desk.jpg, fall-phone.jpg; walk/desk-08-fall.jpg. From a small figure (Libra, 6 stars) the fall is a handful of dim grey beads, then about half a second of nearly black screen (+1000..+1500 ms) before the ground comes up.
+2. MAJOR  B7, the meaning: the cooled words are grey-lavender, not brass (sky/meaning-settled.jpg, meaning-still.jpg beside the brass of "studio" and B11); they are small (165x44 px for "the Lamb" on a 1440 px screen) and stand under the figure just above the exit button, not over the constellation; "Jesus is King." is crammed between Leo's meaning and B11.
+3. MAJOR  The teleport flash (C4): thick pale blue-white traces fill the frame; the emblem's lines are thin and saturated blue. transitions/teleport-desk.jpg, teleport-phone.jpg.
+4. MAJOR  The empty star (B4) at station size is a dark glass bead with a bright blue-white rim: none of the pack picture's brass traces can be seen (sky/stars.jpg). The rim is far stronger than the "faint blue rim glow at about 20%" the spec asks.
+5. MAJOR (low)  A5: the star's pieces are four or five small white triangles that never read as becoming the rings; the wordmark and the C bleach to flat white for about 150 ms (walk/desk-02-handoff.jpg +900..+1100; loader/a5-desk.jpg).
+6. MINOR  C1: at logo size the emblem is the unlit one with a blue glow on the node; the lit lines cannot be seen (chrome/logo.jpg).
+7. MINOR  The mycelium's trunk is nearly white and on the phone kinks at right angles like lightning (roots/descent-*.jpg).
+8. MINOR  With a figure complete, "claim yours" for a star of the next figure is drawn over the meaning's words on the phone (sky/beads-phone.jpg, bottom row, "arrived +0.3 s").
+9. MINOR  tools/sky/compare.mjs now exits 1: introProgress(1) against reset() differs in 2 px (desktop) and 21 px (phone); the builders recorded 0.
+More to come: the phone walk, B7 at all twelve figures, sampled colours, tap targets, the difference table, the checklist, the verdict.

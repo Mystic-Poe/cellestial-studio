@@ -1,0 +1,30 @@
+phone first visit: scene became "sky" 7942 ms after navigation
+phone loader: 594 frames, avg 17.0 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 183 ms at +440 ms  [phone-01-loader.jpg]
+phone handoff: 603 frames, avg 17.0 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 183 ms at +440 ms  [phone-02-handoff.jpg]
+phone flight-a: 618 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6395 ms  [phone-03-flight-a.jpg]
+phone flight-b: 890 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +4021 ms  [phone-04-flight-b.jpg]
+phone after flight: {"pos":38.574369391206965,"level":0}
+phone tap-beads: 163 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +346 ms  [phone-05-tap-beads.jpg]
+phone empty-panel: 97 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +513 ms  [phone-06-empty-panel.jpg]
+phone round: 494 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +110 ms  [phone-07-round.jpg]
+phone exit button: {"hidden":false,"x":59.296875,"y":760,"w":271.390625,"h":52,"text":"See what holds up the sky"}
+phone fall: 213 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +46 ms  [phone-08-fall.jpg]
+phone after the fall: scene roots, scrollY 0
+phone tiles-and-light: 1818 frames, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms, 30330 ms in all
+phone warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +260 ms  [phone-11-warp.jpg]
+phone after the warp: scene sky
+phone teleport-build: 111 frames, avg 17.0 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +798 ms  [phone-12-teleport-build.jpg]
+phone teleport "What we build": scene roots, scrollY 0, dialog open false
+phone teleport-claim: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +60 ms  [phone-13-teleport-claim.jpg]
+phone teleport "Claim your star": scene roots, scrollY 3125, dialog open false
+phone teleport-contact: 109 frames, avg 16.8 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +1015 ms  [phone-14-teleport-contact.jpg]
+phone teleport "Contact me": scene roots, scrollY 3125, dialog open true
+phone teleport-sky: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +792 ms  [phone-15-teleport-sky.jpg]
+phone teleport "The Sky": scene sky, scrollY 0, dialog open false
+phone return visit: scene became "sky" 3704 ms after the reload; exit button hidden: false
+phone return-loader: 314 frames, avg 17.5 ms, >34 ms 2, >50 ms 1, >100 ms 1, worst 217 ms at +401 ms  [phone-16-return-loader.jpg]
+phone return-fall: 190 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +126 ms  [phone-17-return-fall.jpg]
+phone return-warp: 146 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +257 ms  [phone-18-return-warp.jpg]
+phone at the end: scene sky
+phone console errors: Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+phone screencast frames recorded: 3412
