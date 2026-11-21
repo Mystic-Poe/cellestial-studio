@@ -190,6 +190,16 @@ const vars = [
 		position: relative;
 		z-index: 1;
 	}
+	/* The stop whose tile is open stands over the stops below it and over the
+	   Close: an open tile may reach down past its own stretch of the descent.
+	   It stays there until the tile has faded out. */
+	#roots > .roots-stop {
+		transition: z-index 0s linear 220ms;
+	}
+	#roots > .roots-stop[data-open] {
+		z-index: 3;
+		transition-delay: 0s;
+	}
 
 	/* E6, at the top of the ground. The row keeps its height when the button is
 	   not there, so the first node always starts clear of the chrome. */

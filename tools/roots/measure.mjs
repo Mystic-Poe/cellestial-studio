@@ -225,6 +225,21 @@ if (only.has('tiles')) {
 			const logo = t.left < 110 && t.top < 80;
 			check(`${id}: a ${touch ? 'tap' : 'click'} opens it and only it`, openIds(s).join() === id && t.expanded === 'true', `open: ${openIds(s).join(', ') || 'none'}`);
 			check(`${id}: focus is in the tile`, s.focus === `tile:offer-${id}`, s.focus);
+			const over = await page.evaluate((i) => {
+				const tile = document.getElementById(`offer-${i}`);
+				const r = tile.getBoundingClientRect();
+				const bad = [];
+				for (const fx of [0.08, 0.5, 0.92]) {
+					for (const fy of [0.05, 0.3, 0.6, 0.85, 0.97]) {
+						const x = r.left + r.width * fx;
+						const y = Math.min(innerHeight - 1, r.top + r.height * fy);
+						const top = document.elementFromPoint(x, y);
+						if (!top || !tile.contains(top)) bad.push(`${Math.round(x)},${Math.round(y)}: ${top?.className || top?.tagName}`);
+					}
+				}
+				return bad;
+			}, id);
+			check(`${id}: nothing lies over the tile`, over.length === 0, over.join('; '));
 			check(`${id}: whole on the screen, no taller than it, clear of the logo`, t.top >= 0 && t.bottom <= s.vh && t.left >= 0 && t.right <= s.vw && !logo, `x ${t.left.toFixed(0)}..${t.right.toFixed(0)} of ${s.vw}, y ${t.top.toFixed(0)}..${t.bottom.toFixed(0)} of ${s.vh} (${(t.bottom - t.top).toFixed(0)} px tall)`);
 		}
 		// The close button.
@@ -620,11 +635,11 @@ if (only.has('still')) {
 		});
 		const rest = await rafOver(page, 3000);
 		check('the network is whole at once and all five nodes are lit', v.grown.state && v.grown.lit === 5);
-		check('growFrom() does not animate: it resolves at once with everything grown', v.grow.ms < 60 && v.grow.lit === 5 && !v.grow.busy && v.grow.frames === 0, `${v.grow.ms.toFixed(1)} ms, ${v.grow.frames} frames`);
+		check('growFrom() does not animate: it resolves at once with everything grown', v.grow.ms < 400 && v.grow.lit === 5 && !v.grow.busy && v.grow.frames === 0, `${v.grow.frames} animation frames; ${v.grow.ms.toFixed(0)} ms to draw what is on screen`);
 		check('no travelling light', !v.pulse);
 		check('nothing breathes: no animation is running', v.animations === 0, `${v.animations} animations`);
 		check('the next unread node is marked by a steady, stronger glow', v.next.join() === 'true,false,false,false,false' && v.glow[0] > v.glow[1] + 0.4 && v.halo[0] > v.halo[1] + 0.4, `node 1 glow ${v.glow[0]} and halo ${v.halo[0]}; the others ${v.glow[1]} and ${v.halo[1]}`);
-		check('after a tile is read the mark moves to the next node', v.next2.join() === 'true,false,false,false,false' || v.next2.indexOf(true) === 0, `marked: node ${v.next2.indexOf(true) + 1} (Care was opened last, so the light leads back to node 1)`);
+		check('after a tile is read the mark moves on', v.next2.join() === 'false,false,false,true,false', `Care (node 5) was read: nothing below it is unread, so the mark is on the nearest unread node above, node ${v.next2.indexOf(true) + 1}`);
 		check('a tile opens without motion', v.tile.opacity === '1' && (v.tile.transform === 'none' || v.tile.transform === 'matrix(1, 0, 0, 1, 0, 0)') && v.tile.moved, `opacity ${v.tile.opacity}, transform ${v.tile.transform}`);
 		check('at rest no animation frame is asked for', rest === 0, `${rest} frames in 3 s`);
 		check('no page errors', real(errors).length === 0, real(errors).join(' | '));

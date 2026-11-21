@@ -57,11 +57,14 @@ export const mount: MountRoots = (ctx) => {
 
 	/** The guided light has arrived: its target answers with a moment of brightness. */
 	let hotTimer = 0;
+	let hotNow: HTMLElement | null = null;
 	function arrive(to: number): void {
 		const target = to === CLOSE ? f1() : stops[to]?.node;
 		if (!target) return;
-		target.setAttribute('data-hot', '');
 		window.clearTimeout(hotTimer);
+		if (hotNow !== target) hotNow?.removeAttribute('data-hot');
+		hotNow = target;
+		target.setAttribute('data-hot', '');
 		hotTimer = window.setTimeout(() => target.removeAttribute('data-hot'), 900);
 	}
 	const net = createNet(host, arrive);
@@ -195,6 +198,7 @@ export const mount: MountRoots = (ctx) => {
 		const i = stops.indexOf(stop);
 		opened = stop;
 		stop.tile.dataset.open = '';
+		stop.el.dataset.open = '';
 		stop.bulb.setAttribute('aria-expanded', 'true');
 		stop.node.dataset.read = '';
 		read.add(i);
@@ -209,6 +213,7 @@ export const mount: MountRoots = (ctx) => {
 	/** Close a tile. `refocus`: put the keyboard back on its node. */
 	function shut(stop: Stop, refocus: boolean): void {
 		delete stop.tile.dataset.open;
+		delete stop.el.dataset.open;
 		stop.bulb.setAttribute('aria-expanded', 'false');
 		if (opened === stop) opened = null;
 		if (refocus) stop.bulb.focus({ preventScroll: true });

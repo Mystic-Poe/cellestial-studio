@@ -17,8 +17,10 @@
 **The Roots (E1 to E6) and the Close (F1, F2) are being built, one step at a time. Step 1 of
 five is done: the real structure runs on the real page (see "Roots: what was done, looked at
 and measured" below the table), and so is step 2: the words are checked against the addendum
-in the browser. Step 3 is done too: the mycelium, the guided light and the growth are built,
-looked at frame by frame and measured. Next is STEP 4: PHONES, KEYS, STILLNESS, WEIGHT.**
+in the browser. Steps 3 and 4 are done too: the mycelium, the guided light and the growth are
+built, looked at frame by frame and measured; phones, the keyboard, reduced motion, the page
+without script and the frame times are measured (245 checks, all passing). What is left is
+STEP 5, the last look: see below.**
 
 The five steps, as the orchestrator set them (each ends with `pnpm build`, `pnpm test`,
 `pnpm lint`, a commit, a push and this file updated):
@@ -27,12 +29,8 @@ The five steps, as the orchestrator set them (each ends with `pnpm build`, `pnpm
 2. **The words. DONE.** `node tools/roots/words.mjs` (output kept in `refs/roots/words.txt`).
 3. **The mycelium (E2) and the guided light (E3). DONE.** Sheets: `node tools/roots/compare.mjs`
    (`--only descent,node,pulse,grow`); rules: `node tools/roots/measure.mjs --only light`.
-4. **Phones, keys, stillness, weight.** The sections `keys`, `phones`, `still` and `frames` of
-   `tools/roots/measure.mjs` are WRITTEN BUT HAVE NOT BEEN RUN: run each
-   (`--only keys`, and so on), fix what fails (in the scene, or in the check if the check is
-   wrong), then run the whole tool with no `--only` so that it writes `refs/roots/measure.txt`,
-   add the sheets `still` and `nojs` to `tools/roots/compare.mjs` (named in its header, not
-   written), and write the numbers here.
+4. **Phones, keys, stillness, weight. DONE.** `node tools/roots/measure.mjs` (all sections;
+   it writes `refs/roots/measure.txt`); sheets `still.jpg`, `nojs-desk.jpg`, `nojs-phone.jpg`.
 5. **Last.** `git status` clean, this file complete, and "Exact next step" pointing at the
    arrival and the return (the effects layer from `wip/fx`, the choreography in
    `src/experience/director.ts`), then the chrome and B7.
@@ -76,7 +74,7 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | Loading (A1–A5) | **done against the reference, polish pass included, except what is listed here; A5 now seen over the real sky (see "Sky, part A", step 4)** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (run by `node scripts/build-assets.mjs modules`; it writes `geometry.ts` and the matte, and run again it reproduces both) | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (six rounds of fixes, then the polish pass of four items, each looked at close up: see the section below the table). Matches: the C's place and size; the order and tempo the circuits light in (a thin white wire with a blue glow); the cooling before the charge; the overload (a thin white-hot bolt from the top edge, the node lost in white with its rings showing through, a blue wash filling the bolt's half of the frame, spark dust); the camera pulling back; the first "e" thrown from the node by one tall arc and written in the reference's order; each letter written at the reference's moment as one thin white tube on its brass, with white ring nodes, in a wide navy haze; the node's rings lit white while the word is written; the cooling into the A4 picture itself. The two soft fields (the haze behind the letters, the overload's wash) were also measured, reference against build: `refs/loading/compare/light.txt`, written by `node tools/loader/light.mjs`. **Still different:** the lit circuits (1.33) are whiter, with less blue around them; the first arc (3.67) is less wild and the first piece of the "e" bolder; the overload's white has a more definite edge than the reference's bloom, and its sparks are coarser and fewer; close to the letter being written the haze is a little weaker (3.83) and the letters' edges cooler; once a letter is written the reference lets lightning play over it for longer, and it strikes the star (5.25) where the build only lights it; the node's lens keeps a darker blue ring round its white heart. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done) after the polish pass, desktop / phone:** full version 7.74 s / 7.73 s (must be 6.0–8.0); short version on a same-session reload 3.49 s / 3.47 s; tap at 1 s ends at 2.76 s / 2.76 s, the "a" key at 1 s 2.74 s / 2.75 s; Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.75 s / 7.73 s); resize twice mid-run keeps the time (7.74 s / 7.75 s). Desktop only: each of the four pictures answering 404 in turn, the loader ends at once (0.01 s) and the sky is shown; sessionStorage blocked plays the full version (7.71 s); the sky's script failing to load, the loader fades out by itself at 6.62 s and the page opens on the Roots; the sky 30 s late, the wordmark holds 6 s and the loader goes at 12.65 s. Frame times 16.8–17.1 ms average at both sizes; phone with the CPU slowed 4×: 26.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at again after the polish pass, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
 | Sky (B, G1) | **done, parts A and B, except what is listed in its two sections.** Part A: the void, the honeycomb, Cellestial's star, the twelve figures, the endless flight, the round and the exit button (B11), reduced motion, the governor, the hand-off from the loader, the fall. Part B: the beads (B8), the pulse and the words "claim yours" (B9), the empty-star panel (B10), the lit-star panel, a real send lighting the star, the waiting ask. **Not built:** B7 (the meaning written over a completed constellation); the full fall transition (it belongs to the Roots). — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/` | Every sheet in `refs/sky/compare/` rebuilt by `node tools/sky/compare.mjs` on the real GPU at 1440×900 and 390×844 and looked at. `node tools/sky/measure.mjs`: 201 checks with real wheel, key, touch and mouse events, all passing, written to `refs/sky/measure.txt`. A real send walked through `scripts/shot.mjs` with `/api/contact` stubbed (`tools/sky/claim-200.steps.json`, `claim-400.steps.json`). **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software with the CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
 | Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
-| Roots (E1–E6) | **in progress: steps 1 to 3 of 5 done.** The soil (a tile of E1 with no mirror in it) with an uneven top edge, E6, five nodes as real buttons in a descending line, five tiles from the locked copy opened one at a time, the mycelium grown by code from where the nodes are, the guided light, the growth from an impact, the whole contract. **Not yet run:** keyboard, phones, reduced motion and frame-time checks (step 4). — `src/experience/roots/` (`index.ts`, `net.ts`, `edge.ts`), `src/components/scenes/Roots.astro`, `scripts/assets/roots.mjs`, `tools/roots/` | `node tools/roots/measure.mjs --only contract,tiles,chrome,light,nojs`: every check passing at 1440×900, 390×844 and 320×568. `node tools/roots/words.mjs`: all five tiles equal the addendum character for character, three ways (`refs/roots/words.txt`). Every sheet in `refs/roots/compare/` looked at (list and numbers in the section below). |
+| Roots (E1–E6) | **built, steps 1 to 4 of 5 done; what differs from the spec is listed at the end of its section.** The soil (a tile of E1 with no mirror in it) with an uneven top edge, E6, five nodes as real buttons in a descending line, five tiles from the locked copy opened one at a time, the mycelium grown by code from where the nodes are, the guided light, the growth from an impact, the whole contract. **Not built here:** the arrival and the return themselves (the fall, the crash, the warp: the director still fades). — `src/experience/roots/` (`index.ts`, `net.ts`, `edge.ts`), `src/components/scenes/Roots.astro`, `scripts/assets/roots.mjs`, `tools/roots/` | `node tools/roots/measure.mjs`: 245 checks with real clicks, taps and keys at 1440×900, 390×844 and 320×568, all passing, written to `refs/roots/measure.txt`. `node tools/roots/words.mjs`: all five tiles equal the addendum character for character, three ways (`refs/roots/words.txt`). `node tools/roots/compare.mjs`: every sheet in `refs/roots/compare/` rebuilt and looked at. Numbers in the section below. **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software, CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
 | Close (F1, F2) | **built**: exactly the two links the brief gives, F1 "Claim your star" (259×68 px, 21 px type) and F2 "Contact me" (137×44 px, 15 px type) 24 px under it, both centred, nothing else. — `src/components/scenes/Close.astro` | Same run: F1 opens the build request, F2 the message box; the menu lands on them; without script both are links to `/contact`. Looked at in the step 1 sheets. |
 | Chrome (C1–C3) | placeholder (logo, "studio", three bars, menu with four working teleports) | Walk-through above. |
 | Transitions wired (fall, crash, warp, A5 hand-off), B7 meaning reveal | not started | — |
@@ -238,6 +236,86 @@ off.
   wherever the star falls the same network appears; only the few roots at the point of the
   blow are particular to it, and they fade. The halo, the bloom and the joints are light
   drawn by code; no generated picture stands in for anything.
+
+**Step 4, phones, keys, stillness, weight (20 Nov).** `node tools/roots/measure.mjs` in full:
+245 checks, all passing; the whole output is `refs/roots/measure.txt`.
+- **Phones** (`--only phones`, 390×844 and 320×568): no sideways scroll anywhere down the
+  page; tap targets E6 56×48, each bulb 92×92, F1 259×68, F2 137×44, a tile's close button
+  44×44; body text 16 px, headings 22 px; the longest tile (Care) is 530 px tall on the
+  844 px screen, and 464 px on the 568 px one, where its 615 px of text scroll inside it.
+  Every tile, at all three sizes, opens whole on the screen, clear of the logo, with nothing
+  lying over it (`--only tiles`).
+- **A fault found here and fixed:** on a short screen an open tile reaches down past its
+  own stop, and the next node's bulb (and, for Care, both closing buttons) was painted over
+  it. The stop whose tile is open now stands above the rest until the tile has faded out;
+  the tiles check now asks at fifteen points of every open tile that nothing lies over it.
+- **Keyboard** (`--only keys`, 1440×900): Tab reaches, in the ground, exactly E6, the five
+  nodes in order, F1, F2; each shows a 2 px focus ring (blue-white round a bulb, blue
+  elsewhere) and is on screen. Enter and Space open a tile and focus goes into it; Tab
+  reaches its close button; Tab again goes on to the next node (focus is not trapped);
+  Escape, or Enter on the close button, closes it and focus returns to its node.
+- **What a screen reader is given:** the ground is `main "What we build"` holding
+  `button "Return to the sky"`, five buttons named by their offers, `link "Claim your star"`,
+  `link "Contact me"`. Node 1 open is `button "Site" [expanded]` and `dialog "Site"` with
+  `heading "Site" [level=2]`, `button "Close"` and the six paragraphs (the prices read
+  "$990 slashed → FREE"). The tree is printed in `measure.txt`.
+- **Reduced motion** (`--only still`, `/?scene=roots&rm=1` with the device setting emulated,
+  both sizes; sheet `still.jpg`): the network is whole at once; `growFrom()` resolves with
+  everything grown and asks for 0 animation frames (75 ms to draw what is on screen at
+  1440×900, 28 ms at 390×844); no travelling light; no animation running; the next unread
+  node is marked by a steady stronger glow (its bright layer at 0.85 and halo at 1, the
+  others 0.08 and 0.25); a tile opens with opacity 1 and no transform at once; at rest 0
+  animation frames in 3 s.
+- **Without script** (`--only nojs`; sheets `nojs-desk.jpg`, `nojs-phone.jpg`): with script
+  off, and with only the scene's script blocked, at both sizes: the soil, five tiles open
+  in order one under another, nothing overlapping, nothing wider than the screen, the nodes
+  as pictures, no close buttons and no return button, both links to `/contact`.
+- **Weight** (`--only frames`, 390×844, pixel ratio 2, CPU slowed 4× through the DevTools
+  Protocol, the whole page scrolled by a touch gesture at 1400 px/s, down and back up):
+  on the real GPU 147 and 289 frames, average 16.67 ms, 95th percentile 16.7 and 16.8 ms,
+  worst 16.8 ms, none over 33 ms; in software 143 and 281 frames, average 17.25 and
+  17.26 ms, 95th percentile 16.8 ms, worst 33.4 ms, 4 frames over 33 ms, none over 50 ms.
+  Animation frames asked for: 0 in 2 s with a tile open; 0 in 1.5 s with the guided light's
+  stretch off screen; about 95 in 3 s while the guided light runs and rests (it travels for
+  about half of that). The scene's script is one chunk of 23.7 kB before compression; the
+  bands of canvas hold about 25 MB of pixels on a phone at pixel ratio 2 (five bands of
+  780×1600) and 27 MB at 1440×900 (six of 1440×800).
+
+**Roots and Close: every remaining difference from the spec and the owner's words.**
+1. **The arrival and the return are not built.** `growFrom(x)` and `showGrown()` are, and
+   were proved by calling them from the page; the fall, the soil rising into the frame, the
+   crash and the warp are the director's, and it still fades. Until then "stars fall, crash,
+   and become mycelium" cannot be seen on the site.
+2. The growth lights the one seeded network: wherever the star falls, light runs sideways
+   along the runner to the trunk and down it. Only a few roots of light at the point of the
+   blow are particular to that point, and they fade in about half a second.
+3. The guided light runs once every three seconds or so (about 1.5 s of travel, 1.5 s of
+   rest), not continuously. While a tile is open it is still. After the last node it leads
+   to "Claim your star"; when the visitor has read out of order and nothing below is
+   unread, it leads back up to the nearest unread node.
+4. A node counts as read when its tile has been opened (not when it is closed); what was
+   read is remembered for the visit only, not across a reload.
+5. The soil is not the foundation's mirror-tiled tile but a second derivation of the same
+   two pack pictures (`scripts/assets/roots.mjs`), because the mirror line showed as a
+   symmetric figure once lit. The asset manifest (`src/experience/assets.ts`) does not list
+   it; the stylesheet and `net.ts` name the files themselves.
+6. The node picture stands a little dimmed at rest (72% brightness) so that it can breathe
+   up to the pack picture's own level; at the top of its breath and once read it is about
+   the picture as supplied.
+7. On a 1440 px screen the outermost fifth on each side stays bare soil for much of the
+   descent: branches reach at most 47% of the width from the trunk. The first stretch (the
+   surface to node 1) is short and carries few branches.
+8. On a desktop the growth drops to about 30 frames a second for some twenty frames while
+   the densest fan of branches is hot (real GPU); in a browser without a GPU the growth runs
+   at about 14 frames a second, slowed and not skipped.
+9. The tile is the kit's large panel, 37rem wide with 17 px type on a screen 1024 px wide or
+   more (the kit's own is 34rem and 16 px), and its close button sits in the kit's sticky
+   head beside the title.
+10. No visible label stands beside a node (the spec says to ask first); the bulbs are told
+    apart only by their order and by opening them.
+11. E6 is centred at the top of the ground, and the trunk leaves the surface beside it, on
+    the side the first node is on, not through it.
+12. Not looked at: a landscape phone, a tablet, a real phone's GPU. No independent review.
 
 ## Sky, part A: what was done, looked at and measured
 
@@ -764,3 +842,6 @@ than two tries. All four were reached.
 - 2026-11-20 — Roots, step 3b: a soil tile with no mirror in it derived from the pack; the nodes' breathing,
   hover and read states judged beside E4; the guided light made to read and measured (sets off 43 ms
   after a tile closes, never scrolls, never opens); the growth looked at frame by frame at three x.
+- 2026-11-20 — Roots, step 4: phones, keyboard, reduced motion, the page without script and frame times
+  measured (245 checks); a stacking fault found by the 320 px sheet and fixed (the next node and the
+  closing buttons were painted over an open tile).

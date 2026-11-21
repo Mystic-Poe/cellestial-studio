@@ -24,8 +24,11 @@
 //   grow-desk.jpg, grow-phone.jpg     growFrom at three x, frozen at moments
 //                                     from the impact on
 //   grow-close.jpg                    the first 420 ms at full size
-//   still.jpg                         reduced motion; and 320 px wide
-//   nojs-desk.jpg, nojs-phone.jpg     the page with script off, in pieces
+//   still.jpg                         reduced motion at both sizes (the top, a
+//                                     tile open, the next node marked); and
+//                                     320x568 with motion on
+//   nojs-desk.jpg, nojs-phone.jpg     the page with script off, top to bottom,
+//                                     in screen-sized pieces
 //
 // Exits non-zero if the page logged an error.
 
@@ -243,6 +246,53 @@ if (only.has('grow')) {
 			}
 			await sheet(join(OUT, 'grow-close.jpg'), close, { cols: 2, cellW: 780, cellH: 520 });
 		}
+		await done(run);
+	}
+}
+
+if (only.has('still')) {
+	const cells = [];
+	for (const size of ['desk', 'phone', 'narrow']) {
+		const still = size !== 'narrow';
+		const run = await openPage(browser, size, `${URL}${still ? '&rm=1' : ''}`, still ? { reducedMotion: 'reduce' } : {});
+		const { page } = run;
+		await rootsReady(page);
+		await page.waitForTimeout(900);
+		const what = still ? `reduced motion, ${size}` : '320x568';
+		cells.push({ img: await shot(page), label: `${what}: the top${still ? ' (node 1 is marked: a steady, stronger glow)' : ''}` });
+		await page.evaluate(() => window.__cellestial.roots.debug.open('site'));
+		await page.waitForTimeout(still ? 150 : 800);
+		cells.push({ img: await shot(page), label: `${what}: tile 1 open` });
+		await page.evaluate(() => {
+			window.__cellestial.roots.debug.close();
+			document.activeElement.blur();
+			document.querySelectorAll('.roots-node__bulb')[1].scrollIntoView({ block: 'center' });
+		});
+		await page.waitForTimeout(500);
+		cells.push({ img: await shot(page), label: `${what}: node 1 read, node 2 ${still ? 'marked' : 'next'}` });
+		if (!still) {
+			await page.evaluate(() => {
+				window.__cellestial.roots.debug.open('care');
+			});
+			await page.waitForTimeout(900);
+			cells.push({ img: await shot(page), label: `${what}: the longest tile, scrolling inside itself` });
+			await page.evaluate(() => {
+				window.__cellestial.roots.debug.close();
+				scrollTo(0, window.__cellestial.roots.anchorY('close'));
+			});
+			await page.waitForTimeout(500);
+			cells.push({ img: await shot(page), label: `${what}: the Close` });
+		}
+		await done(run);
+	}
+	await sheet(join(OUT, 'still.jpg'), cells, { cols: 4, cellW: 392, cellH: 520 });
+}
+
+if (only.has('nojs')) {
+	for (const size of ['desk', 'phone']) {
+		const run = await openPage(browser, size, `${values.url}/`, { javaScriptEnabled: false });
+		const cells = await pieces(run.page, `${size}, script off`);
+		await sheet(join(OUT, `nojs-${size}.jpg`), cells, size === 'desk' ? { cols: 2, cellW: 790, cellH: 494 } : { cols: 6, cellW: 258, cellH: 560 });
 		await done(run);
 	}
 }
