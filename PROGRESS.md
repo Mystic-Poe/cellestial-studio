@@ -14,6 +14,17 @@
 
 ## Exact next step
 
+**THE FIXER'S PASS IS UNDER WAY (21 Nov). Read `refs/verification/fixes.txt` first: it is the
+running record of every finding's outcome, with its commit's checks.** Done and pushed so far:
+the fall (look 1), A5 (look 6), the loader's timing (code 2, 7; look 15), B7 (look 2, 8), the
+empty star and the phone's sky (look 4, 5), the flash (look 3), the logo and its link (look 9,
+17), the tab icon (code 1), code 6, 9, 10, 11, 12. **Left of the fixer's list:** the minors
+look 7, 10, 11, 13, 14, 16, 19 and look 12 (CSS only, or left); then every suite run again,
+the sheets the fixes touched rebuilt, the table below made true, and a "Final verification"
+section written. Not the fixer's: code 3, 4, 5, 8, 13 and look 18 (the owner's).
+
+*(What follows in this section is as it stood before the fixer began.)*
+
 **FINAL VERIFICATION. Every scene and every transition is built and checkpointed: Loading, the
 Sky (with B7), the fall and the crash, the Roots, the Close, the warp back, the menu teleports,
 the chrome, the effects layer, the credit. Nothing is parked: there is no `wip/` and no page
