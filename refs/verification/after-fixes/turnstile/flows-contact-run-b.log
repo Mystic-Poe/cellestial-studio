@@ -1,0 +1,183 @@
+
+## /contact — desk
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":456,"right":984,"width":528,"height":71},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":456,"right":984,"width":528,"height":71}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: no star field on this form
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":456,"right":984,"width":528,"height":71},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":456,"right":984,"width":528,"height":71}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=0 net: 14 > /turnstile/v0/api.js | 33 < 302 /turnstile/v0/api.js | 33 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 46 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 51 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/f2gh | 93 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/f2gh | 149 > blob:https://challenges.cloudflare.com/87a51b19-0af0-4cb
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":456,"right":984,"width":528,"height":71}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":456,"right":984,"width":528,"height":71}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+## home: build request (F1) — desk
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["star",""],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,star,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: the star field is posted (empty: no star chosen) — ""
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: the dialog closes by itself after the "Sent." beat
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: the dialog stays open
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=1 net: 658 > /turnstile/v0/api.js?render=explicit | 8328 < 302 /turnstile/v0/api.js?render=explicit | 8329 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 8355 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 8361 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/4280 | 8396 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/4280 | 8452 > blob:https://challenges.cloudflare.com/eb2450cb-7f48-40c
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":489,"right":951,"width":462,"height":73}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":489,"right":951,"width":462,"height":73}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: reopened, still one widget (reset, not rendered twice) — {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+## home: message box (F2) — desk
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: no star field on this form
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: the dialog closes by itself after the "Sent." beat
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: the dialog stays open
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=1 net: 573 > /turnstile/v0/api.js?render=explicit | 590 < 302 /turnstile/v0/api.js?render=explicit | 590 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 603 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 608 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/3zn5 | 652 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/3zn5 | 713 > blob:https://challenges.cloudflare.com/85f627fd-1d5a-44f
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":489,"right":951,"width":462,"height":73}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":489,"right":951,"width":462,"height":73}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: reopened, still one widget (reset, not rendered twice) — {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":489,"right":951,"width":462,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":1440,"box":{"left":489,"right":951,"width":462,"height":73}}
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+## /contact — phone
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":24,"right":366,"width":342,"height":71},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":24,"right":366,"width":342,"height":71}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: no star field on this form
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":24,"right":366,"width":342,"height":71},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":24,"right":366,"width":342,"height":71}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=0 net: 15 > /turnstile/v0/api.js | 37 < 302 /turnstile/v0/api.js | 37 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 54 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 60 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/psq7 | 115 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/psq7 | 172 > blob:https://challenges.cloudflare.com/cd34a8ad-2041-412
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":24,"right":366,"width":342,"height":71}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":24,"right":366,"width":342,"height":71}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+## home: build request (F1) — phone
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["star",""],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,star,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: the star field is posted (empty: no star chosen) — ""
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: the dialog closes by itself after the "Sent." beat
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: the dialog stays open
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=1 net: 380 > /turnstile/v0/api.js?render=explicit | 395 < 302 /turnstile/v0/api.js?render=explicit | 395 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 410 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 416 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/miks | 469 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/miks | 525 > blob:https://challenges.cloudflare.com/2344128e-a167-4b8
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":31,"right":359,"width":328,"height":73}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":31,"right":359,"width":328,"height":73}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: reopened, still one widget (reset, not rendered twice) — {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+## home: message box (F2) — phone
+     turnstile before send: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+ok   200: exactly one POST to /api/contact — 1: /api/contact
+     posted fields: [["name","Test Visitor"],["email","visitor@example.com"],["message","A site for my bakery.\r\nTwo lines, \"quote…(57)"],["cf-turnstile-response","XXXX.DUMMY.TOKEN.XXXX"]]
+     accept header: application/json; content-type: multipart/form-data; boundary=
+ok   200: nothing posted but name, email, message, star, cf-turnstile-response — name,email,message,cf-turnstile-response
+ok   200: name and email as typed
+ok   200: the message is exactly what was typed, nothing added — "A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."
+ok   200: no star field on this form
+ok   200: a Turnstile token is posted — XXXX.DUMMY.TOKEN.XXXX
+ok   200: the visitor sees "Sent. We will reply by email." — Sent. We will reply by email.
+ok   200: the form is cleared and Send stays disabled
+ok   200: the dialog closes by itself after the "Sent." beat
+ok   200: no console errors
+ok   400: one POST
+ok   400: the visitor sees the Worker's own error text — The spam check did not pass. Please try again.
+ok   400: the form keeps what was typed and Send works again
+ok   400: the dialog stays open
+ok   400: no console errors but the 400 itself — Failed to load resource: the server responded with a status of 400 (Bad Request)
+     turnstile: {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+     PROBE page: (no probe)
+     PROBE api=object scripts=1 net: 376 > /turnstile/v0/api.js?render=explicit | 391 < 302 /turnstile/v0/api.js?render=explicit | 391 > /turnstile/v0/b/f8df4d4a0cd6/api.js | 407 < 200 /turnstile/v0/b/f8df4d4a0cd6/api.js | 412 > /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/vc84 | 465 < 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/vc84 | 519 > blob:https://challenges.cloudflare.com/4b7919b5-468c-4a4
+ok   unstubbed: exactly one real Turnstile iframe in the form — 1
+ok   unstubbed: the widget has its size — {"left":31,"right":359,"width":328,"height":73}
+ok   unstubbed: the widget issued a token (test key)
+ok   unstubbed: the widget is inside the screen — {"left":31,"right":359,"width":328,"height":73}
+ok   unstubbed: one token field in the form — 1
+ok   unstubbed: reopened, still one widget (reset, not rendered twice) — {"iframes":1,"src":"https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turns","slot":{"left":31,"right":359,"width":328,"height":73},"widgets":1,"inputs":1,"token":"XXXX.DUMMY.TOKEN.XXXX","innerWidth":390,"box":{"left":31,"right":359,"width":328,"height":73}}
+ok   unstubbed: with no Worker behind it the form says it did not send — That did not send. Please try again.
+     console during unstubbed run: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+126 ok, 0 FAIL
+exit 0

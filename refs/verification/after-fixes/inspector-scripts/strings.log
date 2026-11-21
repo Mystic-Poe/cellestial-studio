@@ -1,0 +1,154 @@
+SEEN  | "studio" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete; roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | BUILD_SPEC.md
+SEEN  | "The Sky" | menu | SPEC-ADDENDUM.md
+SEEN  | "What we build" | menu | SPEC-ADDENDUM.md
+SEEN  | "Claim your star" | menu; empty-star panel (B10); roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "Contact me" | menu; roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "Site" | empty-star panel (B10); roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "A custom site built for your business." | empty-star panel (B10); roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "Site + Systems" | empty-star panel (B10); roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "Everything in Site, plus the work behind it wired in." | empty-star panel (B10); roots: tile 2; without script | SPEC-ADDENDUM.md
+SEEN  | "Site + App" | empty-star panel (B10); roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "Everything in Site, plus a real app your customers actually use." | empty-star panel (B10); roots: tile 3; without script | SPEC-ADDENDUM.md
+SEEN  | "Add-ons" | empty-star panel (B10) | SPEC-ADDENDUM.md
+SEEN  | "Upgrades that take work off your plate." | empty-star panel (B10); roots: tile 4; without script | SPEC-ADDENDUM.md
+SEEN  | "Care" | empty-star panel (B10); roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "What keeps your site alive after launch." | empty-star panel (B10); roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "claim yours" | "claim yours" (B9) | BUILD_SPEC.md
+SEEN  | "(generated ::after) \"claim yours\"" | "claim yours" (B9) | BUILD_SPEC.md
+SEEN  | "See what holds up the sky" | sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "A site for my bakery." | lit-star panel (the ask is the visitor's own words) | (the visitor's own ask, seeded by this script)
+SEEN  | "t" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "h" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "e" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "L" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "a" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "m" | B7: Aries complete | SPEC-ADDENDUM.md
+SEEN  | "b" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"t\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"t\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"h\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"h\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"e\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"e\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"L\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"L\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"a\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"a\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"m\"" | B7: Aries complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"m\"" | B7: Aries complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"b\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"b\"" | B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "i" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "o" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "n" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "f" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "r" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "J" | B7: Leo complete | BUILD_SPEC.md
+SEEN  | "u" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "d" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "s" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "K" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "g" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "." | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"i\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"i\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"o\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"o\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"n\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"n\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"f\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"f\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"r\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"r\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"J\"" | B7: Leo complete | BUILD_SPEC.md
+SEEN  | "(generated ::after) \"J\"" | B7: Leo complete | BUILD_SPEC.md
+SEEN  | "(generated ::before) \"u\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"u\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"d\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"d\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"s\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"s\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"K\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"K\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \"g\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \"g\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::before) \".\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "(generated ::after) \".\"" | B7: Leo complete | SPEC-ADDENDUM.md
+SEEN  | "Add-ons — AI + automation" | roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+SEEN  | "Fast, beautiful, and made to be found." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "Includes: your pages, a working contact form, domain set up in your account." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "$990" | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "→ FREE" | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "— founding cohort." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "Plus care:" | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "$69/mo" | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "→ $39/mo" | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | ", locked for life on basic." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "You own it. Forever." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "Site, domain, and content are yours." | roots: tile 1; without script | SPEC-ADDENDUM.md
+SEEN  | "Includes: intake or booking, follow-ups, payments, and lead capture — set up to run as one system." | roots: tile 2; without script | SPEC-ADDENDUM.md
+SEEN  | "Price: by quote." | roots: tile 2; roots: tile 3; roots: tile 4; without script | SPEC-ADDENDUM.md
+SEEN  | "We see the ask first, then give you an honest number." | roots: tile 2; without script | SPEC-ADDENDUM.md
+SEEN  | "You own your site and your data." | roots: tile 2; without script | SPEC-ADDENDUM.md
+SEEN  | "The systems are built for you and saved to your accounts." | roots: tile 2; without script | SPEC-ADDENDUM.md
+SEEN  | "Built for phones first, connected to your site." | roots: tile 3; without script | SPEC-ADDENDUM.md
+SEEN  | "Bigger asks get a longer window — we will be honest about cost and time up front." | roots: tile 3; without script | SPEC-ADDENDUM.md
+SEEN  | "You own your site and your app." | roots: tile 3; without script | SPEC-ADDENDUM.md
+SEEN  | "Built in your name, from day one." | roots: tile 3; without script | SPEC-ADDENDUM.md
+SEEN  | "AI that answers, sorts, and drafts." | roots: tile 4; without script | SPEC-ADDENDUM.md
+SEEN  | "Automations that move the repetitive work for you." | roots: tile 4; without script | SPEC-ADDENDUM.md
+SEEN  | "Includes: security and patching, uptime and SSL watch, form tests, backups, domain renewal handled, email changes done for you, and a monthly report." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "Support by email." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "$39/mo founding, locked for life on basic." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "True rate $69/mo." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "Systems, apps, and AI cost more to care for. Their care goes up, and it is part of their quote." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "No new pages, redesigns, or selling built in" | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "— those are upgrades, priced plainly when you ask." | roots: tile 5; without script | SPEC-ADDENDUM.md
+SEEN  | "Tell us what you want to build." | build request dialog; build request dialog: sending / failed | the form as it was on the live site (a31d2ee: ContactForm.astro, ClaimDialog.astro, contact-submit.ts)
+SEEN  | "Your name" | build request dialog; build request dialog: sending / failed; message box dialog | the form as it was on the live site (a31d2ee: ContactForm.astro, ClaimDialog.astro, contact-submit.ts)
+SEEN  | "Email" | build request dialog; build request dialog: sending / failed; message box dialog | the form as it was on the live site (a31d2ee: ContactForm.astro, ClaimDialog.astro, contact-submit.ts)
+SEEN  | "What do you need built?" | build request dialog; build request dialog: sending / failed; message box dialog | the form as it was on the live site (a31d2ee: ContactForm.astro, ClaimDialog.astro, contact-submit.ts)
+SEEN  | "Send" | build request dialog; build request dialog: sending / failed; message box dialog | BUILD_SPEC.md
+SEEN  | "The spam check did not pass. Please try again." | build request dialog: sending / failed | the contact Worker's own error text (workers/contact, unchanged)
+SEEN  | "<title> Cellestial Studio — Your node among the stars" | browser tab / search result | src/content/home.json (unchanged, the CMS file)
+SEEN  | "<meta description> Showpiece websites from Denver, Colorado. Hand-built, fast, and owned by you forever." | browser tab / search result | src/content/home.json (unchanged, the CMS file)
+heard | "Cellestial studio" | loader; sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete; roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | *** NO SOURCE FOUND ***
+heard | "Loading. Press any key to skip." | loader | *** NO SOURCE FOUND ***
+heard | "aria-label: Cellestial studio" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete; roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | *** NO SOURCE FOUND ***
+heard | "aria-label: Menu" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete; roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+heard | "aria-label: The Sky" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11; lit-star panel (the ask is the visitor's own words); B7: Aries complete; B7: Leo complete | SPEC-ADDENDUM.md
+heard | "aria-label: Empty star 1 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 2 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 3 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 4 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 5 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9) | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 6 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 7 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 8 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 9 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 10 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 11 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Empty star 12 of 12 in Virgo" | sky; menu; empty-star panel (B10); "claim yours" (B9); sky, still: B11 | *** NO SOURCE FOUND ***
+heard | "aria-label: Close" | empty-star panel (B10); lit-star panel (the ask is the visitor's own words); roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; build request dialog; build request dialog: sending / failed; message box dialog | BUILD_SPEC.md
+heard | "aria-label: Claimed star 5 of 12 in Virgo" | sky, still: B11; lit-star panel (the ask is the visitor's own words) | *** NO SOURCE FOUND ***
+heard | "the Lamb" | B7: Aries complete | the owner's Nov 18 spec sheet (NOT in the repo: ~/Downloads/Cellestial-Setup-Pack-2026-11-19/payload/reference/redesign-spec-sheet-2026-11-18.md)
+heard | "aria-label: Claimed star 1 of 4 in Aries" | B7: Aries complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 2 of 4 in Aries" | B7: Aries complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 3 of 4 in Aries" | B7: Aries complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 4 of 4 in Aries" | B7: Aries complete | *** NO SOURCE FOUND ***
+heard | "the Lion of the tribe of Judah" | B7: Leo complete | the owner's Nov 18 spec sheet (NOT in the repo: ~/Downloads/Cellestial-Setup-Pack-2026-11-19/payload/reference/redesign-spec-sheet-2026-11-18.md)
+heard | "Jesus is King." | B7: Leo complete | BUILD_SPEC.md
+heard | "aria-label: Claimed star 1 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 2 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 3 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 4 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 5 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 6 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 7 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 8 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: Claimed star 9 of 9 in Leo" | B7: Leo complete | *** NO SOURCE FOUND ***
+heard | "aria-label: What we build" | roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog; without script | SPEC-ADDENDUM.md
+heard | "aria-label: Return to the sky" | roots; roots: tile 1; roots: tile 2; roots: tile 3; roots: tile 4; roots: tile 5; close; build request dialog; build request dialog: sending / failed; message box dialog | *** NO SOURCE FOUND ***
+heard | "slashed" | roots: tile 1; without script | SPEC-ADDENDUM.md
+
+152 strings; 30 with no source found in the spec, the addendum, the master prompt, the owner's Nov 18 sheet, the old form or the Worker

@@ -277,7 +277,7 @@ look 19 (MINOR, a tool) — tools/sky/compare.mjs said introProgress(1) and rese
 
 look 12 (MINOR) — the Turnstile box white for a frame as a dialog opens.  CSS ONLY, AND NOT PROVED.
   Not reproduced: the opening of the message box on the phone profile was recorded with the DevTools
-  screencast sixteen times before any change (unslowed, on a slow line, with the CPU slowed 4x and 6x) and
+  screencast twelve times before any change (unslowed, on a slow line, with the CPU slowed 4x and 6x) and
   no frame had a white box (none had over 4000 near-white pixels; the box would be about 19,000). The
   inspector's one frame is real (walk/phone-14-teleport-contact.jpg): the first frame of the dialog.
   Done, in the style block of src/components/ContactForm.astro and nowhere else: the widget's place
@@ -288,3 +288,64 @@ look 12 (MINOR) — the Turnstile box white for a frame as a dialog opens.  CSS 
   full opacity afterwards (462x73 and 328x73 px), Turnstile's test key still returns its token and Send is
   enabled. Four more recordings after the change: no white frame. Because it could not be made to happen
   before the change, that it can no longer happen is an inference, not a measurement.
+
+THE CLOSE-OUT (21 Nov, afternoon) — by the orchestrator, with no change to the site
+The fixer's session was cut off by the account's usage limit at 11:42, after its last code commit (c211d9e)
+and its last full run of the suites, and before it had committed that run's sheets, read the last of the
+inspector's scripts, or brought PROGRESS.md up to date. What was done after it:
+
+- The sheets and measures of the fixer's final run (10:44 to 11:11, at c211d9e) are committed as it left
+  them: refs/loading, sky, roots, transitions and chrome /compare and the three measure.txt. Every tool
+  exited 0; the logs are in refs/verification/after-fixes/logs/ (status.txt lists them): the loader 13 of 13
+  at both settings (the full version 7.53 s on the desktop, 7.62 s on the phone profile with the CPU slowed
+  4x), sky 201, meaning 38, meaning-all 24 of 24, words 197, roots 245, transitions 148, chrome 48.
+- The first inspector's nine scripts, run again on the production build (the fixer's run of 11:32 to 11:43,
+  after it had rebuilt with Turnstile's test key; its first try, on a build made without the key, is void).
+  Logs: refs/verification/after-fixes/inspector-scripts/. keyboard 37 of 37 (the script's pattern for a
+  star's name was widened to the new names, "Empty star 3 of 12 in Virgo": the only change to any of the
+  inspector's scripts), degrade 101 of 101, director-probes 34 of 34, director-storm 4 of 4, claim-rule
+  64 of 64, admin-start 29 of 29, turnstile-repeat 15 of 15 openings, flows-contact 121 of 126 (see "The
+  Turnstile miss"), strings: 152 strings, 30 with no source in the spec files (at the inspection: 128 and
+  6). All 30 are names for a screen reader and none is seen: the 24 new ones are the star buttons' numbered
+  names, the loader's "Loading. Press any key to skip." and the heading "Cellestial studio", each asked for
+  by the inspector (code 9, code 10).
+  The inspector's own a11y-trees.txt and strings.txt are left as they were at the inspection; the rerun's
+  are beside the logs.
+- pnpm build (4 pages), pnpm lint (92 files), pnpm typecheck and pnpm test (96 of 96; the three Workers'
+  own checks 15, 16, 14) run again at c211d9e: all pass. The protected-systems diff: 0 bytes.
+
+THE TURNSTILE MISS — investigated; not the site.
+  What was seen: in flows-contact.mjs, one opening with nothing stubbed (phone, the message box) had no
+  Turnstile widget after 20 s: nothing in its slot, no token, no console error; reopening did not bring
+  it; Send answered "That did not send." The inspection's own run had the same five lines at another
+  opening (phone, the build request). Its flows-contact.run1.log and run2.log are one run saved twice
+  (they are byte for byte the same), so this is two misses in two runs, each of one opening.
+  Not reproduced: on the same build and server that afternoon the same script ran three more times, 126
+  of 126 each (once with a probe in the page, twice with only the network logged:
+  after-fixes/turnstile/flows-contact-*.log), and a script that repeats the sequence (stubbed 200,
+  stubbed 400, nothing stubbed; both dialogs; phone) ran six rounds, 36 of 36 openings with a token
+  (repro.mjs, repro-6-rounds.log). In every one the page did the same: the script tag is added on the
+  click, it has loaded about 30 ms later, window.turnstile is there, render() is called once and returns
+  a widget.
+  What explains it: Cloudflare's script not arriving. With the request for api.js held and never
+  answered (stall.mjs, stall.log, stalled.jpg) the page is in exactly the state the two misses recorded:
+  the slot 328 x 0 with nothing in it, no token field, Send enabled, nothing new on reopening, "That did
+  not send." after Send, and no console error. The same script stalled for 30 s on /contact during the
+  builders' transitions suite on 20 Nov (code 6), on a page where no code of this site takes part in
+  loading it.
+  What it means: if Cloudflare's script does not arrive, a visitor sees no spam check and a send fails
+  with the Worker's own sentence. The site that is live today behaves the same (git show
+  a31d2ee:src/scripts/claim-controller.ts: the script is added on the first opening, and a load that
+  never ends is never tried again). Making the form try again is a change to the form's Turnstile logic,
+  which is the owner's to ask for. miss-vs-ok.jpg: the failed opening beside a good one.
+
+THE EFFECTS' OWN SHEETS — rebuilt (the "not done" under look 3).
+  refs/fx/compare/flash-*, impact-*, warp-*, rm.jpg and measure.txt showed the effects as they were
+  before the fixes. Rebuilt from c211d9e as tools/fx/compare.mjs says, in a copy of the checkout outside
+  it with the test page of 8385356 put back (its soil background pointed at soil-landscape-woven.webp:
+  the mirrored tile it named is one of the six pictures removed under code 11). Nothing was added to the
+  site. flash-peak.jpg, flash-down-desk.jpg and warp-desk.jpg looked at: thin blue traces with ring
+  nodes on black beside A1 lit, white in the hub only, the pale test page fully hidden from 0.45 to 0.55
+  of the flash; the warp's cover is black with the flare at the vanishing point. measure.txt: the flash
+  420 to 434 ms with the frame opaque at the swap; the warp opaque from about 0.66 to 0.78 of its length
+  (the swap is at 0.70).

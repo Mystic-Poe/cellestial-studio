@@ -1,0 +1,19 @@
+=== keyboard
+exit 0 (keyboard)
+=== degrade
+exit 0 (degrade)
+=== director-probes
+exit 0 (director-probes)
+=== director-storm
+exit 0 (director-storm)
+=== claim-rule
+exit 0 (claim-rule)
+=== admin-start
+exit 0 (admin-start)
+=== flows-contact
+exit 1 (flows-contact)
+=== turnstile-repeat
+exit 0 (turnstile-repeat)
+=== strings
+exit 0 (strings)
+INSPECTOR DONE

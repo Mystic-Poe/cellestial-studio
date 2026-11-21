@@ -62,7 +62,7 @@ await tree('THE SKY (opening pose)');
 await page.evaluate(() => document.activeElement?.blur());
 const skyTabs = await tabs(18);
 note(`Tab through the sky: \n       → ${show(skyTabs)}`);
-const stars = skyTabs.filter((s) => /sky-star|slot-/.test(s.what) || /star in/i.test(s.what));
+const stars = skyTabs.filter((s) => /sky-star|slot-/.test(s.what) || /star (\d+ of \d+ )?in/i.test(s.what));
 check(skyTabs.some((s) => s.what.includes('Skip to content')), '"Skip to content" is in the Tab order, before the logo', skyTabs.map((s) => s.what.slice(0, 18)).join(' > '));
 check(skyTabs.some((s) => /Cellestial studio/.test(s.what)) && skyTabs.some((s) => /"Menu"/.test(s.what)), 'then the logo and the menu button');
 check(stars.length >= 12, "then Virgo's twelve stars, each a button", `${stars.length}`);
@@ -73,7 +73,7 @@ await page.screenshot({ path: path.join(SHOTS, 'kbd-sky-star-focus.png') });
 // A star by keyboard: Enter opens the panel, focus goes in, Escape gives it back.
 await page.evaluate(() => document.activeElement?.blur());
 let hops = 0;
-while (hops++ < 30 && !/star in/i.test((await at()).what)) await page.keyboard.press('Tab');
+while (hops++ < 30 && !/star (\d+ of \d+ )?in/i.test((await at()).what)) await page.keyboard.press('Tab');
 const starStop = await at();
 await page.keyboard.press('Enter');
 await sleep(700);

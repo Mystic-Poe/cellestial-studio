@@ -1,0 +1,8 @@
+     A: go / descend / ascend: scenes seen every 2 s after the storm: sky roots
+ok   A: go / descend / ascend: the director answers "What we build" again — 4 s after the storm ended
+ok   A: go / descend / ascend: no console errors
+     B: the same, plus showStar("slot-3") seven times: scenes seen every 2 s after the storm: sky sky sky sky sky sky roots
+ok   B: the same, plus showStar("slot-3") seven times: the director answers "What we build" again — 14 s after the storm ended
+ok   B: the same, plus showStar("slot-3") seven times: no console errors
+
+4 ok, 0 FAIL

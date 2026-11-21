@@ -1,0 +1,94 @@
+
+# desk
+
+## 1. no send, no claim
+ok   the sky starts empty: no star lit — []
+ok   picking an empty star claims nothing — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   the empty-star panel is open
+     empty-star panel reads: "Site A custom site built for your business.\nSite + Systems Everything in Site, plus the work behind it wired in.\nSite + App Everything in Site, plus a real app your customers actually use.\nAdd-ons Upgrades that take work off your plate.\nCare What keeps your site alive after launch.\nClaim your star"
+ok   the hidden star field carries the picked star — slot-34
+ok   the dialog closed without Send: nothing claimed, nothing stored, nothing posted — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   after a reload: still nothing lit
+ok   no console errors
+
+## 2. 400 lights nothing; 200 lights the chosen star; reload
+ok   400: the request was posted once
+ok   400: nothing lit, nothing waiting, nothing stored — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   400: the dialog is still open with the error
+ok   200: the chosen star, and only it, is lit — ["slot-34"]
+     posted: ["name","email","message","star","cf-turnstile-response"]; star=slot-34
+ok   200: the star field posted is the chosen star
+ok   200: the message posted is exactly the ask (nothing added) — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\r\nsecond line   with   spaces"
+ok   200: no other field posted — name,email,message,star,cf-turnstile-response
+ok   the lit-star panel opened by itself after the send
+ok   the lit star shows exactly the ask, character for character — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"
+ok   the HTML in the ask is shown as text: no element made, no script run — {"children":0,"xss":null}
+ok   the panel shows nothing else: no name, no email, no label — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"
+     lit panel elements: button[aria-label=Close], p
+     localStorage cellestial:claims = [{"slot":"slot-34","ask":"<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"}]
+ok   neither name nor email is stored on the device
+ok   after a reload the star is still lit (store and sky) — {"lit":["slot-34"],"sky":["slot-34"]}
+     its button is named: Claimed star 4 of 12 in Virgo
+ok   after a reload, clicking the lit star shows the same ask
+ok   a new tab of the same browser also has it lit
+ok   asking to claim a lit star opens the request with no star
+ok   no console errors but the stubbed 400 — Failed to load resource: the server responded with a status of 400 (Bad Request)
+
+## 3. sent with no star: the ask waits, the next empty star takes it
+ok   from F1 with nothing picked, the star field is empty
+ok   no star lit; the ask is waiting — {"scene":"roots","lit":[],"picked":null,"unplaced":"A booking system for my salon.","stored":null,"storedUnplaced":"A booking system for my salon.","skyLit":[]}
+ok   the star field was posted empty
+ok   the visitor is taken to the sky — sky
+ok   after a reload the ask is still waiting — {"scene":"sky","lit":[],"picked":null,"unplaced":"A booking system for my salon.","stored":null,"storedUnplaced":"A booking system for my salon.","skyLit":[]}
+ok   the next empty star clicked takes the ask — {"scene":"sky","lit":["slot-3"],"picked":null,"unplaced":null,"stored":"[{\"slot\":\"slot-3\",\"ask\":\"A booking system for my salon.\"}]","storedUnplaced":null,"skyLit":["slot-3"]}
+ok   placing the ask posts nothing more — 1
+     after placing: lit panel hidden=true, ask=""
+ok   no console errors
+
+# phone
+
+## 1. no send, no claim
+ok   the sky starts empty: no star lit — []
+ok   picking an empty star claims nothing — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   the empty-star panel is open
+     empty-star panel reads: "Site A custom site built for your business.\nSite + Systems Everything in Site, plus the work behind it wired in.\nSite + App Everything in Site, plus a real app your customers actually use.\nAdd-ons Upgrades that take work off your plate.\nCare What keeps your site alive after launch.\nClaim your star"
+ok   the hidden star field carries the picked star — slot-34
+ok   the dialog closed without Send: nothing claimed, nothing stored, nothing posted — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   after a reload: still nothing lit
+ok   no console errors
+
+## 2. 400 lights nothing; 200 lights the chosen star; reload
+ok   400: the request was posted once
+ok   400: nothing lit, nothing waiting, nothing stored — {"scene":"sky","lit":[],"picked":"slot-34","unplaced":null,"stored":null,"storedUnplaced":null,"skyLit":[]}
+ok   400: the dialog is still open with the error
+ok   200: the chosen star, and only it, is lit — ["slot-34"]
+     posted: ["name","email","message","star","cf-turnstile-response"]; star=slot-34
+ok   200: the star field posted is the chosen star
+ok   200: the message posted is exactly the ask (nothing added) — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\r\nsecond line   with   spaces"
+ok   200: no other field posted — name,email,message,star,cf-turnstile-response
+ok   the lit-star panel opened by itself after the send
+ok   the lit star shows exactly the ask, character for character — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"
+ok   the HTML in the ask is shown as text: no element made, no script run — {"children":0,"xss":null}
+ok   the panel shows nothing else: no name, no email, no label — "<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"
+     lit panel elements: button[aria-label=Close], p
+     localStorage cellestial:claims = [{"slot":"slot-34","ask":"<img src=x onerror=\"window.__xss=1\"><script>window.__xss=2</script><b>bold</b> & \"a quote\"\nsecond line   with   spaces"}]
+ok   neither name nor email is stored on the device
+ok   after a reload the star is still lit (store and sky) — {"lit":["slot-34"],"sky":["slot-34"]}
+     its button is named: Claimed star 4 of 12 in Virgo
+ok   after a reload, clicking the lit star shows the same ask
+ok   a new tab of the same browser also has it lit
+ok   asking to claim a lit star opens the request with no star
+ok   no console errors but the stubbed 400 — Failed to load resource: the server responded with a status of 400 (Bad Request)
+
+## 3. sent with no star: the ask waits, the next empty star takes it
+ok   from F1 with nothing picked, the star field is empty
+ok   no star lit; the ask is waiting — {"scene":"roots","lit":[],"picked":null,"unplaced":"A booking system for my salon.","stored":null,"storedUnplaced":"A booking system for my salon.","skyLit":[]}
+ok   the star field was posted empty
+ok   the visitor is taken to the sky — sky
+ok   after a reload the ask is still waiting — {"scene":"sky","lit":[],"picked":null,"unplaced":"A booking system for my salon.","stored":null,"storedUnplaced":"A booking system for my salon.","skyLit":[]}
+ok   the next empty star clicked takes the ask — {"scene":"sky","lit":["slot-3"],"picked":null,"unplaced":null,"stored":"[{\"slot\":\"slot-3\",\"ask\":\"A booking system for my salon.\"}]","storedUnplaced":null,"skyLit":["slot-3"]}
+ok   placing the ask posts nothing more — 1
+     after placing: lit panel hidden=true, ask=""
+ok   no console errors
+
+64 ok, 0 FAIL

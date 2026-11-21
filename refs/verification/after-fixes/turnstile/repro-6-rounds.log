@@ -1,0 +1,51 @@
+
+# round 1
+ok   phone F1 claim stub200: token after 1631 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@829
+ok   phone F1 claim stub400: token after 1636 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@184
+ok   phone F1 claim unstubbed: token after 1647 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@177
+ok   phone F2 contact stub200: token after 1636 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@479
+ok   phone F2 contact stub400: token after 1633 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@562
+ok   phone F2 contact unstubbed: token after 1662 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@325
+
+# round 2
+ok   phone F1 claim stub200: token after 1633 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@357
+ok   phone F1 claim stub400: token after 1670 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@183
+ok   phone F1 claim unstubbed: token after 1660 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@338
+ok   phone F2 contact stub200: token after 1635 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@455
+ok   phone F2 contact stub400: token after 1634 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@359
+ok   phone F2 contact unstubbed: token after 1640 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@314
+
+# round 3
+ok   phone F1 claim stub200: token after 1629 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@331
+ok   phone F1 claim stub400: token after 1637 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@181
+ok   phone F1 claim unstubbed: token after 1646 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@332
+ok   phone F2 contact stub200: token after 1668 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@334
+ok   phone F2 contact stub400: token after 1633 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@342
+ok   phone F2 contact unstubbed: token after 1631 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@329
+
+# round 4
+ok   phone F1 claim stub200: token after 1622 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@182
+ok   phone F1 claim stub400: token after 1784 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@350
+ok   phone F1 claim unstubbed: token after 1637 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@172
+ok   phone F2 contact stub200: token after 1652 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@328
+ok   phone F2 contact stub400: token after 1622 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@182
+ok   phone F2 contact unstubbed: token after 1630 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@326
+
+# round 5
+ok   phone F1 claim stub200: token after 1627 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@171
+ok   phone F1 claim stub400: token after 1654 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@177
+ok   phone F1 claim unstubbed: token after 1661 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@308
+ok   phone F2 contact stub200: token after 1616 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@352
+ok   phone F2 contact stub400: token after 1636 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@325
+ok   phone F2 contact unstubbed: token after 1630 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@343
+
+# round 6
+ok   phone F1 claim stub200: token after 1670 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@345
+ok   phone F1 claim stub400: token after 1636 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@359
+ok   phone F1 claim unstubbed: token after 1662 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@343
+ok   phone F2 contact stub200: token after 1635 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@331
+ok   phone F2 contact stub400: token after 1669 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@359
+ok   phone F2 contact unstubbed: token after 1633 ms; api=object scripts=1 kids=1 box=328x73 frames=1 click@185
+
+36 of 36 openings got a token; 0 missed
+exit 0

@@ -1,0 +1,9 @@
+PROTOCOLS (top-level requests seen by the page target):
+  h2 200 /turnstile/v0/b/f8df4d4a0cd6/api.js (104.18.94.41)
+  h2 200 /cdn-cgi/challenge-platform/h/b/turnstile/f/ (104.18.94.41)
+
+STALLED api.js, message box, 6 s after opening:
+  {"slot":{"left":31,"right":359,"width":328,"height":0},"widgets":0,"inputs":0,"token":null,"api":"undefined","scripts":1,"send":"enabled"}  requests held: 1
+  reopened, 2.5 s later:
+  {"slot":{"left":31,"right":359,"width":328,"height":0},"widgets":0,"inputs":0,"token":null,"api":"undefined","scripts":1,"send":"enabled"}  requests held: 1
+  after Send: "That did not send. Please try again."; console: Failed to load resource: the server responded with a status of 404 (Not Found)
