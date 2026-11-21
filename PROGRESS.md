@@ -67,6 +67,32 @@ each committing its own output, so a cut-off loses at most the step in hand:
 If a report file exists, that step is done: go on from the next one. The briefs are in the
 session's workflow script `final-verification`; the same instructions in short are above.
 
+**The orchestrator's rulings on the first inspector's findings**
+(`refs/verification/business-and-code.txt`, its table, by number). The fixer follows these:
+1. Tab icon: FIX. Derive the icon from the pack's lit emblem, the same crop as the logo
+   (`scripts/build-assets.mjs`), as a PNG and an `.ico`; replace the stock files; point the
+   `<link>` lines in `src/layouts/Base.astro` at them.
+2. Loader over 8 s on slower devices: FIX. The owner's rule is 6 to 8 s, never under 6. Give it
+   headroom (about 7.1 s nominal), credit real waiting time, shorten the hand-off when the
+   clock is behind, never go under 6.0 s; `tools/loader/measure.mjs` must pass with the CPU
+   slowed 4x and on slow 4G as well as unslowed.
+3. Stars 100 to 146 unnamed in the owner's email: NOT OURS. The Worker is protected. Left for
+   the owner.
+4. A claim is lit only on the claimer's device: NOT OURS. Left for the owner.
+5. Logo and menu hidden during the loader: KEEP as built; left for the owner to rule on.
+6. Transitions suite stalls on Cloudflare's script: FIX the tool.
+7. Hitch in the loader's first second on a slow phone: FIX (start loading the sky after the
+   power-up has begun, with time to spare before the hand-off).
+8. `/admin` edits only title and description now: no change (`public/admin` is protected);
+   tell the owner.
+9. No `<h1>`: FIX with a visually hidden one.
+10. Star buttons share one name; the loader says nothing to a screen reader: FIX (names such as
+    "Empty star 3 of 12 in Virgo"; a visually hidden status on the loader).
+11. Six pictures shipped and never fetched: FIX (drop them from the build and the manifest).
+12. One type error: FIX, and add a `typecheck` script (TypeScript as a dev dependency).
+13. The twelve meanings are not in the repo's spec files: no change to the spec files (they are
+    the owner's); they are word for word his Nov 18 sheet. Tell the owner.
+
 ## Where things stand
 
 | Piece | State | How it was verified |
