@@ -1,0 +1,126 @@
+CELLESTIAL STUDIO REDESIGN — INDEPENDENT INSPECTION: THE BUSINESS AND THE CODE
+Branch redesign-build at c345872, inspected 20-21 Nov 2026. Baseline: a31d2ee ("spec freeze"),
+which is byte-identical to orgin/main (the live site) on every protected path.
+Evidence beside this file: refs/verification/business-and-code/ (logs, scripts under tools/,
+screenshots under shots/). No file of the site was changed.
+
+STATUS OF THIS FILE: DRAFT IN PROGRESS. Sections are added as each check finishes; the table
+and the verdict at the end are written last.
+
+====================================================================================
+1. THE THREE PROTECTED SYSTEMS — DIFF REVIEW
+====================================================================================
+
+1.1 The files that must not change at all
+
+  $ git diff a31d2ee HEAD -- workers src/onboard src/scripts/contact-submit.ts \
+        src/scripts/start-flow.ts src/scripts/start-builder.ts public/admin \
+        src/content/home.json src/config.ts | wc -c
+  0
+
+  Nothing printed. Also checked: `git diff orgin/main a31d2ee` over workers, src, public and
+  wrangler.jsonc prints nothing, so a31d2ee really is the live site's plumbing.
+  sha256 of dist/admin/index.html and dist/admin/config.yml = public/admin = a31d2ee
+  (554583ad…, 33c61f74…): byte-identical.
+
+  Outside that list, what else changed that the three systems run through:
+    src/scripts/claim-controller.ts   deleted (replaced by src/experience/claim-flow.ts, 1.3)
+    src/components/ClaimDialog.astro  rewritten (markup of the dialog round the form, 1.2)
+    src/components/ContactDialog.astro new (a second dialog round the same ContactForm)
+    src/layouts/Base.astro            fonts, the reduced-motion script, the skip link's style
+    src/styles/global.css, tokens.css the palette; the old token names are kept as aliases
+    astro.config.mjs                  fonts only
+    package.json                      the test glob; three, @types/three, playwright-core, sharp
+    wrangler.jsonc, public/_headers   untouched (there is no _headers file, before or after)
+
+1.2 The three files that may change in class and CSS only
+
+  $ git diff a31d2ee HEAD --stat -- src/components/ContactForm.astro src/pages/contact.astro src/pages/start
+   src/components/ContactForm.astro | 59 ++++++++---
+   src/pages/contact.astro          |  6 ++--
+   src/pages/start/new.astro        |  4 +--
+  (src/pages/start/index.astro: no change.)
+
+  Every changed line, read:
+
+  ContactForm.astro — the diff begins at line 47, inside <style>. Lines 1-38, which are the
+  frontmatter and the whole <form>, are not in the diff at all. So unchanged, verified in the
+  file as it stands and in the built HTML of all three forms:
+    form        id={id} method="POST" action="/api/contact" class="cform" novalidate
+    name        input name="name" type="text" required maxlength="120" autocomplete="name"
+    email       input name="email" type="email" required maxlength="254" autocomplete="email"
+    message     textarea name="message" rows="5" required maxlength="5000"
+    star        {withStar && <input type="hidden" name="star" value="" data-star-input />}
+    Turnstile   implicit: <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" />
+                explicit: <div data-turnstile-slot data-sitekey={TURNSTILE_SITE_KEY} />
+    submit      <button class="pill pill--primary cform__send" type="submit" disabled={!ready}>Send</button>
+    status      <p class="cform__status" data-status role="status" aria-live="polite"></p>
+  The component has no script block, before or after.
+  Changed, all CSS: label size and weight; field border, face, text colour, padding and a
+  transition; textarea min-height and resize; hover and focus-visible rules; an :autofill
+  rule; the narrow-screen Turnstile scale (moved here from the old ClaimDialog, now also
+  matching .cf-turnstile); .cform__send lost its own border/cursor/disabled rules (the
+  disabled look now comes from `.pill:disabled` in global.css lines 240-253: checked, it is
+  there); .cform__status size, line-height, colour.
+
+  contact.astro — three class attributes: the "Cellestial Studio" link, the lede <p>, the
+  "not live yet" notice. Line 30 (<ContactForm id="contact-form" turnstile="implicit" />) and
+  the script block (wireContactForm(form, status, undefined, () => turnstile?.reset())) are
+  not in the diff. The Turnstile api.js <script> in the head is not in the diff.
+
+  start/new.astro — two class strings: the fields' `border-border bg-card` became
+  `border-brass bg-black`, and the QR card's `bg-white` became `bg-[#fff]` (because
+  --color-white is now white at 90%: without this the QR card would have gone grey). Every
+  name, required, maxlength, radio value, data-builder, data-out, data-link, data-copy-link,
+  data-qr and the script are not in the diff.
+
+  VERDICT 1.2: class attributes and CSS only. Nothing else.
+
+1.3 src/experience/claim-flow.ts against src/scripts/claim-controller.ts (a31d2ee)
+
+  Submits only through wireContactForm            YES. One call, claim-flow.ts:190, for each
+                                                  of the two forms. The file contains no
+                                                  fetch, no XMLHttpRequest, no sendBeacon, no
+                                                  FormData, no form.submit().
+  Turnstile rendered explicitly, same options     YES. Same URL (api.js?render=explicit), same
+                                                  dataset.turnstileApi marker, same
+                                                  render(slot, { sitekey, theme: 'dark',
+                                                  size: 'flexible' }) (line 118 vs old 82-86).
+  Reset on reopen                                 YES. ensureTurnstile(): a widget that exists
+                                                  is reset (line 110-112; old 67-70).
+  Reset on failure                                YES. onFail (line 205-207; old 163-165).
+  Script error: removed, retried on next open     YES (line 91-100; old 77).
+  Only name, email, message, star, token posted   YES. The body is `new FormData(form)` built
+                                                  inside contact-submit.ts (unchanged). The
+                                                  flow writes to exactly one field: the hidden
+                                                  star input (line 269), as the old one did
+                                                  (old line 103). Proven in the browser, 2.1.
+  Nothing ever added to the message               YES. The flow only READS the textarea
+                                                  (line 243, `askField?.value`), to remember
+                                                  the ask for the star. It never writes to it.
+  A claim only after a 200                        YES. claims.recordSent is called only from
+                                                  the `sent` hook, which wireContactForm calls
+                                                  only inside `if (response.ok)`. The old
+                                                  controller lit the star while the visitor was
+                                                  still typing (startClaim on open); the new
+                                                  one does not. Proven in the browser, 3.
+  No other code under src/ calls /api/            YES.
+    $ grep -rnE "\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource" src
+    src/scripts/contact-submit.ts:21   fetch(form.action, …)            (protected, unchanged)
+    src/scripts/start-flow.ts:24       fetch('/api/onboard/invites', …) (protected, unchanged)
+    src/scripts/start-flow.ts:35       fetch('/api/onboard/ping', …)    (protected, unchanged)
+    Nothing under src/experience fetches anything by script. The built first chunk imports
+    contact-submit and nothing else that talks to a server.
+
+  Differences in behaviour from the old controller, all on the surface:
+    - two dialogs instead of one (the second has no star field);
+    - the dialog closes on a click on its backdrop;
+    - Send is re-enabled on reopen only if the page was built with a Turnstile key (the old
+      controller re-enabled it always, even when the form was not live: a fix);
+    - after "Sent." the dialog closes after 1.4 s (same beat as before) and the director is
+      asked to show the star.
+
+  One thing inherited from the unchanged shared submit, not introduced here: a send that is
+  overtaken (the dialog closed AND reopened while the request is on its way) is ignored when
+  its 200 arrives, so the email is delivered and no star is lit. It needs a close and a
+  reopen inside one round trip. Same as the live site. Not ranked.
