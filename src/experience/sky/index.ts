@@ -17,6 +17,7 @@ import type {
 	SkyScene,
 	SlotId,
 } from '../contracts.ts';
+import { createAnswer } from './answer.ts';
 import { createStarButtons, type StarSpot } from './buttons.ts';
 import {
 	B3,
@@ -169,6 +170,7 @@ function deadScene(reason: unknown): SkyInternals {
 		roundComplete: () => true,
 		hooks: null,
 		debug: null,
+		answer: null,
 	};
 }
 
@@ -799,7 +801,14 @@ export const mount: MountSky = (ctx) => {
 
 	const step = (dt: number) => {
 		time += dt;
-		if (!still && !introOn() && !fall && !fallen) flight.step(dt);
+		if (!still && !introOn() && !fall && !fallen) {
+			const was = flight.mode;
+			flight.step(dt);
+			if (was === 'glide' && flight.mode === 'rest') {
+				const layer = Math.round(layout.coordOf(flight.pos));
+				emitter.emit('rest', { layer, figure: mod(layer, FIGURES) });
+			}
+		}
 		stepFocus(dt);
 		stepGlow(dt);
 		stepIgnitions();
@@ -1124,14 +1133,14 @@ export const mount: MountSky = (ctx) => {
 				};
 			},
 			path: (from, to) => comb.path(from, to),
-			pulseEdge(layer, edge, strength = 1) {
-				world.pulseEdge(layer, edge, strength, time);
+			pulseEdge(layer, edge, strength = 1, at = time) {
+				world.pulseEdge(layer, edge, strength, at);
 				requestFrame();
 			},
-			pulseStrut(layer, vertex, strength = 1) {
+			pulseStrut(layer, vertex, strength = 1, at = time) {
 				const strut = comb.strutOf[vertex] ?? -1;
 				if (strut < 0) return;
-				world.pulseStrut(layer, strut, strength, time);
+				world.pulseStrut(layer, strut, strength, at);
 				requestFrame();
 			},
 		},
@@ -1165,6 +1174,8 @@ export const mount: MountSky = (ctx) => {
 			applyGlow(slot);
 			requestFrame();
 		},
+		pick: (slot) => onPick(slot),
+		isActive: () => active && ready && !fall && !fallen && !introOn(),
 		focused: () => (focus && focus.phase !== 'out' ? focus.slot : null),
 		releaseFocus: () => releaseFocus(),
 		requestFrame,
@@ -1290,6 +1301,9 @@ export const mount: MountSky = (ctx) => {
 		},
 	};
 
+	// ── what answers a touch: the beads, the pulse, the words ──
+	const answer = createAnswer(hooks, { spent: () => false, busy: () => false });
+
 	// ── the scene ──
 	const scene: SkyInternals = {
 		ready: readyPromise,
@@ -1302,6 +1316,7 @@ export const mount: MountSky = (ctx) => {
 				flight.release();
 				emitter.emit('dismiss', { reason: 'inactive' });
 			}
+			emitter.emit('active', { on });
 			governor.reset();
 			last = -1;
 			requestFrame();
@@ -1481,6 +1496,7 @@ export const mount: MountSky = (ctx) => {
 
 		hooks,
 		debug,
+		answer,
 	};
 
 	return scene;

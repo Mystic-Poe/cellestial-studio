@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -28,6 +28,11 @@
 //             at rest and in flight; what a click on an empty, a waiting-ask
 //             and a lit star does
 //   fall      fall() against a rising ground line, then restore()
+//   beads     a tap on empty sky: the beads' route is a shortest walk over the
+//             honeycomb's graph from the vertex nearest the finger to the vertex
+//             nearest the nearest empty star; a new tap replaces the run; a tap
+//             on a star sends none; a tap in flight stops it dead and still
+//             sends them; what happens when the layer in front has no empty star
 //
 // It prints what it measured and writes the same text to refs/sky/measure.txt
 // (only when every section was run). Exits non-zero if a check failed or the
@@ -40,7 +45,7 @@ import { parseArgs } from 'node:util';
 import { chromium } from 'playwright-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -874,6 +879,245 @@ if (only.has('fall')) {
 	check('restore() puts every star back', back && Math.abs(back.x - before.x) < 0.01 && Math.abs(back.y - before.y) < 0.01);
 	await view.close();
 	log();
+}
+
+// ────────────────────────────────────────────────────────────── beads ──
+
+/** The run in progress, checked against the honeycomb's graph in the page itself. */
+const ROUTE = () => {
+	const { sky } = window.__cellestial;
+	const run = sky.answer.run();
+	if (!run) return null;
+	const { route } = run;
+	const g = sky.hooks.lattice.graph;
+	// Every step of the walk is an edge of the graph, and the edge it says it is.
+	const joined = (vs, es) =>
+		vs.every((v, i) => i === 0 || (es[i - 1] >= 0 && g.edgeBetween(vs[i - 1], v) === es[i - 1]));
+	// The shortest walk between two vertices, counted here by a flood of its own.
+	const hops = (from, to) => {
+		const seen = new Int32Array(g.vertexCount).fill(-1);
+		seen[from] = 0;
+		const queue = [from];
+		for (let i = 0; i < queue.length; i++) {
+			const v = queue[i];
+			if (v === to) return seen[v];
+			for (let k = 0; k < 3; k++) {
+				const n = g.neighbours[v * 6 + k * 2];
+				if (n >= 0 && seen[n] < 0) {
+					seen[n] = seen[v] + 1;
+					queue.push(n);
+				}
+			}
+		}
+		return -1;
+	};
+	const last = (a) => a[a.length - 1];
+	const p0 = route.points[0];
+	const at = sky.hooks.project(p0.x, p0.y, -p0.layer * 6);
+	const end = route.strut >= 0 ? last(route.vertices2) : last(route.vertices);
+	return {
+		slot: route.slot,
+		fromLayer: route.fromLayer,
+		toLayer: route.toLayer,
+		strut: route.strut,
+		edges: route.edges.length,
+		edges2: route.edges2.length,
+		onLattice: joined(route.vertices, route.edges) && joined(route.vertices2, route.edges2),
+		shortest: hops(route.vertices[0], last(route.vertices)),
+		start: route.vertices[0],
+		end,
+		from: { x: at.x, y: at.y },
+		arrive: run.arriveAfter,
+		t0: run.t0,
+	};
+};
+/** What a touch at a point should find: the nearest vertex, the nearest empty star, and the vertex nearest it. */
+const EXPECT = ([x, y]) => {
+	const { hooks } = window.__cellestial.sky;
+	const slot = hooks.nearestEmptyStar(x, y);
+	return {
+		start: hooks.lattice.nearestVertex(x, y).vertex,
+		slot,
+		end: slot ? hooks.lattice.nearestVertexToStar(slot).vertex : -1,
+	};
+};
+/** The point of empty sky nearest a place given as fractions of the viewport. */
+const EMPTY_NEAR = ([fx, fy]) => {
+	for (let ring = 0; ring < 12; ring++) {
+		for (let a = 0; a < (ring === 0 ? 1 : 12); a++) {
+			const x = Math.round(innerWidth * fx + ring * 14 * Math.cos((a * Math.PI) / 6));
+			const y = Math.round(innerHeight * fy + ring * 14 * Math.sin((a * Math.PI) / 6));
+			if (document.elementFromPoint(x, y)?.id === 'sky-canvas') return [x, y];
+		}
+	}
+	return null;
+};
+const CLAIMED = () => {
+	const { claims } = window.__cellestial;
+	return { lit: claims.all().size, picked: claims.picked() };
+};
+
+if (only.has('beads')) {
+	for (const size of ['desk', 'phone']) {
+		log(`THE BEADS (B8), ${size === 'desk' ? '1440x900, clicks' : '390x844, taps'}`);
+		const view = await open(size);
+		const { page } = view;
+		const vp = SIZES[size].viewport;
+		const press = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		const pulsing = () => page.evaluate(() => window.__cellestial.sky.answer.pulsing());
+
+		// At three stations, a touch at three places.
+		const places = [
+			[0.12, 0.8],
+			[0.85, 0.3],
+			[0.55, 0.7],
+		];
+		let allOk = true;
+		const told = [];
+		for (let k = 0; k < 3; k++) {
+			const [x, y] = await page.evaluate(EMPTY_NEAR, places[k]);
+			const want = await page.evaluate(EXPECT, [x, y]);
+			await press(x, y);
+			await sleep(60);
+			const r = await page.evaluate(ROUTE);
+			const ok =
+				r &&
+				r.onLattice &&
+				r.shortest === r.edges &&
+				r.start === want.start &&
+				r.end === want.end &&
+				r.slot === want.slot &&
+				Math.hypot(r.from.x - x, r.from.y - y) < 1;
+			allOk &&= Boolean(ok);
+			await sleep((r?.arrive ?? 1) * 1000 + 250);
+			const now = await pulsing();
+			allOk &&= now === want.slot;
+			const here = (await view.state()).coord;
+			told.push(`layer ${Math.round(here)}: ${r?.edges} edges (shortest ${r?.shortest}) to ${r?.slot} in ${f2(r?.arrive)} s`);
+			if (k < 2) {
+				await view.holdUntil('ArrowDown', here + 0.6);
+				await view.rest();
+				await sleep(200);
+			}
+		}
+		check(
+			'a touch on empty sky sends beads from the finger, along edges of the honeycomb, by a shortest walk, from the vertex nearest the finger to the vertex nearest the nearest empty star; on arrival that star pulses',
+			allOk,
+			told.join('; '),
+		);
+		const none = await page.evaluate(CLAIMED);
+		check('and nothing is claimed or picked by it', none.lit === 0 && none.picked === null);
+		const wasPulsing = await pulsing();
+		await page.keyboard.press('ArrowDown');
+		await sleep(150);
+		check('flying on ends the pulse', wasPulsing !== null && (await pulsing()) === null);
+		await view.rest();
+		await sleep(200);
+
+		// A second touch while the first run is still going.
+		const a = await page.evaluate(EMPTY_NEAR, [0.1, 0.82]);
+		const b = await page.evaluate(EMPTY_NEAR, [0.9, 0.28]);
+		await press(...a);
+		await sleep(120);
+		const first = await page.evaluate(ROUTE);
+		const wantB = await page.evaluate(EXPECT, b);
+		await press(...b);
+		await sleep(60);
+		const second = await page.evaluate(ROUTE);
+		await sleep((second?.arrive ?? 1) * 1000 + 300);
+		check(
+			'a new touch replaces the run in progress',
+			first && second && second.t0 > first.t0 && second.start === wantB.start && (await pulsing()) === wantB.slot,
+			`the first run was ${f2((second?.t0 ?? 0) - (first?.t0 ?? 0))} s old`,
+		);
+
+		// A touch on a star.
+		const star = await page.evaluate(() => {
+			const { hooks } = window.__cellestial.sky;
+			const figure = hooks.flight().figure;
+			const s = hooks.layout().plans[figure].stars.find((q) => q.slot && hooks.starCircle(q.slot));
+			return { slot: s.slot, ...hooks.starCircle(s.slot) };
+		});
+		await page.evaluate(() => window.__cellestial.sky.answer.clear());
+		await press(star.x, star.y);
+		await sleep(80);
+		const onStar = await page.evaluate(() => ({
+			run: window.__cellestial.sky.answer.run() !== null,
+			pulsing: window.__cellestial.sky.answer.pulsing(),
+			picked: window.__cellestial.claims.picked(),
+		}));
+		check('a touch on a star sends no beads (it picks the star)', !onStar.run && onStar.pulsing === null && onStar.picked === star.slot);
+		await page.keyboard.press('Escape');
+		await sleep(100);
+
+		// A touch in fast flight.
+		if (size === 'desk') {
+			await page.mouse.move(720, 450);
+			await wheelFor(view, 2600, 100);
+		} else {
+			// Five swipes up the screen, as a thumb makes them.
+			const cdp = await view.ctx.newCDPSession(page);
+			for (let i = 0; i < 5; i++) {
+				const touch = (type, y) =>
+					cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x: 195, y }] });
+				await touch('touchStart', 640);
+				for (let n = 1; n <= 8; n++) {
+					await touch('touchMove', 640 - n * 45);
+					await sleep(20);
+				}
+				await touch('touchEnd', 0);
+				await sleep(160);
+			}
+			await cdp.detach();
+		}
+		const before = await view.state();
+		const p = [Math.round(0.2 * vp.width), Math.round(0.75 * vp.height)];
+		await press(...p);
+		await sleep(50);
+		const after = await view.state();
+		const flown = await page.evaluate(ROUTE);
+		check(
+			'a touch in flight stops it dead and the beads set off from the finger',
+			Math.abs(before.vel) > 1 && after.vel === 0 && flown && Math.hypot(flown.from.x - p[0], flown.from.y - p[1]) < 1 && flown.onLattice,
+			`speed ${f2(before.vel)} before, ${f2(after.vel)} after, at layer ${f2(after.coord)}; ${flown?.edges}${flown?.strut >= 0 ? ` + a strut + ${flown.edges2}` : ''} edges to ${flown?.slot}`,
+		);
+		await view.close();
+
+		// Every star of the layer in front lit.
+		const lit = await open(size, {
+			init: () => {
+				// Virgo's twelve claimable stars.
+				const wait = setInterval(() => {
+					const sky = window.__cellestial?.sky;
+					if (!sky?.hooks) return;
+					clearInterval(wait);
+				}, 5);
+				const slots = JSON.parse(sessionStorage.getItem('test:virgo') ?? '[]');
+				if (slots.length > 0) {
+					localStorage.setItem('cellestial:claims', JSON.stringify(slots.map((slot) => ({ slot, ask: 'A site for my bakery.' }))));
+				}
+			},
+		});
+		const virgo = await lit.page.evaluate(() => window.__cellestial.sky.hooks.layout().plans[0].stars.filter((q) => q.slot).map((q) => q.slot));
+		await lit.page.evaluate((slots) => sessionStorage.setItem('test:virgo', JSON.stringify(slots)), virgo);
+		await lit.page.reload({ waitUntil: 'networkidle' });
+		await lit.page.waitForFunction(() => window.__cellestial?.sky?.hooks);
+		await lit.page.evaluate(() => window.__cellestial.sky.ready);
+		await sleep(900);
+		const q = await lit.page.evaluate(EMPTY_NEAR, [0.3, 0.72]);
+		await (size === 'desk' ? lit.page.mouse.click(...q) : lit.page.touchscreen.tap(...q));
+		await sleep(60);
+		const far = await lit.page.evaluate(ROUTE);
+		await sleep((far?.arrive ?? 1) * 1000 + 300);
+		const farPulse = await lit.page.evaluate(() => window.__cellestial.sky.answer.pulsing());
+		check(
+			'with every star of the layer in front lit, the beads cross by a strut to the nearest empty star of the next layer',
+			far && far.toLayer === far.fromLayer + 1 && far.strut >= 0 && far.onLattice && farPulse === far.slot,
+			`${virgo.length} stars lit; ${far?.edges} edges, the strut at vertex ${far?.strut}, ${far?.edges2} edges, to ${far?.slot} in ${f2(far?.arrive)} s`,
+		);
+		await lit.close();
+		log();
+	}
 }
 
 for (const b of Object.values(browsers)) await b.close();

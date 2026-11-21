@@ -14,6 +14,7 @@ import BrassButton from '../ui/BrassButton.astro';
 
 <canvas id="sky-canvas" aria-hidden="true"></canvas>
 <div id="sky-ui" role="region" aria-label="The Sky" tabindex="-1">
+	<p class="sky-claim" data-claim-words hidden>claim yours</p>
 	<div class="sky-exit">
 		<BrassButton data-descend hidden>See what holds up the sky</BrassButton>
 	</div>
@@ -84,6 +85,37 @@ import BrassButton from '../ui/BrassButton.astro';
 	#sky-ui .sky-star:focus-visible {
 		outline: 2px solid var(--color-brass-hi, #d5ae88);
 		outline-offset: 3px;
+	}
+
+	/* B9: the words under the star the beads reached. The scene keeps them
+	   under the star (transform) and breathes them with it (--pulse, 0 to 1). */
+	#sky-ui .sky-claim {
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 4px 8px;
+		translate: -50% 0;
+		color: var(--color-brass-text);
+		font-family: var(--font-sans);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		line-height: 1.2;
+		letter-spacing: 0.06em;
+		white-space: nowrap;
+		opacity: calc(0.78 + 0.22 * var(--pulse, 1));
+		text-shadow:
+			0 0 calc(3px + 7px * var(--pulse, 1))
+			color-mix(in srgb, var(--color-brass-hi) calc((0.3 + 0.5 * var(--pulse, 1)) * 100%), transparent);
+		cursor: pointer;
+		pointer-events: auto;
+		user-select: none;
+		-webkit-user-select: none;
+		-webkit-tap-highlight-color: transparent;
+		will-change: transform, opacity;
+	}
+	#sky-ui .sky-claim[hidden] {
+		display: none;
 	}
 
 	/* B11: bottom centre. The button is centred by its row, not by a transform,

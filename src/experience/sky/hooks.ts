@@ -7,6 +7,7 @@
 
 import type { PerspectiveCamera, Scene } from 'three';
 import type { ClaimsStore, ScreenCircle, SkyScene, SlotId } from '../contracts.ts';
+import type { Answer } from './answer.ts';
 import type { FlightMode } from './flight.ts';
 import type { Honeycomb, LatticePath } from './lattice.ts';
 import type { Camera, Layout, Projected } from './layout.ts';
@@ -44,6 +45,10 @@ export interface SkyEvents {
 	 * 'focus' with slot null: part B decides what those close.)
 	 */
 	dismiss: { reason: 'flight' | 'inactive' | 'reset' | 'fall' };
+	/** The flight has come to rest on a station by itself (a glide ran out). Not fired by a tap's dead stop. */
+	rest: { layer: number; figure: number };
+	/** The stage has handed the sky to the visitor, or taken it back (setActive). */
+	active: { on: boolean };
 	/** The camera is at, or has just flown through, a layer's station. */
 	station: { layer: number; figure: number };
 	/** All twelve figures have been at their stations. Fired once per page. */
@@ -77,10 +82,14 @@ export interface LatticeHooks {
 	nearestVertexToStar(slot: SlotId): LatticeNode | null;
 	/** A shortest walk along the edges of a plane, from one vertex to another. */
 	path(from: number, to: number): LatticePath | null;
-	/** Light one edge of one layer's plane for a moment (about half a second). `strength` 0..1. */
-	pulseEdge(layer: number, edge: number, strength?: number): void;
+	/**
+	 * Light one edge of one layer's plane for a moment (about half a second). `strength` 0..1.
+	 * `at` is the clock time the light begins (now, if left out): a caller that is told of
+	 * the time late, as under a pinned clock, can still light the edge when it was passed.
+	 */
+	pulseEdge(layer: number, edge: number, strength?: number, at?: number): void;
 	/** The same for the strut from `vertex` of `layer` to the same vertex of `layer + 1`, if it has one. */
-	pulseStrut(layer: number, vertex: number, strength?: number): void;
+	pulseStrut(layer: number, vertex: number, strength?: number, at?: number): void;
 }
 
 export interface SkyHooks {
@@ -109,6 +118,14 @@ export interface SkyHooks {
 	nearestEmptyStar(x: number, y: number): SlotId | null;
 	/** Extra light on one star, 0..1: its rim brightens and it swells a little. For the B9 pulse. */
 	setStarGlow(slot: SlotId, level: number): void;
+
+	/**
+	 * Pick a star as a click on its button does: an empty one is remembered (or takes the
+	 * waiting ask), a lit one is flown to. For the words under a pulsing star.
+	 */
+	pick(slot: SlotId): void;
+	/** True while the visitor has the sky (setActive) and it is not falling or fallen. */
+	isActive(): boolean;
 
 	/** The star the camera has closed in on (focusStar), or null. */
 	focused(): SlotId | null;
@@ -170,4 +187,6 @@ export interface SkyInternals extends SkyScene {
 	/** Null when the sky could not start (no WebGL). */
 	readonly hooks: SkyHooks | null;
 	readonly debug: SkyDebug | null;
+	/** The beads, the pulse and the words (answer.ts). */
+	readonly answer: Answer | null;
 }

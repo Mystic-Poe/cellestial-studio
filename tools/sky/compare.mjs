@@ -23,6 +23,11 @@
 //                             introProgress at 0, 0.3, 0.5, 0.7, 0.85 and 1, then reset().
 //                             Prints the core's circle at each and how many pixels differ
 //                             between introProgress(1) and reset() (must be 0).
+//   beads-desk.jpg, -phone    (--only beads) a touch at three places, at three stations: the
+//                             beads at five moments from the touch until after they arrive,
+//                             cropped to their route, and the route itself drawn over the
+//                             honeycomb (green) to show that the beads keep to its edges.
+//                             Prints, for each bead in each frame, how far it is from the route.
 //   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
@@ -446,6 +451,163 @@ if (only.has('handoff')) {
 	}
 	await sheet('handoff.jpg', cells.slice(0, 7), 4);
 	await sheet('handoff-phone.jpg', cells.slice(7), 7);
+}
+
+// ──────────────────────────────────────────────────────── the beads ──
+
+/** A rectangle of a screenshot (CSS pixels), fitted into a cell. */
+async function cut(png, scale, box, w, h) {
+	const meta = await sharp(png).metadata();
+	const left = Math.max(0, Math.round(box.x * scale));
+	const top = Math.max(0, Math.round(box.y * scale));
+	const width = Math.min(meta.width - left, Math.round(box.w * scale));
+	const height = Math.min(meta.height - top, Math.round(box.h * scale));
+	const part = await sharp(png).extract({ left, top, width, height }).png().toBuffer();
+	return fit(part, w, h);
+}
+
+if (only.has('beads')) {
+	// A station, and where on the screen the touch lands (fractions of the viewport).
+	const CASES = [
+		[0, 0.12, 0.8],
+		[3, 0.85, 0.2],
+		[7, 0.6, 0.62],
+	];
+	for (const size of ['desk', 'phone']) {
+		let view = await open(size);
+		const vp = SIZES[size].viewport;
+		const cells = [];
+		const CW = size === 'desk' ? 258 : 190;
+		const CH = size === 'desk' ? 200 : 250;
+		// Last, Virgo with every one of its stars lit: the beads must go on to Libra.
+		const virgo = await view.page.evaluate(() =>
+			window.__cellestial.sky.hooks
+				.layout()
+				.plans[0].stars.filter((s) => s.slot)
+				.map((s) => s.slot),
+		);
+		for (const [station, fx, fy, full] of [...CASES, [0, 0.3, 0.72, true]]) {
+			if (full) {
+				await view.close();
+				view = await open(size, virgo);
+			}
+			await view.at(station, 2);
+			const x = Math.round(fx * vp.width);
+			const y = Math.round(fy * vp.height);
+			const run = await view.page.evaluate(
+				([px, py]) => {
+					const { sky } = window.__cellestial;
+					const route = sky.answer.touch(px, py);
+					if (!route) return null;
+					const r = sky.answer.run();
+					const screen = route.points.map((p) => {
+						const q = sky.hooks.project(p.x, p.y, -p.layer * sky.debug.stats().spacing);
+						return [q.x, q.y];
+					});
+					return {
+						slot: route.slot,
+						edges: route.edges.length,
+						edges2: route.edges2.length,
+						strut: route.strut,
+						arrive: r.arriveAfter,
+						end: r.endAfter,
+						screen,
+						star: sky.hooks.starCircle(route.slot),
+					};
+				},
+				[x, y],
+			);
+			if (!run) throw new Error(`no route at station ${station}`);
+			// The frame's crop: the whole route, with room round it.
+			const xs = run.screen.map((p) => p[0]);
+			const ys = run.screen.map((p) => p[1]);
+			const pad = size === 'desk' ? 70 : 45;
+			let box = {
+				x: Math.min(...xs) - pad,
+				y: Math.min(...ys) - pad,
+				w: Math.max(...xs) - Math.min(...xs) + 2 * pad,
+				h: Math.max(...ys) - Math.min(...ys) + 2 * pad,
+			};
+			// Keep the cell's shape, so every frame of a row is cut alike.
+			const want = CW / CH;
+			if (box.w / box.h < want) {
+				const w = box.h * want;
+				box = { ...box, x: box.x - (w - box.w) / 2, w };
+			} else {
+				const h = box.w / want;
+				box = { ...box, y: box.y - (h - box.h) / 2, h };
+			}
+			box.x = Math.max(0, Math.min(vp.width - box.w, box.x));
+			box.y = Math.max(0, Math.min(vp.height - box.h, box.y));
+			box.w = Math.min(box.w, vp.width);
+			box.h = Math.min(box.h, vp.height);
+			const k = Math.min(CW / box.w, CH / box.h);
+			let worst = 0;
+			let overlaid = null;
+			for (const u of [0.12, 0.4, 0.7, 1, 'after']) {
+				const dt = u === 'after' ? run.arrive + 0.3 : run.arrive * u - (u === 1 ? 0.004 : 0);
+				const beads = await view.page.evaluate(
+					(d) =>
+						new Promise((done) => {
+							const { sky } = window.__cellestial;
+							sky.debug.setClock(2 + d);
+							const at = sky.answer.beads.screen();
+							requestAnimationFrame(() => requestAnimationFrame(() => done(at)));
+						}),
+					dt,
+				);
+				// How far each bead is from the route's polyline, pixels.
+				for (const b of beads) {
+					let best = Infinity;
+					for (let i = 1; i < run.screen.length; i++) {
+						const [ax, ay] = run.screen[i - 1];
+						const [bx, by] = run.screen[i];
+						const dx = bx - ax;
+						const dy = by - ay;
+						const len2 = dx * dx + dy * dy;
+						const t = len2 > 0 ? Math.max(0, Math.min(1, ((b.x - ax) * dx + (b.y - ay) * dy) / len2)) : 0;
+						best = Math.min(best, Math.hypot(b.x - ax - dx * t, b.y - ay - dy * t));
+					}
+					worst = Math.max(worst, best);
+				}
+				const png = await view.page.screenshot({ type: 'png' });
+				const img = await cut(png, view.scale, box, CW, CH);
+				cells.push({
+					img,
+					w: CW,
+					h: CH,
+					caption:
+						u === 'after'
+							? 'arrived +0.3 s'
+							: `${full ? 'all lit' : NAMES[station]} ${dt.toFixed(2)} s${u === 1 ? ' (arrives)' : ''}`,
+				});
+				if (u === 0.7) {
+					// The same frame with the route drawn over it.
+					const ox = (CW - box.w * k) / 2;
+					const oy = (CH - box.h * k) / 2;
+					const pts = run.screen
+						.map(([px, py]) => `${(ox + (px - box.x) * k).toFixed(1)},${(oy + (py - box.y) * k).toFixed(1)}`)
+						.join(' ');
+					const svg = Buffer.from(
+						`<svg xmlns="http://www.w3.org/2000/svg" width="${CW}" height="${CH}"><polyline points="${pts}" fill="none" stroke="#5fd08a" stroke-width="1" stroke-opacity="0.9"/></svg>`,
+					);
+					overlaid = await sharp(img).composite([{ input: svg }]).png().toBuffer();
+				}
+			}
+			const walk = run.strut >= 0 ? `${run.edges} edges, a strut, ${run.edges2}` : `${run.edges} edges`;
+			cells.push({ img: overlaid, w: CW, h: CH, caption: `the route: ${walk}` });
+			console.log(
+				`[${size}] ${(full ? 'Virgo, all lit' : NAMES[station]).padEnd(14)} touch at ${x}, ${y}: ${walk} to ${run.slot}, head arrives ${run.arrive.toFixed(2)} s, last bead ${run.end.toFixed(2)} s; no bead is more than ${worst.toFixed(2)} px off the route`,
+			);
+			if (worst > 0.6) errors++;
+			await view.page.evaluate(() => {
+				window.__cellestial.sky.answer.clear();
+				window.__cellestial.sky.debug.setClock(2);
+			});
+		}
+		await view.close();
+		await sheet(`beads-${size}.jpg`, cells, 6);
+	}
 }
 
 // ───────────────────────────────────────────────────────── the fall ──
