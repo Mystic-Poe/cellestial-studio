@@ -15,6 +15,12 @@
 //   short.jpg                  (--only short) the short version of a same-session return,
 //                              both sizes, at 0.05, 0.35, 0.6, 0.9, 1.2, 1.5, 1.9 s
 //
+// The times on the sheets are seconds of the script, which for the full
+// version are seconds of the reference video: the build frozen at 3.67 is set
+// beside the reference's frame at 3.67. In real time the build plays that
+// script at FULL_TEMPO (6.2 s in 5.6 s, every beat scaled alike), so each
+// caption also gives the moment on the visitor's clock.
+//
 // --frames keeps every captured frame as a PNG in that folder too.
 // --big --times 3.0,3.33,4.25 [--out <dir>] is for looking closely: the
 //   reference pulled from the video itself at full size (ffmpeg), three pairs
@@ -28,6 +34,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { chromium } from 'playwright-core';
 import sharp from 'sharp';
+import { FULL_TEMPO } from '../../src/experience/loader/timeline.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 let OUT = join(ROOT, 'refs/loading/compare');
@@ -112,6 +119,9 @@ const label = (text, w) =>
 		`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="20"><rect width="100%" height="100%" fill="#181818"/><text x="6" y="15" font-family="monospace" font-size="13" fill="#e8e8e8">${text}</text></svg>`,
 	);
 
+/** A second of the script as the visitor's clock shows it. */
+const onClock = (t) => `${(t / FULL_TEMPO).toFixed(2)} s on the clock`;
+
 const refFrame = (t) => join(REF, `f_${String(Math.round(t * 12) + 1).padStart(3, '0')}.jpg`);
 
 async function sheet(name, w, h, parts) {
@@ -141,7 +151,7 @@ if (only.has('desk')) {
 		for (const [i, { t, png }] of group.entries()) {
 			const x = (i % 2) * (pairW + 8);
 			const y = Math.floor(i / 2) * rowH;
-			parts.push({ input: label(`${t.toFixed(2)} s   reference | build 1440x900`, pairW), left: x, top: y });
+			parts.push({ input: label(`${t.toFixed(2)} s  reference | build 1440x900, ${onClock(t)}`, pairW), left: x, top: y });
 			parts.push({ input: await sharp(refFrame(t)).resize(RW, RH).toBuffer(), left: x, top: y + 20 });
 			parts.push({ input: await sharp(png).resize(BW, RH).toBuffer(), left: x + RW + 4, top: y + 20 });
 		}
@@ -159,7 +169,7 @@ if (only.has('phone')) {
 		const parts = [];
 		for (const [i, { t, png }] of group.entries()) {
 			const x = i * (CW + 4);
-			parts.push({ input: label(`${t.toFixed(2)} s`, CW), left: x, top: 0 });
+			parts.push({ input: label(`${t.toFixed(2)} s (${(t / FULL_TEMPO).toFixed(2)} on the clock)`, CW), left: x, top: 0 });
 			parts.push({ input: await sharp(refFrame(t)).resize(CW, RH).toBuffer(), left: x, top: 20 });
 			parts.push({ input: await sharp(png).resize(CW, PH).toBuffer(), left: x, top: 20 + RH + 4 });
 		}

@@ -8,7 +8,11 @@
 //
 //   full        a first visit                       must be 6.0 to 8.0 s
 //   short       the same tab, reloaded              the short version
-//   skip        a click one second in               the hand-off only
+//   skip        a click one second in               the hand-off only: it ends 1.0 to 2.4 s after
+//                                                   the click, or after the sky is ready if that is
+//                                                   later (on a slow line the sky is still on its
+//                                                   way at one second, and there is nothing to
+//                                                   hand over to until it has come)
 //   quiet-keys  Tab, Shift, Control, Alt, Meta at 1 s: must not skip (same length as full)
 //   key         the "a" key one second in           skips
 //   broken      one picture answers 404             must still end (one run per picture)
@@ -17,7 +21,14 @@
 //   no-sky      the sky's script fails to load      must fade out by itself after the wordmark
 //   late-sky    the sky's script takes 30 s         must hold the wordmark at most 6 s, then go
 //
-// --throttle 4 slows the CPU four times (Chrome DevTools) for the frame times.
+// --throttle 4 slows the CPU four times (Chrome DevTools). --net slow4g puts
+// the page on a slow line (1.6 Mbit/s down, 750 kbit/s up, 150 ms each way:
+// Lighthouse's "slow 4G"). --gpu uses the real GPU. All the rules must hold
+// unslowed, with --throttle 4, and with --net slow4g.
+//
+// The times follow the loader's plan (src/experience/loader/timeline.ts): the
+// full version's 6.2 s of script are played in 5.6 s (FULL_TEMPO), then the
+// 1.5 s hand-off: 7.1 s when nothing is late.
 //
 // Also prints the frame times of each run (average and 95th percentile, ms).
 // Exits non-zero if a rule is broken.
@@ -31,6 +42,8 @@ const { values } = parseArgs({
 		size: { type: 'string', default: 'desk' },
 		only: { type: 'string' },
 		throttle: { type: 'string' },
+		net: { type: 'string' },
+		gpu: { type: 'boolean', default: false },
 	},
 });
 const only = values.only ? new Set(values.only.split(',')) : null;
@@ -41,7 +54,7 @@ const SIZES = {
 
 const INIT = `
 	(() => {
-		const m = (window.__m = { mount: null, done: null, frames: [] });
+		const m = (window.__m = { mount: null, done: null, sky: null, frames: [] });
 		const seen = () => {
 			const el = document.getElementById('loader');
 			if (m.mount === null && el && el.classList.contains('is-live')) {
@@ -65,10 +78,19 @@ const INIT = `
 			clearInterval(wait);
 			loader.done.then(() => { m.done = performance.now(); });
 		}, 5);
+		const waitSky = setInterval(() => {
+			const sky = window.__cellestial && window.__cellestial.sky;
+			if (!sky) return;
+			clearInterval(waitSky);
+			sky.ready.then(() => { m.sky = performance.now(); }, () => {});
+		}, 5);
 	})();
 `;
 
-const browser = await chromium.launch({ executablePath: '/usr/bin/chromium' });
+const browser = await chromium.launch({
+	executablePath: '/usr/bin/chromium',
+	args: values.gpu ? ['--use-gl=angle', '--use-angle=gl', '--ignore-gpu-blocklist', '--enable-gpu'] : [],
+});
 let failed = 0;
 const results = [];
 
@@ -80,9 +102,18 @@ async function open(extraInit) {
 	page.on('pageerror', (e) => errors.push(e.message));
 	if (extraInit) await page.addInitScript(extraInit);
 	await page.addInitScript(INIT);
-	if (values.throttle) {
+	if (values.throttle || values.net) {
 		const cdp = await context.newCDPSession(page);
-		await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(values.throttle) });
+		if (values.throttle) await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(values.throttle) });
+		if (values.net === 'slow4g') {
+			await cdp.send('Network.enable');
+			await cdp.send('Network.emulateNetworkConditions', {
+				offline: false,
+				latency: 150,
+				downloadThroughput: (1.6 * 1024 * 1024) / 8,
+				uploadThroughput: (750 * 1024) / 8,
+			});
+		}
 	}
 	return { context, page, errors };
 }
@@ -94,6 +125,7 @@ async function result(page, timeout = 25000) {
 		const f = m.frames.slice().sort((a, b) => a - b);
 		return {
 			seconds: (m.done - m.mount) / 1000,
+			sky: m.sky === null ? null : (m.sky - m.mount) / 1000,
 			avg: f.reduce((a, b) => a + b, 0) / (f.length || 1),
 			p95: f[Math.floor(f.length * 0.95)] ?? 0,
 			frames: f.length,
@@ -111,6 +143,13 @@ function report(name, r, rule, ok, errors = []) {
 	if (!ok) failed++;
 	results.push({ name, ...r, ok });
 }
+
+/** A skip one second in: it ends 1.0 to 2.4 s after the skip, or after the sky is ready if that is later. */
+const skipped = (r) => {
+	const since = r.seconds - Math.max(1, r.sky ?? 0);
+	return since > 1 && since < 2.4;
+};
+const skipRule = (r) => `the hand-off only; the sky was ready at ${r.sky === null ? '?' : r.sky.toFixed(2)} s`;
 
 const want = (name) => !only || only.has(name);
 const home = `${values.url}/?debug`;
@@ -141,7 +180,7 @@ if (want('skip')) {
 	await page.waitForTimeout(600);
 	await page.keyboard.press('Enter');
 	const r = await result(page);
-	report('skip at 1 s (tap)', r, '1 s + settle + hand-off', r.seconds > 2.4 && r.seconds < 3.4 && ended(r) && !errors.length, errors);
+	report('skip at 1 s (tap)', r, skipRule(r), skipped(r) && ended(r) && !errors.length, errors);
 	await context.close();
 }
 
@@ -152,7 +191,7 @@ if (want('key')) {
 	await page.waitForTimeout(1000);
 	await page.keyboard.press('a');
 	const r = await result(page);
-	report('skip at 1 s (key a)', r, '1 s + settle + hand-off', r.seconds > 2.4 && r.seconds < 3.4 && ended(r) && !errors.length, errors);
+	report('skip at 1 s (key a)', r, skipRule(r), skipped(r) && ended(r) && !errors.length, errors);
 	await context.close();
 }
 
@@ -218,7 +257,8 @@ if (want('late-sky')) {
 	});
 	await page.goto(home);
 	const r = await result(page);
-	report('sky 30 s late', r, 'holds at most 6 s, then goes', r.overlay === 'none' && r.seconds > 12 && r.seconds < 13.5);
+	// 5.6 s of script, 6 s of waiting, 0.4 s of fading: about 12.0 s, and more on a slow device.
+	report('sky 30 s late', r, 'holds at most 6 s, then goes', r.overlay === 'none' && r.seconds > 11.6 && r.seconds < 13.5);
 	await context.close();
 }
 

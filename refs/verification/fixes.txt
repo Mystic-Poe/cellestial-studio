@@ -51,3 +51,51 @@ look 6 (MAJOR) — A5: the star's pieces never became the rings.  FIXED.
   desktop: brass pieces leave the star, circle the core on three ellipses with brass trails, the rings come
   up under them; the word is brass until it is gone. Not yet re-measured in real time (the loader's timing
   is the next fix).
+
+code 2 (MAJOR) — the loader ran over 8 s on anything but a fast machine on a fast line.  FIXED.
+code 7, look 15 (MINOR) — a long frame half a second in, while the C powers up.  FIXED (moved, see below).
+  Reproduced: node tools/loader/measure.mjs: full 8.20 s FAIL; the walk's 8.2 s from navigation; long tasks
+  at 116 ms (177 ms) and 351 ms (377 ms) on the production build, 326 ms (294) and 867 ms (378) with the CPU
+  slowed 4x: the sky being mounted and its shaders warmed at boot.
+  Why: 6.2 s of script + 1.5 s of hand-off = 7.7 s with nothing going wrong, and every disturbance only added
+  (a stalled frame counted for 80 ms at most, the wait for the pictures was not counted, the wordmark held
+  for the sky).
+  Done, in src/experience/loader/timeline.ts and index.ts:
+  - The timeline is SCALED, not cut. Every time in the script is still a second of the reference video; the
+    full version is played at a tempo of 6.2 / 5.6 = 1.107 (FULL_TEMPO), so its 6.2 s take 5.6 s on the
+    clock, every beat alike. With the 1.5 s hand-off: 7.1 s when nothing is late.
+  - Real waiting counts. The loader keeps the time its picture has really been on screen, the server's own
+    unlit C before the script arrived included (from the browser's first paint, 1 s at most). A run that is
+    behind may end 0.4 s past the plan (7.5 s); then the hand-off is played faster, down to 1.1 s; then the
+    script itself is hurried, by 35% at most. The finished wordmark still waits for a sky that is not ready
+    (6 s at most), in real seconds.
+  - Never under 6.0 s from the mount on a full play: the hand-off is lengthened, and the fade without a sky
+    held back, if the run would otherwise end sooner.
+  - The sky's heavy start is no longer at boot. Its script and its four pictures are fetched from the first
+    moment (the line is used while the loader plays), but it is MOUNTED at the loader's one still moment:
+    script second 1.92, when the power-up has run, the lines have cooled to blue and nothing on screen moves
+    (LoaderScene.quiet, optional in the contract; main.ts waits for it). The stall now holds a picture that
+    was standing still, about 3.5 s before the hand-off. A skip, the short version, a frozen loader and a
+    loader that ends let the sky start at once.
+  Checked, tools/loader/measure.mjs (it now takes --net slow4g and --gpu; its rule for the late sky follows
+  the scaled plan, 5.6 + 6 + 0.4 s; its rule for a skip is "1.0 to 2.4 s after the skip, or after the sky
+  is ready if that is later", because on a slow line the sky has not arrived one second in):
+    dev server, real GPU, 1440x900, all 13 runs OK: full 7.47 s (7.12 on a second run), short 3.56,
+      skip by tap 2.84, by key 2.84, Tab and modifiers 7.14, resize 7.11, storage blocked 7.12, four 404s
+      end at once, no sky 6.06 (ends on the Roots), sky 30 s late 11.99.
+    dev server, phone profile, CPU slowed 4x, all 13 OK: full 7.62, short 3.70, skips 3.12 / 3.09, 7.44,
+      7.28, 7.46, no sky 6.17, late sky 12.08.
+    production build (pnpm build, astro preview), phone profile, real GPU:
+      unslowed                    full 7.55   short 3.56   skip 2.79   Tab 7.20
+      CPU 4x                      full 7.62   short 3.77   skip 3.13   Tab 7.49
+      slow 4G                     full 7.30   short 3.70   skip 4.77 (sky ready at 3.33)   Tab 7.29
+      CPU 4x and slow 4G          full 7.53   short 3.82   skip 5.06 (sky ready at 3.76)   Tab 7.50
+    (the same build before the change: 7.91 / 8.48 / 9.93 s, the first inspector's weight.txt.)
+  Long tasks after the change, production build, from navigation: unslowed one of 122 ms at 59 ms (boot),
+  then 226 ms at 1991 ms and 257 ms at 2233 ms (the sky, in the still moment); CPU 4x: nothing over 142 ms
+  in the first second, then 287 ms at 2085 ms and 377 ms at 2386 ms. The sky is on stage 7.68 s (7.71 s at
+  4x) after navigation.
+  The comparison sheets were rebuilt and looked at (refs/loading/compare/desk-1, desk-2, phone-1, phone-2,
+  a5-desk, a5-phone, short): frozen at a second of the script the build is set beside the reference's frame
+  at that second, as before, and every caption now also gives the moment on the visitor's clock
+  (script second / 1.107). The beats line up as they did.

@@ -31,6 +31,13 @@ export function keyed(keys: readonly (readonly [number, number])[], t: number): 
 
 export interface Script {
 	readonly mode: 'full' | 'short';
+	/**
+	 * Seconds of this script played in one second on the clock. Every time
+	 * below is a second of the script; for the full version that is a second of
+	 * the reference video, so a frame frozen at `t` is the reference's frame at
+	 * `t` whatever the tempo. The tempo is how fast the whole of it is played.
+	 */
+	readonly tempo: number;
 	/** A4 is complete: the finished wordmark, and the moment A5 may begin. */
 	readonly end: number;
 	/**
@@ -59,8 +66,17 @@ export interface Script {
 	readonly cool: readonly [number, number];
 }
 
+/**
+ * The full version is played a little faster than the reference: its 6.2 s in
+ * 5.6 s, every beat scaled alike and none cut. With the 1.5 s hand-off that is
+ * 7.1 s when nothing is late, which leaves the owner's rule (6 to 8 s, never
+ * under 6) room on both sides for a slow device and a slow line.
+ */
+export const FULL_TEMPO = 6.2 / 5.6;
+
 export const FULL: Script = {
 	mode: 'full',
+	tempo: FULL_TEMPO,
 	end: 6.2,
 	reveal: { start: 0.29, end: 1.65, hold: 1.36, gone: 1.92 },
 	lit: [1.98, 2.8],
@@ -108,6 +124,7 @@ export const FULL: Script = {
 /** A return visit in the same session: the C is already lit and in its place; one fast bolt writes the word. */
 export const SHORT: Script = {
 	mode: 'short',
+	tempo: 1,
 	end: 1.9,
 	reveal: null,
 	lit: null,
@@ -137,6 +154,18 @@ export const SHORT: Script = {
 
 /** A5, the hand-off to the sky, in seconds. */
 export const HANDOFF = 1.5;
+/** A run that is behind plays the hand-off faster, but never in less than this. */
+export const HANDOFF_MIN = 1.1;
+/** The full version, mount to done, never ends sooner than this (the owner's rule). */
+export const FLOOR = 6;
+/**
+ * How far past its plan a late run may end. The first of its lateness is
+ * simply let be, up to this; then the hand-off is played faster; then the
+ * script itself is hurried.
+ */
+export const LATE = 0.4;
+/** The most a late run hurries its script, as a multiple of its tempo. */
+export const HURRY_MAX = 1.35;
 /** The longest the finished wordmark waits for a sky that is not ready. */
 export const HOLD_MAX = 6;
 /** Then the overlay fades away by itself, over this long. */

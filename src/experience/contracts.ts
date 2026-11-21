@@ -81,6 +81,13 @@ export interface LoaderScene {
 	skip(): void;
 	/** Debug only: freeze the timeline at `t` seconds. */
 	seek(t: number): void;
+	/**
+	 * Optional. Resolves at the loader's one still moment: the power-up has run
+	 * and for an instant nothing on screen moves. Work that would stall a frame
+	 * (starting the sky) waits for it. Resolved from the start when the loader
+	 * does not play the power-up: the short version, a skip, a freeze, no loader.
+	 */
+	readonly quiet?: Promise<void>;
 }
 
 export interface SkyScene {
