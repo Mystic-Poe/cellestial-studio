@@ -1,0 +1,141 @@
+
+# WebGL unavailable (--disable-gpu --disable-software-rasterizer)
+     no WebGL, desk, first visit, /: webgl={"webgl2":false,"webgl":false}; 0.3s loading mean=6.5 black=88%; 1.0s roots mean=26.0 black=2%; 2.5s roots mean=26.6 black=2%; 5.0s roots mean=26.1 black=2%; 9.0s roots mean=26.7 black=2%; 13.0s roots mean=26.6 black=2%
+ok   no WebGL, desk, first visit, /: WebGL really is unavailable
+ok   no WebGL, desk, first visit, /: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, desk, first visit, /: not a black page — mean luminance 26.7, 2% black
+ok   no WebGL, desk, first visit, /: no loader left over the page, no sky buttons
+ok   no WebGL, desk, first visit, /: no "Return to the sky" button leading nowhere
+     no WebGL, desk, first visit, /: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, desk, first visit, /: every node opens its tile
+     no WebGL, desk, first visit, /: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, desk, first visit, /: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+     no WebGL, desk, reduced motion, /: webgl={"webgl2":false,"webgl":false}; 0.3s roots mean=24.2 black=3%; 1.0s roots mean=27.2 black=2%; 2.5s roots mean=27.2 black=2%; 5.0s roots mean=27.2 black=2%; 9.0s roots mean=27.2 black=2%; 13.0s roots mean=27.2 black=2%
+ok   no WebGL, desk, reduced motion, /: WebGL really is unavailable
+ok   no WebGL, desk, reduced motion, /: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, desk, reduced motion, /: not a black page — mean luminance 27.2, 2% black
+ok   no WebGL, desk, reduced motion, /: no loader left over the page, no sky buttons
+ok   no WebGL, desk, reduced motion, /: no "Return to the sky" button leading nowhere
+     no WebGL, desk, reduced motion, /: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, desk, reduced motion, /: every node opens its tile
+     no WebGL, desk, reduced motion, /: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, desk, reduced motion, /: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+     no WebGL, desk, /?scene=sky: webgl={"webgl2":false,"webgl":false}; 0.3s roots mean=23.4 black=3%; 1.0s roots mean=26.1 black=2%; 2.5s roots mean=26.7 black=2%; 5.0s roots mean=26.0 black=2%; 9.0s roots mean=26.5 black=2%; 13.0s roots mean=26.7 black=2%
+ok   no WebGL, desk, /?scene=sky: WebGL really is unavailable
+ok   no WebGL, desk, /?scene=sky: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, desk, /?scene=sky: not a black page — mean luminance 26.8, 2% black
+ok   no WebGL, desk, /?scene=sky: no loader left over the page, no sky buttons
+ok   no WebGL, desk, /?scene=sky: no "Return to the sky" button leading nowhere
+     no WebGL, desk, /?scene=sky: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, desk, /?scene=sky: every node opens its tile
+     no WebGL, desk, /?scene=sky: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, desk, /?scene=sky: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+     no WebGL, phone, first visit, /: webgl={"webgl2":false,"webgl":false}; 0.3s roots mean=0.0 black=100%; 1.0s roots mean=34.3 black=2%; 2.5s roots mean=35.4 black=2%; 5.0s roots mean=34.1 black=2%; 9.0s roots mean=35.4 black=2%; 13.0s roots mean=35.5 black=2%
+ok   no WebGL, phone, first visit, /: WebGL really is unavailable
+ok   no WebGL, phone, first visit, /: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, phone, first visit, /: not a black page — mean luminance 35.6, 2% black
+ok   no WebGL, phone, first visit, /: no loader left over the page, no sky buttons
+ok   no WebGL, phone, first visit, /: no "Return to the sky" button leading nowhere
+     no WebGL, phone, first visit, /: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, phone, first visit, /: every node opens its tile
+     no WebGL, phone, first visit, /: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, phone, first visit, /: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+     no WebGL, phone, reduced motion, /: webgl={"webgl2":false,"webgl":false}; 0.3s roots mean=35.2 black=2%; 1.0s roots mean=36.7 black=2%; 2.5s roots mean=36.7 black=2%; 5.0s roots mean=36.7 black=2%; 9.0s roots mean=36.7 black=2%; 13.0s roots mean=36.7 black=2%
+ok   no WebGL, phone, reduced motion, /: WebGL really is unavailable
+ok   no WebGL, phone, reduced motion, /: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, phone, reduced motion, /: not a black page — mean luminance 36.7, 2% black
+ok   no WebGL, phone, reduced motion, /: no loader left over the page, no sky buttons
+ok   no WebGL, phone, reduced motion, /: no "Return to the sky" button leading nowhere
+     no WebGL, phone, reduced motion, /: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, phone, reduced motion, /: every node opens its tile
+     no WebGL, phone, reduced motion, /: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, phone, reduced motion, /: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+     no WebGL, phone, /?scene=sky: webgl={"webgl2":false,"webgl":false}; 0.3s roots mean=29.7 black=2%; 1.0s roots mean=34.1 black=2%; 2.5s roots mean=35.6 black=2%; 5.0s roots mean=34.0 black=2%; 9.0s roots mean=35.1 black=2%; 13.0s roots mean=35.6 black=2%
+ok   no WebGL, phone, /?scene=sky: WebGL really is unavailable
+ok   no WebGL, phone, /?scene=sky: the page became the Roots — scene=roots noSky=true
+ok   no WebGL, phone, /?scene=sky: not a black page — mean luminance 35.7, 2% black
+ok   no WebGL, phone, /?scene=sky: no loader left over the page, no sky buttons
+ok   no WebGL, phone, /?scene=sky: no "Return to the sky" button leading nowhere
+     no WebGL, phone, /?scene=sky: tiles open after pressing each node: [["Site"],["Site + Systems"],["Site + App"],["Add-ons — AI + automation"],["Care"]]
+ok   no WebGL, phone, /?scene=sky: every node opens its tile
+     no WebGL, phone, /?scene=sky: menu offers ["What we build","Claim your star","Contact me"]
+     no WebGL, phone, /?scene=sky: console: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x2486, Sandboxed = no, Optimus  | THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.
+
+# JavaScript off
+ok   no JS, desk: no scene is set
+ok   no JS, desk: no loader, no sky canvas, no buttons that need script
+ok   no JS, desk: five tiles on the page, all visible
+ok   no JS, desk: in the spec's order — Site / Site + Systems / Site + App / Add-ons — AI + automation / Care
+ok   no JS, desk: each tile's text is the addendum's, character for character (spaces apart) — same | same | same | same | same
+ok   no JS, desk: one under another
+ok   no JS, desk: no sideways scroll — 1440 vs 1440
+ok   no JS, desk: two links to /contact — [{"text":"Claim your star","href":"/contact"},{"text":"Contact me","href":"/contact"}]
+ok   no JS, desk: the logo is there
+ok   no JS, desk: the first screen is not black — mean 21.3
+     no JS, desk: every link in the document: ["Skip to content → #main","studio → /","The Sky → /","What we build → #roots","Claim your star → /contact","Contact me → /contact","Claim your star → /contact","Contact me → /contact"]
+ok   no JS, desk: "Claim your star" leads to /contact — http://localhost:4611/contact
+ok   no JS, phone: no scene is set
+ok   no JS, phone: no loader, no sky canvas, no buttons that need script
+ok   no JS, phone: five tiles on the page, all visible
+ok   no JS, phone: in the spec's order — Site / Site + Systems / Site + App / Add-ons — AI + automation / Care
+ok   no JS, phone: each tile's text is the addendum's, character for character (spaces apart) — same | same | same | same | same
+ok   no JS, phone: one under another
+ok   no JS, phone: no sideways scroll — 390 vs 390
+ok   no JS, phone: two links to /contact — [{"text":"Claim your star","href":"/contact"},{"text":"Contact me","href":"/contact"}]
+ok   no JS, phone: the logo is there
+ok   no JS, phone: the first screen is not black — mean 24.7
+     no JS, phone: every link in the document: ["Skip to content → #main","studio → /","The Sky → /","What we build → #roots","Claim your star → /contact","Contact me → /contact","Claim your star → /contact","Contact me → /contact"]
+ok   no JS, phone: "Claim your star" leads to /contact — http://localhost:4611/contact
+
+# A script that never arrives
+ok   the page script (first chunk) is blocked: scene is null — null
+ok   the page script (first chunk) is blocked: not a black page — mean 21.3
+ok   the page script (first chunk) is blocked: five tiles on the page, all visible
+ok   the page script (first chunk) is blocked: in the spec's order — Site / Site + Systems / Site + App / Add-ons — AI + automation / Care
+ok   the page script (first chunk) is blocked: each tile's text is the addendum's, character for character (spaces apart) — same | same | same | same | same
+ok   the page script (first chunk) is blocked: one under another
+ok   the page script (first chunk) is blocked: no sideways scroll — 1440 vs 1440
+ok   the page script (first chunk) is blocked: two links to /contact — [{"text":"Claim your star","href":"/contact"},{"text":"Contact me","href":"/contact"}]
+ok   the page script (first chunk) is blocked: the logo is there
+     the page script (first chunk) is blocked: console: Failed to load resource: net::ERR_FAILED
+ok   the sky chunk is blocked: scene is roots — roots
+ok   the sky chunk is blocked: not a black page — mean 26.7
+     the sky chunk is blocked: console: Failed to load resource: net::ERR_FAILED | [cellestial] the sky could not start TypeError: Failed to fetch dynamically imported module: http://localhost:4611/_astro/sky.BrJ3uFy4.js
+ok   the roots chunk is blocked: scene is sky — sky
+     the roots chunk is blocked: console: Failed to load resource: net::ERR_FAILED | [cellestial] the roots could not start TypeError: Failed to fetch dynamically imported module: http://localhost:4611/_astro/roots.11zF3yU1.j
+ok   the roots chunk is blocked: the menu still reaches the Roots, tiles all readable — scene=roots
+ok   the fx chunk is blocked: scene is sky — sky
+     the fx chunk is blocked: console: Failed to load resource: net::ERR_FAILED | [cellestial] the fx could not start TypeError: Failed to fetch dynamically imported module: http://localhost:4611/_astro/fx.B67tH-rz.js
+ok   the fx chunk is blocked: the menu still reaches the Roots (plain fade) — scene=roots
+
+# prefers-reduced-motion: reduce
+ok   reduced motion, desk: the loader is never on screen in the first 1.2 s (state:mean luminance of each photograph) — none:0.0 none:2.0 none:4.0 none:5.0 none:5.0 none:5.0 none:5.0 none:5.0 none:5.0 none:5.0 none:5.0
+ok   reduced motion, desk: the page opens on the sky — scene=sky motion=off
+ok   reduced motion, desk: the exit button is already present, no round flown
+ok   reduced motion, desk: the scene was never "loading" — sky
+ok   reduced motion, desk: nothing of the loader was ever painted — IMG http://localhost:4611/cellestial/chrome/c-logo.webp | brass-btn http://localhost:4611/cellestial/ui/brass-dark.webp
+ok   reduced motion, desk: the sky is still at rest (animation frames in 3 s, running CSS animations) — 0 frames; none running
+ok   reduced motion, desk: the still sky is drawn, not black — mean 5.00
+ok   reduced motion, desk: wheel and keys do not fly — {"pos":-2.0324784488235967,"vel":0,"mode":"rest","coord":0,"figure":0} → {"pos":-2.0324784488235967,"vel":0,"mode":"rest","coord":0,"figure":0}
+ok   reduced motion, desk: down is a plain fade (scenes passed through) — roots
+ok   reduced motion, desk: the Roots are still at rest — 0 frames; none running
+ok   reduced motion, desk: a tile is simply there, 80 ms after the press — {"opacity":"1","transform":"none"}
+ok   reduced motion, desk: the menu's teleport is a plain fade — sky; fx canvas none/visible/1
+ok   reduced motion, desk: E6 is a plain fade — sky
+ok   reduced motion, desk: no console errors
+ok   reduced motion, phone: the loader is never on screen in the first 1.2 s (state:mean luminance of each photograph) — none:0.0 none:4.5 none:7.8 none:8.6 none:8.6 none:8.6 none:8.6 none:8.6 none:8.6 none:8.6 none:8.6
+ok   reduced motion, phone: the page opens on the sky — scene=sky motion=off
+ok   reduced motion, phone: the exit button is already present, no round flown
+ok   reduced motion, phone: the scene was never "loading" — sky
+ok   reduced motion, phone: nothing of the loader was ever painted — IMG http://localhost:4611/cellestial/chrome/c-logo.webp | brass-btn http://localhost:4611/cellestial/ui/brass-dark.webp
+ok   reduced motion, phone: the sky is still at rest (animation frames in 3 s, running CSS animations) — 0 frames; none running
+ok   reduced motion, phone: the still sky is drawn, not black — mean 8.63
+ok   reduced motion, phone: wheel and keys do not fly — {"pos":-3.6484355431409154,"vel":0,"mode":"rest","coord":0,"figure":0} → {"pos":-3.6484355431409154,"vel":0,"mode":"rest","coord":0,"figure":0}
+ok   reduced motion, phone: down is a plain fade (scenes passed through) — roots
+ok   reduced motion, phone: the Roots are still at rest — 0 frames; none running
+ok   reduced motion, phone: a tile is simply there, 80 ms after the press — {"opacity":"1","transform":"none"}
+ok   reduced motion, phone: the menu's teleport is a plain fade — sky; fx canvas none/visible/1
+ok   reduced motion, phone: E6 is a plain fade — sky
+ok   reduced motion, phone: no console errors
+
+101 ok, 0 FAIL

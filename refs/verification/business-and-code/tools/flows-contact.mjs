@@ -29,18 +29,25 @@ async function openForm(page, f) {
 		await page.waitForSelector(`${f.dialog}[open]`, { timeout: 5000 });
 	}
 }
-const turnstileState = (page, f) =>
-	page.evaluate((sel) => {
+// Turnstile puts its iframe in a closed shadow root, so it is counted among the page's frames
+// and measured by the box of the slot it was rendered into.
+const turnstileState = async (page, f) => {
+	const frames = page.frames().filter((fr) => /challenges\.cloudflare\.com/.test(fr.url()));
+	const inDom = await page.evaluate((sel) => {
 		const form = document.querySelector(sel);
-		const frames = [...form.querySelectorAll('iframe')];
+		const slot = form.querySelector('.cf-turnstile, [data-turnstile-slot]');
 		const input = form.querySelector('[name="cf-turnstile-response"]');
+		const r = slot?.getBoundingClientRect();
 		return {
-			iframes: frames.length,
-			box: frames[0] ? (({ width, height }) => ({ width, height }))(frames[0].getBoundingClientRect()) : null,
-			src: frames[0]?.src?.slice(0, 60) ?? null,
+			slot: r ? { left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), height: Math.round(r.height) } : null,
+			widgets: slot ? slot.children.length : 0,
+			inputs: form.querySelectorAll('[name="cf-turnstile-response"]').length,
 			token: input ? input.value.slice(0, 24) : null,
+			innerWidth,
 		};
 	}, f.form);
+	return { iframes: frames.length, src: frames[0]?.url().slice(0, 70) ?? null, ...inDom, box: inDom.slot };
+};
 
 for (const size of [['desk', DESK], ['phone', PHONE]]) {
 	for (const f of FORMS) {
@@ -120,19 +127,15 @@ for (const size of [['desk', DESK], ['phone', PHONE]]) {
 		{
 			const { context, page, errors, posts } = await openPage(browser, size[1]);
 			await openForm(page, f);
-			await page.waitForFunction((sel) => document.querySelector(`${sel} iframe`), f.form, { timeout: 20000 }).catch(() => {});
-			await page.waitForFunction((sel) => document.querySelector(`${sel} [name="cf-turnstile-response"]`)?.value, f.form, { timeout: 20000 }).catch(() => {});
+						await page.waitForFunction((sel) => document.querySelector(`${sel} [name="cf-turnstile-response"]`)?.value, f.form, { timeout: 20000 }).catch(() => {});
 			await sleep(1200);
 			const ts = await turnstileState(page, f);
 			note(`turnstile: ${JSON.stringify(ts)}`);
 			check(ts.iframes === 1, 'unstubbed: exactly one real Turnstile iframe in the form', `${ts.iframes}`);
 			check((ts.box?.width ?? 0) >= 250 && (ts.box?.height ?? 0) >= 50, 'unstubbed: the widget has its size', JSON.stringify(ts.box));
 			check(Boolean(ts.token), 'unstubbed: the widget issued a token (test key)');
-			const fits = await page.evaluate((sel) => {
-				const fr = document.querySelector(`${sel} iframe`)?.getBoundingClientRect();
-				return fr ? fr.left >= 0 && fr.right <= innerWidth + 0.5 : false;
-			}, f.form);
-			check(fits, 'unstubbed: the widget is inside the screen');
+			check(ts.slot && ts.slot.left >= 0 && ts.slot.right <= ts.innerWidth, 'unstubbed: the widget is inside the screen', JSON.stringify(ts.slot));
+			check(ts.inputs === 1, 'unstubbed: one token field in the form', `${ts.inputs}`);
 			await page.screenshot({ path: path.join(SHOTS, `contact-${f.form.slice(1)}-${size[0]}-turnstile.png`) });
 			if (f.dialog) {
 				// Reopen: the same widget, reset, never a second one.
@@ -141,7 +144,7 @@ for (const size of [['desk', DESK], ['phone', PHONE]]) {
 				await page.click(f.open);
 				await sleep(2500);
 				const again = await turnstileState(page, f);
-				check(again.iframes === 1, 'unstubbed: reopened, still one widget (reset, not rendered twice)', JSON.stringify(again));
+				check(again.iframes === 1 && again.inputs === 1 && again.widgets === ts.widgets, 'unstubbed: reopened, still one widget (reset, not rendered twice)', JSON.stringify(again));
 			}
 			// And a real send against the preview server, which has no Worker: it must not claim success.
 			await fill(page, f);

@@ -3,7 +3,7 @@
 // Run: node refs/verification/business-and-code/tools/degrade.mjs
 import path from 'node:path';
 import sharp from 'sharp';
-import { OFFERS, visibleText } from '../../../../src/content/offers.ts';
+import { OFFERS, offerText } from '../../../../src/content/offers.ts';
 import { BASE, check, DESK, launch, note, openPage, PHONE, SHOTS, sleep, tally } from './lib.mjs';
 
 const SIZES = [['desk', DESK], ['phone', PHONE]];
@@ -60,11 +60,13 @@ const readable = (page) =>
 	});
 
 function judgeRoots(r, label) {
-	const want = OFFERS.map((o) => `${o.title} ${visibleText(o)}`.replace(/\s+/g, ' ').trim());
-	const got = r.tiles.map((t) => t.text);
+	// innerText includes the visually hidden word "slashed", so this is the addendum's own text.
+	const squash = (t) => t.replace(/\s+/g, '');
+	const want = OFFERS.map((o) => squash(`${o.title} ${offerText(o)}`));
+	const got = r.tiles.map((t) => squash(t.text));
 	check(r.tiles.length === 5 && r.tiles.every((t) => t.seen), `${label}: five tiles on the page, all visible`);
 	check(JSON.stringify(r.tiles.map((t) => t.title)) === JSON.stringify(OFFERS.map((o) => o.title)), `${label}: in the spec's order`, r.tiles.map((t) => t.title).join(' / '));
-	check(got.every((g, i) => g === want[i]), `${label}: each tile reads as its locked copy`, got.map((g, i) => (g === want[i] ? 'same' : `DIFF: ${g.slice(0, 80)}…`)).join(' | '));
+	check(got.every((g, i) => g === want[i]), `${label}: each tile's text is the addendum's, character for character (spaces apart)`, got.map((g, i) => (g === want[i] ? 'same' : `DIFF: ${g.slice(0, 80)}…`)).join(' | '));
 	check(r.tiles.every((t, i) => i === 0 || t.top > r.tiles[i - 1].top), `${label}: one under another`);
 	check(r.scrollW <= r.innerW + 1, `${label}: no sideways scroll`, `${r.scrollW} vs ${r.innerW}`);
 	check(r.links.length === 2 && r.links.every((l) => l.href === '/contact'), `${label}: two links to /contact`, JSON.stringify(r.links));
@@ -206,8 +208,11 @@ const COUNT = `
 			const s = document.documentElement.dataset.scene ?? 'none';
 			if (window.__scenes.at(-1) !== s) window.__scenes.push(s);
 		};
-		new MutationObserver(log).observe(document.documentElement, { attributes: true, attributeFilter: ['data-scene'] });
+		new MutationObserver(log).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-scene'] });
 		document.addEventListener('DOMContentLoaded', log);
+		// Everything that is ever painted large: the loader's poster would be among it.
+		window.__painted = [];
+		new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__painted.push((e.element?.className || e.element?.id || e.element?.tagName || '?') + ' ' + (e.url || '')); }).observe({ type: 'largest-contentful-paint', buffered: true });
 	})();
 `;
 const rest = async (page, ms) => {
@@ -224,16 +229,19 @@ for (const [name, size] of SIZES) {
 	await page.addInitScript(COUNT);
 	const label = `reduced motion, ${name}`;
 	await page.goto(`${BASE}/?debug`, { waitUntil: 'commit' });
-	// From the very first frames: is the loader ever seen?
+	// From the very first frames: is the loader ever seen? Photographs every 100 ms for the
+	// first 1.2 s (the loader's poster is a lit emblem in the middle of a black screen).
 	const early = [];
-	for (let i = 0; i < 8; i++) {
-		early.push(await page.evaluate(() => {
-			const l = document.getElementById('loader');
-			return l ? getComputedStyle(l).display : 'absent';
-		}).catch(() => 'n/a'));
-		await sleep(120);
+	for (let i = 0; i < 12; i++) {
+		const buf = await page.screenshot().catch(() => null);
+		if (buf) {
+			const l = await light(buf);
+			const shown = await page.evaluate(() => { const el = document.getElementById('loader'); if (!el) return 'absent'; const r = el.getBoundingClientRect(); return document.styleSheets.length && r.width > 0 && getComputedStyle(el).display !== 'none' ? 'SHOWN' : 'none'; }).catch(() => 'n/a');
+			early.push(`${shown}:${l.mean.toFixed(1)}`);
+		}
+		await sleep(100);
 	}
-	check(early.every((d) => d === 'none' || d === 'absent' || d === 'n/a'), `${label}: the loader is never on screen`, early.join(','));
+	check(early.every((d) => !d.startsWith('SHOWN')), `${label}: the loader is never on screen in the first 1.2 s (state:mean luminance of each photograph)`, early.join(' '));
 	await page.waitForFunction(() => window.__cellestial?.sky, null, { timeout: 20000 });
 	await page.evaluate(() => window.__cellestial.sky.ready);
 	await sleep(2500);
@@ -241,6 +249,8 @@ for (const [name, size] of SIZES) {
 	check(r.scene === 'sky' && r.motion === 'off', `${label}: the page opens on the sky`, `scene=${r.scene} motion=${r.motion}`);
 	check(r.descend, `${label}: the exit button is already present, no round flown`);
 	check(await page.evaluate(() => window.__scenes.includes('loading')) === false, `${label}: the scene was never "loading"`, await page.evaluate(() => window.__scenes.join('>')));
+	const painted = await page.evaluate(() => window.__painted);
+	check(!painted.some((p) => /loader/.test(p)), `${label}: nothing of the loader was ever painted`, painted.join(' | ') || 'no large paint recorded');
 	let q = await rest(page, 3000);
 	check(q.frames === 0 && q.running.length === 0, `${label}: the sky is still at rest (animation frames in 3 s, running CSS animations)`, `${q.frames} frames; ${q.running.join(', ') || 'none running'}`);
 	const shot = await page.screenshot({ path: path.join(SHOTS, `rm-${name}-sky.png`) });

@@ -1,0 +1,49 @@
+fall, desk, real GPU: scenes fall at 4, roots at 2157; over (focus on the ground) at 2160 ms; frames avg 19.2 ms, p95 33.4 ms, worst 100.0 ms (112 frames), the worst one ending 600 ms in
+ok   fall, desk, real GPU: B11 was on screen before
+ok   fall, desk, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, desk, real GPU: the ground reached the top of the screen 2157 ms after the press (2000 to 3000)
+ok   fall, desk, real GPU: one impact and one growth (1, 1)
+ok   fall, desk, real GPU: the star struck on screen, at x 644, y 784 of 900, 451 ms after the press
+ok   fall, desk, real GPU: the ground never moved back down (0.0 px)
+ok   fall, desk, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 58 px)
+ok   fall, desk, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, desk, real GPU: focus is on the ground ("roots")
+ok   fall, desk, real GPU: the Roots are active and growing
+ok   fall, desk, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, desk, real GPU: the effects canvas is where it belongs
+fall, phone, real GPU: scenes fall at 5, roots at 2147; over (focus on the ground) at 2149 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (129 frames), the worst one ending 276 ms in
+ok   fall, phone, real GPU: B11 was on screen before
+ok   fall, phone, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, phone, real GPU: the ground reached the top of the screen 2147 ms after the press (2000 to 3000)
+ok   fall, phone, real GPU: one impact and one growth (1, 1)
+ok   fall, phone, real GPU: the star struck on screen, at x 170, y 708 of 844, 493 ms after the press
+ok   fall, phone, real GPU: the ground never moved back down (0.0 px)
+ok   fall, phone, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 16 px)
+ok   fall, phone, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, phone, real GPU: focus is on the ground ("roots")
+ok   fall, phone, real GPU: the Roots are active and growing
+ok   fall, phone, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, phone, real GPU: the effects canvas is where it belongs
+ok   fall, desk: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   fall, desk: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, desk: reduced motion: a fade straight to the Roots in 588 ms (scenes roots at 261; no impact; the network whole)
+ok   fall, phone: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: Timeout 30000ms exceeded.
+Call log:
+[2m  - navigating to "http://localhost:4611/contact", waiting until "load"[22m
+
+    at openPage (/home/poe/cellestial-studio/tools/roots/lib.mjs:62:14)
+    at async file:///home/poe/cellestial-studio/tools/transitions/measure.mjs:236:9 {
+  log: [
+    '  - navigating to "http://localhost:4611/contact", waiting until "load"'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.8.1

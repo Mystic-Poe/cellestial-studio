@@ -1,0 +1,24 @@
+START loader-measure 23:54:17
+END loader-measure exit=1 23:55:24
+START roots-words 23:55:24
+END roots-words exit=0 23:55:35
+START roots-measure 23:55:35
+END roots-measure exit=0 23:58:16
+START chrome-checks 23:58:16
+END chrome-checks exit=0 23:58:47
+START transitions-measure 23:58:47
+END transitions-measure exit=1 23:59:46
+START sky-meaning 23:59:46
+END sky-meaning exit=0 00:00:30
+START alignment-register 00:00:30
+END alignment-register exit=0 00:00:31
+START sky-measure 00:00:31
+END sky-measure exit=0 00:09:46
+ALL DONE 00:09:46
+START transitions-measure-2 00:09:51
+END transitions-measure-2 exit=0 00:12:23
+START loader-measure-2 00:12:23
+END loader-measure-2 exit=1 00:12:53
+START loader-measure-phone 00:12:53
+END loader-measure-phone exit=1 00:13:07
+ALL DONE 2 00:13:07

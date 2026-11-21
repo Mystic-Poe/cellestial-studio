@@ -1,0 +1,47 @@
+
+# /admin
+ok   /admin/ answers 200 — 200
+     responses: 302 https://unpkg.com/decap-cms@%5E3.0.0/dist/decap-cms.js ; 200 https://unpkg.com/decap-cms@3.18.0/dist/decap-cms.js ; 200 http://localhost:4611/admin/config.yml
+     on screen: {"title":"Content Manager","cms":"object","text":"Login with GitHub","buttons":["Login with GitHub"]}
+ok   /admin loads the Decap script
+ok   /admin reads its config.yml
+ok   the CMS started (window.CMS exists)
+ok   it asks to log in — Login with GitHub
+ok   /admin: no console errors
+ok   /admin: no failed requests
+
+# /start — desk
+ok   no link until the form is filled
+     link: https://cellestialstudio.com/start/#eyJ2IjoxLCJuIjoiUm9zYSdzIEJha2VyeSIsImUiOiJyb3NhQHJvc2FzYmFrZXJ5LmV4YW1wbGUiLCJkIjoicm9zYXNiYWtlcnkuZXhhbXBsZSIsImwiOiJtcyIsInQiOjIsIm0iOiJwZXJzb24ifQ
+ok   filling the form builds a link to /start/#…
+ok   with its QR code on a pure white card — {"bg":"rgb(255, 255, 255)","box":{"width":224,"height":224}}
+ok   the builder calls no API
+     the flow opens with: {"h1":"Create your GitHub account","text":"STEP 1 OF 4 Create your GitHub account Your email is already filled in. Choose a password and a username, then enter the code GitHub emails you. GitHub may show a short puzzle — that is normal. Open GitHub Done → Next step","progress":"Step 1 of 4","next":"Done → Next step","buttons":["Open GitHub","Done → Next step"]}
+ok   the generated link resolves: the guided flow starts (not "This link is incomplete")
+ok   it is on step 1 — Step 1 of 4
+     after "next": {"progress":"Step 2 of 4","text":"STEP 2 OF 4 Create your organization and invite Gabriel Organization name: rosas-bakery (any name works). Choose the Free plan. When it asks who to add, paste Gabriel’s email (already copied) and invi"}
+ok   the next button moves the flow on — Step 1 of 4 → Step 2 of 4
+ok   the flow carries the client's details out of the link (step 2 names the organization rosas-bakery)
+     API calls made by the flow (in-person mode): GET /api/onboard/invites
+ok   the flow: no script errors — Failed to load resource: the server responded with a status of 404 (Not Found)
+ok   a broken link says "This link is incomplete"
+ok   the builder: no console errors
+
+# /start — phone
+ok   no link until the form is filled
+     link: https://cellestialstudio.com/start/#eyJ2IjoxLCJuIjoiUm9zYSdzIEJha2VyeSIsImUiOiJyb3NhQHJvc2FzYmFrZXJ5LmV4YW1wbGUiLCJkIjoicm9zYXNiYWtlcnkuZXhhbXBsZSIsImwiOiJtcyIsInQiOjIsIm0iOiJwZXJzb24ifQ
+ok   filling the form builds a link to /start/#…
+ok   with its QR code on a pure white card — {"bg":"rgb(255, 255, 255)","box":{"width":224,"height":224}}
+ok   the builder calls no API
+     the flow opens with: {"h1":"Create your GitHub account","text":"STEP 1 OF 4 Create your GitHub account Your email is already filled in. Choose a password and a username, then enter the code GitHub emails you. GitHub may show a short puzzle — that is normal. Open GitHub Done → Next step","progress":"Step 1 of 4","next":"Done → Next step","buttons":["Open GitHub","Done → Next step"]}
+ok   the generated link resolves: the guided flow starts (not "This link is incomplete")
+ok   it is on step 1 — Step 1 of 4
+     after "next": {"progress":"Step 2 of 4","text":"STEP 2 OF 4 Create your organization and invite Gabriel Organization name: rosas-bakery (any name works). Choose the Free plan. When it asks who to add, paste Gabriel’s email (already copied) and invi"}
+ok   the next button moves the flow on — Step 1 of 4 → Step 2 of 4
+ok   the flow carries the client's details out of the link (step 2 names the organization rosas-bakery)
+     API calls made by the flow (in-person mode): GET /api/onboard/invites
+ok   the flow: no script errors — Failed to load resource: the server responded with a status of 404 (Not Found)
+ok   a broken link says "This link is incomplete"
+ok   the builder: no console errors
+
+29 ok, 0 FAIL

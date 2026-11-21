@@ -1,0 +1,4 @@
+full                   8.21 s  mode=full  frames avg 20.0 ms, p95 16.8 ms  → scene=sky, overlay=none  FAIL (6.0 to 8.0 s)
+short (reload)         3.94 s  mode=short  frames avg 24.9 ms, p95 99.9 ms  → scene=sky, overlay=none  OK (short version, ends)
+
+full version, mount to done: 8.21 s

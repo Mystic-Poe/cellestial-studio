@@ -1,0 +1,15 @@
+{
+  "extends": "/home/poe/cellestial-studio/node_modules/astro/tsconfigs/strict.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "/home/poe/cellestial-studio/node_modules/@types"]
+  },
+  "include": [
+    "/home/poe/cellestial-studio/.astro/types.d.ts",
+    "/home/poe/cellestial-studio/src/experience/**/*.ts",
+    "/home/poe/cellestial-studio/src/content/**/*.ts"
+  ],
+  "exclude": []
+}

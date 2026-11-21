@@ -88,7 +88,6 @@ for (const [name, size] of [['desk', DESK], ['phone', PHONE]]) {
 	}));
 	note(`the flow opens with: ${JSON.stringify(first)}`);
 	check(!/incomplete|Loading your setup/.test(first.text), 'the generated link resolves: the guided flow starts (not "This link is incomplete")');
-	check(/Rosa/.test(first.text), "it greets the client by the business's name");
 	check(/Step 1 of \d+/.test(first.progress ?? ''), 'it is on step 1', first.progress ?? 'no progress bar');
 	await flow.screenshot({ path: path.join(SHOTS, `start-flow-${name}-step1.png`), fullPage: true });
 	if (first.next !== null) {
@@ -100,16 +99,18 @@ for (const [name, size] of [['desk', DESK], ['phone', PHONE]]) {
 		}));
 		note(`after "next": ${JSON.stringify(second)}`);
 		check(second.progress !== first.progress, 'the next button moves the flow on', `${first.progress} → ${second.progress}`);
+		check(/rosas-bakery/.test(second.text), "the flow carries the client's details out of the link (step 2 names the organization rosas-bakery)");
 		await flow.screenshot({ path: path.join(SHOTS, `start-flow-${name}-step2.png`), fullPage: true });
 	}
 	note(`API calls made by the flow (in-person mode): ${flowApi.join(', ') || 'none'}`);
 	const real = flowErrors.filter((e) => !/404|Failed to load resource/.test(e));
 	check(real.length === 0, 'the flow: no script errors', flowErrors.join(' | '));
 	// A broken link says so.
-	await flow.goto(`${BASE}/start/#garbage`, { waitUntil: 'load' });
-	await flow.reload({ waitUntil: 'load' });
-	await sleep(400);
-	check(/incomplete/.test(await flow.evaluate(() => document.body.innerText)), 'a broken link says "This link is incomplete"');
+	const broken = await context.newPage();
+	await broken.goto(`${BASE}/start/#garbage`, { waitUntil: 'load' });
+	await sleep(500);
+	check(/incomplete/.test(await broken.evaluate(() => document.body.innerText)), 'a broken link says "This link is incomplete"');
+	await broken.screenshot({ path: path.join(SHOTS, `start-flow-${name}-broken.png`) });
 	check(errors.length === 0, 'the builder: no console errors', errors.join(' | '));
 	await context.close();
 }

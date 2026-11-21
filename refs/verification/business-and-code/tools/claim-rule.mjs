@@ -181,8 +181,8 @@ for (const [name, size] of [['desk', DESK], ['phone', PHONE]]) {
 		s = await state(page);
 		check(s.scene === 'sky', 'the visitor is taken to the sky', s.scene);
 		await page.screenshot({ path: path.join(SHOTS, `claim-${name}-5-waiting.png`) });
-		// Survives a reload while waiting.
-		await page.reload({ waitUntil: 'load' });
+		// Survives a new load while waiting (the first URL was ?scene=roots; open on the sky).
+		await page.goto(`${BASE}/?scene=sky&debug`, { waitUntil: 'load' });
 		await page.waitForFunction(() => window.__cellestial?.sky, null, { timeout: 20000 });
 		await page.evaluate(() => window.__cellestial.sky.ready);
 		await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 15000 });

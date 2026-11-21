@@ -1,0 +1,4 @@
+ok   phone: the widget rendered and issued a token in 10 of 10 openings — ms to token: 1713, 2042, 1725, 1721, 1746, 1871, 1707, 1906, 1700, 1877
+ok   desk: the widget rendered and issued a token in 5 of 5 openings — ms to token: 1739, 1982, 1735, 1738, 1732
+
+2 ok, 0 FAIL
