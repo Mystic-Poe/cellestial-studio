@@ -22,7 +22,7 @@ import Panel from '../ui/Panel.astro';
 
 <canvas id="sky-canvas" aria-hidden="true"></canvas>
 <div id="sky-ui" role="region" aria-label="The Sky" tabindex="-1">
-	<p class="sky-claim" data-claim-words hidden>claim yours</p>
+	<p class="sky-claim" data-claim-words data-glow="claim yours" hidden>claim yours</p>
 	<Panel
 		size="small"
 		class="sky-panel sky-panel--empty"
@@ -123,7 +123,10 @@ import Panel from '../ui/Panel.astro';
 	}
 
 	/* B9: the words under the star the beads reached. The scene keeps them
-	   under the star (transform) and breathes them with it (--pulse, 0 to 1). */
+	   under the star (transform) and breathes their glow with it (--pulse, 0 to
+	   1). The words themselves stay whole, so they can always be read; what
+	   breathes is a second layer of light over them, and only its opacity
+	   changes, which costs a phone nothing. */
 	#sky-ui .sky-claim {
 		position: absolute;
 		top: 0;
@@ -138,16 +141,26 @@ import Panel from '../ui/Panel.astro';
 		line-height: 1.2;
 		letter-spacing: 0.06em;
 		white-space: nowrap;
-		opacity: calc(0.78 + 0.22 * var(--pulse, 1));
-		text-shadow:
-			0 0 calc(3px + 7px * var(--pulse, 1))
-			color-mix(in srgb, var(--color-brass-hi) calc((0.3 + 0.5 * var(--pulse, 1)) * 100%), transparent);
+		text-shadow: 0 0 4px color-mix(in srgb, var(--color-brass-hi) 30%, transparent);
 		cursor: pointer;
 		pointer-events: auto;
 		user-select: none;
 		-webkit-user-select: none;
 		-webkit-tap-highlight-color: transparent;
-		will-change: transform, opacity;
+		will-change: transform;
+	}
+	#sky-ui .sky-claim::after {
+		content: attr(data-glow);
+		position: absolute;
+		inset: 0;
+		padding: inherit;
+		color: color-mix(in srgb, var(--color-brass-hi) 55%, transparent);
+		text-shadow:
+			0 0 10px color-mix(in srgb, var(--color-brass-hi) 85%, transparent),
+			0 0 3px color-mix(in srgb, var(--color-brass-hi) 60%, transparent);
+		opacity: var(--pulse, 1);
+		pointer-events: none;
+		will-change: opacity;
 	}
 	#sky-ui .sky-claim[hidden] {
 		display: none;

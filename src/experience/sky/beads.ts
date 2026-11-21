@@ -279,7 +279,8 @@ export function createBeads(hooks: SkyHooks): Beads {
 	});
 	const points = new Points(geometry, material);
 	points.frustumCulled = false;
-	points.visible = false;
+	// Always in the scene, dark when nothing runs: its program is then compiled with the
+	// rest of the sky, and the first touch does not have to wait for it.
 	hooks.three.scene.add(points);
 
 	let run: BeadRun | null = null;
@@ -294,7 +295,9 @@ export function createBeads(hooks: SkyHooks): Beads {
 	const stop = () => {
 		run = null;
 		arrive = null;
-		points.visible = false;
+		const look = bead.array as Float32Array;
+		for (let i = 0; i < n; i++) look[i * 2 + 1] = 0;
+		bead.needsUpdate = true;
 		places.length = 0;
 		release?.();
 		release = null;
@@ -390,7 +393,6 @@ export function createBeads(hooks: SkyHooks): Beads {
 		position.needsUpdate = true;
 		bead.needsUpdate = true;
 		points.renderOrder = hooks.three.layerOrder(route.fromLayer) + 3;
-		points.visible = true;
 	};
 
 	hooks.on('frame', ({ time }) => draw(time));

@@ -2,8 +2,8 @@
 // Comparison sheets for the Sky: the build on the real page, on the real GPU,
 // beside the pictures it must match.
 //
-//   node tools/sky/compare.mjs [--url http://localhost:4500] [--only open,stations,b3,stars,between]
-//                              [--out <dir>]
+//   node tools/sky/compare.mjs [--url http://localhost:4500] [--out <dir>]
+//        [--only open,stations,b3,stars,between,handoff,fall,beads,pulse,panel,lit,ignite]
 //
 // Needs the dev server running (see PROGRESS.md). Opens "/?scene=sky&debug"
 // at 1440x900 and at 390x844 (scale 2, mobile, touch), pins the sky's clock
@@ -19,31 +19,31 @@
 //   stars.jpg                 an empty and a lit star at the size they appear and
 //                             enlarged, beside B4 and B5
 //   between.jpg               two views between stations, both sizes
-//   handoff.jpg               (--only handoff) the sky's side of the loader's hand-off, alone:
+//   handoff.jpg               the sky's side of the loader's hand-off, alone:
 //                             introProgress at 0, 0.3, 0.5, 0.7, 0.85 and 1, then reset().
 //                             Prints the core's circle at each and how many pixels differ
 //                             between introProgress(1) and reset() (must be 0).
-//   beads-desk.jpg, -phone    (--only beads) a touch at three places, at three stations: the
+//   beads-desk.jpg, -phone    a touch at three places, at three stations: the
 //                             beads at five moments from the touch until after they arrive,
 //                             cropped to their route, and the route itself drawn over the
 //                             honeycomb (green) to show that the beads keep to its edges.
 //                             Prints, for each bead in each frame, how far it is from the route.
-//   pulse.jpg                 (--only pulse) the star the beads reached, close up with the
+//   pulse.jpg                 the star the beads reached, close up with the
 //                             words under it, at five moments of its two-second pulse, both
 //                             sizes; and the same star marked in the still sky (reduced motion)
-//   panel.jpg                 (--only panel) the empty-star panel (B10) opened by a real click
+//   panel.jpg                 the empty-star panel (B10) opened by a real click
 //                             or tap on three stars at each size (the leftmost, the rightmost
 //                             and the lowest of a figure), the whole screen, and the panel
 //                             itself pixel for pixel. Prints where each panel was put and
 //                             whether it is whole on the screen and clear of the logo.
-//   lit.jpg                   (--only lit) a lit star clicked: the camera flown in and the
+//   lit.jpg                   a lit star clicked: the camera flown in and the
 //                             panel with what was asked, for a short ask, a long one (it must
 //                             scroll inside the panel) and one written as markup (it must show
 //                             as the text it is), both sizes, and the long one pixel for pixel
-//   ignite.jpg                (--only ignite) the claim as it plays after a send: the camera
+//   ignite.jpg                the claim as it plays after a send: the camera
 //                             on the star (focusStar with ignite), then B4 to B5 at seven
 //                             moments, close up, both sizes; the last with its panel
-//   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
+//   fall.jpg                  the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
 //                             promise resolved and whether restore() put every star back.
@@ -85,7 +85,10 @@ const SAFE = { top: 96, bottom: 120 };
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
-		only: { type: 'string', default: 'open,stations,b3,stars,between' },
+		only: {
+			type: 'string',
+			default: 'open,stations,b3,stars,between,handoff,fall,beads,pulse,panel,lit,ignite',
+		},
 		out: { type: 'string', default: join(ROOT, 'refs/sky/compare') },
 	},
 });

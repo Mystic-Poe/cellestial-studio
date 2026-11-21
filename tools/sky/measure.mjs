@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim,beadframes]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -43,6 +43,9 @@
 //             200, and after a reload; a request sent with no star leaves an ask
 //             waiting, the beads then go by themselves, and the next empty star
 //             clicked takes it
+//   beadframes  frame times during ten bead runs in a row, a touch every 0.9 s at ten
+//             places: on the real GPU at both sizes, and at 390x844 in software
+//             rendering with the CPU slowed 4x
 //   words     the pulse and the words "claim yours" (B9): what they are, where they
 //             stand, the pulse's period, everything that ends them, and the still sky
 //
@@ -58,7 +61,7 @@ import { chromium } from 'playwright-core';
 import { OFFERS } from '../../src/content/offers.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words,panel,lit,claim,beadframes';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -1749,6 +1752,78 @@ if (only.has('claim')) {
 		await view.close();
 		log();
 	}
+}
+
+// ───────────────────────────────────────── frame times with the beads ──
+
+if (only.has('beadframes')) {
+	const PLACES = [
+		[0.12, 0.8],
+		[0.85, 0.3],
+		[0.5, 0.75],
+		[0.2, 0.25],
+		[0.8, 0.7],
+		[0.4, 0.2],
+		[0.1, 0.5],
+		[0.9, 0.55],
+		[0.6, 0.85],
+		[0.3, 0.6],
+	];
+	/** Ten touches, 0.9 s apart: each run is still on its way, or its star pulsing, when the next begins. */
+	const tenRuns = async (view, size) => {
+		let runs = 0;
+		for (const place of PLACES) {
+			const at = await view.page.evaluate(EMPTY_NEAR, place);
+			await (size === 'desk' ? view.page.mouse.click(...at) : view.page.touchscreen.tap(...at));
+			await sleep(120);
+			if (await view.page.evaluate(() => window.__cellestial.sky.answer.run() !== null)) runs++;
+			await sleep(780);
+		}
+		return runs;
+	};
+	log('FRAME TIMES WITH THE BEADS, real GPU: ten bead runs in a row');
+	for (const size of ['desk', 'phone']) {
+		const view = await open(size);
+		let runs = 0;
+		const rec = await recordFrames(view, async () => {
+			runs = await tenRuns(view, size);
+		});
+		const st = stats(rec.frames);
+		log(
+			`  ${size === 'desk' ? '1440x900' : '390x844 '}  ${runs} runs, ${st.n} frames: average ${f2(st.avg)} ms, 95th percentile ${f2(st.p95)} ms, worst ${f2(st.worst)} ms, ${st.over33} frames over 33 ms; governor at level ${rec.quality.level} of ${rec.quality.levels - 1}, pixel ratio ${rec.quality.dpr}`,
+		);
+		check(`${size}: ten runs, smooth`, runs === 10 && st.avg < 18 && st.p95 < 20);
+		await view.close();
+	}
+	log();
+	log('FRAME TIMES WITH THE BEADS, 390x844, software rendering (SwiftShader), CPU slowed 4x');
+	const view = await open('phone', { gpu: false });
+	const cdp = await view.ctx.newCDPSession(view.page);
+	await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+	// Let the governor find its level first, as it does in the first seconds of any visit:
+	// it steps down within two seconds, and at about ten tries one level up and comes back
+	// (a second of 100 ms frames that has nothing to do with the beads).
+	// Once it has settled it is held at the level it chose, so that what is compared is the
+	// sky at rest and the sky with the beads, and not the governor trying a level in between.
+	await sleep(11000);
+	await view.page.evaluate(() => {
+		const { sky } = window.__cellestial;
+		sky.debug.setLevel(sky.hooks.quality().level);
+	});
+	await sleep(500);
+	const idle = await recordFrames(view, () => sleep(5000));
+	let runs = 0;
+	const rec = await recordFrames(view, async () => {
+		runs = await tenRuns(view, 'phone');
+	});
+	await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+	const before = stats(idle.frames);
+	const st = stats(rec.frames);
+	log(`  at rest, the governor settled and held at level ${idle.quality.level} of ${idle.quality.levels - 1}, pixel ratio ${idle.quality.dpr}: average ${f2(before.avg)} ms, 95th percentile ${f2(before.p95)} ms, worst ${f2(before.worst)} ms, ${before.over33} frames over 33 ms`);
+	log(`  during ${runs} bead runs, ${st.n} frames: average ${f2(st.avg)} ms, 95th percentile ${f2(st.p95)} ms, worst ${f2(st.worst)} ms, ${st.over33} frames over 33 ms`);
+	check('the beads cost little: the frame time with them is within 25% of the frame time at rest', runs === 10 && st.avg < before.avg * 1.25 + 1, `${f2(before.avg)} ms at rest, ${f2(st.avg)} ms with the beads`);
+	await view.close();
+	log();
 }
 
 for (const b of Object.values(browsers)) await b.close();
