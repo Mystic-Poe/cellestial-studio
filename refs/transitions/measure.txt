@@ -32,3 +32,45 @@ ok   fall, phone: back 700 ms in (to /contact) and forward again: the page is wh
 ok   fall, phone: reduced motion: a fade straight to the Roots in 553 ms (scenes roots at 258; no impact; the network whole)
 fall, desk, software, CPU slowed 4x: scenes fall at 19, roots at 4086; over (focus on the ground) at 4657 ms; frames avg 143.3 ms, p95 383.3 ms, worst 400.0 ms (30 frames), the worst one ending 4254 ms in
 fall, phone, software, CPU slowed 4x: scenes fall at 22, roots at 4342; over (focus on the ground) at 5045 ms; frames avg 182.7 ms, p95 383.4 ms, worst 416.7 ms (26 frames), the worst one ending 4637 ms in
+warp, desk, from scrollY 0, real GPU: scenes warp at 2, sky at 1003; over (focus on the sky) at 1515 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (91 frames), the worst one ending 613 ms in
+ok   warp, desk, from scrollY 0, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, desk, from scrollY 0, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, desk, from scrollY 0, real GPU: it took 1515 ms
+ok   warp, desk, from scrollY 0, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, desk, from scrollY 0, real GPU: B11 is still there
+ok   warp, desk, from scrollY 0, real GPU: focus is on the sky ("sky-ui")
+ok   warp, desk, from scrollY 0, real GPU: the effects canvas is put away and the Roots are at rest
+warp, desk, from scrollY 1800, real GPU: scenes warp at 2, sky at 998; over (focus on the sky) at 1523 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (91 frames), the worst one ending 342 ms in
+ok   warp, desk, from scrollY 1800, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, desk, from scrollY 1800, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, desk, from scrollY 1800, real GPU: it took 1523 ms
+ok   warp, desk, from scrollY 1800, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, desk, from scrollY 1800, real GPU: B11 is still there
+ok   warp, desk, from scrollY 1800, real GPU: focus is on the sky ("sky-ui")
+ok   warp, desk, from scrollY 1800, real GPU: the effects canvas is put away and the Roots are at rest
+ok   warp, desk: reduced motion: a fade straight to the still sky in 545 ms, B11 there
+warp, phone, from scrollY 0, real GPU: scenes warp at 2, sky at 1007; over (focus on the sky) at 1532 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (92 frames), the worst one ending 417 ms in
+ok   warp, phone, from scrollY 0, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, phone, from scrollY 0, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, phone, from scrollY 0, real GPU: it took 1532 ms
+ok   warp, phone, from scrollY 0, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, phone, from scrollY 0, real GPU: B11 is still there
+ok   warp, phone, from scrollY 0, real GPU: focus is on the sky ("sky-ui")
+ok   warp, phone, from scrollY 0, real GPU: the effects canvas is put away and the Roots are at rest
+warp, phone, from scrollY 1800, real GPU: scenes warp at 2, sky at 1006; over (focus on the sky) at 1531 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (92 frames), the worst one ending 1134 ms in
+ok   warp, phone, from scrollY 1800, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, phone, from scrollY 1800, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, phone, from scrollY 1800, real GPU: it took 1531 ms
+ok   warp, phone, from scrollY 1800, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, phone, from scrollY 1800, real GPU: B11 is still there
+ok   warp, phone, from scrollY 1800, real GPU: focus is on the sky ("sky-ui")
+ok   warp, phone, from scrollY 1800, real GPU: the effects canvas is put away and the Roots are at rest
+ok   warp, phone: reduced motion: a fade straight to the still sky in 531 ms, B11 there
+warp, desk, from scrollY 0, software, CPU slowed 4x: scenes warp at 7, sky at 1097; over (focus on the sky) at 1743 ms; frames avg 47.1 ms, p95 216.6 ms, worst 233.3 ms (35 frames), the worst one ending 239 ms in
+ok   warp, desk, from scrollY 0, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+warp, desk, from scrollY 1800, software, CPU slowed 4x: scenes warp at 17, sky at 1096; over (focus on the sky) at 1653 ms; frames avg 44.3 ms, p95 233.3 ms, worst 233.3 ms (35 frames), the worst one ending 251 ms in
+ok   warp, desk, from scrollY 1800, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+warp, phone, from scrollY 0, software, CPU slowed 4x: scenes warp at 18, sky at 1054; over (focus on the sky) at 1740 ms; frames avg 44.1 ms, p95 166.7 ms, worst 233.3 ms (37 frames), the worst one ending 250 ms in
+ok   warp, phone, from scrollY 0, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+warp, phone, from scrollY 1800, software, CPU slowed 4x: scenes warp at 8, sky at 1033; over (focus on the sky) at 1743 ms; frames avg 41.9 ms, p95 183.3 ms, worst 233.3 ms (39 frames), the worst one ending 238 ms in
+ok   warp, phone, from scrollY 1800, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)

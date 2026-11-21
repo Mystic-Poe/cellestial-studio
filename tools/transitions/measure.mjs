@@ -51,14 +51,20 @@ function probe() {
 	document.addEventListener('cellestial:scene', (e) => {
 		rec.scenes.push({ to: e.detail.to, at: performance.now() });
 		if (e.detail.to === 'sky' && e.detail.from === 'warp') {
-			const c = document.getElementById('fx-canvas');
-			const g = c.getContext('2d');
-			let min = 255;
-			if (c.width && getComputedStyle(c).display !== 'none') {
-				const d = g.getImageData(0, 0, c.width, c.height).data;
-				for (let k = 3; k < d.length; k += 16) if (d[k] < min) min = d[k];
-			} else min = 0;
-			rec.coverAtSky = min;
+			// What is on the effects canvas once this frame's drawing is done: a task
+			// posted now runs after every animation-frame callback of this frame.
+			const ch = new MessageChannel();
+			ch.port1.onmessage = () => {
+				const c = document.getElementById('fx-canvas');
+				const g = c.getContext('2d');
+				let min = 255;
+				if (c.width && getComputedStyle(c).display !== 'none') {
+					const d = g.getImageData(0, 0, c.width, c.height).data;
+					for (let k = 3; k < d.length; k += 16) if (d[k] < min) min = d[k];
+				} else min = 0;
+				rec.coverAtSky = min;
+			};
+			ch.port2.postMessage(0);
 		}
 	});
 	let last = 0;

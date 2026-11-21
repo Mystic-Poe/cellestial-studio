@@ -66,16 +66,27 @@ export async function open(browser, size, scene, { init } = {}) {
 	return o;
 }
 
-/** Start something, then photograph for `ms`. Returns [{ at, img }]. */
+/**
+ * Start something, then photograph for `ms`. Returns [{ at, img }].
+ *
+ * The pictures are asked of the browser directly, with no clip: what is on the
+ * screen, whole. (page.screenshot() first asks where the page is scrolled to
+ * and then cuts that rectangle out of the document, so while a script is
+ * scrolling fast it photographs a rectangle the screen has already left:
+ * fixed things appear shifted and a black band shows at one edge.)
+ */
 async function film(page, start, ms) {
+	const cdp = await page.context().newCDPSession(page);
 	const frames = [];
 	const t0 = Date.now();
 	await start();
 	for (;;) {
 		const at = Date.now() - t0;
 		if (at > ms) break;
-		frames.push({ at, img: await page.screenshot({ type: 'jpeg', quality: 80 }) });
+		const { data } = await cdp.send('Page.captureScreenshot', { format: 'jpeg', quality: 80 });
+		frames.push({ at, img: Buffer.from(data, 'base64') });
 	}
+	await cdp.detach();
 	return frames;
 }
 

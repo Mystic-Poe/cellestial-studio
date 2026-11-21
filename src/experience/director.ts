@@ -85,6 +85,14 @@ const GROWTH_WAIT_MS = 1500;
 const WARP_MS = 1500;
 /** G2: where in the warp the frame is covered, if the effects layer cannot say. */
 const WARP_COVER_DEFAULT = 0.7;
+/**
+ * G2: the page becomes the sky this much of the warp before the middle of its
+ * cover, in the first frame the cover is whole, so that a slow frame still
+ * lands inside it.
+ */
+const WARP_LEAD = 0.04;
+/** G2: with no frames coming (a hidden tab) the swap is made by a timer, this late. */
+const WARP_LATE_MS = 250;
 /** The veil sits over the effects layer (30) and under the chrome (40): the logo stays. */
 const VEIL_Z = '35';
 /** Or over everything, the loader (50) included. */
@@ -432,10 +440,11 @@ export function createDirector(): StageDirector {
 	/**
 	 * G2. E6 was pressed, or a star was just claimed from the ground: launch
 	 * back up to the sky. The effects layer plays the warp; under it the ground
-	 * drops away, faster and faster, with the sky already live behind it, and
-	 * at the moment the warp covers the whole frame the page becomes the sky
-	 * (arriveInSky). Wall-clock time throughout, as the effects layer keeps it,
-	 * so the swap cannot miss the cover.
+	 * drops away, faster and faster, with the sky's opening pose already drawn
+	 * behind it, and in the first frame in which the warp covers everything the
+	 * page becomes the sky (arriveInSky). Wall-clock time throughout, as the
+	 * effects layer keeps it, and the swap is made in a frame callback, before
+	 * that frame is painted, so it cannot be seen even when frames are slow.
 	 */
 	async function warp(): Promise<void> {
 		const [sky, fx] = await Promise.all([soon('sky'), soon('fx')]);
@@ -447,23 +456,28 @@ export function createDirector(): StageDirector {
 
 		setScene('warp'); // spacer back, scrollTop corrected in the same frame: nothing moves
 		tell('sky', (above) => {
+			// One frame of the opening pose, to be seen above the falling ground.
+			// It is not set going until the page is the sky: the launch has the frame.
 			above.restore();
 			above.reset();
-			above.setStill(reducedMotion());
-			above.setActive(true);
 		});
 		const from = window.scrollY;
 		const t0 = performance.now();
-		const until = WARP_MS * cover;
+		const until = WARP_MS * Math.max(0.1, cover - WARP_LEAD);
+		let covered = (): void => {};
+		const swapTime = new Promise<void>((resolve) => {
+			covered = resolve;
+		});
 		const stop = onFrame(() => {
-			if (scene !== 'warp') return;
-			jump(from * (1 - easeIn(Math.min(1, (performance.now() - t0) / until))));
+			const t = performance.now() - t0;
+			if (scene === 'warp') jump(from * (1 - easeIn(Math.min(1, t / until))));
+			if (t >= until || scene !== 'warp') covered();
 		});
 		const played = Promise.resolve()
 			.then(() => fx.warp(WARP_MS))
 			.catch((err) => console.error('[cellestial] the warp failed', err));
 		try {
-			await Promise.race([wait(until), played]);
+			await Promise.race([swapTime, wait(until + WARP_LATE_MS), played]);
 		} finally {
 			stop();
 		}
