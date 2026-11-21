@@ -6,7 +6,7 @@
 //   node scripts/build-assets.mjs sky ui     only those groups (no manifest)
 //   node scripts/build-assets.mjs modules    only the scene modules (below)
 //
-// Everything here is a pack file cropped, resized, mirror-tiled, keyed from
+// Everything here is a pack file cropped, resized, keyed from
 // its black or re-encoded. Nothing is generated and nothing is substituted.
 // Three things go a step past a plain crop, and each says so where it is
 // done: A1 unlit is resampled onto A1 lit so the two register; pictures that
@@ -381,7 +381,7 @@ async function b3Core() {
  * render has (measured on B4: 72% covered 0.6 px inside the fitted radius,
  * 42% and 14% at 0.4 and 1.4 px outside it).
  */
-async function sphere(rel, { file, seed, half, fade, floor, additive }) {
+async function sphere(rel, { file, seed, half, fade, floor, additive, keyedFile = true }) {
 	const full = await px.load(sharp, src(file));
 	const k = full.w / 1024;
 	const light = px.gauss(px.maxOf(full), full.w, full.h, k);
@@ -414,7 +414,8 @@ async function sphere(rel, { file, seed, half, fade, floor, additive }) {
 	);
 	const small = await resize(keyed, { width: 512, kernel: 'lanczos3' });
 	const scale = small.w / size;
-	const out = { [rel]: { ...(await saveKeyed(`sky/${rel}.webp`, small)) } };
+	// B5 is only ever blended additively: its keyed frame is not shipped.
+	const out = keyedFile ? { [rel]: { ...(await saveKeyed(`sky/${rel}.webp`, small)) } } : {};
 
 	// The same frame left on black, for additive blending.
 	if (additive) {
@@ -551,12 +552,12 @@ async function sky() {
 		fade: [440, 478],
 		floor: 1,
 		additive: 'b5-lit-add',
+		keyedFile: false,
 	});
 	return {
 		b3Core: core,
 		b3Ring: ring,
 		b4Empty: b4['b4-empty'],
-		b5Lit: b5['b5-lit'],
 		b5LitAdd: b5['b5-lit-add'],
 	};
 }
@@ -564,43 +565,22 @@ async function sky() {
 // ────────────────────────────────────────────────────────────── roots ──
 
 /**
- * The soil, cropped and stacked on its own vertical flip, so the bottom of
- * the tile meets its top and `background-repeat: repeat-y` shows no seam.
- *
- * Two things decide the rows that are kept. The pack's soil darkens towards
- * the bottom (to two thirds of its level in the last quarter of the
- * landscape, the last 30% of the portrait), which mirrored would band the
- * page every tile; those rows go. And whatever lies on the first and last
- * row kept is doubled by the mirror: a pale stone there becomes a butterfly,
- * and a slope in brightness becomes a band across the page. The rows chosen
- * are the quietest on both counts (the pack's own top rows are the worst, in
- * either picture). A strip comes off each side as well; the photograph's
- * own darker sides stay.
+ * The mean colour of the soil as the Roots crop it, for the palette's
+ * --color-earth (the ground behind the soil picture). The tiles themselves
+ * are made by scripts/assets/roots.mjs (the woven pair); the mirror-stacked
+ * tiles this function once wrote were never fetched and are no longer made.
  */
-async function soil(rel, file, crop, width, quality) {
-	// Mitchell, not Lanczos: a touch softer, a sixth smaller, and it is a backdrop.
+async function soilMean(file, crop, width) {
 	const top = await sharp(src(file))
 		.extract(crop)
 		.resize({ width, kernel: 'mitchell' })
 		.raw()
 		.toBuffer({ resolveWithObject: true });
 	const { width: w, height: h, channels } = top.info;
-	const raw = { width: w, height: h, channels };
-	const flipped = await sharp(top.data, { raw }).flip().raw().toBuffer();
-	const tile = () =>
-		sharp(Buffer.concat([top.data, flipped]), { raw: { width: w, height: 2 * h, channels } });
-	const webp = await save(
-		`roots/${rel}.webp`,
-		tile().webp({ ...WEBP, quality: quality.webp, smartDeblock: true }),
-	);
-	const avif = await save(
-		`roots/${rel}.avif`,
-		tile().avif({ quality: quality.avif, effort: 7, chromaSubsampling: '4:2:0' }),
-	);
 	const mean = [0, 0, 0];
 	for (let i = 0; i < top.data.length; i += channels)
 		for (let k = 0; k < 3; k++) mean[k] += top.data[i + k];
-	return { entry: { ...webp, avif: avif.url, half: h }, mean: mean.map((v) => v / (w * h)) };
+	return mean.map((v) => v / (w * h));
 }
 
 async function e4Node() {
@@ -623,7 +603,6 @@ async function e4Node() {
 		}
 	}
 	const light = px.maxOf(img);
-	const onBlack = await save('roots/e4-node.webp', fromImage(img).webp({ ...WEBP, quality: 86 }));
 
 	// The bulb: the bright mass without its threads.
 	let bulb = new Float32Array(light.length);
@@ -685,26 +664,24 @@ async function e4Node() {
 		threadEnd: point({ x: end[1], y: end[0] }),
 		threadBottom: { x: centre(bottomX), y: img.h },
 	};
-	return { e4Node: { ...onBlack, ...geometry }, e4NodeAlpha: { ...keyed, ...geometry } };
+	// Only the keyed node is drawn (the same frame on black was never fetched and is not made).
+	return { e4NodeAlpha: { ...keyed, ...geometry } };
 }
 
 async function roots() {
-	const landscape = await soil(
-		'soil-landscape',
-		'e-roots/E1_soil_landscape-16x9.jpg',
-		{ left: 154, top: 242, width: 2268, height: 808 },
-		1920,
-		{ webp: 42, avif: 36 },
+	earthSamples.push(
+		await soilMean(
+			'e-roots/E1_soil_landscape-16x9.jpg',
+			{ left: 154, top: 242, width: 2268, height: 808 },
+			1920,
+		),
+		await soilMean(
+			'e-roots/E1_soil_portrait-9x16.jpg',
+			{ left: 43, top: 280, width: 1352, height: 1344 },
+			1080,
+		),
 	);
-	const portrait = await soil(
-		'soil-portrait',
-		'e-roots/E1_soil_portrait-9x16.jpg',
-		{ left: 43, top: 280, width: 1352, height: 1344 },
-		1080,
-		{ webp: 42, avif: 36 },
-	);
-	earthSamples.push(landscape.mean, portrait.mean);
-	return { soilLandscape: landscape.entry, soilPortrait: portrait.entry, ...(await e4Node()) };
+	return { ...(await e4Node()) };
 }
 const earthSamples = [];
 
@@ -737,7 +714,105 @@ async function ui() {
 
 // ───────────────────────────────────────────────────────────── chrome ──
 
-/** C1's idle emblem: 60% lit over unlit, from the registered pair, keyed and trimmed. */
+/**
+ * The browser-tab icon: the emblem as the logo has it (idle, its lit lines
+ * widened), square, on the site's black. public/favicon.png (180 px) and
+ * public/favicon.ico (32 and 16 px, each stored as a PNG).
+ */
+async function tabIcon(emblem, c) {
+	const M = 70;
+	const side = Math.max(c.w, c.h) + 2 * M;
+	const x0 = Math.round(c.x + c.w / 2 - side / 2);
+	const y0 = Math.round(c.y + c.h / 2 - side / 2);
+	const square = px.crop(emblem, x0, y0, side, side);
+	const png = (size) =>
+		fromImage(square)
+			.resize({ width: size, height: size, kernel: 'lanczos3' })
+			.png({ compressionLevel: 9, palette: false })
+			.toBuffer();
+	const write = (name, data) => {
+		const file = join(ROOT, 'public', name);
+		const same = existsSync(file) && readFileSync(file).equals(data);
+		if (!same) writeFileSync(file, data);
+		console.log(
+			`  ${same ? '=' : '+'} public/${name.padEnd(21)} ${(data.length / 1024).toFixed(1).padStart(7)} KB`,
+		);
+	};
+	write('favicon.png', await png(180));
+	// An .ico is a directory of pictures; each of these is a whole PNG.
+	const entries = [
+		{ size: 32, data: await png(32) },
+		{ size: 16, data: await png(16) },
+	];
+	const head = Buffer.alloc(6 + 16 * entries.length);
+	head.writeUInt16LE(0, 0);
+	head.writeUInt16LE(1, 2);
+	head.writeUInt16LE(entries.length, 4);
+	let offset = head.length;
+	for (const [i, e] of entries.entries()) {
+		const at = 6 + 16 * i;
+		head.writeUInt8(e.size, at);
+		head.writeUInt8(e.size, at + 1);
+		head.writeUInt8(0, at + 2);
+		head.writeUInt8(0, at + 3);
+		head.writeUInt16LE(1, at + 4);
+		head.writeUInt16LE(32, at + 6);
+		head.writeUInt32LE(e.data.length, at + 8);
+		head.writeUInt32LE(offset, at + 12);
+		offset += e.data.length;
+	}
+	write('favicon.ico', Buffer.concat([head, ...entries.map((e) => e.data)]));
+}
+
+/** How far each lit line of the emblem is widened for the logo, pixels of the pair's frame (1400). */
+const LOGO_LINE = 2;
+/** How strongly the widened lines are laid on: "on, but calm". */
+const LOGO_CALM = 0.9;
+
+/**
+ * The emblem's lit circuit lines, widened: at logo size (43 to 52 px wide,
+ * a seventeenth of the pair's frame) the lines of the lit picture are a
+ * fifth of a pixel and cannot be seen. They are found (where lighting the
+ * emblem added blue), widened by LOGO_LINE to every side, and softened; the
+ * colour they are drawn in is their own, the mean of the lit picture along
+ * them. Returns the mask (0..1) and that colour.
+ */
+function litLines(lit, unlit) {
+	const { w, h } = lit;
+	const n = w * h;
+	const line = new Float32Array(n);
+	for (let i = 0; i < n; i++) {
+		const gain = lit.b[i] - unlit.b[i];
+		const blue = lit.b[i] - Math.max(lit.r[i], 0.92 * lit.g[i]);
+		line[i] = px.clamp((gain - 30) / 40) * px.clamp((blue - 8) / 24);
+	}
+	// Lines only: a lit face (the main node's lens, a ring filled with glow) is
+	// light over an area, and widening it would paint the brass over.
+	const area = px.gauss(line, w, h, 7);
+	let r = 0;
+	let g = 0;
+	let b = 0;
+	let weight = 0;
+	for (let i = 0; i < n; i++) {
+		line[i] *= 1 - px.smoothstep(0.3, 0.5, area[i]);
+		// Their colour: the ridge of each line, its brightest part.
+		if (line[i] > 0.9 && lit.b[i] > 150) {
+			r += lit.r[i];
+			g += lit.g[i];
+			b += lit.b[i];
+			weight++;
+		}
+	}
+	if (weight < 500) throw new Error('logo: found no lit lines on the emblem');
+	const wide = px.gauss(px.maxFilter(line, w, h, LOGO_LINE), w, h, 1.5);
+	for (let i = 0; i < n; i++) wide[i] = px.clamp(wide[i] * 1.3);
+	return { wide, colour: [r / weight, g / weight, b / weight] };
+}
+
+/**
+ * C1's idle emblem: 60% lit over unlit, from the registered pair, with the lit
+ * lines widened so that they are still lines at logo size, keyed and trimmed.
+ */
 async function chrome() {
 	const { lit, unlit, c, node } = await emblemPair();
 	const size = lit.w;
@@ -749,13 +824,23 @@ async function chrome() {
 		g: new Float32Array(n),
 		b: new Float32Array(n),
 	};
-	for (const k of ['r', 'g', 'b'])
-		for (let i = 0; i < n; i++) blend[k][i] = 0.6 * lit[k][i] + 0.4 * unlit[k][i];
+	for (const key of ['r', 'g', 'b'])
+		for (let i = 0; i < n; i++) blend[key][i] = 0.6 * lit[key][i] + 0.4 * unlit[key][i];
 	// The brass is one piece with clean edges on a clean black; its openings
 	// are far bigger than anything that needs filling inside a strut.
 	let fat = px.keepLargest(brassMask(blend), size, size);
 	fat = px.fillHoles(fat, size, size, 4000);
 	const body = px.gauss(fat, size, size, 1);
+	// The lit lines, widened, laid on the brass (and only on it).
+	const { wide, colour } = litLines(lit, unlit);
+	console.log(`  logo: lit lines in ${hex(colour)}, widened by ${LOGO_LINE} px`);
+	for (const [k, key] of ['r', 'g', 'b'].entries()) {
+		for (let i = 0; i < n; i++) {
+			const t = LOGO_CALM * wide[i] * body[i];
+			blend[key][i] = blend[key][i] * (1 - t) + colour[k] * t;
+		}
+	}
+	await tabIcon(blend, c);
 	const keyed = px.key(blend, body, { floor: 6 });
 	const M = 12;
 	const x0 = c.x - M;
@@ -979,12 +1064,6 @@ export interface RingAsset extends Asset {
 	readonly inner: Ellipse;
 }
 
-/** Mirror-tiled: rows \`half\` to h are rows 0 to \`half\` upside down, so it repeats down the page. */
-export interface SoilAsset extends Asset {
-	readonly avif: string;
-	readonly half: number;
-}
-
 export interface NodeAsset extends Asset {
 	readonly bulb: Circle;
 	/** Where the upper thread runs off the top edge (it is cut there, at a tenth of full strength). */
@@ -1013,17 +1092,11 @@ export interface AssetManifest {
 		readonly b3Ring: RingAsset;
 		/** Keyed. A solid disc. */
 		readonly b4Empty: DiscAsset;
-		/** Keyed. A solid disc, its glow soft around it. */
-		readonly b5Lit: DiscAsset;
-		/** B5 on black, for additive blending. Same frame as \`b5Lit\`. */
+		/** B5 on black, for additive blending. The same sphere as B4, in its own frame. */
 		readonly b5LitAdd: DiscAsset;
 	};
 	readonly roots: {
-		readonly soilLandscape: SoilAsset;
-		readonly soilPortrait: SoilAsset;
-		/** On black, for screen or additive blending. */
-		readonly e4Node: NodeAsset;
-		/** Keyed. The bulb is solid, its threads and haze soft. Same frame as \`e4Node\`. */
+		/** Keyed. The bulb is solid, its threads and haze soft. */
 		readonly e4NodeAlpha: NodeAsset;
 	};
 	/**

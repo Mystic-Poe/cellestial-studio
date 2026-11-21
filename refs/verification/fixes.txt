@@ -174,3 +174,57 @@ look 5 (MAJOR, phone) — the sky was small on a phone at the wide figures.  FIX
   What it costs: in the dense figures (Sagittarius, Pisces' ring, the Hyades in Taurus) 26 px stars
   overlap one another on a 390 px screen. They overlapped as 44 px tap targets before; a tap still
   takes the star whose centre is nearest.
+
+look 3 (MAJOR), decided 3 — the teleport flash was not the site's light.  FIXED.
+  Reproduced: refs/verification/matrix/fx/flash-mid-desk.jpg, flash-peak.jpg (traces a median 5 px wide,
+  mean #a4bcdc, the ground lifted to slate blue at the peak).
+  Done, src/experience/fx/flash.ts only: a near line is 1.5 to 2 px of the blue (was 2.4 to 3.4) with a
+  glow a quarter of a cell wide at 7% and a tenth at 20% (was half a cell and a fifth); the white thread
+  inside it is white only within about a sixth of the frame of the hub and is the blue itself beyond; the
+  light that runs along a line is the blue a fifth of the way to blue-white, no wider than the line (was
+  the blue-white, wider); heads, flares and beads are blue glows except by the hub; at the peak the lines
+  are drawn again at 0.3 (was 0.55); the bloom is a light at the hub that reaches about a third of the
+  way to the frame's edge and leaves the rest black (was a blue-white field out past the corners). The
+  peak is level for a tenth of the flash to either side of the swap, with no flicker in it, so the frame
+  the swap takes shows no dip (the inspector saw it dim and return on sky to "What we build").
+  Checked: the flash on the real page, sky to "What we build", recorded with the DevTools screencast at
+  both sizes: refs/fx/compare/flash-real-page.jpg (sixteen frames each, and the peak at full size) looked
+  at: thin blue traces with ring nodes on black, white in the hub and its two rings only, four frames of
+  the peak alike. refs/transitions/compare/teleport-desk.jpg, -phone.jpg rebuilt.
+  node tools/transitions/measure.mjs --only teleport: 80 of 80 (the flash 429 to 447 ms with the swap in
+  it, the frame fully covered at the swap).
+  Not done: refs/fx/compare/flash-up, -down, -none and flash-peak were made by the effects' own test page,
+  which is no longer in the tree; they still show the flash as it was.
+
+look 9 (MINOR), decided 2 — the logo's lit lines could not be seen.  look 17 — its link 43 px wide.  FIXED.
+  Done: scripts/build-assets.mjs, the chrome group: the emblem's lit lines are found (where lighting it
+  added blue, and only where that is a line, not a lit face), widened by 2 px of the pair's 1400 px frame
+  to each side, and laid at 90% in their own colour (the ridge of the lit lines, #6775b1) over the same
+  60% lit / 40% unlit emblem as before. .chrome-logo has min-width 44px.
+  Checked: node scripts/build-assets.mjs chrome; node tools/chrome/compare.mjs: 48 of 48;
+  refs/chrome/compare/logo.jpg looked at (the logo enlarged at 44x64 and 52x78 px between A1 unlit and A1
+  lit): a blue line runs along every strut and the node is lit; clearly between the two, at both sizes
+  (plainer on the phone's two pixels to one than on the desktop's one).
+
+code 1 (BLOCKER as written) — the tab icon was the framework's stock logo.  FIXED.
+  Done: the same emblem (the logo's, on the site's black, square) is written by the chrome group as
+  public/favicon.png (180 px) and public/favicon.ico (32 and 16 px); public/favicon.svg is deleted;
+  src/layouts/Base.astro links the PNG, the .ico and the PNG again as the touch icon.
+  Checked on the page: /favicon.ico 200 image/x-icon, /favicon.png 200 image/png, /favicon.svg 404; the
+  three link lines point at them; `file` reads the .ico as two PNG pictures, 32 and 16 px.
+
+code 9 — no <h1>.  FIXED: <h1 class="sr-only">Cellestial studio</h1> at the top of the shell (the name the
+  logo's link already carries). Read back from the page: heading level 1, 1 px box.
+code 10 — star buttons all alike; the loader silent.  FIXED: buttons are named in order ("Empty star 3 of 12
+  in Virgo", "Claimed star …"); beside the loader a visually hidden status, "Loading. Press any key to
+  skip.", there only while the scene is "loading". Read back from the page: twelve different names at
+  Virgo; the status in the tree while loading, display none in the sky. tools/sky/measure.mjs asks for the
+  new names (and that no two are the same).
+code 11 — six pictures shipped and never fetched.  FIXED: the old mirrored soil tiles (four files),
+  e4-node.webp and b5-lit.webp are no longer made by scripts/build-assets.mjs, are out of
+  src/experience/assets.ts and deleted from public/cellestial/ (the soil's mean colour, which the palette
+  check needs, is still measured). The whole asset script was run: every other file came out byte for byte
+  the same, and the palette's seven colours still equal the tokens.
+code 12 — one type error; no type-check.  FIXED: `let right: number` in loader/painter.ts; TypeScript 7.0.2
+  and @types/node are dev dependencies; "pnpm typecheck" (tsc -p tsconfig.typecheck.json: Astro's strict
+  settings over src/experience and src/content) passes with no error.

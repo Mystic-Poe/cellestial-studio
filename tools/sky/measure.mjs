@@ -770,7 +770,7 @@ if (only.has('pick')) {
 		check('button centre on star centre, at rest', worstRest < 0.5, `largest offset ${worstRest.toFixed(3)} px`);
 		check('no button smaller than 44 px', smallest >= 43.99, `smallest ${smallest} px`);
 		const labels = await view.page.evaluate(() => [...new Set([...document.querySelectorAll('#sky-ui .sky-star:not([hidden])')].map((b) => b.getAttribute('aria-label')))]);
-		check('each is a real <button> with a name', labels.length > 0 && labels.every((l) => /^(Empty|Claimed) star in \w+$/.test(l)), labels.join('; '));
+		check('each is a real <button> with a name of its own ("Empty star 3 of 12 in Virgo")', labels.length > 0 && labels.every((l) => /^(Empty|Claimed) star \d+ of \d+ in \w+$/.test(l)) && new Set(labels).size === labels.length, labels.join('; '));
 		// In flight: sampled on every frame for three seconds.
 		await view.page.keyboard.down('ArrowDown');
 		const flying = await view.page.evaluate(BUTTONS, 3000);
@@ -1649,7 +1649,7 @@ if (only.has('claim')) {
 		await page.keyboard.press('Escape');
 		await sleep(3200);
 		let now = await lit(page, slot);
-		check('answered 400: nothing is lit, nothing waits, nothing is stored', !now.store && !now.sky && now.all === 0 && now.unplaced === null && now.stored === null && now.label === 'Empty star in Virgo', `the form says "${status400}"`);
+		check('answered 400: nothing is lit, nothing waits, nothing is stored', !now.store && !now.sky && now.all === 0 && now.unplaced === null && now.stored === null && /^Empty star \d+ of 12 in Virgo$/.test(now.label), `the form says "${status400}"`);
 		await page.reload({ waitUntil: 'networkidle' });
 		await page.waitForFunction(() => window.__cellestial?.sky?.hooks);
 		await sleep(1000);
@@ -1708,7 +1708,7 @@ if (only.has('claim')) {
 		await page.evaluate(() => window.__cellestial.sky.ready);
 		await sleep(1000);
 		now = await lit(page, slot);
-		check('still lit after a reload', now.store && now.sky && now.all === 1 && now.label === 'Claimed star in Virgo', now.label);
+		check('still lit after a reload', now.store && now.sky && now.all === 1 && /^Claimed star \d+ of 12 in Virgo$/.test(now.label), now.label);
 		await view.close();
 
 		// Sent with no star chosen: the ask waits.

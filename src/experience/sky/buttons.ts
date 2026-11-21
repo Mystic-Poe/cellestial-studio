@@ -175,7 +175,8 @@ export function createStarButtons(
 					entry.y = spot.y;
 					entry.el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0)`;
 				}
-				const label = `${spot.lit ? 'Claimed' : 'Empty'} star in ${figure}`;
+				// Each star of a figure has a name of its own: "Empty star 3 of 12 in Virgo".
+				const label = `${spot.lit ? 'Claimed' : 'Empty'} star ${i + 1} of ${count} in ${figure}`;
 				if (label !== entry.label) {
 					entry.label = label;
 					entry.el.setAttribute('aria-label', label);

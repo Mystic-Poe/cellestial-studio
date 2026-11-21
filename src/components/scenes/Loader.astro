@@ -12,6 +12,8 @@
 // inline script takes the picture away before it is painted.
 //
 // The scene has no words and nothing to focus: all of it is aria-hidden.
+// Beside it, for a screen reader only and only while the loader plays, one
+// line says that the page is loading and that any key skips it.
 //
 // If the page's script never mounts the loader, the stylesheet retires the
 // cover by itself (the scene adds .is-live the moment it mounts, which calls
@@ -33,6 +35,7 @@ const vars = [
 ].join('; ');
 ---
 
+<p id="loader-status" class="sr-only" role="status">Loading. Press any key to skip.</p>
 <div id="loader" aria-hidden="true" style={vars}>
 	<img
 		class="loader-poster"
@@ -53,6 +56,10 @@ const vars = [
 </script>
 
 <style is:global>
+	/* Said only while the loader is the scene. */
+	html:not([data-scene='loading']) #loader-status {
+		display: none;
+	}
 	#loader {
 		position: fixed;
 		inset: 0;

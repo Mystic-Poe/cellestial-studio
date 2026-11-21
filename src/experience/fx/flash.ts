@@ -4,7 +4,12 @@
 // direction of travel with 45° jogs and the odd right-angle step, in ribbons
 // of one to three parallel lines, each line ending in a small ring node, as
 // the lines of A1 do. The frame goes black behind them as they grow, the
-// middle blooms blue-white, and then the traces fade and the black clears.
+// hub blooms blue-white, and then the traces fade and the black clears.
+//
+// The light is the emblem's: thin lines (a core of 1.5 to 2 px) in the site's
+// one blue with a narrow glow, on black. White belongs to the hub and the
+// rings nearest it, and only at the peak; the bloom is a light at the hub,
+// not a haze over the frame.
 //
 // The picture is a function of the seed, the frame size and the time.
 
@@ -17,7 +22,6 @@ import {
 	easeOut,
 	lightStops,
 	mix,
-	PALE_INK,
 	smooth,
 	spot,
 } from './light.ts';
@@ -649,6 +653,13 @@ const DRIFT = 0.07;
 /** The black comes and goes in this many strips. */
 const STRIPS = 36;
 
+/** The light that runs along a line: the blue, a fifth of the way to the blue-white. */
+const SURGE_INK = rgba([
+	mix(BLUE_RGB[0], BLUE_WHITE_RGB[0], 0.2),
+	mix(BLUE_RGB[1], BLUE_WHITE_RGB[1], 0.2),
+	mix(BLUE_RGB[2], BLUE_WHITE_RGB[2], 0.2),
+]);
+
 /** The blue with the blue-white added at strength `t`: the colour of a line's core. */
 function hot(t: number): string {
 	return rgba([
@@ -758,13 +769,14 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		// Inked in CSS pixels, as the frame is drawn.
 		pen.setTransform(pw / w, 0, 0, ph / h, 0, margin);
 		pen.lineJoin = 'round';
-		// The cores are white-hot in the middle of the frame and bluer towards its edges.
+		// White-hot only in the hub and the rings nearest it; from there out the
+		// lines are the blue itself, a little lifted so that a thin line carries.
 		core = pen.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.hypot(w, h) / 2);
 		core.addColorStop(0, hot(1));
-		core.addColorStop(0.22, hot(0.8));
-		core.addColorStop(0.5, hot(0.46));
-		core.addColorStop(0.8, hot(0.26));
-		core.addColorStop(1, hot(0.18));
+		core.addColorStop(0.07, hot(0.7));
+		core.addColorStop(0.16, hot(0.2));
+		core.addColorStop(0.3, hot(0.1));
+		core.addColorStop(1, hot(0.06));
 	};
 
 	const makeHalo = (pw: number, ph: number): HTMLCanvasElement => {
@@ -773,19 +785,20 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		c.height = ph;
 		const g = c.getContext('2d');
 		if (g) {
-			// A blue-white heart and a wide blue skirt, out past the corners.
+			// A blue-white heart at the hub and a short blue skirt: it reaches about
+			// a third of the way to the frame's edge and leaves the rest black.
 			const grad = g.createRadialGradient(
 				pw / 2,
 				ph / 2,
 				0,
 				pw / 2,
 				ph / 2,
-				Math.hypot(pw, ph) * 0.7,
+				Math.min(Math.hypot(pw, ph) * 0.34, Math.max(pw, ph) * 0.42),
 			);
 			lightStops(
 				grad,
-				(p) => 0.95 * (1 - p) ** 2.1 + 0.7 * Math.max(0, 1 - p / 0.3) ** 2,
-				(p) => 1.15 * Math.max(0, 1 - p / 0.34) ** 1.2,
+				(p) => 0.5 * (1 - p) ** 2.6 + 0.75 * Math.max(0, 1 - p / 0.22) ** 2,
+				(p) => 1.15 * Math.max(0, 1 - p / 0.26) ** 1.2,
 				18,
 			);
 			g.fillStyle = grad;
@@ -798,8 +811,9 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 	const advance = (): void => {
 		if (!pen || !core) return;
 		const { lines, pitch } = art;
-		const body = clamp(pitch * 0.085, 2.4, 3.4);
-		const thread = clamp(pitch * 0.03, 0.95, 1.3);
+		// The line: 1.5 to 2 px of the blue. The thread in it is white only near the hub.
+		const body = clamp(pitch * 0.05, 1.5, 2);
+		const thread = clamp(pitch * 0.024, 0.8, 1.1);
 		const grew = (k: number): boolean => heads[k] - inked[k] >= 0.25;
 
 		// The far lines: thin and dim. Where one passes under a near line the brighter ink stays.
@@ -821,11 +835,12 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		for (let k = 0; k < lines.length; k++) {
 			if (lines[k].near !== 0 && grew(k)) addSpan(pen, lines[k], inked[k], heads[k]);
 		}
-		pen.globalAlpha = 0.09;
-		pen.lineWidth = pitch * 0.52;
+		// A narrow glow: the line's own light on the black beside it, no more.
+		pen.globalAlpha = 0.07;
+		pen.lineWidth = pitch * 0.24;
 		pen.stroke();
-		pen.globalAlpha = 0.22;
-		pen.lineWidth = pitch * 0.22;
+		pen.globalAlpha = 0.2;
+		pen.lineWidth = pitch * 0.1;
 		pen.stroke();
 		// ... and the line itself is solid, so it overlaps the last and shows no join.
 		pen.lineCap = 'round';
@@ -864,10 +879,10 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 			pen.fillStyle = BLUE_INK;
 			pen.strokeStyle = BLUE_INK;
 			if (near) {
-				pen.globalAlpha = 0.36;
+				pen.globalAlpha = 0.3;
 				pen.fill();
-				pen.globalAlpha = 0.24;
-				pen.lineWidth = pitch * 0.2;
+				pen.globalAlpha = 0.2;
+				pen.lineWidth = pitch * 0.1;
 				pen.stroke();
 				pen.globalAlpha = 1;
 				pen.lineWidth = body;
@@ -882,6 +897,10 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		}
 		for (let k = 0; k < lines.length; k++) if (grew(k)) inked[k] = heads[k];
 	};
+
+	/** White light keeps to the hub and its nearest rings: within this of the middle of the frame. */
+	const nearHub = (x: number, y: number): boolean =>
+		Math.hypot(x - w / 2, y - h / 2) < Math.min(w, h) * 0.16;
 
 	const draw = (g: Ctx, u: number, held: number): void => {
 		cover(g, dir, u);
@@ -898,7 +917,11 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		// The traces brighten into the peak, and fade away after it.
 		const lit = u < FLASH_PEAK ? mix(0.55, 1, smooth(0.04, 0.44, u)) : 1;
 		const fade = 1 - smooth(FLASH_SOLID_TO - 0.04, 0.97, u);
-		const bloom = Math.exp(-(((u - FLASH_PEAK) / 0.16) ** 2)) * flicker;
+		// The peak is held, not touched: level for a tenth of the flash to either side of
+		// the swap (and through any wait for it), with no flicker in it, so the frame the
+		// swap takes shows no dip.
+		const off = Math.max(0, Math.abs(u - FLASH_PEAK) - 0.05);
+		const bloom = Math.exp(-((off / 0.13) ** 2));
 		const live = lit * fade;
 
 		for (let k = 0; k < lines.length; k++) {
@@ -916,8 +939,8 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 		g.globalCompositeOperation = 'lighter';
 		g.globalAlpha = clamp(live);
 		g.drawImage(ink, 0, margin - shift, pw, ph, 0, 0, pw, ph);
-		// And again at the peak: the lines burn hotter and their cores go white.
-		const heat = 0.55 * clamp(bloom) * fade;
+		// And again, a little, at the peak: the lines burn hotter. They stay blue.
+		const heat = 0.3 * clamp(bloom) * fade;
 		if (heat > 0.02) {
 			g.globalAlpha = heat;
 			g.drawImage(ink, 0, margin - shift, pw, ph, 0, 0, pw, ph);
@@ -948,9 +971,10 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 					addSpan(g, l, 0, l.len);
 				}
 			}
-			g.strokeStyle = PALE_INK;
-			g.globalAlpha = 0.8 * live;
-			g.lineWidth = clamp(pitch * 0.065, 1.8, 2.6);
+			// The moving light on a line is the line's own blue, brighter: no wider than the line.
+			g.strokeStyle = SURGE_INK;
+			g.globalAlpha = 0.45 * live;
+			g.lineWidth = clamp(pitch * 0.045, 1.4, 1.9);
 			g.stroke();
 		}
 		for (let k = 0; k < lines.length; k++) {
@@ -960,32 +984,38 @@ export function createFlash(seed: number, dir: FlashDir, width: number, height: 
 			if (grown > 0 && grown < 1) {
 				// The white-hot head of a growing line.
 				pointAt(l, heads[k]);
-				g.globalAlpha = 0.95;
-				spot(g, 'pale', at[0], at[1], pitch * 1.05);
+				g.globalAlpha = 0.9;
+				spot(g, nearHub(at[0], at[1]) ? 'pale' : 'blue', at[0], at[1], pitch * 0.6);
 			} else if (grown >= 1 && l.endNode) {
 				// The flare as its node is reached.
 				const flare = Math.exp((-(u - l.grow - l.growFor) * FLASH_MS) / 55) * fade;
 				if (flare > 0.03) {
 					pointAt(l, l.len);
 					g.globalAlpha = flare;
-					spot(g, 'pale', at[0], at[1], pitch * (1.1 + 1.5 * flare));
+					spot(
+						g,
+						nearHub(at[0], at[1]) ? 'pale' : 'blue',
+						at[0],
+						at[1],
+						pitch * (0.7 + 0.8 * flare),
+					);
 				}
 			}
 			if (l.beadSpeed > 0 && live > 0.02) {
 				const s = ((l.bead + l.beadSpeed * life) % (l.len + 260)) - 60;
 				if (s > 0 && s < heads[k]) {
 					pointAt(l, s);
-					g.globalAlpha = 0.85 * live;
-					spot(g, 'pale', at[0], at[1], pitch * 0.8);
+					g.globalAlpha = 0.8 * live;
+					spot(g, nearHub(at[0], at[1]) ? 'pale' : 'blue', at[0], at[1], pitch * 0.5);
 				}
 			}
 		}
 		// The light in the hub: there from the start, white-hot at the peak.
 		g.globalAlpha = clamp(smooth(0.02, 0.3, u) * (1 - smooth(0.66, 0.95, u)) * flicker);
-		spot(g, 'pale', w / 2, h / 2, pitch * (1.5 + 1.9 * bloom));
+		spot(g, 'pale', w / 2, h / 2, pitch * (1.5 + 1.6 * bloom));
 		g.restore();
 
-		// The middle blooms blue-white at the peak and washes the lines near it white.
+		// The hub blooms blue-white at the peak and washes the rings nearest it white.
 		if (bloom > 0.01) {
 			halo ??= makeHalo(pw, ph);
 			g.save();

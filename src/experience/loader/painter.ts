@@ -866,7 +866,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	function letterNeon(t: number, strokes: (Stroke | null)[], heat: number): void {
 		if (heat <= 0) return;
 		let any = false;
-		let right = WORD.letters[0].x;
+		let right: number = WORD.letters[0].x;
 		let newest = 0;
 		// The halo goes first as the word cools.
 		const air = heat <= 0.4 ? 0 : ((heat - 0.4) / 0.6) ** 1.5;

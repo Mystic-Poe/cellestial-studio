@@ -86,12 +86,6 @@ export interface RingAsset extends Asset {
 	readonly inner: Ellipse;
 }
 
-/** Mirror-tiled: rows `half` to h are rows 0 to `half` upside down, so it repeats down the page. */
-export interface SoilAsset extends Asset {
-	readonly avif: string;
-	readonly half: number;
-}
-
 export interface NodeAsset extends Asset {
 	readonly bulb: Circle;
 	/** Where the upper thread runs off the top edge (it is cut there, at a tenth of full strength). */
@@ -120,17 +114,11 @@ export interface AssetManifest {
 		readonly b3Ring: RingAsset;
 		/** Keyed. A solid disc. */
 		readonly b4Empty: DiscAsset;
-		/** Keyed. A solid disc, its glow soft around it. */
-		readonly b5Lit: DiscAsset;
-		/** B5 on black, for additive blending. Same frame as `b5Lit`. */
+		/** B5 on black, for additive blending. The same sphere as B4, in its own frame. */
 		readonly b5LitAdd: DiscAsset;
 	};
 	readonly roots: {
-		readonly soilLandscape: SoilAsset;
-		readonly soilPortrait: SoilAsset;
-		/** On black, for screen or additive blending. */
-		readonly e4Node: NodeAsset;
-		/** Keyed. The bulb is solid, its threads and haze soft. Same frame as `e4Node`. */
+		/** Keyed. The bulb is solid, its threads and haze soft. */
 		readonly e4NodeAlpha: NodeAsset;
 	};
 	/**
@@ -206,12 +194,6 @@ export const ASSETS = {
 			h: 512,
 			disc: { x: 256.1, y: 256.1, r: 236 },
 		},
-		b5Lit: {
-			url: '/cellestial/sky/b5-lit.webp',
-			w: 512,
-			h: 512,
-			disc: { x: 256, y: 256.1, r: 148 },
-		},
 		b5LitAdd: {
 			url: '/cellestial/sky/b5-lit-add.webp',
 			w: 512,
@@ -220,29 +202,6 @@ export const ASSETS = {
 		},
 	},
 	roots: {
-		soilLandscape: {
-			url: '/cellestial/roots/soil-landscape.webp',
-			w: 1920,
-			h: 1368,
-			avif: '/cellestial/roots/soil-landscape.avif',
-			half: 684,
-		},
-		soilPortrait: {
-			url: '/cellestial/roots/soil-portrait.webp',
-			w: 1080,
-			h: 2148,
-			avif: '/cellestial/roots/soil-portrait.avif',
-			half: 1074,
-		},
-		e4Node: {
-			url: '/cellestial/roots/e4-node.webp',
-			w: 452,
-			h: 1008,
-			bulb: { x: 249, y: 514.8, r: 157.8 },
-			threadTop: { x: 235.2, y: 0 },
-			threadEnd: { x: 195.5, y: 864.5 },
-			threadBottom: { x: 169.1, y: 1008 },
-		},
 		e4NodeAlpha: {
 			url: '/cellestial/roots/e4-node-alpha.webp',
 			w: 452,
