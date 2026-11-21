@@ -3,7 +3,7 @@
 // guards, reduced motion, frame times, the governor, and picking.
 //
 //   node tools/sky/measure.mjs [--url http://localhost:4500]
-//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads]
+//        [--only input,endless,round,guards,still,frames,throttle,pick,fall,beads,words]
 //
 // Needs the dev server running (see PROGRESS.md). Every section opens the real
 // page ("/?scene=sky&debug") in a fresh browser context, so storage starts
@@ -33,6 +33,8 @@
 //             nearest the nearest empty star; a new tap replaces the run; a tap
 //             on a star sends none; a tap in flight stops it dead and still
 //             sends them; what happens when the layer in front has no empty star
+//   words     the pulse and the words "claim yours" (B9): what they are, where they
+//             stand, the pulse's period, everything that ends them, and the still sky
 //
 // It prints what it measured and writes the same text to refs/sky/measure.txt
 // (only when every section was run). Exits non-zero if a check failed or the
@@ -45,7 +47,7 @@ import { parseArgs } from 'node:util';
 import { chromium } from 'playwright-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads';
+const ALL = 'input,endless,round,guards,still,frames,throttle,pick,fall,beads,words';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
@@ -1116,6 +1118,148 @@ if (only.has('beads')) {
 			`${virgo.length} stars lit; ${far?.edges} edges, the strut at vertex ${far?.strut}, ${far?.edges2} edges, to ${far?.slot} in ${f2(far?.arrive)} s`,
 		);
 		await lit.close();
+		log();
+	}
+}
+
+// ────────────────────────────────────────────── the pulse, the words ──
+
+/** The words under the pulsing star, as they are on screen now. */
+const WORDS = () => {
+	const { sky } = window.__cellestial;
+	const el = document.querySelector('#sky-ui [data-claim-words]');
+	const slot = sky.answer.pulsing();
+	const c = slot ? sky.hooks.starCircle(slot) : null;
+	const box = el.getBoundingClientRect();
+	const style = getComputedStyle(el);
+	return {
+		slot,
+		shown: !el.hidden && style.visibility !== 'hidden' && box.width > 0,
+		text: el.textContent,
+		font: style.fontFamily,
+		color: style.color,
+		px: Number.parseFloat(style.fontSize),
+		dx: c ? box.left + box.width / 2 - c.x : null,
+		under: c ? box.top - (c.y + c.r) : null,
+		inside: box.left >= 0 && box.right <= innerWidth && box.top >= 0 && box.bottom <= innerHeight,
+		brass: getComputedStyle(document.documentElement).getPropertyValue('--color-brass-text').trim(),
+	};
+};
+
+if (only.has('words')) {
+	for (const size of ['desk', 'phone']) {
+		log(`THE PULSE AND THE WORDS (B9), ${size === 'desk' ? '1440x900' : '390x844'}`);
+		const view = await open(size);
+		const { page } = view;
+		const press = (x, y) => (size === 'desk' ? page.mouse.click(x, y) : page.touchscreen.tap(x, y));
+		const pulsing = () => page.evaluate(() => window.__cellestial.sky.answer.pulsing());
+		/** Touch empty sky near a place and wait for the beads to arrive. */
+		const send = async (place) => {
+			const at = await page.evaluate(EMPTY_NEAR, place);
+			await press(...at);
+			await sleep(60);
+			const r = await page.evaluate(ROUTE);
+			await sleep((r?.arrive ?? 1) * 1000 + 200);
+			return r;
+		};
+
+		const r = await send([0.2, 0.75]);
+		const w = await page.evaluate(WORDS);
+		const hex = (rgb) => `#${rgb.match(/\d+/g).slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('')}`;
+		check('the star the beads reached pulses, and nothing is claimed', w.slot === r.slot && (await page.evaluate(CLAIMED)).lit === 0);
+		check('the words are exactly "claim yours", live text in #sky-ui', w.shown && w.text === 'claim yours');
+		check('in Quicksand, in the brass of words', /Quicksand/.test(w.font) && hex(w.color) === w.brass.toLowerCase(), `${hex(w.color)} (--color-brass-text is ${w.brass}), ${w.px} px`);
+		check('centred under the star, whole on the screen', Math.abs(w.dx) < 0.5 && w.under > 0 && w.under < 16 && w.inside, `${f2(w.dx)} px off its centre, ${f2(w.under)} px under its disc`);
+
+		// The pulse: the words' light is the star's, sampled on every frame.
+		const wave = await page.evaluate(
+			() =>
+				new Promise((done) => {
+					const el = document.querySelector('#sky-ui [data-claim-words]');
+					const out = [];
+					const t0 = performance.now();
+					const tick = () => {
+						out.push([performance.now() - t0, Number(el.style.getPropertyValue('--pulse'))]);
+						if (performance.now() - t0 < 5200) requestAnimationFrame(tick);
+						else done(out);
+					};
+					requestAnimationFrame(tick);
+				}),
+		);
+		const peaks = [];
+		for (let i = 1; i < wave.length - 1; i++) {
+			if (wave[i][1] > 0.98 && wave[i][1] >= wave[i - 1][1] && wave[i][1] > wave[i + 1][1]) peaks.push(wave[i][0]);
+		}
+		const period = peaks.length >= 2 ? (peaks[peaks.length - 1] - peaks[0]) / (peaks.length - 1) / 1000 : Number.NaN;
+		const lows = Math.min(...wave.map((p) => p[1]));
+		check('one slow pulse about every two seconds', Math.abs(period - 2) < 0.1 && lows < 0.05, `${f2(period)} s from peak to peak over ${peaks.length} peaks`);
+
+		// What ends it.
+		const other = await send([0.85, 0.3]);
+		const moved = await page.evaluate(WORDS);
+		check('a touch elsewhere moves it to the star nearest that touch', moved.slot === other.slot && other.slot !== r.slot && moved.shown && Math.abs(moved.dx) < 0.5, `${r.slot} then ${other.slot}`);
+		await page.keyboard.press('ArrowDown');
+		await sleep(120);
+		let gone = await page.evaluate(WORDS);
+		check('flying away ends the pulse and the words', gone.slot === null && !gone.shown);
+		await view.rest();
+		await sleep(200);
+
+		const again = await send([0.25, 0.7]);
+		const c = await page.evaluate((slot) => window.__cellestial.sky.hooks.starCircle(slot), again.slot);
+		await press(c.x, c.y);
+		await sleep(150);
+		gone = await page.evaluate(WORDS);
+		const picked = await page.evaluate(() => window.__cellestial.claims.picked());
+		check('picking the star ends them', gone.slot === null && !gone.shown && picked === again.slot);
+		await page.keyboard.press('Escape');
+		await sleep(150);
+
+		const third = await send([0.25, 0.7]);
+		const box = await page.evaluate(() => {
+			const b = document.querySelector('#sky-ui [data-claim-words]').getBoundingClientRect();
+			return [b.left + b.width / 2, b.top + b.height / 2];
+		});
+		await page.evaluate(() => window.__cellestial.claims.pick(null));
+		await press(...box);
+		await sleep(150);
+		const viaWords = await page.evaluate(() => ({ picked: window.__cellestial.claims.picked(), lit: window.__cellestial.claims.all().size }));
+		check('a click on the words picks that star (and claims nothing)', viaWords.picked === third.slot && viaWords.lit === 0, `${viaWords.picked}`);
+		await page.keyboard.press('Escape');
+		await sleep(150);
+
+		const fourth = await send([0.25, 0.7]);
+		await page.evaluate((slot) => window.__cellestial.claims.recordSent('A site for my bakery.', slot), fourth.slot);
+		await sleep(150);
+		gone = await page.evaluate(WORDS);
+		check('the star being lit ends them', gone.slot === null && !gone.shown);
+		await view.close();
+
+		// The still sky.
+		const still = await open(size, {
+			query: '?rm=1&debug',
+			init: () => {
+				window.__raf = 0;
+				const real = window.requestAnimationFrame.bind(window);
+				window.requestAnimationFrame = (fn) => {
+					window.__raf++;
+					return real(fn);
+				};
+			},
+		});
+		const at = await still.page.evaluate(EMPTY_NEAR, [0.2, 0.75]);
+		const want = await still.page.evaluate(EXPECT, at);
+		await (size === 'desk' ? still.page.mouse.click(...at) : still.page.touchscreen.tap(...at));
+		await sleep(120);
+		const mark = await still.page.evaluate(() => ({ run: window.__cellestial.sky.answer.run() !== null }));
+		const sw = await still.page.evaluate(WORDS);
+		const n0 = await still.page.evaluate(() => window.__raf);
+		await sleep(2500);
+		const n1 = await still.page.evaluate(() => window.__raf);
+		const pulseNow = await still.page.evaluate(() => document.querySelector('#sky-ui [data-claim-words]').style.getPropertyValue('--pulse'));
+		check('reduced motion: no beads travel; the nearest empty star is marked at once, with the words', !mark.run && sw.slot === want.slot && sw.shown && sw.text === 'claim yours' && Math.abs(sw.dx) < 0.5);
+		check('and nothing pulses', n1 === n0 && Number(pulseNow) === 1, `${n1 - n0} requestAnimationFrame calls in 2.5 s`);
+		await still.close();
 		log();
 	}
 }

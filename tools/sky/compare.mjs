@@ -28,6 +28,9 @@
 //                             cropped to their route, and the route itself drawn over the
 //                             honeycomb (green) to show that the beads keep to its edges.
 //                             Prints, for each bead in each frame, how far it is from the route.
+//   pulse.jpg                 (--only pulse) the star the beads reached, close up with the
+//                             words under it, at five moments of its two-second pulse, both
+//                             sizes; and the same star marked in the still sky (reduced motion)
 //   fall.jpg                  (--only fall) the fall as the contract promises it, frozen at
 //                             six moments against a ground line that rises (drawn in green),
 //                             then restore(). Prints when and where onImpact fired, when the
@@ -95,7 +98,7 @@ const browser = await chromium.launch({
 });
 
 /** A page on the sky, its clock pinned at 2 s. `lit` seeds the claims this device made. */
-async function open(size, lit = []) {
+async function open(size, lit = [], query = '') {
 	const context = await browser.newContext(SIZES[size]);
 	const page = await context.newPage();
 	if (lit.length > 0) {
@@ -116,7 +119,7 @@ async function open(size, lit = []) {
 		errors++;
 		console.error(`[${size}] page error: ${e.message}`);
 	});
-	await page.goto(`${values.url}/?scene=sky&debug`, { waitUntil: 'networkidle' });
+	await page.goto(`${values.url}/?scene=sky&debug${query}`, { waitUntil: 'networkidle' });
 	await page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' });
 	await page.waitForFunction(() => window.__cellestial?.sky?.debug);
 	await page.evaluate(() => window.__cellestial.sky.ready);
@@ -608,6 +611,102 @@ if (only.has('beads')) {
 		await view.close();
 		await sheet(`beads-${size}.jpg`, cells, 6);
 	}
+}
+
+// ───────────────────────────────────────────────── the pulse, the words ──
+
+if (only.has('pulse')) {
+	const SIDE = 216;
+	const cells = [];
+	for (const size of ['desk', 'phone']) {
+		const vp = SIZES[size].viewport;
+		const x = Math.round(0.3 * vp.width);
+		const y = Math.round(0.7 * vp.height);
+		const half = size === 'desk' ? 62 : 54;
+		const view = await open(size);
+		await view.at(0, 2);
+		const run = await view.page.evaluate(
+			([px, py]) => {
+				const { sky } = window.__cellestial;
+				const route = sky.answer.touch(px, py);
+				return { slot: route.slot, arrive: sky.answer.run().arriveAfter };
+			},
+			[x, y],
+		);
+		for (const phase of [0, 0.5, 1, 1.5, 2]) {
+			const got = await view.page.evaluate(
+				([t, slot]) =>
+					new Promise((done) => {
+						const { sky } = window.__cellestial;
+						sky.debug.setClock(t);
+						const words = document.querySelector('[data-claim-words]');
+						const box = words.getBoundingClientRect();
+						const c = sky.hooks.starCircle(slot);
+						const style = getComputedStyle(words);
+						requestAnimationFrame(() =>
+							requestAnimationFrame(() =>
+								done({
+									c,
+									text: words.textContent,
+									hidden: words.hidden,
+									opacity: style.opacity,
+									size: style.fontSize,
+									dx: box.left + box.width / 2 - c.x,
+									gap: box.top - (c.y + c.r),
+								}),
+							),
+						);
+					}),
+				[2 + run.arrive + 0.001 + phase, run.slot],
+			);
+			const png = await view.page.screenshot({ type: 'png' });
+			cells.push({
+				img: await crop(png, view.scale, got.c.x, got.c.y + half * 0.25, half, SIDE),
+				w: SIDE,
+				h: SIDE,
+				caption: `${size} +${phase} s, r ${got.c.r.toFixed(1)}`,
+			});
+			if (phase === 0 || phase === 1) {
+				console.log(
+					`[${size}] pulse +${phase} s: star r ${got.c.r.toFixed(2)} px; words "${got.text}" ${got.size}, opacity ${got.opacity}, centred ${got.dx.toFixed(2)} px off the star, ${got.gap.toFixed(1)} px under its disc`,
+				);
+			}
+		}
+		await view.close();
+		// The still sky: a touch marks the star at once, and nothing moves.
+		const still = await open(size, [], '&rm=1');
+		const marked = await still.page.evaluate(
+			([px, py]) =>
+				new Promise((done) => {
+					const { sky } = window.__cellestial;
+					const route = sky.answer.touch(px, py);
+					requestAnimationFrame(() =>
+						requestAnimationFrame(() =>
+							done({
+								slot: route?.slot,
+								run: sky.answer.run() !== null,
+								pulsing: sky.answer.pulsing(),
+								c: route ? sky.hooks.starCircle(route.slot) : null,
+							}),
+						),
+					);
+				}),
+			[x, y],
+		);
+		const png = await still.page.screenshot({ type: 'png' });
+		console.log(
+			`[${size}] still sky: a touch marks ${marked.pulsing} at once; beads running: ${marked.run}`,
+		);
+		if (marked.run || marked.pulsing !== marked.slot) errors++;
+		cells.push({
+			img: await crop(png, still.scale, marked.c.x, marked.c.y + half * 0.25, half, SIDE),
+			w: SIDE,
+			h: SIDE,
+			caption: `${size}, still sky: marked`,
+		});
+		await still.close();
+	}
+	await sheet('pulse.jpg', cells, 6);
 }
 
 // ───────────────────────────────────────────────────────── the fall ──
