@@ -23,6 +23,7 @@ const at = () =>
 			onScreen: r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth && r.width > 0,
 			ring: cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? `${cs.outlineWidth} ${cs.outlineColor}` : (cs.boxShadow !== 'none' ? 'box-shadow' : 'NONE'),
 			inert: Boolean(el.closest('[inert]')),
+			inDialog: Boolean(el.closest('dialog[open]')),
 			hiddenAncestor: getComputedStyle(el).visibility === 'hidden',
 		};
 	});
@@ -46,6 +47,8 @@ check((await scene()) === 'loading', 'a first visit opens on the loader');
 const inLoader = await tabs(3);
 note(`Tab during the loader: \n       → ${show(inLoader)}`);
 check((await scene()) === 'loading', 'Tab does not skip the loader');
+// Focus is put back on the page itself first, so that the key is only a key (it was on the skip link).
+await page.evaluate(() => document.activeElement?.blur());
 await page.keyboard.press('Enter');
 const t0 = Date.now();
 await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 15000 });
@@ -60,7 +63,7 @@ await page.evaluate(() => document.activeElement?.blur());
 const skyTabs = await tabs(18);
 note(`Tab through the sky: \n       → ${show(skyTabs)}`);
 const stars = skyTabs.filter((s) => /sky-star|slot-/.test(s.what) || /star in/i.test(s.what));
-check(skyTabs[0].what.includes('Skip to content'), 'first Tab: "Skip to content"', skyTabs[0].what);
+check(skyTabs.some((s) => s.what.includes('Skip to content')), '"Skip to content" is in the Tab order, before the logo', skyTabs.map((s) => s.what.slice(0, 18)).join(' > '));
 check(skyTabs.some((s) => /Cellestial studio/.test(s.what)) && skyTabs.some((s) => /"Menu"/.test(s.what)), 'then the logo and the menu button');
 check(stars.length >= 12, "then Virgo's twelve stars, each a button", `${stars.length}`);
 check(skyTabs.every((s) => s.what === 'body' || s.ring !== 'NONE'), 'every stop shows a focus ring', skyTabs.filter((s) => s.ring === 'NONE').map((s) => s.what).join(', '));
@@ -77,10 +80,11 @@ await sleep(700);
 const inPanel = await at();
 await tree('THE SKY, an empty star picked (B10 open)');
 await page.screenshot({ path: path.join(SHOTS, 'kbd-sky-panel.png') });
-const panelTabs = await tabs(3);
-note(`Enter on ${starStop.what}: focus → ${inPanel.what}; then Tab: \n       → ${show(panelTabs)}`);
 check(await page.evaluate(() => !document.querySelector('[data-sky-panel="empty"]').hidden), 'Enter on a star opens its panel');
-check(await page.evaluate(() => document.querySelector('[data-sky-panel="empty"]').contains(document.activeElement) || document.activeElement.matches('[data-sky-panel="empty"]')), 'focus is inside the panel');
+check(await page.evaluate(() => document.querySelector('[data-sky-panel="empty"]').contains(document.activeElement)), 'focus is inside the panel', inPanel.what);
+const panelTabs = await tabs(2);
+note(`Enter on ${starStop.what}: focus → ${inPanel.what}; then Tab: \n       → ${show(panelTabs)}`);
+check(/Close/.test(panelTabs[0].what) && /Claim your star/.test(panelTabs[1].what), 'Tab reaches its close button, then "Claim your star"');
 await page.keyboard.press('Escape');
 await sleep(400);
 const back = await at();
@@ -138,10 +142,12 @@ await page.waitForSelector('#claim-dialog[open]', { timeout: 5000 });
 await sleep(2500);
 await tree('THE BUILD REQUEST (dialog open)');
 const first = await at();
-const dlgTabs = await tabs(7);
-note(`Enter on ${f1.what}: focus → ${first.what}; Tab ×7: \n       → ${show(dlgTabs)}`);
+const dlgTabs = await tabs(8);
+note(`Enter on ${f1.what}: focus → ${first.what}; Tab ×8: \n       → ${show(dlgTabs)}`);
 check(/claim-form-name/.test(first.what), 'the dialog opens with focus in "Your name"', first.what);
-check(dlgTabs.every((s) => s.what === 'body' || /claim|iframe|Close|Send/.test(s.what)), 'Tab stays inside the dialog', dlgTabs.map((s) => s.what).join(' | '));
+// (The three unnamed stops are Turnstile's own: its widget lives in a closed shadow root.)
+check(dlgTabs.every((s) => s.what === 'body' || s.inDialog), 'Tab stays inside the dialog (or leaves the page for the browser), never reaching the page behind', dlgTabs.map((s) => s.what).join(' | '));
+check(dlgTabs.some((s) => /"Send"/.test(s.what)) && dlgTabs.some((s) => /"Close"/.test(s.what)), 'Tab reaches Send and the close button', dlgTabs.map((s) => s.what).join(' | '));
 await page.screenshot({ path: path.join(SHOTS, 'kbd-claim-dialog.png') });
 await page.keyboard.press('Escape');
 await sleep(400);

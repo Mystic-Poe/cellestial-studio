@@ -1,0 +1,197 @@
+state | text | element | size/weight | text colour | behind it (median; worst 5%) | ratio median | ratio worst | needs | verdict
+desk sky: logo, B11 | studio | span.chrome-studio | 15px/700 | #b4906f | #000000; #000000 | 7.16 | 7.16 | 4.5 | AA
+desk sky: logo, B11 | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b59b6f; #a48a60 | 7.12 | 5.77 | 4.5 | AA
+desk sky: menu open | studio | span.chrome-studio | 15px/700 | #b5906f | #000000; #000000 | 7.18 | 7.18 | 4.5 | AA
+desk sky: menu open | The Sky | a | 15px/600 | #dfdfdf | #000000; #000000 | 15.76 | 15.76 | 4.5 | AA
+desk sky: menu open | What we build | a | 15px/600 | #e2e2e2 | #000000; #000000 | 16.21 | 16.21 | 4.5 | AA
+desk sky: menu open | Claim your star | a | 15px/600 | #dadada | #000000; #000000 | 15.02 | 15.02 | 4.5 | AA
+desk sky: menu open | Contact me | a | 15px/600 | #e0e0e0 | #000000; #000000 | 15.91 | 15.91 | 4.5 | AA
+desk sky: menu open | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b59b6f; #a48a60 | 7.12 | 5.77 | 4.5 | AA
+desk sky: empty-star panel (B10) | studio | span.chrome-studio | 15px/700 | #b4906f | #000000; #000000 | 7.16 | 7.16 | 4.5 | AA
+desk sky: empty-star panel (B10) | Site | strong | 15px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk sky: empty-star panel (B10) | A custom site built for your busin | li | 15px/500 | #dadada | #000000; #000000 | 15.02 | 15.02 | 4.5 | AA
+desk sky: empty-star panel (B10) | Everything in Site, plus the work  | li | 15px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk sky: empty-star panel (B10) | Add-ons | strong | 15px/700 | #ad8967 | #000000; #000000 | 6.55 | 6.55 | 4.5 | AA
+desk sky: empty-star panel (B10) | Care | strong | 15px/700 | #ab8766 | #000000; #000000 | 6.39 | 6.39 | 4.5 | AA
+desk sky: empty-star panel (B10) | Claim your star | button.brass-btn | 14px/700 | #160f0a | #b9a276; #a68c62 | 7.67 | 5.92 | 4.5 | AA
+desk sky: empty-star panel (B10) | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b59b6f; #a48a60 | 7.12 | 5.77 | 4.5 | AA
+desk sky: lit-star panel | studio | span.chrome-studio | 15px/700 | #b4906f | #000000; #000001 | 7.16 | 7.16 | 4.5 | AA
+desk sky: lit-star panel | A site for my bakery, with the bre | p.sky-ask | 15px/500 | #dcdcdc | #000000; #000000 | 15.31 | 15.31 | 4.5 | AA
+desk sky: lit-star panel | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b59b6f; #a48a60 | 7.12 | 5.77 | 4.5 | AA
+desk sky: "claim yours" | studio | span.chrome-studio | 15px/700 | #b4906f | #000000; #000000 | 7.16 | 7.16 | 4.5 | AA
+desk sky: "claim yours" | claim yours | p.sky-claim | 13px/600 | #c29e7a | #040508; #090808 | 8.22 | 8.06 | 4.5 | AA
+desk sky: "claim yours" | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b59b6f; #a48a60 | 7.12 | 5.77 | 4.5 | AA
+desk roots: tile 1 | studio | span.chrome-studio | 15px/700 | #b99573 | #0a0808; #161415 | 7.24 | 6.65 | 4.5 | AA
+desk roots: tile 1 | Site | h2.panel__title | 23.375px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 1 | A custom site built for your busin | span | 17px/500 | #dfdfdf | #000000; #000000 | 15.76 | 15.76 | 4.5 | AA
+desk roots: tile 1 | Includes: your pages, a working co | span | 17px/500 | #dadada | #000000; #000000 | 15.02 | 15.02 | 4.5 | AA
+desk roots: tile 1 | $990 | s.strike | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 1 | → FREE | strong | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 1 | — founding cohort. | span | 17px/500 | #dddddd | #000000; #000000 | 15.46 | 15.46 | 4.5 | AA
+desk roots: tile 1 | Plus care: | span | 17px/500 | #dcdcdc | #000000; #000000 | 15.31 | 15.31 | 4.5 | AA
+desk roots: tile 2 | studio | span.chrome-studio | 15px/700 | #b59271 | #171313; #221e1e | 6.42 | 5.75 | 4.5 | AA
+desk roots: tile 2 | Site + Systems | h2.panel__title | 23.375px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 2 | Everything in Site, plus the work  | span | 17px/500 | #dedede | #000000; #000000 | 15.61 | 15.61 | 4.5 | AA
+desk roots: tile 2 | Includes: intake or booking, follo | span | 17px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk roots: tile 2 | Price: by quote. | strong | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 2 | The systems are built for you and  | span | 17px/500 | #dbdbdb | #000000; #000000 | 15.17 | 15.17 | 4.5 | AA
+desk roots: tile 3 | studio | span.chrome-studio | 15px/700 | #b5906d | #0f0c0d; #221f20 | 6.65 | 5.58 | 4.5 | AA
+desk roots: tile 3 | Site + App | h2.panel__title | 23.375px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 3 | Everything in Site, plus a real ap | span | 17px/500 | #dddddd | #000000; #000000 | 15.46 | 15.46 | 4.5 | AA
+desk roots: tile 3 | Built for phones first, connected  | span | 17px/500 | #dfdfdf | #000000; #000000 | 15.76 | 15.76 | 4.5 | AA
+desk roots: tile 3 | Price: by quote. | strong | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 3 | Bigger asks get a longer window —  | span | 17px/500 | #dcdcdc | #000000; #000000 | 15.31 | 15.31 | 4.5 | AA
+desk roots: tile 4 | studio | span.chrome-studio | 15px/700 | #b99471 | #141211; #232120 | 6.70 | 5.75 | 4.5 | AA
+desk roots: tile 4 | Add-ons — AI + automation | h2.panel__title | 23.375px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 4 | Upgrades that take work off your p | span | 17px/500 | #dcdcdc | #000000; #000000 | 15.31 | 15.31 | 4.5 | AA
+desk roots: tile 4 | AI that answers, sorts, and drafts | span | 17px/500 | #dfdfdf | #000000; #000000 | 15.76 | 15.76 | 4.5 | AA
+desk roots: tile 4 | Automations that move the repetiti | span | 17px/500 | #dedede | #000000; #000000 | 15.61 | 15.61 | 4.5 | AA
+desk roots: tile 4 | Price: by quote. | strong | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 5 | studio | span.chrome-studio | 15px/700 | #b59171 | #0b090a; #221f1d | 6.86 | 5.66 | 4.5 | AA
+desk roots: tile 5 | Care | h2.panel__title | 23.375px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 5 | What keeps your site alive after l | span | 17px/500 | #dcdcdc | #000000; #000000 | 15.31 | 15.31 | 4.5 | AA
+desk roots: tile 5 | Includes: security and patching, u | span | 17px/500 | #dbdbdb | #000000; #000000 | 15.17 | 15.17 | 4.5 | AA
+desk roots: tile 5 | Support by email. | span | 17px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk roots: tile 5 | $39/mo founding, locked for life o | strong | 17px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk roots: tile 5 | Systems, apps, and AI cost more to | span | 17px/500 | #dddddd | #000000; #000000 | 15.46 | 15.46 | 4.5 | AA
+desk close: F1, F2 | studio | span.chrome-studio | 15px/700 | #b59271 | #141010; #232120 | 6.58 | 5.58 | 4.5 | AA
+desk close: F1, F2 | Claim your star | a.brass-btn | 21px/700 | #160f0a | #b89f75; #aa9067 | 7.46 | 6.23 | 3 | AA
+desk close: F1, F2 | Contact me | a.brass-btn | 15px/600 | #ad8968 | #21170e; #271c11 | 5.49 | 5.20 | 4.5 | AA
+desk build request dialog (with error) | Claim your star | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk build request dialog (with error) | Tell us what you want to build. | p | 16px/500 | #dadada | #000000; #000000 | 15.02 | 15.02 | 4.5 | AA
+desk build request dialog (with error) | Your name | label | 14px/600 | #bebebe | #000000; #000000 | 11.30 | 11.30 | 4.5 | AA
+desk build request dialog (with error) | Email | label | 14px/600 | #bababa | #000000; #000000 | 10.82 | 10.82 | 4.5 | AA
+desk build request dialog (with error) | What do you need built? | label | 14px/600 | #bdbdbd | #000000; #000000 | 11.18 | 11.18 | 4.5 | AA
+desk build request dialog (with error) | Send | button.pill | 16px/700 | #160f0a | #b2946b; #a4885d | 6.63 | 5.65 | 4.5 | AA
+desk build request dialog (with error) | The spam check did not pass. Pleas | p.cform__status | 15px/500 | #dbdbdb | #000000; #000000 | 15.17 | 15.17 | 4.5 | AA
+desk build request dialog | (typed text in a field) | input | 16px | rgba(255, 255, 255, 0.9) | rgb(0, 0, 0) | - | - | 4.5 | (computed colours as declared)
+desk message box dialog | Contact me | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+desk message box dialog | Your name | label | 14px/600 | #bdbebe | #000000; #020305 | 11.27 | 11.08 | 4.5 | AA
+desk message box dialog | Email | label | 14px/600 | #bababa | #000000; #000000 | 10.82 | 10.82 | 4.5 | AA
+desk message box dialog | Send | button.pill | 16px/700 | #160f0a | #b1936a; #a1855e | 6.55 | 5.45 | 4.5 | AA
+desk /contact | Cellestial Studio | a.self-start | 14px/600 | #ac8867 | #000000; #000000 | 6.47 | 6.47 | 4.5 | AA
+desk /contact | Start a project | h1.display | 48px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+desk /contact | Tell us what you need built. We an | p.text-white | 16px/500 | #dadada | #000000; #000000 | 15.02 | 15.02 | 4.5 | AA
+desk /contact | Your name | label | 14px/600 | #bebebe | #000000; #000000 | 11.30 | 11.30 | 4.5 | AA
+desk /contact | Email | label | 14px/600 | #bababa | #000000; #000000 | 10.82 | 10.82 | 4.5 | AA
+desk /contact | What do you need built? | label | 14px/600 | #bdbdbd | #000000; #000000 | 11.18 | 11.18 | 4.5 | AA
+desk /contact | Send | button.pill | 16px/700 | #160f0a | #b2946b; #a4885d | 6.63 | 5.65 | 4.5 | AA
+desk /start/new (top) | Studio only | p.text-xs | 12px/500 | #9c7b5d | #000000; #000000 | 5.40 | 5.40 | 4.5 | AA
+desk /start/new (top) | New client link | h1.display | 36px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+desk /start/new (top) | Nothing here is saved or sent anyw | p.text-sm | 14px/500 | #b9b9b9 | #000000; #000000 | 10.70 | 10.70 | 4.5 | AA
+desk /start/new (top) | Business name | label.flex | 14px/500 | #a48262 | #000000; #000000 | 5.95 | 5.95 | 4.5 | AA
+desk /start/new (top) | Domain | label.flex | 14px/500 | #a58363 | #000000; #000000 | 6.03 | 6.03 | 4.5 | AA
+desk /start/new (top) | Does their business run on… | legend.mb-1 | 14px/500 | #a48262 | #000000; #000000 | 5.95 | 5.95 | 4.5 | AA
+desk /start/new (top) | Microsoft (default) | label.flex | 14px/500 | #dbdbdb | #000000; #000000 | 15.17 | 15.17 | 4.5 | AA
+desk /start/new (top) | Google | label.flex | 14px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk /start/new (top) | Tier | legend.mb-1 | 14px/500 | #a18060 | #000000; #000000 | 5.77 | 5.77 | 4.5 | AA
+desk /start/new (top) | Tier 2/3 — GitHub + Cloudflare | label.flex | 14px/500 | #d8d8d8 | #000000; #000000 | 14.73 | 14.73 | 4.5 | AA
+desk /start/new (top) | Tier 1 — Cloudflare only (repo sta | label.flex | 14px/500 | #d7d7d7 | #000000; #000000 | 14.59 | 14.59 | 4.5 | AA
+desk /start/new (top) | How you'll run it | legend.mb-1 | 14px/500 | #a28061 | #000000; #000000 | 5.80 | 5.80 | 4.5 | AA
+desk /start/new (top) | In person — no emails | label.flex | 14px/500 | #d4d4d4 | #000000; #000000 | 14.17 | 14.17 | 4.5 | AA
+desk /start/new (top) | Their link | h2.text-sm | 14px/500 | #aa8766 | #000000; #000000 | 6.37 | 6.37 | 4.5 | AA
+desk /start/new (top) | https://cellestialstudio.com/start | a.break-all | 12px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+desk /start/new (top) | Copy link | button.flex-1 | 16px/600 | #040508 | #6480ce; #6480ce | 5.36 | 5.36 | 4.5 | AA
+desk /start/new (link) | Tier 1 — Cloudflare only (repo sta | label.flex | 14px/500 | #dbdbdb | #000000; #000000 | 15.17 | 15.17 | 4.5 | AA
+desk /start/new (link) | How you'll run it | legend.mb-1 | 14px/500 | #a28061 | #000000; #000000 | 5.80 | 5.80 | 4.5 | AA
+desk /start/new (link) | In person — no emails | label.flex | 14px/500 | #d4d4d4 | #000000; #000000 | 14.17 | 14.17 | 4.5 | AA
+desk /start/new (link) | Remote — email me at each step | label.flex | 14px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk /start/new (link) | Their link | h2.text-sm | 14px/500 | #aa8766 | #000000; #000000 | 6.37 | 6.37 | 4.5 | AA
+desk /start/new (link) | https://cellestialstudio.com/start | a.break-all | 12px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+desk /start/new (link) | Copy link | button.flex-1 | 16px/600 | #040508 | #6480ce; #6480ce | 5.36 | 5.36 | 4.5 | AA
+desk /start/new (link) | Scan with their phone, or open the | p.text-center | 12px/500 | #717171 | #000000; #000000 | 4.30 | 4.30 | 4.5 | FAIL
+desk /start/new (link) | Your side, after they finish | h2.text-sm | 14px/500 | #a68464 | #000000; #000000 | 6.11 | 6.11 | 4.5 | AA
+desk /start/new (link) | Accept the GitHub org invite — | li | 14px/500 | #bababa | #000000; #000000 | 10.82 | 10.82 | 4.5 | AA
+desk /start/new (link) | your organizations | a.text-glow | 14px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+desk /start/new (link) | Accept the Cloudflare invite from  | li | 14px/500 | #b9b9b9 | #000000; #000000 | 10.70 | 10.70 | 4.5 | AA
+desk /start/new (link) | In | li | 14px/500 | #a6a6a6 | #000000; #000000 | 8.63 | 8.63 | 4.5 | AA
+desk /start/new (link) | their | strong | 14px/700 | #bfbfbf | #000000; #000000 | 11.42 | 11.42 | 4.5 | AA
+desk /start/new (link) | Buy | li | 14px/500 | #bbbbbb | #000000; #000000 | 10.94 | 10.94 | 4.5 | AA
+desk /start/new (link) | example.com | span.text-body | 14px/500 | #d9d9d9 | #000000; #000000 | 14.88 | 14.88 | 4.5 | AA
+desk /start/new (link) | Cloudflare links open whichever ac | p.text-xs | 12px/500 | #6f6f6f | #000000; #000000 | 4.18 | 4.18 | 4.5 | FAIL
+desk /start flow, step 1 | Step 1 of 4 | p.text-xs | 12px/500 | #aa8766 | #000000; #000000 | 6.37 | 6.37 | 4.5 | AA
+desk /start flow, step 1 | Create your GitHub account | h1.display | 36px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+desk /start flow, step 1 | Your email is already filled in. | li | 16px/500 | #b7b7b7 | #000000; #000000 | 10.47 | 10.47 | 4.5 | AA
+desk /start flow, step 1 | GitHub may show a short puzzle — t | li | 16px/500 | #bababa | #000000; #000000 | 10.82 | 10.82 | 4.5 | AA
+desk /start flow, step 1 | Open GitHub | a.block | 18px/600 | #000000 | #6480ce; #6480ce | 5.52 | 5.52 | 4.5 | AA
+desk /start flow, step 1 | Done → Next step | button.rounded-full | 16px/500 | #b7b7b7 | #000000; #000000 | 10.47 | 10.47 | 4.5 | AA
+phone sky: logo, B11 | studio | span.chrome-studio | 13px/700 | #bf9a76 | #000000; #0c0907 | 8.10 | 7.66 | 4.5 | AA
+phone sky: logo, B11 | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b49b6d; #a78a61 | 7.09 | 5.83 | 4.5 | AA
+phone sky: menu open | studio | span.chrome-studio | 13px/700 | #bc9774 | #000000; #0c0907 | 7.82 | 7.39 | 4.5 | AA
+phone sky: menu open | The Sky | a | 15px/600 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone sky: menu open | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b49b6d; #a78a61 | 7.09 | 5.83 | 4.5 | AA
+phone sky: empty-star panel (B10) | studio | span.chrome-studio | 13px/700 | #bf9a76 | #000000; #0c0907 | 8.10 | 7.66 | 4.5 | AA
+phone sky: empty-star panel (B10) | Site | strong | 15px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone sky: empty-star panel (B10) | A custom site built for your busin | li | 15px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone sky: empty-star panel (B10) | Claim your star | button.brass-btn | 14px/700 | #160f0a | #baa176; #a48d62 | 7.63 | 5.93 | 4.5 | AA
+phone sky: empty-star panel (B10) | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b49b6d; #a78a61 | 7.09 | 5.83 | 4.5 | AA
+phone sky: lit-star panel | studio | span.chrome-studio | 13px/700 | #bf9a76 | #020305; #030406 | 7.96 | 7.91 | 4.5 | AA
+phone sky: lit-star panel | A site for my bakery, with the bre | p.sky-ask | 15px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone sky: lit-star panel | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b49b6d; #a78a61 | 7.09 | 5.83 | 4.5 | AA
+phone sky: "claim yours" | studio | span.chrome-studio | 13px/700 | #bf9a76 | #000000; #0c0907 | 8.10 | 7.66 | 4.5 | AA
+phone sky: "claim yours" | claim yours | p.sky-claim | 13px/600 | #c8a27e | #000000; #110d09 | 8.93 | 8.22 | 4.5 | AA
+phone sky: "claim yours" | See what holds up the sky | button.brass-btn | 16px/700 | #160f0a | #b49b6d; #a78a61 | 7.09 | 5.83 | 4.5 | AA
+phone roots: tile 1 | studio | span.chrome-studio | 13px/700 | #c29d79 | #181212; #272524 | 7.40 | 6.10 | 4.5 | AA
+phone roots: tile 1 | Site | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 1 | A custom site built for your busin | span | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone roots: tile 1 | $990 | s.strike | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 1 | → FREE | strong | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 2 | studio | span.chrome-studio | 13px/700 | #c59f7a | #1f1a18; #332e2b | 7.07 | 5.50 | 4.5 | AA
+phone roots: tile 2 | Site + Systems | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 2 | Everything in Site, plus the work  | span | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone roots: tile 2 | Price: by quote. | strong | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 3 | studio | span.chrome-studio | 13px/700 | #bd9874 | #151114; #332a2c | 7.05 | 5.24 | 4.5 | AA
+phone roots: tile 3 | Site + App | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 3 | Everything in Site, plus a real ap | span | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone roots: tile 3 | Price: by quote. | strong | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 4 | studio | span.chrome-studio | 13px/700 | #c39d79 | #130b0c; #282423 | 7.79 | 6.16 | 4.5 | AA
+phone roots: tile 4 | Add-ons — AI + automation | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 4 | Upgrades that take work off your p | span | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone roots: tile 4 | Price: by quote. | strong | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 5 | studio | span.chrome-studio | 13px/700 | #c39f7a | #1e181d; #34302f | 7.11 | 5.32 | 4.5 | AA
+phone roots: tile 5 | Care | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone roots: tile 5 | What keeps your site alive after l | span | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone roots: tile 5 | $39/mo founding, locked for life o | strong | 16px/700 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone close: F1, F2 | studio | span.chrome-studio | 13px/700 | #c39d79 | #221c1c; #3d312c | 6.73 | 5.03 | 4.5 | AA
+phone close: F1, F2 | Claim your star | a.brass-btn | 21px/700 | #160f0a | #b79f74; #aa9068 | 7.43 | 6.23 | 3 | AA
+phone close: F1, F2 | Contact me | a.brass-btn | 15px/600 | #ae8a68 | #21170e; #261b11 | 5.56 | 5.32 | 4.5 | AA
+phone build request dialog (with error) | Claim your star | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone build request dialog (with error) | Tell us what you want to build. | p | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone build request dialog (with error) | Your name | label | 14px/600 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone build request dialog (with error) | Send | button.pill | 16px/700 | #160f0a | #b1936a; #a3875f | 6.55 | 5.59 | 4.5 | AA
+phone build request dialog (with error) | The spam check did not pass. Pleas | p.cform__status | 15px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone build request dialog | (typed text in a field) | input | 16px | rgba(255, 255, 255, 0.9) | rgb(0, 0, 0) | - | - | 4.5 | (computed colours as declared)
+phone message box dialog | Contact me | h2.panel__title | 22px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone message box dialog | Your name | label | 14px/600 | #c2c2c2 | #000000; #020305 | 11.79 | 11.58 | 4.5 | AA
+phone message box dialog | Send | button.pill | 16px/700 | #160f0a | #b1946a; #a48860 | 6.61 | 5.66 | 4.5 | AA
+phone /contact | Cellestial Studio | a.self-start | 14px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /contact | Start a project | h1.display | 48px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+phone /contact | Tell us what you need built. We an | p.text-white | 16px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone /contact | Your name | label | 14px/600 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone /contact | Send | button.pill | 16px/700 | #160f0a | #b1946a; #a48860 | 6.61 | 5.66 | 4.5 | AA
+phone /start/new (top) | Studio only | p.text-xs | 12px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start/new (top) | New client link | h1.display | 36px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+phone /start/new (top) | Nothing here is saved or sent anyw | p.text-sm | 14px/500 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone /start/new (top) | Business name | label.flex | 14px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start/new (top) | Does their business run on… | legend.mb-1 | 14px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start/new (top) | Microsoft (default) | label.flex | 14px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone /start/new (top) | Their link | h2.text-sm | 14px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start/new (top) | https://cellestialstudio.com/start | a.break-all | 12px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+phone /start/new (top) | Copy link | button.flex-1 | 16px/600 | #000000 | #6480ce; #6480ce | 5.52 | 5.52 | 4.5 | AA
+phone /start/new (link) | In person — no emails | label.flex | 14px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone /start/new (link) | Their link | h2.text-sm | 14px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start/new (link) | https://cellestialstudio.com/start | a.break-all | 12px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+phone /start/new (link) | Copy link | button.flex-1 | 16px/600 | #000000 | #6480ce; #6480ce | 5.52 | 5.52 | 4.5 | AA
+phone /start/new (link) | Scan with their phone, or open the | p.text-center | 12px/500 | #808080 | #000000; #000000 | 5.32 | 5.32 | 4.5 | AA
+phone /start/new (link) | Accept the GitHub org invite — | li | 14px/500 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone /start/new (link) | your organizations | a.text-glow | 14px/500 | #6480ce | #000000; #000000 | 5.52 | 5.52 | 4.5 | AA
+phone /start/new (link) | their | strong | 14px/700 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone /start/new (link) | example.com | span.text-body | 14px/500 | #e6e6e6 | #000000; #000000 | 16.83 | 16.83 | 4.5 | AA
+phone /start/new (link) | Cloudflare links open whichever ac | p.text-xs | 12px/500 | #808080 | #000000; #000000 | 5.32 | 5.32 | 4.5 | AA
+phone /start flow, step 1 | Step 1 of 4 | p.text-xs | 12px/500 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 4.5 | AA
+phone /start flow, step 1 | Create your GitHub account | h1.display | 36px/600 | #ae8a68 | #000000; #000000 | 6.64 | 6.64 | 3 | AA
+phone /start flow, step 1 | Your email is already filled in. | li | 16px/500 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+phone /start flow, step 1 | Open GitHub | a.block | 18px/600 | #000000 | #6480ce; #6480ce | 5.52 | 5.52 | 4.5 | AA
+phone /start flow, step 1 | Done → Next step | button.rounded-full | 16px/500 | #c2c2c2 | #000000; #000000 | 11.79 | 11.79 | 4.5 | AA
+
+194 distinct text colours in context; 2 fail AA on the median background; 0 pass on the median and fail on the worst 5% of the pixels behind them

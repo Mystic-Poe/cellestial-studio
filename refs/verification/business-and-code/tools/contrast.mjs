@@ -1,9 +1,11 @@
 // Contrast of every text colour on what is really behind it. Production build.
-// For each state of the page: every element that holds visible text is found, its colour is
-// read (with its own alpha and its ancestors' opacity), then the same screen is photographed
-// with all text made transparent and the pixels behind each run of text are read: the median,
-// and the lightest twentieth (the worst case for light text). WCAG AA: 4.5:1, or 3:1 for large
-// text (24 px, or 18.66 px bold).
+// For each state of the page: every element that holds visible text is found, and the screen is
+// photographed twice, as it is and with every glyph made transparent. Where the two differ is
+// the text: its colour is read from the pixels of the first photograph that changed most (the
+// cores of the strokes, so gradients, clipped backgrounds and opacity are all in it), and what
+// is behind it from the second: the median, and the twentieth of it nearest the text's own
+// lightness (the worst case). Nothing is taken from the stylesheet. WCAG AA: 4.5:1, or 3:1 for
+// large text (24 px, or 18.66 px bold).
 // Run: node refs/verification/business-and-code/tools/contrast.mjs
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -65,38 +67,53 @@ const COLLECT = () => {
 const rows = [];
 async function measure(page, state, dpr) {
 	const items = await page.evaluate(COLLECT);
-	const style = await page.addStyleTag({
-		content: '*, *::before, *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; text-decoration-color: transparent !important; } ::placeholder { color: transparent !important; }',
+	const clear = (buf) => sharp(buf).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+	const shown = await clear(await page.screenshot());
+	// Text painted as a background clipped to its glyphs ("studio") needs its background gone too.
+	await page.evaluate(() => {
+		for (const el of document.querySelectorAll('body *')) {
+			const cs = getComputedStyle(el);
+			if ((cs.backgroundClip || cs.webkitBackgroundClip || '').includes('text')) el.setAttribute('data-clip-text', '');
+		}
 	});
-	await sleep(120);
-	const shot = await page.screenshot();
+	const style = await page.addStyleTag({
+		content: '*, *::before, *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; text-decoration-color: transparent !important; transition: none !important; } ::placeholder { color: transparent !important; } [data-clip-text] { background: none !important; }',
+	});
+	await sleep(150);
+	const bare = await clear(await page.screenshot());
 	await style.evaluate((el) => el.remove());
-	const { data, info } = await sharp(shot).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+	await page.evaluate(() => { for (const el of document.querySelectorAll('[data-clip-text]')) el.removeAttribute('data-clip-text'); });
+	const A = shown.data;
+	const B = bare.data;
+	const W = shown.info.width;
+	const Ht = shown.info.height;
 	for (const it of items) {
-		const lums = [];
+		const px = [];
 		for (const r of it.rects) {
 			const x0 = Math.max(0, Math.floor(r.x * dpr));
 			const y0 = Math.max(0, Math.floor(r.y * dpr));
-			const x1 = Math.min(info.width, Math.ceil((r.x + r.w) * dpr));
-			const y1 = Math.min(info.height, Math.ceil((r.y + r.h) * dpr));
-			const step = Math.max(1, Math.floor(((x1 - x0) * (y1 - y0)) / 6000) ** 0.5 | 0) || 1;
-			for (let y = y0; y < y1; y += step) for (let x = x0; x < x1; x += step) {
-				const i = (y * info.width + x) * 3;
-				lums.push([lum([data[i], data[i + 1], data[i + 2]]), data[i], data[i + 1], data[i + 2]]);
+			const x1 = Math.min(W, Math.ceil((r.x + r.w) * dpr));
+			const y1 = Math.min(Ht, Math.ceil((r.y + r.h) * dpr));
+			for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
+				const i = (y * W + x) * 3;
+				const d = Math.abs(A[i] - B[i]) + Math.abs(A[i + 1] - B[i + 1]) + Math.abs(A[i + 2] - B[i + 2]);
+				px.push([d, A[i], A[i + 1], A[i + 2], B[i], B[i + 1], B[i + 2]]);
 			}
 		}
-		if (!lums.length) continue;
-		lums.sort((a, b) => a[0] - b[0]);
-		const med = lums[Math.floor(lums.length / 2)].slice(1);
-		const light = lums[Math.floor(lums.length * 0.95)].slice(1);
-		const dark = lums[Math.floor(lums.length * 0.05)].slice(1);
-		const rMed = ratio(over(it.rgb, it.alpha, med), med);
-		// The worst case: the end of the background nearest the text's own lightness.
-		const textLum = lum(over(it.rgb, it.alpha, med));
-		const worstBg = textLum > lum(med) ? light : dark;
-		const rWorst = ratio(over(it.rgb, it.alpha, worstBg), worstBg);
+		if (px.length < 8) continue;
+		const maxD = px.reduce((m, p) => Math.max(m, p[0]), 0);
+		if (maxD < 12) { rows.push({ state, ...it, fg: 'n/a', bg: 'n/a', bgWorst: 'n/a', rMed: Number.NaN, rWorst: Number.NaN, need: 4.5, unseen: true }); continue; }
+		// The cores of the strokes: the pixels that changed most.
+		const core = px.filter((p) => p[0] >= maxD * 0.8);
+		const med = (list, k) => list.map((p) => p[k]).sort((a, b) => a - b)[Math.floor(list.length / 2)];
+		const fg = [med(core, 1), med(core, 2), med(core, 3)];
+		const bgs = px.map((p) => [lum([p[4], p[5], p[6]]), p[4], p[5], p[6]]).sort((a, b) => a[0] - b[0]);
+		const bgMed = bgs[Math.floor(bgs.length / 2)].slice(1);
+		const light = bgs[Math.floor(bgs.length * 0.95)].slice(1);
+		const dark = bgs[Math.floor(bgs.length * 0.05)].slice(1);
+		const worstBg = lum(fg) > lum(bgMed) ? light : dark;
 		const large = it.size >= 24 || (it.size >= 18.66 && it.weight >= 700);
-		rows.push({ state, ...it, fg: hex(over(it.rgb, it.alpha, med)), bg: hex(med), bgWorst: hex(worstBg), rMed, rWorst, need: large ? 3 : 4.5 });
+		rows.push({ state, ...it, fg: hex(fg), bg: hex(bgMed), bgWorst: hex(worstBg), rMed: ratio(fg, bgMed), rWorst: ratio(fg, worstBg), need: large ? 3 : 4.5 });
 	}
 }
 
@@ -197,7 +214,7 @@ await visit('phone', PHONE);
 await browser.close();
 
 // One line per distinct (state, colour, size, background): the worst of each.
-const key = (r) => `${r.state}|${r.fg}|${r.size}|${r.weight}|${r.bg}`;
+const key = (r) => `${r.state}|${r.where}|${r.size}|${r.weight}|${String(r.fg).slice(0, 4)}|${String(r.bg).slice(0, 4)}`;
 const best = new Map();
 for (const r of rows) {
 	const k = key(r);
@@ -208,6 +225,7 @@ let fails = 0;
 let soft = 0;
 for (const r of best.values()) {
 	if (r.raw) { lines.push(`${r.state} | ${r.text} | ${r.where} | ${r.size}px | ${r.fg} | ${r.bg} | - | - | 4.5 | (computed colours as declared)`); continue; }
+	if (r.unseen) { lines.push(`${r.state} | ${r.text} | ${r.where} | ${r.size}px/${r.weight} | - | - | - | - | - | (no pixel changed when the text was hidden: not painted, or painted another way)`); continue; }
 	const verdict = r.rMed < r.need ? 'FAIL' : r.rWorst < r.need ? 'passes on the median, fails on its lightest/darkest 5%' : 'AA';
 	if (verdict === 'FAIL') fails++;
 	else if (verdict !== 'AA') soft++;

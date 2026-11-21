@@ -1,0 +1,48 @@
+
+# desk
+ok   resized (rotated) twice during the fall: ends on the Roots, at the top — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   no console errors
+ok   reduced motion switched on mid-fall: ends on the Roots, at the top — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   reduced motion switched on mid-warp: ends on the sky — {"scene":"sky","y":0,"spacer":900,"focus":"sky-ui","rootsTop":900,"veil":"0/none"}
+ok   and the sky is drawn — mean luminance 5.00
+ok   no console errors
+     after the storm: {"scene":"sky","y":0,"spacer":900,"focus":"sky-ui","rootsTop":900,"veil":"0/none"}; dialogs open: none
+ok   twenty overlapping requests: the page ends in one resting scene — sky
+ok   and its scroll model is whole — {"scene":"sky","y":0,"spacer":900,"focus":"sky-ui","rootsTop":900,"veil":"0/none"}
+ok   no black veil is left over the page — 0/none
+ok   and the menu still works afterwards — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   and the page is not black — mean 27.0
+ok   no console errors
+     context lost by script: true; mean luminance before 3.57, while lost 0.12, after it came back and a flight to the next figure 3.79
+ok   with the context lost the menu still opens
+ok   the context restored: the sky is drawn again — 3.79 vs 3.57
+ok   and the Roots are still reachable — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+     console: none
+     back from /contact to the home page: {"scene":"sky","y":0,"spacer":900,"focus":"BODY","rootsTop":900,"veil":"0/none"}, mean luminance 3.7
+ok   back from /contact: the page is in one scene with its scroll model whole — {"scene":"sky","y":0,"spacer":900,"focus":"BODY","rootsTop":900,"veil":"0/none"}
+ok   no console errors
+
+# phone
+ok   resized (rotated) twice during the fall: ends on the Roots, at the top — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   no console errors
+ok   reduced motion switched on mid-fall: ends on the Roots, at the top — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   reduced motion switched on mid-warp: ends on the sky — {"scene":"sky","y":0,"spacer":844,"focus":"sky-ui","rootsTop":844,"veil":"0/none"}
+ok   and the sky is drawn — mean luminance 8.63
+ok   no console errors
+     after the storm: {"scene":"sky","y":0,"spacer":844,"focus":"sky-ui","rootsTop":844,"veil":"0/none"}; dialogs open: none
+ok   twenty overlapping requests: the page ends in one resting scene — sky
+ok   and its scroll model is whole — {"scene":"sky","y":0,"spacer":844,"focus":"sky-ui","rootsTop":844,"veil":"0/none"}
+ok   no black veil is left over the page — 0/none
+ok   and the menu still works afterwards — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+ok   and the page is not black — mean 36.4
+ok   no console errors
+     context lost by script: true; mean luminance before 3.08, while lost 0.35, after it came back and a flight to the next figure 3.47
+ok   with the context lost the menu still opens
+ok   the context restored: the sky is drawn again — 3.47 vs 3.08
+ok   and the Roots are still reachable — {"scene":"roots","y":0,"spacer":0,"focus":"roots","rootsTop":0,"veil":"0/none"}
+     console: none
+     back from /contact to the home page: {"scene":"sky","y":0,"spacer":844,"focus":"BODY","rootsTop":844,"veil":"0/none"}, mean luminance 3.1
+ok   back from /contact: the page is in one scene with its scroll model whole — {"scene":"sky","y":0,"spacer":844,"focus":"BODY","rootsTop":844,"veil":"0/none"}
+ok   no console errors
+
+34 ok, 0 FAIL

@@ -1,6 +1,6 @@
 // Weight and first paint of the home page on the phone profile (390x844, scale 2, touch),
-// CPU slowed 4x. Production build. For each request: bytes as the preview server sent them
-// (it does not compress) and the same body gzipped (about what a CDN would transfer).
+// CPU slowed 4x. Production build. For each request: bytes on the wire as the preview server
+// sent them (it gzips text, as a CDN would), the body's own size, and the body gzipped.
 // Run: node refs/verification/business-and-code/tools/weight.mjs
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -12,23 +12,23 @@ const OBSERVE = `
 	new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__perf.lcp.push({ t: e.startTime, size: e.size, el: e.element ? e.element.tagName + (e.element.className ? '.' + String(e.element.className).split(' ')[0] : '') + (e.element.id ? '#' + e.element.id : '') : null, url: e.url || null }); }).observe({ type: 'largest-contentful-paint', buffered: true });
 	new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__perf.long.push({ t: Math.round(e.startTime), d: Math.round(e.duration) }); }).observe({ type: 'longtask', buffered: true });
 	new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__perf.marks[e.name] = e.startTime; }).observe({ type: 'paint', buffered: true });
-	new MutationObserver(() => { const s = document.documentElement.dataset.scene; if (s && !window.__perf.marks['scene:' + s]) window.__perf.marks['scene:' + s] = performance.now(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-scene'] });
+	new MutationObserver(() => { const s = document.documentElement?.dataset.scene; if (s && !window.__perf.marks['scene:' + s]) window.__perf.marks['scene:' + s] = performance.now(); const l = document.getElementById('loader'); if (l && l.classList.contains('is-live') && !window.__perf.marks.loaderLive) window.__perf.marks.loaderLive = performance.now(); }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-scene', 'class'] });
 `;
 const out = [];
 const say = (s = '') => { console.log(s); out.push(s); };
 const browser = await launch();
 
-async function run(label, { net, url = '/?debug' }) {
+async function run(label, { net, url = '/?debug', cpu = 4 }) {
 	const context = await browser.newContext(PHONE);
 	const page = await context.newPage();
 	const cdp = await context.newCDPSession(page);
 	await cdp.send('Network.enable');
-	await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+	await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpu });
 	if (net) await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: net.rtt, downloadThroughput: (net.down * 1024) / 8, uploadThroughput: (net.up * 1024) / 8 });
 	await page.addInitScript(OBSERVE);
 	const reqs = new Map();
 	let t0 = null;
-	cdp.on('Network.requestWillBeSent', (e) => { t0 ??= e.timestamp; reqs.set(e.requestId, { url: e.request.url, start: e.timestamp - t0 }); });
+	cdp.on('Network.requestWillBeSent', (e) => { if (e.request.url.startsWith('data:')) return; t0 ??= e.timestamp; reqs.set(e.requestId, { url: e.request.url, start: e.timestamp - t0 }); });
 	cdp.on('Network.responseReceived', (e) => { const r = reqs.get(e.requestId); if (r) { r.status = e.response.status; r.encoding = e.response.headers['content-encoding'] ?? e.response.headers['Content-Encoding'] ?? 'none'; r.type = e.type; } });
 	cdp.on('Network.loadingFinished', (e) => { const r = reqs.get(e.requestId); if (r) { r.wire = e.encodedDataLength; r.end = e.timestamp - t0; } });
 	const bodies = new Map();
@@ -64,6 +64,8 @@ async function run(label, { net, url = '/?debug' }) {
 	say(`the sky's own files: ${list.filter(isSky).map((r) => `${r.url.replace(BASE, '')} ${r.raw}/${r.gz}`).join('; ')} — arriving by ${Math.max(0, ...list.filter(isSky).map((r) => r.end)).toFixed(2)} s`);
 	say(`all, once the sky has arrived: ${list.length} requests, ${sum(list, 'raw')} bytes, ${sum(list, 'gz')} gzipped`);
 	const lcp = perf.lcp.at(-1);
+	const live = (perf.marks.loaderLive ?? 0) / 1000;
+	say(`the loader: live at ${live.toFixed(2)} s, the sky on stage at ${skyAt.toFixed(2)} s: ${(skyAt - live).toFixed(2)} s of loader (the spec: 6 to 8 s, never under 6)`);
 	say(`first paint ${(perf.marks['first-paint'] / 1000).toFixed(2)} s; first contentful paint ${(perf.marks['first-contentful-paint'] / 1000).toFixed(2)} s; DOMContentLoaded ${dcl.toFixed(2)} s; load ${loadT.toFixed(2)} s; the sky on stage at ${skyAt.toFixed(2)} s`);
 	say(`LCP candidates: ${perf.lcp.map((e) => `${(e.t / 1000).toFixed(2)} s ${e.el} ${e.size}px² ${e.url ? e.url.replace(BASE, '') : ''}`).join(' → ')}`);
 	say(`Largest Contentful Paint: ${lcp ? (lcp.t / 1000).toFixed(2) : 'none'} s`);
@@ -78,6 +80,7 @@ async function run(label, { net, url = '/?debug' }) {
 
 await run('first visit, CPU 4x slower, network as it comes (localhost)', {});
 await run('first visit, CPU 4x slower, slow 4G (1.6 Mbit/s down, 750 kbit/s up, 150 ms)', { net: { down: 1600, up: 750, rtt: 150 } });
-await run('reduced motion is not this; straight to the sky (?scene=sky), CPU 4x, localhost', { url: '/?scene=sky&debug' });
+await run('first visit, CPU NOT slowed, localhost (the length of the loader on a fast device)', { cpu: 1 });
+await run('straight to the sky (?scene=sky), CPU 4x, localhost', { url: '/?scene=sky&debug' });
 await browser.close();
 writeFileSync(path.join(HERE, '..', 'weight.txt'), `${out.join('\n')}\n`);

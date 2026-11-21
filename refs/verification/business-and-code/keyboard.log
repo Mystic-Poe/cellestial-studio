@@ -1,0 +1,125 @@
+ok   a first visit opens on the loader
+     Tab during the loader: 
+       → a "Skip to content"
+       → body
+       → a "Skip to content"
+ok   Tab does not skip the loader
+     Enter skipped the loader: on the sky 1698 ms later
+     Tab through the sky: 
+       → a "Cellestial studio"
+       → button "Menu"
+       → button[slot-98] "Empty star in Virgo"
+       → button[slot-65] "Empty star in Virgo"
+       → button[slot-87] "Empty star in Virgo"
+       → button[slot-34] "Empty star in Virgo"
+       → button[slot-3] "Empty star in Virgo"
+       → button[slot-102] "Empty star in Virgo"
+       → button[slot-85] "Empty star in Virgo"
+       → button[slot-28] "Empty star in Virgo"
+       → button[slot-53] "Empty star in Virgo"
+       → button[slot-52] "Empty star in Virgo"
+       → button[slot-110] "Empty star in Virgo"
+       → button[slot-74] "Empty star in Virgo"
+       → body
+       → a "Skip to content"
+       → a "Cellestial studio"
+       → button "Menu"
+ok   "Skip to content" is in the Tab order, before the logo — a "Cellestial stud > button "Menu" > button[slot-98] "E > button[slot-65] "E > button[slot-87] "E > button[slot-34] "E > button[slot-3] "Em > button[slot-102] " > button[slot-85] "E > button[slot-28] "E > button[slot-53] "E > button[slot-52] "E > button[slot-110] " > button[slot-74] "E > body > a "Skip to content > a "Cellestial stud > button "Menu"
+ok   then the logo and the menu button
+ok   then Virgo's twelve stars, each a button — 12
+ok   every stop shows a focus ring
+ok   every stop is on screen
+ok   Enter on a star opens its panel
+ok   focus is inside the panel — div "Site A custom site built for your busine"
+     Enter on button[slot-98] "Empty star in Virgo": focus → div "Site A custom site built for your busine"; then Tab: 
+       → button "Close"
+       → button#sky-claim-star "Claim your star"
+ok   Tab reaches its close button, then "Claim your star"
+ok   Escape closes it and focus returns to the star — button[slot-98] "Empty star in Virgo"
+ok   PageDown, twelve times, flies the whole round — 43 s
+ok   B11 "See what holds up the sky" is then there
+ok   Tab reaches B11 — 13 Tabs; button "See what holds up the sky"
+ok   after the fall focus is on the ground — main#roots "What we build"
+     Tab down the Roots: 
+       → button "Return to the sky"
+       → button "Site"
+       → button "Site + Systems"
+       → button "Site + App"
+       → button "Add-ons — AI + automation"
+       → button "Care"
+       → a "Claim your star"
+       → a "Contact me"
+ok   E6, the five nodes in order, F1, F2 — button "Return to the sky" | button "Site" | button "Site + Systems" | button "Site + App" | button "Add-ons — AI + automation" | button "Care" | a "Claim your star" | a "Contact me"
+ok   each with a ring and on screen
+     Enter on button "Site": focus → article#offer-site "Site A custom site built for your busine"; Tab → button "Close"
+       → button "Site + Systems"
+ok   Enter on node 1 opens its tile and focus goes into it — article#offer-site "Site A custom site built for your busine"
+ok   Escape closes the tile; focus returns to its node — button "Site"
+     Enter on a "Claim your star": focus → input#claim-form-name "name"; Tab ×8: 
+       → input#claim-form-email "email"
+       → textarea#claim-form-message "message"
+       → div "" (NO RING)
+       → div "" (NO RING)
+       → div "" (NO RING)
+       → button "Send"
+       → body
+       → button "Close"
+ok   the dialog opens with focus in "Your name" — input#claim-form-name "name"
+ok   Tab stays inside the dialog (or leaves the page for the browser), never reaching the page behind — input#claim-form-email "email" | textarea#claim-form-message "message" | div "" | div "" | div "" | button "Send" | body | button "Close"
+ok   Tab reaches Send and the close button — input#claim-form-email "email" | textarea#claim-form-message "message" | div "" | div "" | div "" | button "Send" | body | button "Close"
+ok   Escape closes it; focus returns to F1 — a "Claim your star"
+ok   F2 opens the message box with focus in "Your name" — input#contact-box-form-name "name"
+ok   Escape closes it; focus returns to F2 — a "Contact me"
+ok   E6 launches back up and focus is on the sky — div#sky-ui "The Sky"
+     Enter on Menu: focus → a "The Sky"; Tab ×3: 
+       → a "What we build"
+       → a "Claim your star"
+       → a "Contact me"
+ok   the menu opens with focus on "The Sky", then the other three in order
+ok   the button says it is expanded
+ok   Escape closes the menu; focus returns to the button — button "Menu"
+ok   menu → "What we build": lands on roots, focus on /main#roots/ — scene=roots, focus=main#roots "What we build"
+ok   menu → "Claim your star": lands on roots, focus on /"Claim your star"/ — scene=roots, focus=a "Claim your star"
+ok   menu → "Contact me": lands on roots, focus on /contact-box-form-name/ — scene=roots, focus=input#contact-box-form-name "name"
+ok   menu → "The Sky": lands on sky, focus on /sky-ui/ — scene=sky, focus=div#sky-ui "The Sky"
+     structure: {
+      "lang": "en",
+      "title": "Cellestial Studio — Your node among the stars",
+      "h1": 0,
+      "headings": [
+       "H2:Site",
+       "H2:Site + Systems",
+       "H2:Site + App",
+       "H2:Add-ons — AI + automation",
+       "H2:Care",
+       "H2:Claim your star",
+       "H2:Contact me"
+      ],
+      "landmarks": [
+       "header#chrome[]",
+       "nav[Menu]",
+       "div#sky-ui[The Sky]",
+       "div[sky-claim-star]",
+       "div[sky-ask]",
+       "main#roots[What we build]",
+       "article#offer-site[offer-site-title]",
+       "article#offer-systems[offer-systems-title]",
+       "article#offer-app[offer-app-title]",
+       "article#offer-addons[offer-addons-title]",
+       "article#offer-care[offer-care-title]",
+       "dialog#claim-dialog[claim-title]",
+       "dialog#contact-dialog[contact-title]"
+      ],
+      "imgsNoAlt": 0,
+      "unnamedButtons": [],
+      "viewport": "width=device-width, initial-scale=1"
+     }
+ok   lang is set; every image has alt; every button and link has a name
+FAIL the home page has exactly one <h1> — 0
+ok   pinch zoom is not disabled — width=device-width, initial-scale=1
+ok   no console errors in the whole keyboard visit
+
+accessibility trees written to refs/verification/business-and-code/a11y-trees.txt
+
+36 ok, 1 FAIL
+exit 1

@@ -1,0 +1,224 @@
+
+===== LOADING (1.5 s in) =====
+- link "Skip to content":
+  - /url: "#main"
+
+===== THE SKY (opening pose) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- region "The Sky":
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+
+===== THE SKY, an empty star picked (B10 open) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- region "The Sky":
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - dialog "Claim your star":
+    - button "Close"
+    - list:
+      - listitem:
+        - strong: Site
+        - text: A custom site built for your business.
+      - listitem:
+        - strong: Site + Systems
+        - text: Everything in Site, plus the work behind it wired in.
+      - listitem:
+        - strong: Site + App
+        - text: Everything in Site, plus a real app your customers actually use.
+      - listitem:
+        - strong: Add-ons
+        - text: Upgrades that take work off your plate.
+      - listitem:
+        - strong: Care
+        - text: What keeps your site alive after launch.
+    - button "Claim your star"
+
+===== THE ROOTS (arrived, no tile open) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- main "What we build":
+  - button "Return to the sky"
+  - button "Site"
+  - button "Site + Systems"
+  - button "Site + App"
+  - button "Add-ons — AI + automation"
+  - button "Care"
+  - link "Claim your star":
+    - /url: /contact
+  - link "Contact me":
+    - /url: /contact
+
+===== THE ROOTS, tile 1 "Site" open =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- main "What we build":
+  - button "Return to the sky"
+  - button "Site" [expanded]
+  - dialog "Site":
+    - heading "Site" [level=2]
+    - button "Close"
+    - paragraph: A custom site built for your business.
+    - paragraph: Fast, beautiful, and made to be found.
+    - paragraph: "Includes: your pages, a working contact form, domain set up in your account."
+    - paragraph:
+      - text: $990 slashed
+      - strong: → FREE
+      - text: — founding cohort.
+    - paragraph:
+      - text: "Plus care: $69/mo slashed"
+      - strong: → $39/mo
+      - text: ", locked for life on basic."
+    - paragraph:
+      - strong: You own it. Forever.
+      - text: Site, domain, and content are yours.
+  - button "Site + Systems"
+  - button "Site + App"
+  - button "Add-ons — AI + automation"
+  - button "Care"
+  - link "Claim your star":
+    - /url: /contact
+  - link "Contact me":
+    - /url: /contact
+
+===== THE BUILD REQUEST (dialog open) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- main "What we build":
+  - button "Return to the sky"
+  - button "Site"
+  - button "Site + Systems"
+  - button "Site + App"
+  - button "Add-ons — AI + automation"
+  - button "Care"
+  - link "Claim your star":
+    - /url: /contact
+  - link "Contact me":
+    - /url: /contact
+- dialog "Claim your star":
+  - heading "Claim your star" [level=2]
+  - button "Close"
+  - paragraph: Tell us what you want to build.
+  - text: Your name
+  - textbox "Your name"
+  - text: Email
+  - textbox "Email"
+  - text: What do you need built?
+  - textbox "What do you need built?"
+  - button "Send"
+  - status
+
+===== THE MESSAGE BOX (dialog open) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu"
+- main "What we build":
+  - button "Return to the sky"
+  - button "Site"
+  - button "Site + Systems"
+  - button "Site + App"
+  - button "Add-ons — AI + automation"
+  - button "Care"
+  - link "Claim your star":
+    - /url: /contact
+  - link "Contact me":
+    - /url: /contact
+- dialog "Contact me":
+  - heading "Contact me" [level=2]
+  - button "Close"
+  - text: Your name
+  - textbox "Your name"
+  - text: Email
+  - textbox "Email"
+  - text: What do you need built?
+  - textbox "What do you need built?"
+  - button "Send"
+  - status
+
+===== THE MENU (open, over the sky) =====
+- link "Skip to content":
+  - /url: "#main"
+- banner:
+  - link "Cellestial studio":
+    - /url: /
+    - text: studio
+  - button "Menu" [expanded]
+  - navigation "Menu":
+    - list:
+      - listitem:
+        - link "The Sky":
+          - /url: /
+      - listitem:
+        - link "What we build":
+          - /url: "#roots"
+      - listitem:
+        - link "Claim your star":
+          - /url: /contact
+      - listitem:
+        - link "Contact me":
+          - /url: /contact
+- region "The Sky":
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "Empty star in Virgo"
+  - button "See what holds up the sky"
