@@ -77,22 +77,22 @@ ok   warp, phone, from scrollY 1800, software, CPU slowed 4x: when the page beca
 ok   teleport, desk, sky → "The Sky": the item reads "The Sky"
 ok   teleport, desk, sky → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
 ok   teleport, desk, sky → "The Sky": the flash went "none" (wanted "none")
-ok   teleport, desk, sky → "The Sky": the flash took 431 ms with the swap in it
+ok   teleport, desk, sky → "The Sky": the flash took 430 ms with the swap in it
 ok   teleport, desk, sky → "The Sky": the menu closed
 ok   teleport, desk, sky → "What we build": the item reads "What we build"
 ok   teleport, desk, sky → "What we build": landed: scene roots, scrollY 0, focus "roots"
 ok   teleport, desk, sky → "What we build": the flash went "down" (wanted "down")
-ok   teleport, desk, sky → "What we build": the flash took 581 ms with the swap in it
+ok   teleport, desk, sky → "What we build": the flash took 580 ms with the swap in it
 ok   teleport, desk, sky → "What we build": the menu closed
 ok   teleport, desk, sky → "Claim your star": the item reads "Claim your star"
 ok   teleport, desk, sky → "Claim your star": landed: scene roots, scrollY 3304, focus "Claim your star", F1 on screen true, F2 on screen true
 ok   teleport, desk, sky → "Claim your star": the flash went "down" (wanted "down")
-ok   teleport, desk, sky → "Claim your star": the flash took 581 ms with the swap in it
+ok   teleport, desk, sky → "Claim your star": the flash took 596 ms with the swap in it
 ok   teleport, desk, sky → "Claim your star": the menu closed
 ok   teleport, desk, sky → "Contact me": the item reads "Contact me"
 ok   teleport, desk, sky → "Contact me": landed: scene roots, scrollY 3304, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
 ok   teleport, desk, sky → "Contact me": the flash went "down" (wanted "down")
-ok   teleport, desk, sky → "Contact me": the flash took 581 ms with the swap in it
+ok   teleport, desk, sky → "Contact me": the flash took 596 ms with the swap in it
 ok   teleport, desk, sky → "Contact me": the menu closed
 ok   teleport, desk, roots → "The Sky": the item reads "The Sky"
 ok   teleport, desk, roots → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
@@ -107,7 +107,7 @@ ok   teleport, desk, roots → "What we build": the menu closed
 ok   teleport, desk, roots → "Claim your star": the item reads "Claim your star"
 ok   teleport, desk, roots → "Claim your star": landed: scene roots, scrollY 3304, focus "Claim your star", F1 on screen true, F2 on screen true
 ok   teleport, desk, roots → "Claim your star": the flash went "down" (wanted "down")
-ok   teleport, desk, roots → "Claim your star": the flash took 447 ms with the swap in it
+ok   teleport, desk, roots → "Claim your star": the flash took 446 ms with the swap in it
 ok   teleport, desk, roots → "Claim your star": the menu closed
 ok   teleport, desk, roots → "Contact me": the item reads "Contact me"
 ok   teleport, desk, roots → "Contact me": landed: scene roots, scrollY 3304, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
@@ -117,12 +117,12 @@ ok   teleport, desk, roots → "Contact me": the menu closed
 ok   teleport, phone, sky → "The Sky": the item reads "The Sky"
 ok   teleport, phone, sky → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
 ok   teleport, phone, sky → "The Sky": the flash went "none" (wanted "none")
-ok   teleport, phone, sky → "The Sky": the flash took 431 ms with the swap in it
+ok   teleport, phone, sky → "The Sky": the flash took 430 ms with the swap in it
 ok   teleport, phone, sky → "The Sky": the menu closed
 ok   teleport, phone, sky → "What we build": the item reads "What we build"
 ok   teleport, phone, sky → "What we build": landed: scene roots, scrollY 0, focus "roots"
 ok   teleport, phone, sky → "What we build": the flash went "down" (wanted "down")
-ok   teleport, phone, sky → "What we build": the flash took 497 ms with the swap in it
+ok   teleport, phone, sky → "What we build": the flash took 496 ms with the swap in it
 ok   teleport, phone, sky → "What we build": the menu closed
 ok   teleport, phone, sky → "Claim your star": the item reads "Claim your star"
 ok   teleport, phone, sky → "Claim your star": landed: scene roots, scrollY 3125, focus "Claim your star", F1 on screen true, F2 on screen true
@@ -137,7 +137,7 @@ ok   teleport, phone, sky → "Contact me": the menu closed
 ok   teleport, phone, roots → "The Sky": the item reads "The Sky"
 ok   teleport, phone, roots → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
 ok   teleport, phone, roots → "The Sky": the flash went "up" (wanted "up")
-ok   teleport, phone, roots → "The Sky": the flash took 431 ms with the swap in it
+ok   teleport, phone, roots → "The Sky": the flash took 430 ms with the swap in it
 ok   teleport, phone, roots → "The Sky": the menu closed
 ok   teleport, phone, roots → "What we build": the item reads "What we build"
 ok   teleport, phone, roots → "What we build": landed: scene roots, scrollY 0, focus "roots"
@@ -147,7 +147,7 @@ ok   teleport, phone, roots → "What we build": the menu closed
 ok   teleport, phone, roots → "Claim your star": the item reads "Claim your star"
 ok   teleport, phone, roots → "Claim your star": landed: scene roots, scrollY 3125, focus "Claim your star", F1 on screen true, F2 on screen true
 ok   teleport, phone, roots → "Claim your star": the flash went "down" (wanted "down")
-ok   teleport, phone, roots → "Claim your star": the flash took 430 ms with the swap in it
+ok   teleport, phone, roots → "Claim your star": the flash took 429 ms with the swap in it
 ok   teleport, phone, roots → "Claim your star": the menu closed
 ok   teleport, phone, roots → "Contact me": the item reads "Contact me"
 ok   teleport, phone, roots → "Contact me": landed: scene roots, scrollY 3125, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true

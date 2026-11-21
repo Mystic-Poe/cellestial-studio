@@ -1,24 +1,45 @@
 ---
-// PLACEHOLDER for the chrome (C1 → C3). The chrome scene replaces this file
-// and src/experience/chrome/index.ts.
+// The chrome (C1 → C3): the only things that stay on screen the whole visit.
 //
-// The logo with "studio" under it, the three-bar menu button, and the menu:
-// the kit's panel, shown as a native popover, so it opens and closes with no
-// script. Each item is a real link for when there is none (#sky, #roots,
-// /contact, /contact); with script, the chrome sends it to the director.
+//   C1  the C emblem at rest (circuits on, calm) with the live word "studio"
+//       under it in brass: one link, home
+//   C2  the menu button: three short bars of the brass skin, a hair-thin blue
+//       line along each
+//   C3  the menu: the site's small panel, four links, nothing else
+//
+// The menu is a native popover, so the button opens it, and Escape or a click
+// elsewhere closes it, with no script at all: without script its four links
+// are how a visitor gets to /contact. src/experience/chrome/index.ts adds the
+// teleports, the focus, and aria-expanded.
+//
+// The header takes no pointer events itself, only its two controls and the
+// open panel do, so it never takes a swipe or a wheel turn from the sky.
 import { ASSETS } from '../../experience/assets.ts';
 import Panel from '../ui/Panel.astro';
 
 const logo = ASSETS.chrome.cLogo;
+// Where the emblem's main node is, as shares of the picture: its glow breathes.
+const node = {
+	x: `${((logo.node.x / logo.w) * 100).toFixed(2)}%`,
+	y: `${((logo.node.y / logo.h) * 100).toFixed(2)}%`,
+};
 ---
 
 <header id="chrome">
-	<div class="chrome-logo">
-		<img src={logo.url} width={logo.w} height={logo.h} alt="Cellestial" decoding="async" />
+	<a class="chrome-logo" href="/" aria-label="Cellestial studio" data-home>
+		<span class="chrome-emblem" style={`--node-x: ${node.x}; --node-y: ${node.y}`}>
+			<img src={logo.url} width={logo.w} height={logo.h} alt="" decoding="async" />
+		</span>
 		<span class="chrome-studio">studio</span>
-	</div>
+	</a>
 
-	<button class="chrome-bars" type="button" aria-label="Menu" popovertarget="chrome-menu" data-needs-js>
+	<button
+		class="chrome-bars"
+		type="button"
+		aria-label="Menu"
+		aria-controls="chrome-menu"
+		popovertarget="chrome-menu"
+	>
 		<span></span>
 		<span></span>
 		<span></span>
@@ -27,7 +48,7 @@ const logo = ASSETS.chrome.cLogo;
 	<Panel id="chrome-menu" size="small" popover>
 		<nav aria-label="Menu">
 			<ul>
-				<li><a href="#sky" data-dest="sky">The Sky</a></li>
+				<li><a href="/" data-dest="sky">The Sky</a></li>
 				<li><a href="#roots" data-dest="build">What we build</a></li>
 				<li><a href="/contact" data-dest="claim">Claim your star</a></li>
 				<li><a href="/contact" data-dest="contact">Contact me</a></li>
@@ -38,52 +59,141 @@ const logo = ASSETS.chrome.cLogo;
 
 <style is:global>
 	#chrome {
+		--chrome-top: max(0.75rem, env(safe-area-inset-top));
+		--chrome-left: max(1rem, env(safe-area-inset-left));
+		--chrome-emblem-h: 3rem;
+		/* The picture is 167 by 192. */
+		--chrome-emblem-w: calc(var(--chrome-emblem-h) * 167 / 192);
 		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 40;
 		display: flex;
 		align-items: flex-start;
-		gap: 0.5rem;
-		padding: max(0.75rem, env(safe-area-inset-top)) 0 0 max(1rem, env(safe-area-inset-left));
-		transition: opacity 600ms ease-out;
+		gap: 0.375rem;
+		padding: var(--chrome-top) 0 0 var(--chrome-left);
+		pointer-events: none;
+		transition: opacity 400ms ease-out;
 	}
-	/* The loader is the emblem alone: the chrome fades in as it ends. */
+	#chrome > * {
+		pointer-events: auto;
+	}
+	/* Where there is room the logo is a little larger. */
+	@media (min-width: 48rem) {
+		#chrome {
+			--chrome-emblem-h: 3.75rem;
+		}
+	}
+	/* The loader is the emblem alone: the chrome is not there until it ends,
+	   and then it fades in. */
 	html[data-scene='loading'] #chrome {
 		visibility: hidden;
 		opacity: 0;
 	}
+	html[data-motion='off'] #chrome {
+		transition: none;
+	}
 
-	/* C1. */
+	/* ── C1 ─────────────────────────────────────────────────────────────── */
 	.chrome-logo {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.125rem;
+		gap: 0.1875rem;
+		border-radius: 6px;
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
 	}
-	.chrome-logo img {
+	.chrome-logo:focus-visible,
+	.chrome-bars:focus-visible,
+	#chrome-menu a:focus-visible {
+		outline: 2px solid var(--color-blue-white);
+		outline-offset: 3px;
+	}
+	.chrome-emblem {
+		position: relative;
 		display: block;
-		width: auto;
-		height: 3.25rem;
+		width: var(--chrome-emblem-w);
+		height: var(--chrome-emblem-h);
 	}
+	.chrome-emblem img {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	/* The main node's glow, breathing very slowly. Light drawn by code. */
+	.chrome-emblem::after {
+		content: '';
+		position: absolute;
+		left: var(--node-x);
+		top: var(--node-y);
+		width: 46%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle closest-side,
+			color-mix(in srgb, var(--color-blue-white) 55%, transparent),
+			color-mix(in srgb, var(--color-blue) 45%, transparent) 38%,
+			transparent
+		);
+		mix-blend-mode: screen;
+		opacity: 0.4;
+		transform: translate(-50%, -50%);
+		pointer-events: none;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		html[data-motion='on'] .chrome-emblem::after {
+			animation: chrome-breathe 7s ease-in-out infinite;
+		}
+	}
+	@keyframes chrome-breathe {
+		0%,
+		100% {
+			opacity: 0.22;
+		}
+		50% {
+			opacity: 0.58;
+		}
+	}
+	/* "studio": the wordmark's typeface, in the brass of its letters' lit
+	   faces, lit from above as they are. */
 	.chrome-studio {
+		background: linear-gradient(to bottom, var(--color-brass-hi) 18%, var(--color-brass-text) 72%);
+		-webkit-background-clip: text;
+		background-clip: text;
 		color: var(--color-brass-text);
-		font-size: 0.75rem;
-		font-weight: 600;
+		-webkit-text-fill-color: transparent;
+		filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.9));
+		font-family: var(--font-sans);
+		font-size: 0.8125rem;
+		font-weight: 700;
 		line-height: 1;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.07em;
+		/* The tracking leaves a gap after the last letter: take it back, so the
+		   word is centred under the emblem. */
+		margin-right: -0.07em;
+	}
+	@media (min-width: 48rem) {
+		.chrome-studio {
+			font-size: 0.9375rem;
+		}
 	}
 
-	/* C2. Three short bars of the brass skin, a hair-thin blue line along each. */
+	/* ── C2 ───────────────────────────────────────────────────────────────
+	   Three short bars cut from the brass skin, a hair-thin blue line in a
+	   groove along each. The button is 44 px square around them. */
 	.chrome-bars {
+		--bar-line: var(--color-blue);
+		--bar-glow: transparent;
+		--bar-skin: url('/cellestial/ui/brass-main.webp');
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 5px;
+		gap: 4px;
 		width: 44px;
 		height: 44px;
-		margin: 0.25rem 0 0;
+		margin: 0;
 		padding: 0;
 		border: 0;
 		border-radius: 8px;
@@ -94,22 +204,54 @@ const logo = ASSETS.chrome.cLogo;
 	.chrome-bars span {
 		display: block;
 		width: 26px;
-		height: 5px;
+		height: 6px;
 		border-radius: 3px;
 		background:
-			linear-gradient(to bottom, transparent 2px, var(--color-blue) 2px 3px, transparent 3px),
-			url('/cellestial/ui/brass-main.webp') center / 1024px 512px;
-		box-shadow: 0 1px 0 rgb(0 0 0 / 0.8);
+			/* The line and the groove it runs in. */
+			linear-gradient(
+				to bottom,
+				transparent 1.5px,
+				rgb(14 7 1 / 0.75) 1.5px 2.5px,
+				var(--bar-line) 2.5px 3.5px,
+				rgb(14 7 1 / 0.75) 3.5px 4.5px,
+				transparent 4.5px
+			),
+			/* Lit from above, like the wordmark. */
+			linear-gradient(to bottom, rgb(255 244 222 / 0.5), rgb(255 244 222 / 0) 45%, rgb(24 12 2 / 0.5)),
+			var(--bar-skin) center / 256px 128px;
+		box-shadow:
+			0 0 0 1px rgb(0 0 0 / 0.7),
+			0 0 6px 0 var(--bar-glow);
+		transition: box-shadow 160ms ease-out;
+	}
+	/* Each bar shows a different stretch of the skin. */
+	.chrome-bars span:nth-child(2) {
+		background-position: 0 0, 0 0, 30% 40%;
+	}
+	.chrome-bars span:nth-child(3) {
+		background-position: 0 0, 0 0, 70% 80%;
+	}
+	.chrome-bars:hover,
+	.chrome-bars:focus-visible,
+	.chrome-bars[aria-expanded='true'] {
+		--bar-line: var(--color-blue-white);
+		--bar-glow: color-mix(in srgb, var(--color-blue) 85%, transparent);
+	}
+	.chrome-bars:active {
+		--bar-skin: url('/cellestial/ui/brass-dark.webp');
 	}
 
-	/* C3. The popover is laid out by the browser in the middle of the screen;
-	   this puts it under the button instead. */
+	/* ── C3 ───────────────────────────────────────────────────────────────
+	   A popover is laid out by the browser in the middle of the screen; this
+	   drops it from the button instead. */
 	#chrome-menu {
 		position: fixed;
 		inset: auto;
-		top: calc(max(0.75rem, env(safe-area-inset-top)) + 4.75rem);
-		left: max(1rem, env(safe-area-inset-left));
+		top: calc(var(--chrome-top) + 44px + 0.375rem);
+		left: calc(var(--chrome-left) + var(--chrome-emblem-w) + 0.375rem);
 		margin: 0;
+		max-width: calc(100vw - var(--chrome-left) - var(--chrome-emblem-w) - 1rem);
+		--panel-pad-y: 0.375rem;
 	}
 	#chrome-menu ul {
 		margin: 0;
@@ -120,17 +262,58 @@ const logo = ASSETS.chrome.cLogo;
 		display: flex;
 		align-items: center;
 		min-height: 44px;
-		color: inherit;
+		border-radius: 4px;
+		color: var(--color-white);
 		font-weight: 600;
 		text-decoration: none;
 		white-space: nowrap;
+		transition: color 120ms ease-out;
 	}
 	#chrome-menu a:hover,
 	#chrome-menu a:focus-visible {
-		color: var(--color-brass-text);
+		color: var(--color-brass-hi);
 	}
 	/* With no sky to go to, the menu does not offer it. */
 	html[data-no-sky] #chrome-menu li:has([data-dest='sky']) {
 		display: none;
+	}
+	/* It drops: a short fall and a fade, where motion is welcome. */
+	@media (prefers-reduced-motion: no-preference) {
+		html:not([data-motion='off']) #chrome-menu {
+			opacity: 0;
+			transform: translateY(-6px);
+			transition:
+				opacity 160ms ease-out,
+				transform 160ms ease-out,
+				display 160ms allow-discrete,
+				overlay 160ms allow-discrete;
+		}
+		html:not([data-motion='off']) #chrome-menu:popover-open {
+			opacity: 1;
+			transform: none;
+		}
+		@starting-style {
+			html:not([data-motion='off']) #chrome-menu:popover-open {
+				opacity: 0;
+				transform: translateY(-6px);
+			}
+		}
+	}
+
+	/* A browser with no popovers: the script opens and closes the panel with
+	   data-open; with no script either, the four links are simply on the page. */
+	@supports not selector(:popover-open) {
+		#chrome-menu {
+			display: none;
+			opacity: 1;
+			transform: none;
+		}
+		#chrome-menu[data-open] {
+			display: block;
+		}
+		html:not([data-scene]) #chrome-menu {
+			display: block;
+			position: static;
+		}
 	}
 </style>
