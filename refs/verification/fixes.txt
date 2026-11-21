@@ -263,3 +263,28 @@ look 14 (MINOR) — the loader's lit wires whiter and thicker than the reference
   and lets the rings show; it is still a little larger and bluer at its rim than the reference's.
   Not changed: the first arc at 3.67 s (tamer than the reference's).
   refs/loading/compare/desk-1, desk-2, phone-1, phone-2 rebuilt.
+
+look 19 (MINOR, a tool) — tools/sky/compare.mjs said introProgress(1) and reset() differ by 2 px (desktop) and
+  21 px (phone).  NOT THE SKY: FOUND AND FIXED IN THE TOOL.
+  Proved: the still sky was photographed twelve times, 350 ms apart, with its clock pinned. As the page is,
+  consecutive pictures differ by 0 to 272 px at 1440x900, all inside x 51..70, y 51..70, and by 0 to 700
+  device px on the phone, all inside x 90..120, y 86..117: the logo's main node, whose glow breathes over
+  7 s. With the chrome's animations switched off: 0 px in every one of the 22 pairs, both sizes. So the two
+  screenshots the tool compares catch the logo at two moments of its breath; how many pixels depends on
+  where in the 7 s they fall (0 and 0 on the day PROGRESS.md recorded it, 2 and 21 on the inspector's).
+  Done: the tool holds the chrome's animations still for that comparison. Checked: the handoff part run
+  three times: 0 and 0 pixels each time.
+
+look 12 (MINOR) — the Turnstile box white for a frame as a dialog opens.  CSS ONLY, AND NOT PROVED.
+  Not reproduced: the opening of the message box on the phone profile was recorded with the DevTools
+  screencast sixteen times before any change (unslowed, on a slow line, with the CPU slowed 4x and 6x) and
+  no frame had a white box (none had over 4000 near-white pixels; the box would be about 19,000). The
+  inspector's one frame is real (walk/phone-14-teleport-contact.jpg): the first frame of the dialog.
+  Done, in the style block of src/components/ContactForm.astro and nowhere else: the widget's place
+  (.cf-turnstile and [data-turnstile-slot]) is held at opacity 0 for the first 0.3 s it is on screen and
+  let in over the next 0.2 s (an animation that starts when the dialog opens). No markup, attribute,
+  script or handler of the form is changed.
+  Checked: in both dialogs at both sizes and on /contact the box is unseen as the dialog opens, is there at
+  full opacity afterwards (462x73 and 328x73 px), Turnstile's test key still returns its token and Send is
+  enabled. Four more recordings after the change: no white frame. Because it could not be made to happen
+  before the change, that it can no longer happen is an inference, not a measurement.

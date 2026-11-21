@@ -96,6 +96,23 @@ const ready = TURNSTILE_SITE_KEY !== '';
       transform-origin: top left;
     }
   }
+  /* Turnstile's frame can paint white for an instant before it draws itself
+     dark (seen once, on a phone, in the first frame of an opening dialog). Its
+     place is kept unseen for the first moments it is on screen, then let in.
+     Surface only: the widget, its script and the form's markup are untouched. */
+  .cform .cf-turnstile,
+  .cform [data-turnstile-slot] {
+    animation: cform-widget-in 520ms linear both;
+  }
+  @keyframes cform-widget-in {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   /* Send is the brass button: .pill is its old name (see BrassButton.astro). */
   .cform__send {
     align-self: flex-start;

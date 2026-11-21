@@ -22,7 +22,8 @@
 //   handoff.jpg               the sky's side of the loader's hand-off, alone:
 //                             introProgress at 0, 0.3, 0.5, 0.7, 0.85 and 1, then reset().
 //                             Prints the core's circle at each and how many pixels differ
-//                             between introProgress(1) and reset() (must be 0).
+//                             between introProgress(1) and reset() (must be 0; the logo's
+//                             breathing node is held still for this, see below).
 //   beads-desk.jpg, -phone    a touch at three places, at three stations: the
 //                             beads at five moments from the touch until after they arrive,
 //                             cropped to their route, and the route itself drawn over the
@@ -429,6 +430,14 @@ if (only.has('handoff')) {
 	for (const size of ['desk', 'phone']) {
 		const view = await open(size);
 		const vp = SIZES[size].viewport;
+		// The logo's node breathes (a 7 s animation of the chrome's own), and two screenshots
+		// taken a moment apart catch it at two brightnesses: a few to a few hundred pixels at
+		// the logo, none of them the sky's. It is held still here, so that what is compared
+		// is the sky's picture alone.
+		await view.page.addStyleTag({
+			content:
+				'#chrome, #chrome *, #chrome *::before, #chrome *::after { animation: none !important; transition: none !important; }',
+		});
 		// About where the wordmark's little star is, and its size (the loader passes its own).
 		const star = size === 'desk' ? { x: 1108, y: 318, r: 6 } : { x: 300, y: 398, r: 2.4 };
 		const [cw, ch] = size === 'desk' ? [384, 240] : [111, 240];
