@@ -3,7 +3,7 @@ ok   desk: at launch (Virgo) two figures are complete (Aries, Leo) and nothing i
 ok   desk: Aries: on arriving the meaning is being written (writing)
 ok   desk: Aries: the words are exactly "the Lamb"
 ok   desk: Aries: a screen reader gets each line once (the letters seen are hidden from it)
-ok   desk: Aries: the words are whole on screen: 262x70 px at 566, 487, type 54px Quicksand-2467c83bd1e4413d
+ok   desk: Aries: the words are whole on screen: 262x70 px at 576, 493, type 54px Quicksand-2467c83bd1e4413d
 ok   desk: Aries: they cover none of the 4 star buttons
 ok   desk: Aries: clear of the exit button and the chrome, and they take no pointer
 ok   desk: Aries: written: every letter there, the lightning's canvas gone
@@ -22,7 +22,7 @@ ok   phone: at launch (Virgo) two figures are complete (Aries, Leo) and nothing 
 ok   phone: Aries: on arriving the meaning is being written (writing)
 ok   phone: Aries: the words are exactly "the Lamb"
 ok   phone: Aries: a screen reader gets each line once (the letters seen are hidden from it)
-ok   phone: Aries: the words are whole on screen: 102x27 px at 144, 548, type 21px Quicksand-2467c83bd1e4413d
+ok   phone: Aries: the words are whole on screen: 102x27 px at 144, 542, type 21px Quicksand-2467c83bd1e4413d
 ok   phone: Aries: they cover none of the 4 star buttons
 ok   phone: Aries: clear of the exit button and the chrome, and they take no pointer
 ok   phone: Aries: written: every letter there, the lightning's canvas gone
