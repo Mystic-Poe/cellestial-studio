@@ -101,6 +101,31 @@ import Base from '../layouts/Base.astro';
 	html[data-scene='roots'] :is(#sky-canvas, #sky-ui) {
 		visibility: hidden;
 	}
+	/* While the stars fall and during the launch back, the sky's buttons are
+	   not part of the picture: they go at once and come back gently. */
+	html:is([data-scene='fall'], [data-scene='warp']) #sky-ui {
+		visibility: hidden;
+		opacity: 0;
+		transition:
+			opacity 160ms linear,
+			visibility 0s linear 160ms;
+	}
+	html[data-scene='sky'] #sky-ui {
+		transition: opacity 400ms linear;
+	}
+	/* E6, the way back up, is not there while the ground is still coming up to
+	   meet the stars: it appears once the visitor has arrived. */
+	html[data-scene='fall'] #roots [data-ascend] {
+		visibility: hidden;
+	}
+	html[data-scene='roots'][data-motion='on'] #roots [data-ascend] {
+		animation: e6-arrive 600ms ease-out both;
+	}
+	@keyframes e6-arrive {
+		from {
+			opacity: 0;
+		}
+	}
 	/* The sky's buttons are not reachable before the sky is. */
 	html[data-scene='loading'] #sky-ui {
 		visibility: hidden;

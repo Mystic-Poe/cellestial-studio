@@ -39,7 +39,17 @@ import {
 	type Stage,
 	type StagePart,
 } from './contracts.ts';
-import { easeOut, fadeThrough, onMotionChange, reducedMotion, tween } from './motion.ts';
+import {
+	easeIn,
+	easeInOut,
+	easeOut,
+	fadeThrough,
+	lerp,
+	onFrame,
+	onMotionChange,
+	reducedMotion,
+	tween,
+} from './motion.ts';
 import { get, when } from './stage.ts';
 
 export type StartScene = 'loading' | 'sky' | 'roots';
@@ -63,12 +73,27 @@ const PART_WAIT_MS = 4000;
 const SKY_WAIT_MS = 6000;
 /** How long a skipped loader is given to finish its hand-off. */
 const LOADER_WAIT_MS = 10_000;
+/** D1: the soil rises this far into the frame, as a share of the screen, to meet the stars. */
+const FALL_MEET = 0.32;
+/** D1: how long that rise takes. The first star strikes about half way through it. */
+const FALL_RISE_MS = 900;
+/** D2: then the view follows the growth down to the top of the ground. */
+const FALL_FOLLOW_MS = 1200;
+/** After the fall the growth is given this long to pass the first node before focus moves. */
+const GROWTH_WAIT_MS = 1500;
+/** G2: the whole launch back to the sky. */
+const WARP_MS = 1500;
+/** G2: where in the warp the frame is covered, if the effects layer cannot say. */
+const WARP_COVER_DEFAULT = 0.7;
 /** The veil sits over the effects layer (30) and under the chrome (40): the logo stays. */
 const VEIL_Z = '35';
 /** Or over everything, the loader (50) included. */
 const VEIL_Z_OVER_ALL = '55';
 
 const SCENES: readonly string[] = ['loading', 'sky', 'fall', 'roots', 'warp'];
+
+/** Slow, fast, slow, and quicker off the mark than motion.ts's: the view must not seem to stop. */
+const glide = (k: number): number => (k < 0.5 ? 2 * k * k : 1 - 2 * (1 - k) * (1 - k));
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -329,48 +354,121 @@ export function createDirector(): StageDirector {
 	// ══════════════════════════════════════════════════════════════════════
 
 	/**
-	 * D1 + D2. B11 was pressed: every star falls, one meets the soil, and the
-	 * Roots grow from where it struck. To be written; until then the fade.
+	 * D1 + D2. B11 was pressed: every star falls, the soil rises into the bottom
+	 * of the frame to meet them, the first to reach it strikes, and the view
+	 * follows the light down until the top of the ground is the top of the
+	 * screen. It ends where arriveInRoots('top') ends, with one difference: the
+	 * mycelium is left growing, not shown whole.
 	 *
-	 *   const [sky, roots, fx] = await Promise.all([soon('sky'), soon('roots'), soon('fx')]);
-	 *   if (!sky || !roots) return fade(() => arriveInRoots('top'));
-	 *   setScene('fall');                  // the soil is now visible under the fold
-	 *   roots.setActive(true);
-	 *   const drop = document.getElementById('sky-window').offsetHeight;
-	 *   let grown: Promise<void> | undefined;
-	 *   await Promise.all([
-	 *     sky.fall({
-	 *       groundY: () => roots.surfaceY(),
-	 *       onImpact: (x) => {
-	 *         fx?.impact(x, roots.surfaceY());
-	 *         grown = roots.growFrom(x);
-	 *       },
-	 *     }),
-	 *     tween(ms, (k) => jump(drop * k), easeIn),   // the soil rises into the frame
-	 *   ]);
-	 *   setScene('roots');                 // spacer gone, scrollTop corrected: no jump
-	 *   sky.setActive(false);
-	 *   await grown;
+	 * The sky is a fixed canvas under the ground, so a star that passes the
+	 * soil's edge is behind it. The effects layer is fixed too, so while its
+	 * burst plays its canvas is carried along with the ground it struck.
 	 */
 	async function fall(): Promise<void> {
-		await fade(() => arriveInRoots('top'));
+		const [sky, roots] = await Promise.all([soon('sky'), soon('roots'), soon('fx')]);
+		const spacer = document.getElementById('sky-window');
+		if (!sky || !roots || !spacer || noSky) return fade(() => arriveInRoots('top'));
+
+		setScene('fall'); // the ground is on stage, under the fold; only this file can scroll
+		jump(0);
+		tell('roots', (ground) => ground.setActive(true)); // bare soil, waiting to be struck
+
+		const surface = (): number => {
+			try {
+				const y = roots.surfaceY();
+				if (Number.isFinite(y)) return y;
+			} catch (err) {
+				console.error('[cellestial] the roots threw', err);
+			}
+			return window.innerHeight;
+		};
+		const burst = document.getElementById('fx-canvas');
+		/** scrollTop when the star struck, or -1. */
+		let struck = -1;
+		let grown: Promise<void> | undefined;
+		const onImpact = (x: number): void => {
+			if (scene !== 'fall' || struck >= 0) return;
+			struck = window.scrollY;
+			const y = surface();
+			tell('fx', (fx) => fx.impact(x, y));
+			tell('roots', (ground) => {
+				grown = ground.growFrom(x);
+			});
+		};
+		const scrollTo = (share: number): void => {
+			if (scene !== 'fall') return; // the sky was lost meanwhile: the page is the Roots already
+			jump(spacer.offsetHeight * share);
+			if (burst && struck >= 0) burst.style.transform = `translateY(${struck - window.scrollY}px)`;
+		};
+
+		try {
+			// Not awaited: it is over when the last star is behind the soil, and
+			// restore() ends it in any case.
+			Promise.resolve(sky.fall({ groundY: surface, onImpact })).catch((err) =>
+				console.error('[cellestial] the sky threw', err),
+			);
+		} catch (err) {
+			console.error('[cellestial] the sky threw', err);
+		}
+		try {
+			await tween(FALL_RISE_MS, (k) => scrollTo(FALL_MEET * k), easeInOut);
+			await tween(FALL_FOLLOW_MS, (k) => scrollTo(lerp(FALL_MEET, 1, k)), glide);
+		} finally {
+			if (burst) burst.style.transform = '';
+		}
+		if (scene !== 'fall') return;
+
+		setScene('roots'); // spacer gone, scrollTop corrected in the same frame: nothing moves
+		jump(anchor('top'));
+		tell('sky', (above) => {
+			above.setActive(false);
+			above.restore(); // unseen: on the ground the sky is not on stage
+		});
+		tell('roots', (ground) => ground.setActive(true));
+		if (grown) await Promise.race([grown.catch(() => {}), wait(GROWTH_WAIT_MS)]);
+		else tell('roots', (ground) => ground.showGrown()); // nothing struck: it is simply there
 	}
 
 	/**
 	 * G2. E6 was pressed, or a star was just claimed from the ground: launch
-	 * back up to the sky. To be written; until then the fade.
-	 *
-	 *   const [sky, fx] = await Promise.all([soon('sky'), soon('fx')]);
-	 *   if (!sky || !fx) return fade(arriveInSky);
-	 *   setScene('warp');                  // spacer back, scrollTop corrected: no jump
-	 *   sky.restore(); sky.reset(); sky.setActive(true);
-	 *   const from = window.scrollY;
-	 *   await Promise.all([fx.warp(ms), tween(ms, (k) => jump(from * (1 - k)), easeIn)]);
-	 *   setScene('sky');
-	 *   tell('roots', (roots) => roots.setActive(false));
+	 * back up to the sky. The effects layer plays the warp; under it the ground
+	 * drops away, faster and faster, with the sky already live behind it, and
+	 * at the moment the warp covers the whole frame the page becomes the sky
+	 * (arriveInSky). Wall-clock time throughout, as the effects layer keeps it,
+	 * so the swap cannot miss the cover.
 	 */
 	async function warp(): Promise<void> {
-		await fade(arriveInSky);
+		const [sky, fx] = await Promise.all([soon('sky'), soon('fx')]);
+		if (!sky || !fx || noSky) return fade(arriveInSky);
+		const cover = await import('./fx/index.ts').then(
+			(layer) => layer.WARP_COVER,
+			() => WARP_COVER_DEFAULT,
+		);
+
+		setScene('warp'); // spacer back, scrollTop corrected in the same frame: nothing moves
+		tell('sky', (above) => {
+			above.restore();
+			above.reset();
+			above.setStill(reducedMotion());
+			above.setActive(true);
+		});
+		const from = window.scrollY;
+		const t0 = performance.now();
+		const until = WARP_MS * cover;
+		const stop = onFrame(() => {
+			if (scene !== 'warp') return;
+			jump(from * (1 - easeIn(Math.min(1, (performance.now() - t0) / until))));
+		});
+		const played = Promise.resolve()
+			.then(() => fx.warp(WARP_MS))
+			.catch((err) => console.error('[cellestial] the warp failed', err));
+		try {
+			await Promise.race([wait(until), played]);
+		} finally {
+			stop();
+		}
+		if (scene === 'warp') arriveInSky(); // under the cover
+		await played;
 	}
 
 	/**

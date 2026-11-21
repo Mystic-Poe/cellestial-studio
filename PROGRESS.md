@@ -14,31 +14,31 @@
 
 ## Exact next step
 
-**The arrival and the return: fill the director's choreography. Loading, the Sky, the Roots,
-the Close and the effects layer are built and checkpointed (see the table). The effects layer
-is in `src/experience/fx/` and mounted on the real page; the director does not call its
-impact or its warp yet (step 1 below), and its flash is already what a menu teleport plays.**
+**The arrival and the return, continued. The fall and the crash are built and measured (the
+row "Transitions" in the table). The warp back is written in `src/experience/director.ts`
+(`warp()`) and has run, but nobody has looked at it or measured it yet: that is step 1.**
 
 In this order, each ending with `pnpm build`, `pnpm test`, `pnpm lint`, a commit, a push and
 this file updated:
 
-1. **The fall and the crash** (D1, D2): in `src/experience/director.ts` the block marked
-   "THE FULL CHOREOGRAPHY" holds `fall()`, `warp()` and `flash()`, each with its recipe in a
-   comment. `descend()` must become: the sky's stars fall (`sky.fall`, with `groundY` from
-   `roots.surfaceY()`), the page scrolls so the soil rises into the bottom of the frame, the
-   first star to reach the ground fires `fx.impact(x, y)` and `roots.growFrom(x)`, and the view
-   follows the growth down to the top of the ground. Reduced motion keeps the plain fade.
-2. **The warp back** (G2): `ascend()` plays `fx.warp(ms)` and returns to the sky's opening pose;
-   the swap is hidden under the warp's cover (`WARP_COVER` in `src/experience/fx/index.ts`).
-3. **The teleport** (C4): `go()` already plays `fx.teleportFlash(swap, dir)`; walk the menu to all
-   four destinations from the sky and from the Roots at both sizes and look at each landing.
-4. **The chrome** (C1 to C3): the real logo with "studio", the three brass bars, the menu panel.
-   Brief: `refs/briefs/cellestial-chrome.js`. Today it is a working placeholder.
-5. **B7**: the meaning of a constellation written in lightning over it once every one of its
+1. **The warp back** (G2): look at `node tools/transitions/strip.mjs --only warp` (strips of
+   frames at both sizes, from the top of the ground and from far down it) and run
+   `node tools/transitions/measure.mjs --only warp`; fix what they find. `ascend()` and
+   `showStar()` from the Roots both go through `warp()`: the ground drops away while
+   `fx.warp(1500)` plays, and the page becomes the sky under the warp's cover.
+2. **The teleport** (C4): `go()` already plays `fx.teleportFlash(swap, dir)`; walk the menu to all
+   four destinations from the sky and from the Roots at both sizes and look at each landing
+   (`strip.mjs --only teleport`, `measure.mjs --only teleport`).
+3. **The chrome** (C1 to C3): the real logo with "studio", the three brass bars, the menu panel.
+   Brief: `refs/briefs/cellestial-chrome.js`. Today it is a working placeholder. The tools
+   find the menu by `#chrome button[popovertarget]` and `#chrome [data-dest="sky|build|claim|contact"]`:
+   keep those.
+4. **B7**: the meaning of a constellation written in lightning over it once every one of its
    stars is lit, and "Jesus is King." after Leo; the lightning is `src/experience/loader/lightning.ts`.
-6. **`/credits.txt`**: the star-data credit (Yale Bright Star Catalog; d3-celestial, BSD 3-Clause).
-7. **Tidy**: delete `src/pages/dev/` and `src/experience/fx/dev/` (the effects layer's test page
-   and its driver, kept only while the transitions are being built) and the empty `wip/`.
+5. **`/credits.txt`**: the star-data credit (Yale Bright Star Catalog; d3-celestial, BSD 3-Clause).
+6. **Tidy**: delete `src/pages/dev/` and `src/experience/fx/dev/` (the effects layer's test page
+   and its driver, kept only while the transitions are being built; their last commit is to be
+   named in the header of `tools/fx/compare.mjs`) and the empty `wip/`.
 
 Then final verification: every scene screenshotted at both sizes against its reference, the
 protected-systems diff (`git diff a31d2ee HEAD -- <protected paths>` prints nothing), a
@@ -63,7 +63,10 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | Roots (E1–E6) | **built (steps 1 to 4 by its builder; the last look by the orchestrator); what differs from the spec is listed at the end of its section.** The soil (a tile of E1 with no mirror in it) with an uneven top edge, E6, five nodes as real buttons in a descending line, five tiles from the locked copy opened one at a time, the mycelium grown by code from where the nodes are, the guided light, the growth from an impact, the whole contract. **Not built here:** the arrival and the return themselves (the fall, the crash, the warp: the director still fades). — `src/experience/roots/` (`index.ts`, `net.ts`, `edge.ts`), `src/components/scenes/Roots.astro`, `scripts/assets/roots.mjs`, `tools/roots/` | `node tools/roots/measure.mjs`: 245 checks with real clicks, taps and keys at 1440×900, 390×844 and 320×568, all passing, written to `refs/roots/measure.txt`. `node tools/roots/words.mjs`: all five tiles equal the addendum character for character, three ways (`refs/roots/words.txt`). `node tools/roots/compare.mjs`: every sheet in `refs/roots/compare/` rebuilt and looked at. Numbers in the section below. **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software, CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
 | Close (F1, F2) | **built**: exactly the two links the brief gives, F1 "Claim your star" (259×68 px, 21 px type) and F2 "Contact me" (137×44 px, 15 px type) 24 px under it, both centred, nothing else. — `src/components/scenes/Close.astro` | Same run: F1 opens the build request, F2 the message box; the menu lands on them; without script both are links to `/contact`. Looked at in the step 1 sheets. |
 | Chrome (C1–C3) | placeholder (logo, "studio", three bars, menu with four working teleports) | Walk-through above. |
-| Transitions wired (fall, crash, warp, A5 hand-off), B7 meaning reveal | not started | — |
+| Transitions: the fall and the crash (D1, D2) | **built.** `fall()` in `src/experience/director.ts`; two rules in the shell's stylesheet (`src/pages/index.astro`): the sky's buttons go while the stars fall and during the warp, and E6 is not there until the visitor has arrived. Nothing in the sky, the Roots or the effects layer was changed. **What happens:** B11 is pressed; the scene becomes `fall`; every star drops, all alike, with a trail (`sky.fall`); the document is scrolled by script so the soil rises into the bottom of the frame (to 32% of the screen in 0.9 s); the stars pass behind the soil's edge (the sky is a fixed canvas under the ground); the first one to reach it fires `fx.impact(x, y)` and `roots.growFrom(x)`; the burst's canvas is carried with the ground it struck; the view then follows the trunk's light down (1.2 s) until the top of the ground is the top of the screen; the scene becomes `roots` with the spacer collapsed and scrollTop corrected in the same frame; the sky is switched off and restored unseen; focus moves to the ground. The growth is left running (the network is not snapped whole). | Looked at as strips of sixteen frames, real clicks, real time, real GPU, both sizes: `refs/transitions/compare/fall-desk.jpg`, `fall-phone.jpg` (`node tools/transitions/strip.mjs --only fall`): one continuous event, no cut; the burst sits on the ground line and throws light down and sideways, then the trunk and node 1 light as the view goes down. `node tools/transitions/measure.mjs --only fall` (30 checks, all passing, in `refs/transitions/measure.txt`), desktop / phone: the ground is at the top 2168 / 2140 ms after the press; the star struck on screen at 464 / 495 ms (y 784 of 900 / 708 of 844); one impact, one growth; the ground never moved back down and moved 0.00 px in the frame the spacer collapsed; a second press at 300 ms, the menu at 500 ms and E6 at 700 ms did nothing; ends with scene `roots`, scrollY 0, focus on `#roots`, the sky's stars back. A reload 700 ms in opens on the sky again; back (to `/contact`) and forward 700 ms in leaves the page whole on the sky. Reduced motion: a fade straight to the Roots in about 0.6 s, no `fall` scene, no impact, the network whole. **Frame times during it:** real GPU 18.5 ms average, 33 ms at the 95th percentile, worst 50 ms (desktop); 16.8 ms average, worst 33 ms (phone size). In software with the CPU slowed 4×: 143 / 183 ms average, worst 400 / 417 ms, and the fall then takes 4.1 / 4.3 s instead of 2.2: it slows, it does not skip. **Different from the owner's words:** one star strikes and bursts (the contract's one impact); the others sink behind the soil's edge without a burst of their own. The trails are short. **Not done:** not seen on a real phone. |
+| Transitions: the warp back (G2) | **written, not looked at or measured** — `warp()` in `src/experience/director.ts` | — |
+| Transitions: the teleport (C4) | the real flash plays; landings not walked yet | — |
+| B7 meaning reveal | not started | — |
 | Final verification: screenshot matrix, protected-systems diff | not started | — |
 
 "Parked" means the code is in `wip/`, outside `src/`, so the site builds and runs without it.
@@ -837,3 +840,6 @@ than two tries. All four were reached.
   `src/experience/fx/` and onto the real page; every effect captured at both sizes and looked at,
   the flash's length, its cover at the swap, the warp's cover and the cost at rest measured.
   Nothing in the layer needed changing.
+- 2026-11-20 — The arrival and the return, step 2: the fall and the crash. `descend()` is now the
+  stars falling, the soil rising to meet them, one impact, the growth, and the view following
+  it down; looked at as strips at both sizes and measured (30 checks). The warp is written too.

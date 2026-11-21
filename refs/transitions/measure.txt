@@ -1,0 +1,34 @@
+fall, desk, real GPU: scenes fall at 5, roots at 2168; over (focus on the ground) at 2170 ms; frames avg 18.5 ms, p95 33.4 ms, worst 50.0 ms (117 frames), the worst one ending 2069 ms in
+ok   fall, desk, real GPU: B11 was on screen before
+ok   fall, desk, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, desk, real GPU: the ground reached the top of the screen 2168 ms after the press (2000 to 3000)
+ok   fall, desk, real GPU: one impact and one growth (1, 1)
+ok   fall, desk, real GPU: the star struck on screen, at x 644, y 784 of 900, 454 ms after the press
+ok   fall, desk, real GPU: the ground never moved back down (0.0 px)
+ok   fall, desk, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 22 px)
+ok   fall, desk, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, desk, real GPU: focus is on the ground ("roots")
+ok   fall, desk, real GPU: the Roots are active and growing
+ok   fall, desk, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, desk, real GPU: the effects canvas is where it belongs
+fall, phone, real GPU: scenes fall at 5, roots at 2140; over (focus on the ground) at 2142 ms; frames avg 16.8 ms, p95 16.7 ms, worst 33.3 ms (128 frames), the worst one ending 536 ms in
+ok   fall, phone, real GPU: B11 was on screen before
+ok   fall, phone, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, phone, real GPU: the ground reached the top of the screen 2140 ms after the press (2000 to 3000)
+ok   fall, phone, real GPU: one impact and one growth (1, 1)
+ok   fall, phone, real GPU: the star struck on screen, at x 170, y 708 of 844, 486 ms after the press
+ok   fall, phone, real GPU: the ground never moved back down (0.0 px)
+ok   fall, phone, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 22 px)
+ok   fall, phone, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, phone, real GPU: focus is on the ground ("roots")
+ok   fall, phone, real GPU: the Roots are active and growing
+ok   fall, phone, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, phone, real GPU: the effects canvas is where it belongs
+ok   fall, desk: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+ok   fall, desk: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, desk: reduced motion: a fade straight to the Roots in 627 ms (scenes roots at 266; no impact; the network whole)
+ok   fall, phone: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+ok   fall, phone: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, phone: reduced motion: a fade straight to the Roots in 553 ms (scenes roots at 258; no impact; the network whole)
+fall, desk, software, CPU slowed 4x: scenes fall at 19, roots at 4086; over (focus on the ground) at 4657 ms; frames avg 143.3 ms, p95 383.3 ms, worst 400.0 ms (30 frames), the worst one ending 4254 ms in
+fall, phone, software, CPU slowed 4x: scenes fall at 22, roots at 4342; over (focus on the ground) at 5045 ms; frames avg 182.7 ms, p95 383.4 ms, worst 416.7 ms (26 frames), the worst one ending 4637 ms in
