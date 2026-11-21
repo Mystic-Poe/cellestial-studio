@@ -1,6 +1,7 @@
-// The four pack pictures the sky draws with, decoded before the first frame.
+// The pack pictures the sky draws with, decoded before the first frame.
 
 import { ASSETS } from '../assets.ts';
+import { B4_STATION_URL } from './config.ts';
 import type { Pictures } from './gl/world.ts';
 
 async function load(url: string): Promise<HTMLImageElement> {
@@ -24,14 +25,15 @@ async function load(url: string): Promise<HTMLImageElement> {
 	return img;
 }
 
-/** B3's core and ring, B4, and B5 on black (it is blended additively). */
+/** B3's core and ring, B4 (as the pack has it, and as it stands at a station), and B5 on black (it is blended additively). */
 export async function loadPictures(): Promise<Pictures> {
 	const { b3Core, b3Ring, b4Empty, b5LitAdd } = ASSETS.sky;
-	const [core, ring, b4, b5] = await Promise.all([
+	const [core, ring, b4, b4Station, b5] = await Promise.all([
 		load(b3Core.url),
 		load(b3Ring.url),
 		load(b4Empty.url),
+		load(B4_STATION_URL),
 		load(b5LitAdd.url),
 	]);
-	return { core, ring, b4, b5 };
+	return { core, ring, b4, b4Station, b5 };
 }

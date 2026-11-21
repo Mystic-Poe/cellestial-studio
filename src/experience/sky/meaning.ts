@@ -246,8 +246,8 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			const p = layout.project(cam, star.x, star.y, z);
 			const r =
 				i === plan.epicentre
-					? B3.ring * fit.scale + 10
-					: Math.max(STAR_CLEAR, layout.starPx * star.scale * 1.6 + 8);
+					? B3.ring * layout.b3 * fit.scale + 10
+					: Math.max(STAR_CLEAR, layout.starPx * layout.sizeOf(star) * 1.6 + 8);
 			return { x: p.x, y: p.y, r };
 		});
 		// The figure's lines too: the words are not struck through.

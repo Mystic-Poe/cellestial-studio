@@ -162,6 +162,7 @@ uniform vec3 uOffset;
 uniform vec2 uHalfRes;
 uniform float uFocal;
 uniform float uBaseR;
+uniform float uMinScale;
 uniform float uAlpha;
 uniform vec2 uNear;
 uniform vec3 uFar;
@@ -197,7 +198,7 @@ void main() {
 	}
 	float scale = uFocal / depth;
 	float boost = aState.z;
-	float rpx = aStar.z * uBaseR * scale * (1.0 + 0.08 * boost);
+	float rpx = max(aStar.z, uMinScale) * uBaseR * scale * (1.0 + 0.08 * boost);
 	float reff = max(rpx, uMinPx);
 	float trailPx = min(speed * uFall.w * scale, uTrailMax * reff);
 
@@ -221,6 +222,8 @@ void main() {
 
 export const STAR_FRAGMENT = /* glsl */ `
 uniform sampler2D tB4;
+uniform sampler2D tB4Station;
+uniform vec2 uB4Close;
 uniform sampler2D tB5;
 uniform vec3 uB4;
 uniform vec3 uB5;
@@ -266,7 +269,12 @@ void main() {
 	float limb = smoothstep(0.78, 1.0, r);
 	limb = mix(limb * limb, 1.0, 1.0 - smoothstep(1.5, 5.0, vTrue));
 	float halo = exp(-max(r - 1.0, 0.0) / 0.16);
-	vec3 body = b4.rgb * uBody * (1.0 + 0.7 * vBoost);
+	// At its station a star is 26 to 50 px across, and the pack's hair-fine traces
+	// average away: there it is the station picture, the same sphere with its brass
+	// traces made to carry. Flown in on, it becomes the pack's own.
+	vec3 station = texture2D(tB4Station, uB4.xy + d * uB4.z).rgb;
+	float close = smoothstep(uB4Close.x, uB4Close.y, vRpx);
+	vec3 body = mix(station, b4.rgb * uBody, close) * (1.0 + 0.7 * vBoost);
 	vec3 empty = body * disc + uBlue * rim * (0.85 * limb * disc + halo * (1.0 - disc));
 
 	// B5, alive, and the claim that takes one to the other: the charge runs

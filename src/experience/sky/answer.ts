@@ -83,7 +83,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (!star.slot || hooks.isLit(star.slot)) continue;
 			const p = hooks.project(star.x, star.y, -layer * SPACING);
 			if (p.scale <= 0 || p.depth < 0.25) continue;
-			const r = Math.max(fit.starR * star.scale * p.scale, 1.25);
+			const r = Math.max(fit.starR * layout.sizeOf(star) * p.scale, 1.25);
 			if (p.x < r || p.x > layout.w - r) continue;
 			if (p.y - r < 6 || p.y + r + WORDS.gap + WORDS.height > layout.h - 6) continue;
 			if (p.x - WORDS.half < CHROME.w && p.y - r < CHROME.h) continue;

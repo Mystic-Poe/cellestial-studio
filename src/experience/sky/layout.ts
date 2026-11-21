@@ -8,7 +8,7 @@
 
 import { CONSTELLATIONS } from '../../content/constellations.ts';
 import type { SlotId } from '../contracts.ts';
-import { B3, FIGURES, FOCAL, MAG, SAFE, SPACING, STAR_PX } from './config.ts';
+import { B3, B3_PORTRAIT_PX, FIGURES, FOCAL, MAG, SAFE, SPACING, STAR_PX } from './config.ts';
 
 export const mod = (n: number, m: number) => ((n % m) + m) % m;
 export const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
@@ -173,6 +173,16 @@ export interface Layout {
 	readonly safeY: number;
 	/** Radius of a base star's disc at its station, pixels. */
 	readonly starPx: number;
+	/**
+	 * The least a star's `scale` counts for in this viewport (0: no floor). On a
+	 * portrait screen the faint stars are drawn up to it, so that every star is
+	 * large enough to be seen and touched. Use `sizeOf` and never `star.scale`.
+	 */
+	readonly minScale: number;
+	/** How much larger than its world size Cellestial's star is drawn here (1 or more). */
+	readonly b3: number;
+	/** A star's size in this viewport, as a multiple of the figure's base star radius. */
+	sizeOf(star: PlanStar): number;
 	readonly plans: readonly FigurePlan[];
 	readonly fits: readonly FigureFit[];
 	/** `pos` of layer k's station. */
@@ -203,11 +213,13 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		bottom: Math.min(SAFE.bottom, 0.2 * height),
 		side,
 	};
-	const starPx = clamp(
-		STAR_PX.base + STAR_PX.slope * Math.min(width, height),
-		STAR_PX.min,
-		STAR_PX.max,
-	);
+	// A portrait screen is held in the hand: its stars are sized for that, with a floor.
+	const portrait = height > width && width <= SAFE.narrow;
+	const starPx = portrait
+		? STAR_PX.portrait
+		: clamp(STAR_PX.base + STAR_PX.slope * Math.min(width, height), STAR_PX.min, STAR_PX.max);
+	const minScale = portrait ? STAR_PX.floor / starPx : 0;
+	const sizeOf = (star: PlanStar) => Math.max(star.scale, minScale);
 
 	// Room about the middle of the viewport, to each side.
 	const right = Math.max(40, width / 2 - side);
@@ -223,7 +235,7 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 			let minY = Infinity;
 			let maxY = -Infinity;
 			for (const star of plan.stars) {
-				const pad = starPx * star.scale * GLOW_PAD;
+				const pad = starPx * sizeOf(star) * GLOW_PAD;
 				minX = Math.min(minX, star.x * s - pad);
 				maxX = Math.max(maxX, star.x * s + pad);
 				minY = Math.min(minY, star.y * s - pad);
@@ -252,6 +264,10 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		const sy = pinned ? 0 : ((e.minY + e.maxY) / 2 - (up - down) / 2) / scale;
 		return { scale, dist: focal / scale, sx, sy, starR: starPx / scale };
 	});
+
+	// Cellestial's star, too, is sized for the hand on a portrait screen, whatever Virgo's fit.
+	const ringPx = 2 * B3.ring * (fits[0]?.scale ?? 0);
+	const b3 = portrait && ringPx > 0 ? Math.max(1, B3_PORTRAIT_PX / ringPx) : 1;
 
 	const fitOf = (k: number) => fits[mod(k, FIGURES)] as FigureFit;
 	const planOf = (k: number) => plans[mod(k, FIGURES)] as FigurePlan;
@@ -336,6 +352,9 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		safeX: width / 2,
 		safeY: height / 2 - (up - down) / 2,
 		starPx,
+		minScale,
+		b3,
+		sizeOf,
 		plans,
 		fits,
 		station,

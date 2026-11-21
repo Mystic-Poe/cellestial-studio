@@ -27,8 +27,36 @@ export const SAFE = {
 	narrow: 720,
 } as const;
 
-/** Radius of a star's disc on screen at its station: `min + slope * min(w, h)`, clamped. */
-export const STAR_PX = { slope: 0.0137, base: 2.66, min: 8, max: 15 } as const;
+/**
+ * Radius of a star's disc on screen at its station: `base + slope * min(w, h)`,
+ * clamped (19.5 px at 1440x900: a star of middling brightness is then about
+ * 21 px, large enough for B4's traces to be seen). On a portrait screen the
+ * stars are sized for the hand and not for the figure's fit: `portrait` is
+ * the base radius there, and no star, however faint, is drawn smaller than
+ * `floor` at its station.
+ */
+export const STAR_PX = {
+	slope: 0.0187,
+	base: 2.66,
+	min: 8,
+	max: 19.5,
+	portrait: 12,
+	floor: 13,
+} as const;
+
+/**
+ * B4 for a star at its station: the pack's empty star with its brass traces
+ * thickened and lifted so they survive at 26 to 50 px, in the same frame as
+ * `ASSETS.sky.b4Empty`. Derived by scripts/assets/sky.mjs
+ * (`node scripts/build-assets.mjs modules`), which is why it is named here
+ * and not in the manifest.
+ */
+export const B4_STATION_URL = '/cellestial/sky/b4-station.webp';
+/** A star's radius on screen, pixels: below `from` it is the station picture, above `to` the pack's own. */
+export const B4_CLOSE = { from: 34, to: 86 } as const;
+
+/** Cellestial's star on a portrait screen: at least this many pixels across at Virgo's station. */
+export const B3_PORTRAIT_PX = 130;
 
 /** Size follows magnitude gently: the brightest and the faintest star, as multiples of the base. */
 export const MAG = { bright: 0.85, faint: 5, brightScale: 1.35, faintScale: 0.8 } as const;

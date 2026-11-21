@@ -125,7 +125,7 @@ look 8 (MINOR) — "claim yours" drawn over a meaning.  BOTH FIXED.
   Checked: node tools/sky/meaning-all.mjs (new: all 146 stars seeded, each figure in turn, real time, real
   GPU, both sizes; refs/sky/compare/b7-all-desk.jpg, b7-all-phone.jpg, b7-all.txt): 24 of 24 whole on
   screen, touching no star button, not the logo, not B11. Both sheets looked at. Desktop: all twelve at
-  54 px, ten inside the figure's bounds and two beside them (Libra, Sagittarius, Cancer "beside"), the
+  54 px, nine inside the figure's bounds and three beside them (Libra, Sagittarius, Cancer), the
   nearest 101 px above B11 (Aquarius); Leo's two lines stand top left inside the figure, 548 px above the
   button. Phone: as before, under the figure (ten) or in the free band (Libra, Cancer). Letters sampled
   from the screenshots: #9e8473 to #a18675 at every figure and both sizes ("studio" samples #a38264 the same
@@ -133,3 +133,44 @@ look 8 (MINOR) — "claim yours" drawn over a meaning.  BOTH FIXED.
   both sizes looked at beside A4. node tools/sky/meaning.mjs --only checks: 38 of 38.
   Not done: look 8 was not reproduced as a picture again after the fix (the rule is in the code and the
   sky's own checks were run at the end; see "Final verification").
+
+look 4 (MAJOR) — the empty star did not show its asset: at its real size a plain dark bead with a grey rim.
+  FIXED.
+  Reproduced: refs/verification/matrix/sky/stars.jpg; the rim sampled #707a8c.
+  Why: B4's brass traces are a hair wide in a 512 px picture; at 32 px across they average away (the
+  texture is mip-mapped). The grey rim was not the blue the code draws (that is 21%) but the render's own
+  limb highlight, lifted 1.7 times with the rest of the sphere.
+  Done:
+  - scripts/assets/sky.mjs (new; run by "node scripts/build-assets.mjs modules") derives
+    public/cellestial/sky/b4-station.webp, 256 px, in b4-empty's frame, from the pack's B4: the traces
+    found (fine lines brighter than the sphere under them, not blue), thickened by a pixel to each side
+    and softened, laid over the lifted sphere in the brass of the wordmark's lit faces (#d5ae88), and the
+    limb highlight held back (lifted 0.55 at the edge instead of 1.7). Traces cover 14.4% of the disc.
+    Nothing is generated: every trace is where the pack's picture has one.
+  - The star shader (src/experience/sky/gl/shaders.ts, world.ts) draws that picture while a star's
+    radius is under 34 px and crossfades to the pack's own by 86 px, so the close-up before a claim is the
+    pack's B4 as before. The rim is what the spec's prep note asks: the sampled blue at 21%, a thin halo.
+  - On the desktop a star stands larger at its station: base radius 19.5 px at 1440x900 (was 15), so a
+    star of middling brightness is 21 px (STAR_PX in src/experience/sky/config.ts).
+  Checked: refs/sky/compare/stars.jpg rebuilt and looked at (empty r 21.0 px desktop, 13.0 px phone, each
+  as it appears and enlarged, beside B4 and B5): a dark sphere with brass traces and a thin dim blue edge;
+  the lit star beside it is a bright blue sphere, different at a glance. open.jpg and the three stations
+  sheets looked at. node tools/sky/measure.mjs: 201 of 201.
+
+look 5 (MAJOR, phone) — the sky was small on a phone at the wide figures.  FIXED as ruled (no figure
+  turned, none past the screen).
+  Reproduced: stars r 8.6 px, Cellestial's star 83 px across at 390x844.
+  Done (src/experience/sky/layout.ts, config.ts): on a portrait screen up to 720 px wide the stars are
+  sized for the hand, not by the figure's fit: base radius 12 px and no star, however faint, under 13 px
+  at its station (Layout.minScale, sizeOf(); the shader takes the same floor), so they run 13 to 16.2 px;
+  and Cellestial's star is 130 px across there whatever Virgo's fit (Layout.b3). Its rings then reach
+  over Virgo's four nearest stars, so on such a screen the stars are drawn over the rings and none is
+  hidden. The figures are fitted with the larger stars' room, so every star is still inside the side
+  margins (24 px clear at every figure, tools/sky/compare.mjs's table).
+  Checked: refs/sky/compare/stations-phone.jpg, open.jpg, stars.jpg looked at; panel.jpg rebuilt (the
+  panel is whole on screen beside or under the leftmost, lowest and rightmost stars, both sizes);
+  node tools/sky/measure.mjs 201 of 201 (every star's button on its star, taps, panels, the beads);
+  node tools/sky/meaning-all.mjs and meaning.mjs are run again at the end.
+  What it costs: in the dense figures (Sagittarius, Pisces' ring, the Hyades in Taurus) 26 px stars
+  overlap one another on a 390 px screen. They overlapped as 44 px tap targets before; a tap still
+  takes the star whose centre is nearest.

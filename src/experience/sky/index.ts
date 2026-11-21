@@ -280,7 +280,7 @@ export const mount: MountSky = (ctx) => {
 	const introPose = (t: number): ScreenCircle => {
 		const at = introAt ?? { x: layout.w / 2, y: layout.h / 2, r: 1 };
 		const fit = layout.fits[0];
-		const endR = B3.ring * B3.core * (fit?.scale ?? 1);
+		const endR = B3.ring * B3.core * layout.b3 * (fit?.scale ?? 1);
 		const e = smoother(t);
 		// Across first, then down: the arc of something let go.
 		const ex = 1 - (1 - e) ** 1.3;
@@ -376,7 +376,7 @@ export const mount: MountSky = (ctx) => {
 		if (!fit || !s) return 1;
 		const px = Math.min(FOCUS.size * Math.min(layout.w, layout.h), FOCUS.maxPx);
 		// Never so close that the star begins to fade against the lens.
-		return Math.max(FADE.near[1] * 1.15, (layout.focal * fit.starR * s.scale) / px);
+		return Math.max(FADE.near[1] * 1.15, (layout.focal * fit.starR * layout.sizeOf(s)) / px);
 	};
 
 	/**
@@ -545,7 +545,7 @@ export const mount: MountSky = (ctx) => {
 		const depth = depthOf(layer);
 		if (depth > FADE.far[2] || depth < FADE.near[0]) return null;
 		layout.project(cam, star.x, star.y - fallDrop(star.seed), -layer * SPACING, tmp);
-		const r = Math.max(fit.starR * star.scale * tmp.scale, LOOK.starMinPx);
+		const r = Math.max(fit.starR * layout.sizeOf(star) * tmp.scale, LOOK.starMinPx);
 		if (tmp.x + r < 0 || tmp.x - r > layout.w || tmp.y + r < 0 || tmp.y - r > layout.h) return null;
 		return { x: tmp.x, y: tmp.y, r };
 	};
@@ -594,7 +594,7 @@ export const mount: MountSky = (ctx) => {
 		for (const star of plan.stars) {
 			if (!star.slot) continue;
 			layout.project(cam, star.x, star.y, z, tmp);
-			const r = Math.max(fit.starR * star.scale * tmp.scale, LOOK.starMinPx);
+			const r = Math.max(fit.starR * layout.sizeOf(star) * tmp.scale, LOOK.starMinPx);
 			let spot = spots[n];
 			if (!spot) {
 				spot = { slot: star.slot, x: 0, y: 0, r: 0, lit: false, shown: false };
@@ -790,7 +790,7 @@ export const mount: MountSky = (ctx) => {
 			for (let i = 0; i < plan.stars.length; i++) {
 				const star = plan.stars[i];
 				if (!star?.slot) continue;
-				const trueR = fit.starR * star.scale * scale;
+				const trueR = fit.starR * layout.sizeOf(star) * scale;
 				if (seen * Math.min(1, trueR / LOOK.starMinPx) < FAINT) continue;
 				const r = Math.max(trueR, LOOK.starMinPx);
 				const x = layout.w / 2 + (star.x - cam.x) * scale;
@@ -1310,8 +1310,8 @@ export const mount: MountSky = (ctx) => {
 					clearance: plans[i]?.clearance,
 				})),
 				b3: {
-					ringPx: B3.ring * (layout.fits[0]?.scale ?? 0),
-					corePx: B3.ring * B3.core * (layout.fits[0]?.scale ?? 0),
+					ringPx: B3.ring * layout.b3 * (layout.fits[0]?.scale ?? 0),
+					corePx: B3.ring * B3.core * layout.b3 * (layout.fits[0]?.scale ?? 0),
 				},
 				honeycomb: {
 					vertices: comb.vertexCount,
@@ -1422,7 +1422,7 @@ export const mount: MountSky = (ctx) => {
 			computeCamera();
 			const virgo = FIGURES * Math.ceil(nearLayer() / FIGURES);
 			layout.project(cam, 0, 0, -virgo * SPACING, tmp);
-			return { x: tmp.x, y: tmp.y, r: B3.ring * B3.core * tmp.scale };
+			return { x: tmp.x, y: tmp.y, r: B3.ring * B3.core * layout.b3 * tmp.scale };
 		},
 
 		introRings() {

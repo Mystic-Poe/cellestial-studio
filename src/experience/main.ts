@@ -24,6 +24,7 @@ import type { LoaderScene, SceneContext, Stage } from './contracts.ts';
 import { createDirector, type StartScene } from './director.ts';
 import { mount as mountLoader } from './loader/index.ts';
 import { forceReducedMotion, reducedMotion } from './motion.ts';
+import { B4_STATION_URL } from './sky/config.ts';
 import { expose, fail, register, when } from './stage.ts';
 
 /** The loader when it does not run: over before it began. */
@@ -99,7 +100,7 @@ function boot(): void {
 	skyChunk
 		.then(() => {
 			const { b3Core, b3Ring, b4Empty, b5LitAdd } = ASSETS.sky;
-			for (const { url } of [b3Core, b3Ring, b4Empty, b5LitAdd]) {
+			for (const url of [b3Core.url, b3Ring.url, b4Empty.url, B4_STATION_URL, b5LitAdd.url]) {
 				const img = new Image();
 				img.src = url;
 				warm.push(img);

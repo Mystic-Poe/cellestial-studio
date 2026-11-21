@@ -39,7 +39,7 @@ import {
 } from 'three';
 import { ASSETS } from '../../assets.ts';
 import { BLUE_RGB, BLUE_WHITE_RGB, BRASS_RGB, BRASS_TEXT_RGB } from '../../tokens.ts';
-import { B3, FADE, FALL, FIGURES, IGNITE, LATTICE, SPACING } from '../config.ts';
+import { B3, B4_CLOSE, FADE, FALL, FIGURES, IGNITE, LATTICE, SPACING } from '../config.ts';
 import type { Honeycomb } from '../lattice.ts';
 import type { Camera, Layout } from '../layout.ts';
 import { layerAhead, mod } from '../layout.ts';
@@ -88,7 +88,10 @@ export const LOOK = {
 	maxPx: 3.2,
 	/** B4's blue rim: "a thin blue outer glow at ~20%". */
 	rim: 0.21,
-	/** B4's own picture is very dark: it is lifted by this much so the sphere reads at 30 px. */
+	/**
+	 * B4's own picture is very dark: seen close it is lifted by this much. (At station size the
+	 * sky draws the station picture instead, which is lifted when it is derived.)
+	 */
 	body: 1.7,
 	/** How much stronger the rim's light is on a star too far away to show its sphere. */
 	farGain: 2.6,
@@ -105,6 +108,8 @@ export interface Pictures {
 	core: TexImageSource;
 	ring: TexImageSource;
 	b4: TexImageSource;
+	/** B4 with its traces made to carry at station size (scripts/assets/sky.mjs). Same frame as `b4`. */
+	b4Station: TexImageSource;
 	b5: TexImageSource;
 }
 
@@ -276,6 +281,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 	const tCore = { value: blank as Texture };
 	const tRing = { value: blank as Texture };
 	const tB4 = { value: blank as Texture };
+	const tB4Station = { value: blank as Texture };
 	const tB5 = { value: blank as Texture };
 	const textures: Texture[] = [];
 
@@ -415,6 +421,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uTime,
 		uIdle,
 		uBaseR: { value: 0.03 },
+		uMinScale: { value: 0 },
 		uAlpha: { value: 0 },
 		uNear: { value: new Vector2(FADE.near[0], FADE.near[1]) },
 		uFar: { value: new Vector3(FADE.far[0], FADE.far[1], FADE.far[2]) },
@@ -422,6 +429,8 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uMinPx: { value: LOOK.starMinPx },
 		uTrailMax: { value: 16 },
 		tB4,
+		tB4Station,
+		uB4Close: { value: new Vector2(B4_CLOSE.from, B4_CLOSE.to) },
 		tB5,
 		uB4: { value: new Vector3(b4.disc.x / b4.w, b4.disc.y / b4.h, b4.disc.r / b4.w) },
 		uB5: { value: new Vector3(b5.disc.x / b5.w, b5.disc.y / b5.h, b5.disc.r / b5.w) },
@@ -590,6 +599,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		tCore.value = make(p.core);
 		tRing.value = make(p.ring);
 		tB4.value = make(p.b4);
+		tB4Station.value = make(p.b4Station);
 		tB5.value = make(p.b5);
 	};
 
@@ -707,9 +717,13 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 				const u = slot.stars.material.uniforms;
 				u.uOffset?.value.set(0, 0, z);
 				if (u.uBaseR) u.uBaseR.value = fit.starR;
+				if (u.uMinScale) u.uMinScale.value = layout.minScale;
 				if (u.uAlpha) u.uAlpha.value = f.stars;
 				u.uFall?.value.set(f.fallT, f.gravity, FALL.stagger, FALL.trail * f.trail);
-				slot.stars.renderOrder = order + 2;
+				// Where Cellestial's star is drawn larger than its world size (a portrait screen) its
+				// rings reach over Virgo's nearest stars: there the stars are drawn over the rings, so
+				// that none is hidden.
+				slot.stars.renderOrder = order + (layout.b3 > 1 ? 12 : 2);
 				slot.stars.visible = true;
 			}
 		}
@@ -723,7 +737,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		let cx = 0;
 		let cy = 0;
 		let cz = 0;
-		let size = 1;
+		let size = layout.b3;
 		let order = 0;
 		if (b.free) {
 			cx = b.free.x;
