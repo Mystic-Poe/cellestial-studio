@@ -1,8 +1,9 @@
 ---
-// PLACEHOLDER for the effects layer (C4, the D2 impact, G2). The effects scene
-// replaces this file and src/experience/fx/index.ts.
-//
-// One canvas over every scene and under the chrome. It never takes a click.
+// The effects layer's canvas: C4 the teleport flash, D2 the impact, G2 the
+// warp. It sits above every scene and under the chrome, takes no pointer
+// events and is nothing to a screen reader. It is put away (display: none)
+// until an effect opens it, so at rest there is no layer to composite.
+// src/experience/fx/ draws on it.
 ---
 
 <canvas id="fx-canvas" aria-hidden="true"></canvas>
@@ -12,9 +13,12 @@
 		position: fixed;
 		inset: 0;
 		z-index: 30;
-		display: block;
+		display: none;
 		width: 100%;
 		height: 100%;
 		pointer-events: none;
+	}
+	#fx-canvas[data-on] {
+		display: block;
 	}
 </style>

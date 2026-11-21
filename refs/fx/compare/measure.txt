@@ -1,0 +1,22 @@
+── desk ──
+flash down: 429 ms (swap at 211, lowest alpha on the canvas then 255); 431 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255)
+flash up: 430 ms (swap at 213, lowest alpha on the canvas then 255); 431 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255)
+flash none: 423 ms (swap at 205, lowest alpha on the canvas then 255); 431 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255)
+flash with a 400 ms swap: 823 ms; with a 2 s swap: 1450 ms; with a swap that throws: 433 ms, rejected with "Error: swap failed", canvas then display:none
+two flashes asked for at once: first done at 415 ms, both at 814 ms
+warp 1200: took 1215 ms; fully opaque from 747 to 992 ms (the swap is at 840)
+warp 1800: took 1819 ms; fully opaque from 1092 to 1456 ms (the swap is at 1260)
+at rest: 0 frames asked for in 2 s before any effect; 0 in 2 s after all three had played; canvas then on:false, highest alpha 0
+frame times, CPU x1: flash avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (25 frames) | impact avg 16.6 ms, p95 16.8 ms, worst 16.8 ms (107 frames) | warp avg 17.2 ms, p95 16.8 ms, worst 33.4 ms (263 frames)
+frame times, CPU x4: flash avg 35.9 ms, p95 116.6 ms, worst 116.6 ms (13 frames) | impact avg 22.8 ms, p95 33.4 ms, worst 49.9 ms (79 frames) | warp avg 23.9 ms, p95 83.3 ms, worst 83.4 ms (191 frames)
+── phone ──
+flash down: 423 ms (swap at 206, lowest alpha on the canvas then 255); 431 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255)
+flash up: 421 ms (swap at 204, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 214, lowest alpha on the canvas then 255)
+flash none: 435 ms (swap at 217, lowest alpha on the canvas then 255); 431 ms (swap at 214, lowest alpha on the canvas then 255); 432 ms (swap at 215, lowest alpha on the canvas then 255)
+flash with a 400 ms swap: 821 ms; with a 2 s swap: 1433 ms; with a swap that throws: 433 ms, rejected with "Error: swap failed", canvas then display:none
+two flashes asked for at once: first done at 414 ms, both at 830 ms
+warp 1200: took 1215 ms; fully opaque from 733 to 991 ms (the swap is at 840)
+warp 1800: took 1818 ms; fully opaque from 1086 to 1451 ms (the swap is at 1260)
+at rest: 0 frames asked for in 2 s before any effect; 0 in 2 s after all three had played; canvas then on:false, highest alpha 0
+frame times, CPU x1: flash avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (26 frames) | impact avg 16.6 ms, p95 16.8 ms, worst 16.8 ms (107 frames) | warp avg 16.6 ms, p95 16.7 ms, worst 16.8 ms (272 frames)
+frame times, CPU x4: flash avg 43.9 ms, p95 116.7 ms, worst 116.7 ms (11 frames) | impact avg 18.3 ms, p95 33.3 ms, worst 33.4 ms (99 frames) | warp avg 18.7 ms, p95 33.4 ms, worst 50.0 ms (242 frames)

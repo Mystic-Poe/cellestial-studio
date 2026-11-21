@@ -14,34 +14,31 @@
 
 ## Exact next step
 
-**The arrival and the return: bring the effects layer in and fill the director's choreography.
-Loading, the Sky, the Roots and the Close are built and checkpointed (see the table). The
-Roots builder was cut off before its last step; the orchestrator looked at its sheets
-(`refs/roots/compare/`: tiles, descent, growth, phone) and its measurements
-(`refs/roots/measure.txt`, 245 checks, all passing) and closed it.**
+**The arrival and the return: fill the director's choreography. Loading, the Sky, the Roots,
+the Close and the effects layer are built and checkpointed (see the table). The effects layer
+is in `src/experience/fx/` and mounted on the real page; the director does not call its
+impact or its warp yet (step 1 below), and its flash is already what a menu teleport plays.**
 
 In this order, each ending with `pnpm build`, `pnpm test`, `pnpm lint`, a commit, a push and
 this file updated:
 
-1. **The effects layer.** It is parked in `wip/fx/` (teleport flash C4, impact burst D2, warp
-   G2; complete, never reviewed). Move it into `src/experience/fx/` and
-   `src/components/scenes/Fx.astro` with `git mv`, over the placeholders. Its brief:
-   `refs/briefs/cellestial-fx-wf_bfc566a6-fb0.js` (the strings `WHAT` and `VERIFY`). Look at
-   each effect at 390×844 and 1440×900 and fix what the brief's judging list finds.
-2. **The fall and the crash** (D1, D2): in `src/experience/director.ts` the block marked
+1. **The fall and the crash** (D1, D2): in `src/experience/director.ts` the block marked
    "THE FULL CHOREOGRAPHY" holds `fall()`, `warp()` and `flash()`, each with its recipe in a
    comment. `descend()` must become: the sky's stars fall (`sky.fall`, with `groundY` from
    `roots.surfaceY()`), the page scrolls so the soil rises into the bottom of the frame, the
    first star to reach the ground fires `fx.impact(x, y)` and `roots.growFrom(x)`, and the view
    follows the growth down to the top of the ground. Reduced motion keeps the plain fade.
-3. **The warp back** (G2): `ascend()` plays `fx.warp(ms)` and returns to the sky's opening pose.
-4. **The teleport** (C4): `go()` plays `fx.teleportFlash(swap, dir)` for all four menu
-   destinations.
-5. **The chrome** (C1 to C3): the real logo with "studio", the three brass bars, the menu panel.
+2. **The warp back** (G2): `ascend()` plays `fx.warp(ms)` and returns to the sky's opening pose;
+   the swap is hidden under the warp's cover (`WARP_COVER` in `src/experience/fx/index.ts`).
+3. **The teleport** (C4): `go()` already plays `fx.teleportFlash(swap, dir)`; walk the menu to all
+   four destinations from the sky and from the Roots at both sizes and look at each landing.
+4. **The chrome** (C1 to C3): the real logo with "studio", the three brass bars, the menu panel.
    Brief: `refs/briefs/cellestial-chrome.js`. Today it is a working placeholder.
-6. **B7**: the meaning of a constellation written in lightning over it once every one of its
+5. **B7**: the meaning of a constellation written in lightning over it once every one of its
    stars is lit, and "Jesus is King." after Leo; the lightning is `src/experience/loader/lightning.ts`.
-7. **`/credits.txt`**: the star-data credit (Yale Bright Star Catalog; d3-celestial, BSD 3-Clause).
+6. **`/credits.txt`**: the star-data credit (Yale Bright Star Catalog; d3-celestial, BSD 3-Clause).
+7. **Tidy**: delete `src/pages/dev/` and `src/experience/fx/dev/` (the effects layer's test page
+   and its driver, kept only while the transitions are being built) and the empty `wip/`.
 
 Then final verification: every scene screenshotted at both sizes against its reference, the
 protected-systems diff (`git diff a31d2ee HEAD -- <protected paths>` prints nothing), a
@@ -62,7 +59,7 @@ Dev server: `PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm astro dev -
 | **Independent review of the foundation** | **not done** | Three reviewers were started and cut off after six minutes. No findings exist. Do it as part of final verification. |
 | Loading (A1–A5) | **done against the reference, polish pass included, except what is listed here; A5 now seen over the real sky (see "Sky, part A", step 4)** — `src/experience/loader/`, `src/components/scenes/Loader.astro`, asset module `scripts/assets/loader.mjs` (run by `node scripts/build-assets.mjs modules`; it writes `geometry.ts` and the matte, and run again it reproduces both) | Frozen at 14 times at 1440×900, no console errors, set beside the reference and looked at: `refs/loading/compare/desk-1.jpg`, `desk-2.jpg` (six rounds of fixes, then the polish pass of four items, each looked at close up: see the section below the table). Matches: the C's place and size; the order and tempo the circuits light in (a thin white wire with a blue glow); the cooling before the charge; the overload (a thin white-hot bolt from the top edge, the node lost in white with its rings showing through, a blue wash filling the bolt's half of the frame, spark dust); the camera pulling back; the first "e" thrown from the node by one tall arc and written in the reference's order; each letter written at the reference's moment as one thin white tube on its brass, with white ring nodes, in a wide navy haze; the node's rings lit white while the word is written; the cooling into the A4 picture itself. The two soft fields (the haze behind the letters, the overload's wash) were also measured, reference against build: `refs/loading/compare/light.txt`, written by `node tools/loader/light.mjs`. **Still different:** the lit circuits (1.33) are whiter, with less blue around them; the first arc (3.67) is less wild and the first piece of the "e" bolder; the overload's white has a more definite edge than the reference's bloom, and its sparks are coarser and fewer; close to the letter being written the haze is a little weaker (3.83) and the letters' edges cooler; once a letter is written the reference lets lightning play over it for longer, and it strikes the star (5.25) where the build only lights it; the node's lens keeps a darker blue ring round its white heart. **Phone (390×844, scale 2, touch):** the same 14 times looked at, `refs/loading/compare/phone-1.jpg`, `phone-2.jpg`: nothing clipped, the C is 62% of the width, the word fits at 87% with margins, the bolt comes down from the top edge. **Rules, measured in real time with `node tools/loader/measure.mjs` (mount to done) after the polish pass, desktop / phone:** full version 7.74 s / 7.73 s (must be 6.0–8.0); short version on a same-session reload 3.49 s / 3.47 s; tap at 1 s ends at 2.76 s / 2.76 s, the "a" key at 1 s 2.74 s / 2.75 s; Tab, Shift, Control, Alt, Meta, CapsLock at 1 s do not skip (7.75 s / 7.73 s); resize twice mid-run keeps the time (7.74 s / 7.75 s). Desktop only: each of the four pictures answering 404 in turn, the loader ends at once (0.01 s) and the sky is shown; sessionStorage blocked plays the full version (7.71 s); the sky's script failing to load, the loader fades out by itself at 6.62 s and the page opens on the Roots; the sky 30 s late, the wordmark holds 6 s and the loader goes at 12.65 s. Frame times 16.8–17.1 ms average at both sizes; phone with the CPU slowed 4×: 26.9 ms average, 50 ms at the 95th percentile, run 7.92 s. **A5 (the star-drop), both sizes, looked at:** `refs/loading/compare/a5-desk.jpg`, `a5-phone.jpg` (0, 0.15, 0.3, 0.5, 0.7, 0.9, 1.0 of its 1.5 s) and full-size crops: the star flashes and breaks into shards (eight or nine) cut from its own pixels, which tumble, catch the light, sweep out and home in on `sky.coreCircle()`, gone by 0.7; a blue-white light swells from the core and the letters bleach, nearest the star first, and sink, gone by 0.6. Over the placeholder sky this ends on black, and the light is centred on the middle of the screen, not on the star: to be looked at again with the real sky. **Short version** looked at again after the polish pass, both sizes: `refs/loading/compare/short.jpg` (the lit C in place, one bolt from the node writes the nine letters in about a second, cools, holds). **Also checked:** the same second always draws the same picture (two pages, and after seeking away and back: identical screenshots); after `done` the overlay is `display: none`, the canvas is 0×0 and the scene is the sky; with reduced motion the loader never shows; without script the cover is not on the page; the server-rendered C sits where the canvas draws it to 0.01 px at 1440×900, 390×844 and 844×390. **Not done:** frame times on a real phone (only headless Chromium with the CPU slowed); landscape phone, tablet and ultrawide framing were not looked at as pictures. |
 | Sky (B, G1) | **done, parts A and B, except what is listed in its two sections.** Part A: the void, the honeycomb, Cellestial's star, the twelve figures, the endless flight, the round and the exit button (B11), reduced motion, the governor, the hand-off from the loader, the fall. Part B: the beads (B8), the pulse and the words "claim yours" (B9), the empty-star panel (B10), the lit-star panel, a real send lighting the star, the waiting ask. **Not built:** B7 (the meaning written over a completed constellation); the full fall transition (it belongs to the Roots). — `src/experience/sky/`, `src/components/scenes/Sky.astro`, `tools/sky/` | Every sheet in `refs/sky/compare/` rebuilt by `node tools/sky/compare.mjs` on the real GPU at 1440×900 and 390×844 and looked at. `node tools/sky/measure.mjs`: 201 checks with real wheel, key, touch and mouse events, all passing, written to `refs/sky/measure.txt`. A real send walked through `scripts/shot.mjs` with `/api/contact` stubbed (`tools/sky/claim-200.steps.json`, `claim-400.steps.json`). **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software with the CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
-| Effects (C4 flash, D2 burst, G2 warp) | **parked, unverified** — `wip/fx/`, about 2,600 lines, complete with a test page | Builder's own captures only: `refs/fx-wip/`. |
+| Effects (C4 flash, D2 burst, G2 warp) | **in place and looked at; nothing in it was changed.** `src/experience/fx/` (the pictures in `flash.ts`, `impact.ts`, `warp.ts`; the timekeeping in `layer.ts`), `src/components/scenes/Fx.astro`. It imports only `contracts.ts` and `tokens.ts`. Its test page `/dev/fx` (`src/pages/dev/fx.astro`, `src/experience/fx/dev/harness.ts`) is still in the tree and is deleted in the tidy step. | `node tools/fx/compare.mjs` writes every sheet and `measure.txt` into `refs/fx/compare/`; all were looked at, both sizes. **The flash** frozen at nine moments for each direction over a pale page of dark figures (`flash-<dir>-desk.jpg`, `-phone.jpg`): right-angle and 45° traces ending in ring nodes grow the way of travel, a hub like the emblem's node at the centre, the centre blooms blue-white at the peak, and from t 0.3 to 0.7 nothing of the page shows. Close up beside the lit emblem (`flash-peak.jpg`): the same kind of line (a white core in a blue glow, round ring nodes); **different:** at the peak the traces are whiter and thicker than A1's thin saturated blue, and the bloom lifts the black around the centre to blue-grey. **Real time, desktop / phone:** the flash lasts 423–432 / 421–435 ms without swap time (must be 300–500); `swap()` runs at 204–217 ms and the lowest alpha anywhere on the canvas at that moment is 255 (fully opaque), every run; with a 400 ms swap 823 / 821 ms; with a 2 s swap 1450 / 1433 ms (the hold is capped at 1 s); a swap that throws: 433 ms, the promise rejects with the error and the canvas is put away; two flashes asked for at once play one after the other (814 / 830 ms). **The impact** at six moments at three places along a ground line (`impact-desk.jpg`, `-phone.jpg`): a white flash on the line, jagged rays thrown down and sideways into the ground, a shock of light running both ways along the line, sparks that arc and fall back; gone by the end (760 ms). **The warp** at eight moments over soil and over the pale page (`warp-desk.jpg`, `-phone.jpg`): streaks from a vanishing point high in the frame, few then many and long, a blue-white flare; in real time fully opaque from 747 to 992 ms of 1200 and 1092 to 1456 ms of 1800 (the swap, at 0.7, is at 840 and 1260). **Reduced motion** (`rm.jpg`): plain fades through black, no impact. **At rest:** 0 animation frames asked for in 2 s, before any effect and after all three; the canvas is `display: none` and clear. **Frame times** (headless Chromium, software): 16.6–17.2 ms average; with the CPU slowed 4× the flash averages 36 / 44 ms with one 117 ms frame at its start (laying out the traces), the impact 23 / 18 ms, the warp 24 / 19 ms (worst 83 / 50 ms). **Not done:** not seen on a real phone; no independent review. |
 | Roots (E1–E6) | **built (steps 1 to 4 by its builder; the last look by the orchestrator); what differs from the spec is listed at the end of its section.** The soil (a tile of E1 with no mirror in it) with an uneven top edge, E6, five nodes as real buttons in a descending line, five tiles from the locked copy opened one at a time, the mycelium grown by code from where the nodes are, the guided light, the growth from an impact, the whole contract. **Not built here:** the arrival and the return themselves (the fall, the crash, the warp: the director still fades). — `src/experience/roots/` (`index.ts`, `net.ts`, `edge.ts`), `src/components/scenes/Roots.astro`, `scripts/assets/roots.mjs`, `tools/roots/` | `node tools/roots/measure.mjs`: 245 checks with real clicks, taps and keys at 1440×900, 390×844 and 320×568, all passing, written to `refs/roots/measure.txt`. `node tools/roots/words.mjs`: all five tiles equal the addendum character for character, three ways (`refs/roots/words.txt`). `node tools/roots/compare.mjs`: every sheet in `refs/roots/compare/` rebuilt and looked at. Numbers in the section below. **Not done:** frame times on a real phone (headless Chromium only, the real GPU and software, CPU slowed 4×); landscape phone and tablet not looked at as pictures; no independent review. |
 | Close (F1, F2) | **built**: exactly the two links the brief gives, F1 "Claim your star" (259×68 px, 21 px type) and F2 "Contact me" (137×44 px, 15 px type) 24 px under it, both centred, nothing else. — `src/components/scenes/Close.astro` | Same run: F1 opens the build request, F2 the message box; the menu lands on them; without script both are links to `/contact`. Looked at in the step 1 sheets. |
 | Chrome (C1–C3) | placeholder (logo, "studio", three bars, menu with four working teleports) | Walk-through above. |
@@ -751,7 +748,9 @@ than two tries. All four were reached.
 - `refs/loading-video/` — the reference video as frames (`f12/`, 12 per second, time printed on
   each) and contact sheets. `refs/asset-sheets/` — the pack's pictures at a glance.
 - `refs/asset-qa/`, `refs/constellations/`, `refs/foundation/` — evidence for the finished pieces.
-- `refs/alignment/` — the harness report and overlays. `refs/fx-wip/` — the effects builder's captures.
+- `refs/alignment/` — the harness report and overlays. `refs/fx-wip/` — the effects builder's own
+  captures; `refs/fx/compare/` — the effects layer's sheets and `measure.txt` (written by
+  `tools/fx/compare.mjs`, which needs the test page `/dev/fx`: read its header).
 - `refs/briefs/` — the full written brief for each scene (inside workflow scripts; read the
   text between the backticks of `WHAT` and `VERIFY`). Roots and Chrome briefs are there too.
 - `refs/loading/compare/` — the loading scene beside its reference (written by
@@ -763,7 +762,7 @@ than two tries. All four were reached.
 - `tools/alignment/` — the harness. `tools/loader/` — `compare.mjs` (comparison sheets; `--big`
   for close pairs), `measure.mjs` (the loader's rules, timed in real time) and `light.mjs`
   (the haze and the wash measured against the reference); each explains itself in its header.
-  `wip/` — parked scene code (see the table).
+  `wip/` — empty now; nothing is parked.
 
 ## Log
 
@@ -834,3 +833,7 @@ than two tries. All four were reached.
 - 2026-11-20 — Roots, step 4: phones, keyboard, reduced motion, the page without script and frame times
   measured (245 checks); a stacking fault found by the 320 px sheet and fixed (the next node and the
   closing buttons were painted over an open tile).
+- 2026-11-20 — The arrival and the return, step 1: the effects layer moved from `wip/fx/` into
+  `src/experience/fx/` and onto the real page; every effect captured at both sizes and looked at,
+  the flash's length, its cover at the swap, the warp's cover and the cost at rest measured.
+  Nothing in the layer needed changing.

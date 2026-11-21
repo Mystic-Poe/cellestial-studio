@@ -1,24 +1,17 @@
-// PLACEHOLDER for the effects layer (C4, the D2 impact, G2). The effects scene
-// replaces this file and src/components/scenes/Fx.astro.
+// The effects layer: three short effects drawn on one full-screen canvas that
+// sits above every scene. C4 the teleport flash, D2 the impact, G2 the warp.
 //
-// The teleport is a fade through black on the canvas itself, with the swap at
-// its midpoint. There is no impact and the warp is only its duration.
+// It is light drawn by code: no image files, no words, no sound. When nothing
+// is playing it costs nothing: the canvas is clear and put away, and no frame
+// is requested.
 
 import type { MountFx } from '../contracts.ts';
-import { fadeThrough, tween } from '../motion.ts';
+import { createFx } from './layer.ts';
 
-/** Half of the flash: C4 is 300–500ms in all. */
-const HALF_MS = 200;
+/**
+ * Where in a warp the frame is covered, as a fraction of its length: the page
+ * swaps the Roots for the sky at `WARP_COVER * ms` after calling `warp(ms)`.
+ */
+export { WARP_COVER } from './warp.ts';
 
-export const mount: MountFx = () => {
-	const canvas = document.getElementById('fx-canvas');
-	if (!canvas) throw new Error('fx: #fx-canvas is not in the document');
-	canvas.style.background = '#000';
-	canvas.style.opacity = '0';
-
-	return {
-		teleportFlash: (swap) => fadeThrough(canvas, swap, HALF_MS, HALF_MS),
-		impact() {},
-		warp: (ms) => tween(ms, () => {}),
-	};
-};
+export const mount: MountFx = (ctx) => createFx(ctx);
