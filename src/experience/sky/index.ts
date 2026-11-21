@@ -291,7 +291,10 @@ export const mount: MountSky = (ctx) => {
 		gravity: number;
 		groundY: () => number;
 		onImpact: (x: number) => void;
+		onLand: ((x: number, size: number) => void) | undefined;
 		impacted: boolean;
+		/** The stars that have crossed the ground line: layer * 1000 + index in its figure. */
+		landed: Set<number>;
 		/** When the last of it began to fade, or -1. */
 		ending: number;
 		resolve: () => void;
@@ -775,8 +778,9 @@ export const mount: MountSky = (ctx) => {
 			if (!plan || !fit) continue;
 			const scale = layout.focal / depth;
 			const seen = nearFade(depth) * farFade(depth);
-			for (const star of plan.stars) {
-				if (!star.slot) continue;
+			for (let i = 0; i < plan.stars.length; i++) {
+				const star = plan.stars[i];
+				if (!star?.slot) continue;
 				const trueR = fit.starR * star.scale * scale;
 				if (seen * Math.min(1, trueR / LOOK.starMinPx) < FAINT) continue;
 				const r = Math.max(trueR, LOOK.starMinPx);
@@ -785,9 +789,23 @@ export const mount: MountSky = (ctx) => {
 				const t = Math.max(0, elapsed - star.seed * FALL.stagger);
 				const y = layout.h / 2 - (star.y - 0.5 * f.gravity * t * t - cam.y) * scale;
 				const trail = Math.min(f.gravity * t * FALL.trail * quality.trail * scale, 16 * r);
-				if (y + r >= ground && y + r - ground > hitOver) {
-					hitOver = y + r - ground;
-					hitX = x;
+				if (y + r >= ground) {
+					if (y + r - ground > hitOver) {
+						hitOver = y + r - ground;
+						hitX = x;
+					}
+					// Every star strikes the ground, once, where it meets it.
+					const id = k * 1000 + i;
+					if (!f.landed.has(id)) {
+						f.landed.add(id);
+						if (f.onLand && x >= 0 && x <= layout.w) {
+							try {
+								f.onLand(x, clamp(depthOf(near) / depth));
+							} catch (err) {
+								console.error('[sky] onLand failed', err);
+							}
+						}
+					}
 				}
 				if (y - r * REACH - trail < floor) left++;
 			}
@@ -1398,7 +1416,7 @@ export const mount: MountSky = (ctx) => {
 			return { x: tmp.x, y: tmp.y, r: B3.ring * B3.core * tmp.scale };
 		},
 
-		fall({ groundY, onImpact }) {
+		fall({ groundY, onImpact, onLand }) {
 			if (fall) finishFall();
 			introT = 1;
 			emitter.emit('dismiss', { reason: 'fall' });
@@ -1422,7 +1440,17 @@ export const mount: MountSky = (ctx) => {
 			const depth = Math.max(1.6, depthOf(nearLayer()));
 			const gravity = (FALL.gravity * depth) / layout.focal;
 			return new Promise<void>((resolve) => {
-				fall = { t0: time, gravity, groundY, onImpact, impacted: false, ending: -1, resolve };
+				fall = {
+					t0: time,
+					gravity,
+					groundY,
+					onImpact,
+					onLand,
+					impacted: false,
+					landed: new Set(),
+					ending: -1,
+					resolve,
+				};
 				wake();
 			});
 		},

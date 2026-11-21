@@ -46,7 +46,7 @@ const check = (ok, what) => {
 /** Runs in the page before its scripts: a record of what the page did. */
 function probe() {
 	sessionStorage.setItem('cellestial:round', '1');
-	const rec = { scenes: [], frames: [], tops: [], impacts: 0, grows: 0, coverAtSky: null, on: false };
+	const rec = { scenes: [], frames: [], tops: [], impacts: 0, hits: [], grows: 0, coverAtSky: null, on: false };
 	window.__rec = rec;
 	document.addEventListener('cellestial:scene', (e) => {
 		rec.scenes.push({ to: e.detail.to, at: performance.now() });
@@ -97,10 +97,14 @@ async function open(browser, size, scene, opts = {}) {
 		// Count what the director asks of the other parts.
 		const { fx, roots } = window.__cellestial;
 		const impact = fx.impact.bind(fx);
-		fx.impact = (x, y) => {
+		fx.impact = (x, y, size) => {
 			window.__rec.impacts++;
-			window.__rec.impactAt = { x, y, at: performance.now(), h: innerHeight };
-			impact(x, y);
+			// Where the burst is on the screen: the effects canvas is carried with the ground.
+			const carried = Number(/translateY\((-?[\d.]+)px\)/.exec(document.getElementById('fx-canvas').style.transform)?.[1] ?? 0);
+			const hit = { x, y: y + carried, size: size ?? 1, at: performance.now(), h: innerHeight, w: innerWidth, ground: roots.surfaceY() };
+			window.__rec.hits.push(hit);
+			if (!window.__rec.impactAt) window.__rec.impactAt = hit;
+			impact(x, y, size);
 		};
 		const grow = roots.growFrom.bind(roots);
 		roots.growFrom = (x) => {
@@ -196,10 +200,20 @@ if (only.has('fall')) {
 				check(r.scenes.length === 2 && r.scenes[0].startsWith('fall') && r.scenes[1].startsWith('roots'), `${tag} the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)`);
 				const roots = Number(r.scenes[1]?.split(' at ')[1]);
 				check(roots >= 2000 && roots <= 3000, `${tag} the ground reached the top of the screen ${roots} ms after the press (2000 to 3000)`);
-				const rec = await o.page.evaluate(() => ({ impacts: window.__rec.impacts, grows: window.__rec.grows }));
-				check(rec.impacts === 1 && rec.grows === 1, `${tag} one impact and one growth (${rec.impacts}, ${rec.grows})`);
+				const rec = await o.page.evaluate(() => ({ impacts: window.__rec.impacts, grows: window.__rec.grows, hits: window.__rec.hits }));
+				// Every star strikes the ground: the twelve of Virgo, the figure in front, at full
+				// size, each at its own place, and the figures behind it smaller; one growth.
+				const front = rec.hits.filter((h) => h.size === 1);
+				const places = new Set(front.map((h) => Math.round(h.x)));
+				check(front.length === VIRGO.length && places.size === VIRGO.length && rec.grows === 1, `${tag} every star of the figure in front struck the ground, each where it landed: ${front.length} bursts of ${VIRGO.length} at ${places.size} places (and ${rec.impacts - front.length} smaller ones for the figures behind); one growth (${rec.grows})`);
+				const offLine = Math.max(...rec.hits.map((h) => Math.abs(h.y - h.ground)));
+				const offScreen = rec.hits.filter((h) => h.x < 0 || h.x > h.w || h.y < 0 || h.y > h.h).length;
+				check(rec.hits.length > 0 && offLine <= 1 && offScreen === 0, `${tag} every burst was on the ground line (${offLine.toFixed(2)} px off at most) and on the screen (${offScreen} off it)`);
+				const t0 = rec.hits[0]?.at ?? 0;
+				const span = Math.max(...front.map((h) => h.at)) - t0;
+				check(span > 150 && span < 1200, `${tag} the figure in front landed over ${Math.round(span)} ms, not all at once`);
 				const ia = r.impactAt;
-				check(ia && ia.y > ia.h * 0.5 && ia.y <= ia.h, `${tag} the star struck on screen, at x ${Math.round(ia?.x)}, y ${Math.round(ia?.y)} of ${ia?.h}, ${Math.round(ia?.at)} ms after the press`);
+				check(ia && ia.y > ia.h * 0.5 && ia.y <= ia.h, `${tag} the first star struck on screen, at x ${Math.round(ia?.x)}, y ${Math.round(ia?.y)} of ${ia?.h}, ${Math.round(ia?.at)} ms after the press`);
 				// The ground only ever rises, and stays put when the spacer goes.
 				let back = 0;
 				let jumpAtSwap = 0;
@@ -233,7 +247,11 @@ if (only.has('fall')) {
 				check(s.scene === 'sky' && s.y === 0 && s.star, `${tag} reloaded 700 ms in: the page opens on the sky again (scene ${s.scene}, scrollY ${s.y})`);
 				await close(o);
 				// Back and forward in the middle.
-				o = await openPage(browser, size, `${values.url}/contact`);
+				// /contact loads Cloudflare's Turnstile script, which can stall for half a
+				// minute: nothing here waits for it (this run once died waiting for "load").
+				o = await openPage(browser, size, null);
+				await o.page.goto(`${values.url}/contact`, { waitUntil: 'domcontentloaded' });
+				await o.page.waitForTimeout(400);
 				await o.page.addInitScript(probe);
 				await o.page.goto(`${values.url}/?scene=sky&debug`, { waitUntil: 'load' });
 				await o.page.waitForFunction(() => window.__cellestial?.sky && window.__cellestial?.roots && window.__cellestial?.fx);
@@ -241,7 +259,7 @@ if (only.has('fall')) {
 				await o.page.waitForTimeout(1200);
 				await o.page.evaluate(() => document.querySelector('[data-descend]').click());
 				await o.page.waitForTimeout(700);
-				await o.page.goBack({ waitUntil: 'load' });
+				await o.page.goBack({ waitUntil: 'domcontentloaded' });
 				const away = o.page.url();
 				await o.page.goForward({ waitUntil: 'load' });
 				await o.page.waitForFunction(() => window.__cellestial?.sky && window.__cellestial?.roots);

@@ -106,9 +106,17 @@ export interface SkyScene {
 	/**
 	 * D1. Every star accelerates straight down with a trail, all alike; the
 	 * lattice and B3 fade. `onImpact` fires once, when the first star crosses
-	 * `groundY()`. Resolves when the sky is empty.
+	 * `groundY()`. `onLand`, if given, fires for every star, the first included,
+	 * in the frame it crosses `groundY()`: each one strikes the ground. `x` is
+	 * where it crosses; `size` is how large the star is on screen against a
+	 * star of the figure in front (1 for those, less for the figures behind,
+	 * which are farther away). Resolves when the sky is empty.
 	 */
-	fall(opts: { groundY: () => number; onImpact: (x: number) => void }): Promise<void>;
+	fall(opts: {
+		groundY: () => number;
+		onImpact: (x: number) => void;
+		onLand?: (x: number, size: number) => void;
+	}): Promise<void>;
 	/** Put every star back (after a warp return or a teleport to the sky). */
 	restore(): void;
 
@@ -139,8 +147,12 @@ export interface FxLayer {
 	 * With reduced motion this is a plain fade.
 	 */
 	teleportFlash(swap: () => void | Promise<void>, dir: 'up' | 'down' | 'none'): Promise<void>;
-	/** D2. The burst where a star meets the soil. */
-	impact(x: number, y: number): void;
+	/**
+	 * D2. The burst where a star meets the soil. Every star that lands has one,
+	 * all of the same kind; `size` (0 to 1, 1 when left out) makes it smaller
+	 * for a star that is farther away.
+	 */
+	impact(x: number, y: number, size?: number): void;
 	/** G2. Streaks and a speed ramp, launching upward. */
 	warp(ms: number): Promise<void>;
 }

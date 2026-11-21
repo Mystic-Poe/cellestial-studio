@@ -1,0 +1,32 @@
+FINAL VERIFICATION — THE FIXES
+Cellestial Studio redesign, branch redesign-build. The fixer's running record, started 2026-11-21.
+Findings are named by report and number: "look N" is refs/verification/look.txt, "code N" is the table of
+refs/verification/business-and-code.txt, "decided N" is one of the three changes the orchestrator decided.
+Each entry: what was found, what was done, the commit, how it was checked again.
+
+look 1 (BLOCKER), decided 1 — in the fall only one star crashed.  FIXED.
+  Reproduced: refs/verification/matrix/transitions/fall-desk.jpg (one burst at 470 ms; eleven stars pass the
+  soil's edge with nothing). The sky's fall told the director of one impact only.
+  Done: the fall's options in src/experience/contracts.ts take one more optional callback, onLand(x, size),
+  which the sky calls for every star in the frame it crosses the ground line (size: how large the star is on
+  screen against one of the figure in front: 1 for those, less for the figures behind). The director answers
+  each with a burst on the ground where the star lands (fx.impact(x, y, size): an optional third argument,
+  also in the contract). Every burst is the same picture, smaller than the one great burst there was
+  (0.56 of it; 0.72 of that again on a narrow screen, so a dozen side by side stay a dozen), smaller still
+  for a star that is farther away, with fewer rays and sparks; at most 18 play at once (the oldest, nearly
+  spent, makes way). The first star to land still sets off the growth, once. The effects canvas is carried
+  with the ground so that every burst stays on the line and has room under it while the ground rises.
+  The ground's rise and the view's descent are now one motion (the two curves meet at the same speed), so
+  the ground no longer stands still for half a second with a black screen above it.
+  Checked: refs/transitions/compare/fall-desk.jpg and fall-phone.jpg rebuilt and looked at (all twelve of
+  Virgo strike between about 470 and 900 ms, each with its burst and roots of light, the whole ground lit;
+  small glints for the far figures while the view goes down). node tools/transitions/measure.mjs --only fall:
+  34 of 34 (was 30): 12 bursts of 12 at 12 places and 45 smaller ones, every burst on the ground line to
+  0.00 px, the front figure landing over 250 to 370 ms, one growth, the ground never moves back, ends on the
+  Roots. Frame times during it, real GPU: 19.5 ms average, 33 ms at the 95th percentile, worst 67 to 83 ms
+  (desktop; before: 18.5 to 19.5, 33, worst 50 to 100); 16.7 ms every frame at phone size.
+
+code 6 (MINOR, a tool) — the transitions suite died once waiting for Cloudflare's Turnstile script.  FIXED.
+  tools/transitions/measure.mjs opened /contact and went back to it waiting for "load"; it now waits for
+  "domcontentloaded" there, so a stalled third-party script cannot stop the run. Checked: the fall part,
+  which holds that step, run twice: 34 of 34 both times.

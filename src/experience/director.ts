@@ -41,7 +41,6 @@ import {
 } from './contracts.ts';
 import {
 	easeIn,
-	easeInOut,
 	easeOut,
 	fadeThrough,
 	lerp,
@@ -75,10 +74,14 @@ const SKY_WAIT_MS = 6000;
 const LOADER_WAIT_MS = 10_000;
 /** D1: the soil rises this far into the frame, as a share of the screen, to meet the stars. */
 const FALL_MEET = 0.32;
-/** D1: how long that rise takes. The first star strikes about half way through it. */
+/** D1: how long that rise takes. The first star strikes about half way through it, the last as it ends. */
 const FALL_RISE_MS = 900;
 /** D2: then the view follows the growth down to the top of the ground. */
 const FALL_FOLLOW_MS = 1200;
+/** D2: the ground line is held this far down the effects canvas (a share of the screen) while bursts play. */
+const FALL_BURST_LINE = 0.45;
+/** D2: how long a burst lasts, with a frame to spare (the effects layer's own figure is 760 ms). */
+const FALL_BURST_MS = 800;
 /** After the fall the growth is given this long to pass the first node before focus moves. */
 const GROWTH_WAIT_MS = 1500;
 /** G2: the whole launch back to the sky. */
@@ -100,8 +103,20 @@ const VEIL_Z_OVER_ALL = '55';
 
 const SCENES: readonly string[] = ['loading', 'sky', 'fall', 'roots', 'warp'];
 
-/** Slow, fast, slow, and quicker off the mark than motion.ts's: the view must not seem to stop. */
-const glide = (k: number): number => (k < 0.5 ? 2 * k * k : 1 - 2 * (1 - k) * (1 - k));
+/** A curve from 0 to 1 that leaves at slope `a` and arrives at slope `b` (a cubic Hermite). */
+const hermite =
+	(a: number, b: number) =>
+	(k: number): number =>
+		3 * k * k - 2 * k * k * k + a * (k * k * k - 2 * k * k + k) + b * (k * k * k - k * k);
+/** D2: the follow leaves at this slope, so the ground is already moving when it begins. */
+const FOLLOW_SLOPE = 0.5;
+/** D1: the rise starts from rest and arrives at the speed the follow leaves at. */
+const riseOn = hermite(
+	0,
+	(FOLLOW_SLOPE * (1 - FALL_MEET) * FALL_RISE_MS) / (FALL_FOLLOW_MS * FALL_MEET),
+);
+/** D2: the follow carries that speed on and comes to rest on the top of the ground. */
+const followOn = hermite(FOLLOW_SLOPE, 0);
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -391,14 +406,36 @@ export function createDirector(): StageDirector {
 			return window.innerHeight;
 		};
 		const burst = document.getElementById('fx-canvas');
-		/** scrollTop when the star struck, or -1. */
-		let struck = -1;
+		/** The first star has struck: the growth is set off once. */
+		let struck = false;
 		let grown: Promise<void> | undefined;
+		// The effects canvas is fixed and the ground is moving, so from the first
+		// strike the canvas is carried with the ground: the ground line is held
+		// at one height of the canvas (`line`), with room over it for the sparks
+		// and room under it for the light driven into the soil, wherever the
+		// ground is on the screen by then. Every burst is drawn at that height.
+		let line = -1;
+		let lastStrike = 0;
+		const carry = (): void => {
+			if (burst && line >= 0) burst.style.transform = `translateY(${surface() - line}px)`;
+		};
+		/** A star meets the ground: its burst, where it lands. All alike. */
+		const strike = (x: number, size: number): void => {
+			if (line < 0) line = Math.min(surface(), window.innerHeight * FALL_BURST_LINE);
+			carry();
+			lastStrike = performance.now();
+			tell('fx', (fx) => fx.impact(x, line, size));
+		};
+		let landed = 0;
+		const onLand = (x: number, size: number): void => {
+			if (scene !== 'fall') return;
+			landed++;
+			strike(x, size);
+		};
 		const onImpact = (x: number): void => {
-			if (scene !== 'fall' || struck >= 0) return;
-			struck = window.scrollY;
-			const y = surface();
-			tell('fx', (fx) => fx.impact(x, y));
+			if (scene !== 'fall' || struck) return;
+			struck = true;
+			if (landed === 0) strike(x, 1); // a sky that does not say where each star lands
 			tell('roots', (ground) => {
 				grown = ground.growFrom(x);
 			});
@@ -406,23 +443,32 @@ export function createDirector(): StageDirector {
 		const scrollTo = (share: number): void => {
 			if (scene !== 'fall') return; // the sky was lost meanwhile: the page is the Roots already
 			jump(spacer.offsetHeight * share);
-			if (burst && struck >= 0) burst.style.transform = `translateY(${struck - window.scrollY}px)`;
+			carry();
 		};
 
 		try {
 			// Not awaited: it is over when the last star is behind the soil, and
 			// restore() ends it in any case.
-			Promise.resolve(sky.fall({ groundY: surface, onImpact })).catch((err) =>
+			Promise.resolve(sky.fall({ groundY: surface, onImpact, onLand })).catch((err) =>
 				console.error('[cellestial] the sky threw', err),
 			);
 		} catch (err) {
 			console.error('[cellestial] the sky threw', err);
 		}
 		try {
-			await tween(FALL_RISE_MS, (k) => scrollTo(FALL_MEET * k), easeInOut);
-			await tween(FALL_FOLLOW_MS, (k) => scrollTo(lerp(FALL_MEET, 1, k)), glide);
+			// One motion, not two: the ground is still rising when the last stars
+			// land on it and goes straight on up the screen, never standing still
+			// (the two curves meet at the same speed).
+			await tween(FALL_RISE_MS, (k) => scrollTo(FALL_MEET * k), riseOn);
+			await tween(FALL_FOLLOW_MS, (k) => scrollTo(lerp(FALL_MEET, 1, k)), followOn);
 		} finally {
-			if (burst) burst.style.transform = '';
+			// The last bursts are still dying on the ground they struck: the canvas
+			// stays with it (the visitor can scroll by now) until they are over.
+			const stop = onFrame(() => {
+				if (line >= 0 && performance.now() - lastStrike < FALL_BURST_MS) return carry();
+				stop();
+				if (burst) burst.style.transform = '';
+			});
 		}
 		if (scene !== 'fall') return;
 

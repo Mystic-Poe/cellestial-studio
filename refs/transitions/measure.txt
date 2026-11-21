@@ -78,40 +78,6 @@ ok   teleport, phone, roots → "Contact me": landed: scene roots, scrollY 3125,
 ok   teleport, phone, roots → "Contact me": the flash went "down" (wanted "down")
 ok   teleport, phone, roots → "Contact me": the flash took 430 ms with the swap in it
 ok   teleport, phone, roots → "Contact me": the menu closed
-fall, desk, real GPU: scenes fall at 6, roots at 2172; over (focus on the ground) at 2175 ms; frames avg 19.2 ms, p95 33.4 ms, worst 83.3 ms (113 frames), the worst one ending 589 ms in
-ok   fall, desk, real GPU: B11 was on screen before
-ok   fall, desk, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
-ok   fall, desk, real GPU: the ground reached the top of the screen 2172 ms after the press (2000 to 3000)
-ok   fall, desk, real GPU: one impact and one growth (1, 1)
-ok   fall, desk, real GPU: the star struck on screen, at x 644, y 784 of 900, 456 ms after the press
-ok   fall, desk, real GPU: the ground never moved back down (0.0 px)
-ok   fall, desk, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 51 px)
-ok   fall, desk, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
-ok   fall, desk, real GPU: focus is on the ground ("roots")
-ok   fall, desk, real GPU: the Roots are active and growing
-ok   fall, desk, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
-ok   fall, desk, real GPU: the effects canvas is where it belongs
-fall, phone, real GPU: scenes fall at 4, roots at 2135; over (focus on the ground) at 2137 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (128 frames), the worst one ending 531 ms in
-ok   fall, phone, real GPU: B11 was on screen before
-ok   fall, phone, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
-ok   fall, phone, real GPU: the ground reached the top of the screen 2135 ms after the press (2000 to 3000)
-ok   fall, phone, real GPU: one impact and one growth (1, 1)
-ok   fall, phone, real GPU: the star struck on screen, at x 170, y 707 of 844, 498 ms after the press
-ok   fall, phone, real GPU: the ground never moved back down (0.0 px)
-ok   fall, phone, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 16 px)
-ok   fall, phone, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
-ok   fall, phone, real GPU: focus is on the ground ("roots")
-ok   fall, phone, real GPU: the Roots are active and growing
-ok   fall, phone, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
-ok   fall, phone, real GPU: the effects canvas is where it belongs
-ok   fall, desk: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
-ok   fall, desk: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
-ok   fall, desk: reduced motion: a fade straight to the Roots in 604 ms (scenes roots at 276; no impact; the network whole)
-ok   fall, phone: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
-ok   fall, phone: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
-ok   fall, phone: reduced motion: a fade straight to the Roots in 556 ms (scenes roots at 261; no impact; the network whole)
-fall, desk, software, CPU slowed 4x: scenes fall at 20, roots at 4108; over (focus on the ground) at 4693 ms; frames avg 149.4 ms, p95 366.7 ms, worst 400.1 ms (29 frames), the worst one ending 4293 ms in
-fall, phone, software, CPU slowed 4x: scenes fall at 20, roots at 4389; over (focus on the ground) at 5093 ms; frames avg 184.0 ms, p95 383.3 ms, worst 416.6 ms (26 frames), the worst one ending 4680 ms in
 warp, desk, from scrollY 0, real GPU: scenes warp at 2, sky at 1004; over (focus on the sky) at 1529 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (91 frames), the worst one ending 48 ms in
 ok   warp, desk, from scrollY 0, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
 ok   warp, desk, from scrollY 0, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
@@ -154,3 +120,41 @@ warp, phone, from scrollY 0, software, CPU slowed 4x: scenes warp at 7, sky at 1
 ok   warp, phone, from scrollY 0, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
 warp, phone, from scrollY 1800, software, CPU slowed 4x: scenes warp at 8, sky at 1066; over (focus on the sky) at 1639 ms; frames avg 39.3 ms, p95 166.8 ms, worst 233.3 ms (39 frames), the worst one ending 238 ms in
 ok   warp, phone, from scrollY 1800, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+fall, desk, real GPU: scenes fall at 5, roots at 2201; over (focus on the ground) at 2204 ms; frames avg 19.5 ms, p95 33.4 ms, worst 83.3 ms (112 frames), the worst one ending 592 ms in
+ok   fall, desk, real GPU: B11 was on screen before
+ok   fall, desk, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, desk, real GPU: the ground reached the top of the screen 2201 ms after the press (2000 to 3000)
+ok   fall, desk, real GPU: every star of the figure in front struck the ground, each where it landed: 12 bursts of 12 at 12 places (and 45 smaller ones for the figures behind); one growth (1)
+ok   fall, desk, real GPU: every burst was on the ground line (0.00 px off at most) and on the screen (0 off it)
+ok   fall, desk, real GPU: the figure in front landed over 372 ms, not all at once
+ok   fall, desk, real GPU: the first star struck on screen, at x 644, y 805 of 900, 460 ms after the press
+ok   fall, desk, real GPU: the ground never moved back down (0.0 px)
+ok   fall, desk, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 36 px)
+ok   fall, desk, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, desk, real GPU: focus is on the ground ("roots")
+ok   fall, desk, real GPU: the Roots are active and growing
+ok   fall, desk, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, desk, real GPU: the effects canvas is where it belongs
+fall, phone, real GPU: scenes fall at 5, roots at 2164; over (focus on the ground) at 2166 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (130 frames), the worst one ending 427 ms in
+ok   fall, phone, real GPU: B11 was on screen before
+ok   fall, phone, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, phone, real GPU: the ground reached the top of the screen 2164 ms after the press (2000 to 3000)
+ok   fall, phone, real GPU: every star of the figure in front struck the ground, each where it landed: 12 bursts of 12 at 12 places (and 45 smaller ones for the figures behind); one growth (1)
+ok   fall, phone, real GPU: every burst was on the ground line (0.00 px off at most) and on the screen (0 off it)
+ok   fall, phone, real GPU: the figure in front landed over 253 ms, not all at once
+ok   fall, phone, real GPU: the first star struck on screen, at x 170, y 736 of 844, 510 ms after the press
+ok   fall, phone, real GPU: the ground never moved back down (0.0 px)
+ok   fall, phone, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 11 px)
+ok   fall, phone, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, phone, real GPU: focus is on the ground ("roots")
+ok   fall, phone, real GPU: the Roots are active and growing
+ok   fall, phone, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, phone, real GPU: the effects canvas is where it belongs
+ok   fall, desk: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+ok   fall, desk: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, desk: reduced motion: a fade straight to the Roots in 641 ms (scenes roots at 280; no impact; the network whole)
+ok   fall, phone: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+ok   fall, phone: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, phone: reduced motion: a fade straight to the Roots in 577 ms (scenes roots at 266; no impact; the network whole)
+fall, desk, software, CPU slowed 4x: scenes fall at 21, roots at 4984; over (focus on the ground) at 5167 ms; frames avg 165.5 ms, p95 383.3 ms, worst 383.3 ms (29 frames), the worst one ending 1618 ms in
+fall, phone, software, CPU slowed 4x: scenes fall at 20, roots at 4661; over (focus on the ground) at 4982 ms; frames avg 194.4 ms, p95 366.7 ms, worst 383.3 ms (24 frames), the worst one ending 4552 ms in

@@ -20,7 +20,7 @@ import {
 	type Flash,
 	type FlashDir,
 } from './flash.ts';
-import { createImpact, IMPACT_MS, type Impact } from './impact.ts';
+import { createImpact, IMPACT_MS, IMPACT_SIZE, type Impact } from './impact.ts';
 import { nextSeed } from './rng.ts';
 import { createSurface } from './surface.ts';
 import { createWarp, drawWarpFade, type Warp } from './warp.ts';
@@ -58,6 +58,12 @@ const HOLD_MAX_MS = 1000;
 const BEAT_MS = 120;
 /** The frame after swap() pays for the new section. Past this, its lateness is swap time. */
 const SWAP_FRAME_MS = 34;
+/** The burst of the farthest star is this share of the nearest's. */
+const IMPACT_FAR = 0.3;
+/** On a phone a burst is this share of a desktop's, so a dozen side by side stay a dozen. */
+const IMPACT_NARROW = 0.72;
+/** How many bursts (D2) play at once. */
+const IMPACTS_MAX = 18;
 /** Reduced motion: the fade is solid black from here to the same distance past the peak. */
 const FADE_SOLID_FROM = 0.47;
 
@@ -377,14 +383,27 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			});
 		},
 
-		impact(x, y) {
+		impact(x, y, size = 1) {
 			// Reduced motion has no fall, so nothing lands.
 			if (ctx.reducedMotion || broken) return;
 			if (!Number.isFinite(x) || !Number.isFinite(y)) return;
 			wake();
+			// A whole sky can land within half a second. Past this many at once the
+			// oldest, which is all but spent, makes way: frame time is kept.
+			if (impacts.length >= IMPACTS_MAX) impacts.shift();
 			try {
 				impacts.push({
-					art: createImpact(takeSeed(), x, y, surface.w, surface.h),
+					art: createImpact(
+						takeSeed(),
+						x,
+						y,
+						surface.w,
+						surface.h,
+						// A narrow screen has the same stars landing closer together.
+						IMPACT_SIZE *
+							Math.min(1, Math.max(IMPACT_NARROW, surface.w / 900)) *
+							Math.min(1, Math.max(IMPACT_FAR, Number.isFinite(size) ? size : 1)),
+					),
 					t0: clock.now(),
 					u: 0,
 				});

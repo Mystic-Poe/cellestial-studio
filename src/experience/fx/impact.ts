@@ -75,15 +75,31 @@ function addRay(g: Ctx, x: number, y: number, r: Ray, to: number): void {
 	);
 }
 
-export function createImpact(seed: number, x: number, y: number, w: number, h: number): Impact {
+/**
+ * Every star that falls strikes the ground, so a sky's worth of these play at
+ * once: each is this share of the one great burst the effect was first drawn
+ * as, with fewer rays and sparks to match. All of them are alike.
+ */
+export const IMPACT_SIZE = 0.56;
+
+export function createImpact(
+	seed: number,
+	x: number,
+	y: number,
+	w: number,
+	h: number,
+	size = IMPACT_SIZE,
+): Impact {
 	const rand = rng(seed);
 	/** A phone's burst is nearly as big as a desktop's: it is felt, not measured. */
-	const s = clamp(Math.sqrt(w * h) / 700, 0.9, 1.6);
+	const s = clamp(Math.sqrt(w * h) / 700, 0.9, 1.6) * size;
 	const gravity = 2500 * s;
+	/** How many rays and sparks, against the great burst's. */
+	const few = clamp(0.25 + 0.75 * size, 0.5, 1);
 
 	// Rays into the ground: every way below the horizon, longest straight down.
 	const rays: Ray[] = [];
-	const count = 11 + Math.floor(rand() * 4);
+	const count = Math.round((11 + Math.floor(rand() * 4)) * few);
 	for (let k = 0; k < count; k++) {
 		const a = 0.12 + ((k + 0.15 + rand() * 0.7) / count) * (Math.PI - 0.24);
 		const len = s * (80 + 150 * Math.sin(a) ** 1.3 * (0.5 + rand() * 0.6) + rand() * 45);
@@ -106,7 +122,7 @@ export function createImpact(seed: number, x: number, y: number, w: number, h: n
 
 	// Sparks: thrown up and outward, pulled back down to the ground line.
 	const sparks: Spark[] = [];
-	const thrown = 18 + Math.floor(rand() * 8);
+	const thrown = Math.round((18 + Math.floor(rand() * 8)) * few);
 	for (let k = 0; k < thrown; k++) {
 		const side = k % 2 === 0 ? 1 : -1;
 		const lean = (0.1 + rand() ** 0.8 * 1.15) * side;
