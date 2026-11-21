@@ -427,7 +427,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uFar: { value: new Vector3(FADE.far[0], FADE.far[1], FADE.far[2]) },
 		uFall: { value: new Vector4(-1, 0, FALL.stagger, FALL.trail) },
 		uMinPx: { value: LOOK.starMinPx },
-		uTrailMax: { value: 16 },
+		uTrailMax: { value: FALL.trailMax },
 		tB4,
 		tB4Station,
 		uB4Close: { value: new Vector2(B4_CLOSE.from, B4_CLOSE.to) },

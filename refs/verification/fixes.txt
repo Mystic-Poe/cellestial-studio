@@ -228,3 +228,38 @@ code 11 — six pictures shipped and never fetched.  FIXED: the old mirrored soi
 code 12 — one type error; no type-check.  FIXED: `let right: number` in loader/painter.ts; TypeScript 7.0.2
   and @types/node are dev dependencies; "pnpm typecheck" (tsc -p tsconfig.typecheck.json: Astro's strict
   settings over src/experience and src/content) passes with no error.
+
+look 7 (MINOR) — the guided light was hard to see.  FIXED (src/experience/roots/net.ts): its tail is 300 px
+  (was 230), it rests 0.8 s between runs (was 1.5 s), and while it travels the trunk ahead of it (250 px) is
+  dimmed by up to 42%, fading with distance, so the light is the brightest thing on its stretch.
+  Checked: refs/roots/compare/pulse-desk.jpg (looked at), pulse-phone.jpg, pulse-close.jpg rebuilt;
+  node tools/roots/measure.mjs --only light: all pass at both sizes (still while a tile is open, sets off
+  42 ms after a tile closes, never scrolls, never opens a tile, no frames when its stretch is off screen).
+look 10 (MINOR) — the trunk read as lightning on a narrow screen.  FIXED (net.ts): under 768 px the trunk
+  wanders 0.55 as far and in longer bends (3.4 to a stretch, was 5.5), and branches leave it at 29 to 57
+  degrees (was 45 to 85). The white heart of any thread is a pixel wide at most, at every size.
+  Checked: refs/roots/compare/descent-phone.jpg rebuilt and looked at (a gently bending cord, no kinks, the
+  branches leaning away like roots); descent-desk-1..3, grow-desk, grow-phone, grow-close rebuilt.
+look 16 (MINOR) — the runner's light ran behind the logo and the menu bars.  FIXED (net.ts): the runner, and
+  the roots that leave it, are at 12% of their light up to 120 px from the left edge and whole from 190 px.
+  Checked in descent-phone.jpg and descent-desk-1.jpg: no bright line behind the logo.
+look 11 (MINOR) — the warp's peak was one pale sheet.  FIXED (src/experience/fx/warp.ts): the cover is the
+  black; the flare is a light at the vanishing point that falls away fast and is gone before the far
+  corners, with the streaks showing in it. Checked: refs/transitions/compare/warp-desk.jpg (looked at:
+  1011 to 1110 ms are black, dense with streaks, under the flare), warp-phone, warp-deep-desk,
+  warp-deep-phone rebuilt; node tools/transitions/measure.mjs --only fall,warp: 68 of 68 (the frame is
+  still fully covered when the page becomes the sky: lowest alpha 255, also in software with the CPU
+  slowed 4x).
+look 13 (MINOR) — the fall as big as the figure in front; short trails.  PARTLY ALREADY FIXED, the rest FIXED.
+  The stars of the figures behind already fall and strike (the first fix: "45 smaller ones"). The trails
+  are now as long as a star falls in 0.14 s (was 0.075), at most 24 of its radii (was 16)
+  (src/experience/sky/config.ts FALL). Checked: refs/transitions/compare/fall-desk.jpg (looked at),
+  fall-phone.jpg rebuilt; the fall's 34 checks pass.
+look 14 (MINOR) — the loader's lit wires whiter and thicker than the reference; the overload a hard disc.
+  FIXED as far as it goes (src/experience/loader/painter.ts, sprites.ts): the wire is 1.4 to 2.6 px of
+  blue-white (was 1.8 to 3.8 of near white) with more blue close round it; the overload's white is a
+  bloom with no edge (white at its heart only, falling away through blue), under less haze. Looked at
+  full size beside the reference at 1.33, 3.0 and 3.17 s: the wires are close; the overload now blooms
+  and lets the rings show; it is still a little larger and bluer at its rim than the reference's.
+  Not changed: the first arc at 3.67 s (tamer than the reference's).
+  refs/loading/compare/desk-1, desk-2, phone-1, phone-2 rebuilt.

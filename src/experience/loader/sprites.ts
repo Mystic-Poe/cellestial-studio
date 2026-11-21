@@ -54,6 +54,23 @@ export const discSprite = () =>
 		[1, 'rgb(40 80 255 / 0)'],
 	]);
 
+/**
+ * The overload's white: the same disc with no edge to it. White only at its
+ * heart, then falling away through blue-white and blue all the way out: a
+ * bloom, as the reference has it, where the disc above is a shape.
+ */
+export const bloomSprite = () =>
+	radial(192, [
+		[0, 'rgb(255 255 255)'],
+		[0.2, 'rgb(255 255 255)'],
+		[0.34, 'rgb(240 245 255 / 0.86)'],
+		[0.5, 'rgb(196 214 255 / 0.56)'],
+		[0.66, 'rgb(128 166 255 / 0.3)'],
+		[0.82, 'rgb(72 112 255 / 0.12)'],
+		[0.94, 'rgb(48 88 255 / 0.03)'],
+		[1, 'rgb(40 80 255 / 0)'],
+	]);
+
 /** Navy haze: light hanging in the air a long way from what glows. It falls off slowly. */
 export const mistSprite = () =>
 	radial(160, [

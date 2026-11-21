@@ -797,7 +797,10 @@ export const mount: MountSky = (ctx) => {
 				if (x + r * REACH < 0 || x - r * REACH > layout.w) continue;
 				const t = Math.max(0, elapsed - star.seed * FALL.stagger);
 				const y = layout.h / 2 - (star.y - 0.5 * f.gravity * t * t - cam.y) * scale;
-				const trail = Math.min(f.gravity * t * FALL.trail * quality.trail * scale, 16 * r);
+				const trail = Math.min(
+					f.gravity * t * FALL.trail * quality.trail * scale,
+					FALL.trailMax * r,
+				);
 				if (y + r >= ground) {
 					if (y + r - ground > hitOver) {
 						hitOver = y + r - ground;

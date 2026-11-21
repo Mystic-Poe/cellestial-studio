@@ -123,10 +123,16 @@ const SOFT = 0.25;
 /** How long a newly lit stretch stays hot, ms; and after how long it counts as cool. */
 const HOT_MS = 170;
 const COOL_MS = HOT_MS * 3.4;
+/** The chrome's corner of the ground: the runner's light is `left` of itself up to `from` px across, whole from `to`. */
+const CORNER = { from: 120, to: 190, left: 0.12 } as const;
 /** The soil under the light: each channel of the picture times 1 / (1 - this). */
 const DODGE = 'rgb(92 138 202)';
-/** The guided light: its canvas, the length of its tail, its pace and its rest. */
-const PULSE = { box: 460, tail: 230, speed: 0.4, rest: 1500 };
+/**
+ * The guided light: its canvas, the length of its tail, its pace and its rest,
+ * and how far ahead of it, and by how much, the resting trunk is dimmed while
+ * it travels (so that the light is the brightest thing on its stretch).
+ */
+const PULSE = { box: 620, tail: 300, speed: 0.4, rest: 800, ahead: 250, dim: 0.42 };
 
 const rgba = (c: readonly [number, number, number], a: number): string =>
 	`rgb(${Math.round(c[0] * 255)} ${Math.round(c[1] * 255)} ${Math.round(c[2] * 255)} / ${a})`;
@@ -170,7 +176,8 @@ const CORE: Pass[] = [
 	{ width: (w) => w * 2.5 + 1.1, alpha: (l) => 0.26 * l, colour: BLUE_RGB, heat: 1.2 },
 	{ width: (w) => w * 1.15 + 0.2, alpha: (l) => 0.85 * l, colour: MID_RGB, heat: 1 },
 	{
-		width: (w) => (w < 1.4 ? 0 : (w - 1) * 0.5),
+		// The white heart is a pixel at most, however thick the thread: more reads as lightning.
+		width: (w) => (w < 1.4 ? 0 : Math.min(1, (w - 1) * 0.5)),
 		alpha: (l) => Math.min(1, l * 0.9),
 		colour: BLUE_WHITE_RGB,
 		heat: 1.4,
@@ -262,6 +269,14 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		const reach = clamp(L.width * (phone ? 0.5 : 0.42), 150, 600);
 		/** Branches leave the trunk closer together on a small screen. */
 		const apart = phone ? 0.72 : 1;
+		/**
+		 * On a narrow screen the trunk wanders less far and in longer bends, and its
+		 * branches leave at a shallower angle: the same wander that is a gentle line
+		 * across 1440 px is a row of kinks across 390, and reads as lightning.
+		 */
+		const wander = phone
+			? { amp: 0.55, bends: 3.4, fork: [0.5, 0.5] }
+			: { amp: 1, bends: 5.5, fork: [0.78, 0.7] };
 		/** Slow, seeded unevenness: a few sines with their own phases. */
 		const drift = () => {
 			const p = [rand() * 7, rand() * 7, rand() * 7];
@@ -354,11 +369,17 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			const lum: number[] = [];
 			const wave = drift();
 			const dip = drift();
+			// The logo and the menu button stand over the top-left corner of the ground: the
+			// runner's light is all but out under them, so it does not run behind their brass.
+			const clear = (x: number): number => {
+				const t = clamp((x - CORNER.from) / (CORNER.to - CORNER.from), 0, 1);
+				return CORNER.left + (1 - CORNER.left) * t * t * (3 - 2 * t);
+			};
 			for (let x = -24; x <= L.width + 24; x += 5) {
 				xs.push(x);
 				ys.push(edgeY(x) + 10 + 4.5 * wave(x / 60) + 2 * wave(x / 17));
 				w.push(0.75 + 0.35 * (0.5 + 0.5 * dip(x / 45)));
-				lum.push(0.36 + 0.16 * dip(x / 70));
+				lum.push((0.36 + 0.16 * dip(x / 70)) * clear(x));
 			}
 			add(xs, ys, w, lum, 3.2, -1, 0);
 			let i = 2 + Math.floor(rand() * 4);
@@ -370,7 +391,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 					Math.PI / 2 + (rand() - 0.5) * 1.9,
 					long ? 50 + rand() * 90 : 10 + rand() * 38,
 					0.5 + rand() * 0.5,
-					0.42,
+					0.42 * clear(xs[i]),
 					long ? 1 : 2,
 					1.1,
 				);
@@ -398,7 +419,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			const fine = drift();
 			const thick = drift();
 			const dip = drift();
-			const amp = len * (0.045 + rand() * 0.035);
+			const amp = len * (0.045 + rand() * 0.035) * wander.amp;
 			const xs: number[] = [];
 			const ys: number[] = [];
 			const w: number[] = [];
@@ -414,7 +435,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 				const dy = 3 * v * v * (c1.y - a.y) + 6 * v * u * (c2.y - c1.y) + 3 * u * u * (b.y - c2.y);
 				const d = Math.hypot(dx, dy) || 1;
 				const env = Math.sin(Math.PI * u) ** 1.3;
-				const off = (amp * sway(u * 5.5) + amp * 0.05 * fine(u * 14)) * env;
+				const off = (amp * sway(u * wander.bends) + amp * 0.05 * fine(u * 14)) * env;
 				nx.push(-dy / d);
 				ny.push(dx / d);
 				xs.push(x + (-dy / d) * off);
@@ -470,7 +491,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 				sprout(
 					me,
 					i,
-					heading + side * (0.78 + rand() * 0.7),
+					heading + side * (wander.fork[0] + rand() * wander.fork[1]),
 					length,
 					trunkW * (0.3 + 0.32 * Math.min(1, length / reach)),
 					0.74,
@@ -1229,9 +1250,24 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		// It rises as it sets off and sinks into where it arrives.
 		const life = Math.min(1, headAt / 60) * Math.min(1, (len - headAt) / 46 + 0.25);
 		ctx.setTransform(dpr, 0, 0, dpr, -ox * dpr, -oy * dpr);
-		ctx.globalCompositeOperation = 'lighter';
 		ctx.lineCap = 'round';
 		ctx.lineJoin = 'round';
+		// The trunk ahead of the light, a little dimmer for as long as the light is on its way.
+		ctx.globalCompositeOperation = 'source-over';
+		let qx = hx;
+		let qy = hy;
+		for (let j = hi + 1; j < at.length && at[j] - headAt < PULSE.ahead; j++) {
+			const near = 1 - (at[j] - headAt) / PULSE.ahead;
+			ctx.beginPath();
+			ctx.moveTo(qx, qy);
+			ctx.lineTo(xs[j], ys[j]);
+			ctx.lineWidth = 7;
+			ctx.strokeStyle = `rgb(8 7 7 / ${(PULSE.dim * near * life).toFixed(3)})`;
+			ctx.stroke();
+			qx = xs[j];
+			qy = ys[j];
+		}
+		ctx.globalCompositeOperation = 'lighter';
 		let i = hi;
 		let px = hx;
 		let py = hy;

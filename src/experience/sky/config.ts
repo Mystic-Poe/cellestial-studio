@@ -143,7 +143,15 @@ export const FOCUS = {
 export const IGNITE = { fire: 0.6, flash: 0.45, settle: 1.1 } as const;
 
 /** The fall. `gravity` is in pixels per second squared at the nearest layer. */
-export const FALL = { gravity: 2300, stagger: 0.28, trail: 0.075, fade: 0.55, timeout: 7 } as const;
+export const FALL = {
+	gravity: 2300,
+	stagger: 0.28,
+	/** A star's trail is as long as it falls in this many seconds, and at most `trailMax` of its radii. */
+	trail: 0.14,
+	trailMax: 24,
+	fade: 0.55,
+	timeout: 7,
+} as const;
 
 /** sessionStorage key for "one full round flown". */
 export const ROUND_KEY = 'cellestial:round';

@@ -1,8 +1,11 @@
 // G2, the launch back to the sky. The visitor goes UP, so the light comes
 // DOWN: streaks pour past from a vanishing point high in the frame, few and
-// slow, then longer, faster and thicker, until the light ahead fills the
-// frame and covers it. The page swaps the Roots for the sky under that cover.
-// Then the streaks thin out, slow and are gone.
+// slow, then longer, faster and thicker, until the frame is black, dense with
+// streaks, under the flare of the light ahead. The page swaps the Roots for
+// the sky under that cover (it is the black that covers: the flare is a light
+// in it, strongest at the vanishing point and gone before the frame's far
+// corners, not a pale sheet over everything). Then the streaks thin out, slow
+// and are gone.
 //
 // draw() is a pure function of the seed, the frame size and the time.
 
@@ -194,7 +197,7 @@ export function createWarp(seed: number, ms: number, width: number, height: numb
 			}
 		}
 
-		// The light ahead: a star at the vanishing point that becomes the whole frame.
+		// The light ahead: a star at the vanishing point that swells into a flare.
 		const flare =
 			u < from
 				? smooth(from - 0.13, from, u) ** 1.6
@@ -209,13 +212,13 @@ export function createWarp(seed: number, ms: number, width: number, height: numb
 		}
 		if (flare > 0.004) {
 			const f = clamp(flare);
-			const r = far * (0.22 + 0.9 * f);
+			const r = far * (0.22 + 0.68 * f);
 			const grad = g.createRadialGradient(vx, vy, 0, vx, vy, r);
 			lightStops(
 				grad,
-				// Blue to the corners at full strength, so the whole frame is lit.
-				(p) => f * (1.2 * (1 - p) ** 1.15 + 0.5 * f * f),
-				(p) => 1.25 * f * Math.max(0, 1 - p / (0.3 + 0.36 * f)) ** 1.4,
+				// It falls away fast: the edges of the frame stay dark, and the streaks show in it.
+				(p) => f * 1.1 * (1 - p) ** 2.3,
+				(p) => 1.25 * f * Math.max(0, 1 - p / (0.2 + 0.2 * f)) ** 1.4,
 				18,
 			);
 			g.globalAlpha = 1;

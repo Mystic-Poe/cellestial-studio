@@ -28,6 +28,7 @@ import {
 	trace,
 } from './lightning';
 import {
+	bloomSprite,
 	context,
 	cutWordmark,
 	discSprite,
@@ -185,6 +186,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 	const hot = hotSprite();
 	const haze = hazeSprite();
 	const disc = discSprite();
+	const bloom = bloomSprite();
 	const mist = mistSprite();
 	const pieces: Pieces = cutWordmark(images.wordmark, images.matte);
 
@@ -560,14 +562,15 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		main.globalCompositeOperation = 'lighter';
 		main.lineCap = 'round';
 		main.lineJoin = 'round';
-		main.strokeStyle = `rgb(44 76 255 / ${0.34 * heat})`;
+		main.strokeStyle = `rgb(44 76 255 / ${0.42 * heat})`;
 		main.lineWidth = 18;
 		main.stroke(path);
-		main.strokeStyle = `rgb(96 126 255 / ${0.34 * heat})`;
-		main.lineWidth = atLeast(7, 'sprite', 1.7);
+		main.strokeStyle = `rgb(72 108 255 / ${0.5 * heat})`;
+		main.lineWidth = atLeast(6.5, 'sprite', 1.7);
 		main.stroke(path);
-		main.strokeStyle = `rgb(240 244 255 / ${heat ** 0.7})`;
-		main.lineWidth = atLeast(lerp(1.8, 3.8, heat), 'sprite', 1);
+		// The wire itself: narrow, and blue-white rather than white.
+		main.strokeStyle = `rgb(206 222 255 / ${heat ** 0.7})`;
+		main.lineWidth = atLeast(lerp(1.4, 2.6, heat), 'sprite', 1);
 		main.stroke(path);
 		main.globalCompositeOperation = 'source-over';
 		glow('sprite', [34, 120, 0], [0.32 * heat, 0.24 * heat, 0], path);
@@ -589,21 +592,24 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 		const calm = level > 1.2 ? 0.08 : 0.3;
 		const energy = level * (1 - calm / 2 + calm * random());
 		const r = NODE.r;
-		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), Math.min(0.75, 0.55 * energy));
+		// (Under the overload the haze holds back a little, so the white of it has no edge.)
+		const hazy = Math.min(0.75, 0.55 * energy) * (energy > 1.15 ? 0.72 : 1);
+		spot(haze, 'sprite', LENS.x, LENS.y, r * (1.5 + 1.3 * energy), hazy);
 		// Overload: the node is lost in its own light. The white of it lies over
 		// the lens and the side the struts come in on, and draws in as it fades,
 		// so the rings on the far side of the face show through from the first.
 		const over = energy > 1.15 ? Math.min(1, (energy - 1.15) / 1.1) : 0;
 		if (over > 0) {
+			// A bloom, not a disc: it has no edge (it is drawn larger, as its white is smaller).
 			spot(
-				disc,
+				bloom,
 				'sprite',
 				LENS.x - 0.3 * r * over,
 				LENS.y,
 				r * (0.5 + 0.6 * over),
-				Math.min(1, over * 1.4),
+				Math.min(0.72, over * 1.1),
 			);
-			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.5 + over), 0.6 * over);
+			spot(hot, 'sprite', LENS.x, LENS.y, r * (1.5 + over), 0.26 * over);
 		}
 		// Once it has been struck the node's face is white-hot: the rings and
 		// tracks cut in it are lit white, its rim catches the light, and the
@@ -1531,6 +1537,7 @@ export function createPainter(canvas: HTMLCanvasElement, images: Images, script:
 			hot,
 			haze,
 			disc,
+			bloom,
 			mist,
 			...levels.map((l) => l.canvas),
 			pieces.emblem.canvas,
