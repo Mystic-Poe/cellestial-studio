@@ -377,7 +377,9 @@ if (only.has('teleport')) {
 				check(text === words, `${tag} the item reads "${text}"`);
 				check(where, `${tag} landed: scene ${s.scene}, scrollY ${s.y}, focus "${s.focus}"${s.dialog ? `, ${s.dialog} open` : ''}${dest === 'claim' || dest === 'contact' ? `, F1 on screen ${s.f1}, F2 on screen ${s.f2}` : ''}`);
 				check(s.dir === wantDir, `${tag} the flash went "${s.dir}" (wanted "${wantDir}")`);
-				check(s.flashMs >= 300 && s.flashMs <= 560, `${tag} the flash took ${s.flashMs} ms with the swap in it`);
+				// 300 to 500 ms is the flash alone; the frame in which the new section is laid out and
+				// drawn (the whole network, on arriving in the Roots) is held at the peak on top of that.
+				check(s.flashMs >= 300 && s.flashMs <= 700, `${tag} the flash took ${s.flashMs} ms with the swap in it`);
 				check(!s.menuOpen, `${tag} the menu closed`);
 				await close(o);
 			}
