@@ -1,71 +1,71 @@
 
 ## first visit, CPU 4x slower, network as it comes (localhost)
 start s | end s | wire bytes | body | gzipped | encoding | url
-0.00 | 0.00 | 6917 | 22835 | 6626 | gzip | /?debug
-0.02 | 0.03 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
-0.02 | 0.04 | 4780 | 18297 | 4456 | gzip | /_astro/index.CAgX8X7v.css
-0.03 | 0.04 | 8195 | 34625 | 7863 | gzip | /_astro/Base.CSJKUEuY.css
-0.03 | 0.04 | 12908 | 12640 | 12640 | none | /cellestial/chrome/c-logo.webp
-0.03 | 0.04 | 43944 | 43676 | 43676 | none | /cellestial/roots/e4-node-alpha.webp
-0.03 | 0.04 | 61236 | 60968 | 60968 | none | /cellestial/loader/c-unlit.webp
-0.03 | 0.04 | 30589 | 78555 | 30174 | gzip | /_astro/index.astro_astro_type_script_index_0_lang.ChgYYqew.js
-0.07 | 0.07 | 994 | 673 | 441 | none | /_astro/contact-submit.3fcaacsQ.js
-0.08 | 0.09 | 104952 | 104682 | 104682 | none | /cellestial/loader/c-lit.webp
-0.08 | 0.09 | 53490 | 53222 | 53222 | none | /cellestial/loader/wordmark.webp
-0.08 | 0.09 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
-0.09 | 0.10 | 158078 | 600260 | 157085 | gzip | /_astro/sky.BrJ3uFy4.js
-0.09 | 0.09 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
-0.09 | 0.09 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
-0.09 | 0.09 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
-0.10 | 0.10 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
-0.10 | 0.10 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
+0.00 | 0.01 | 6917 | 22835 | 6626 | gzip | /?debug
+0.03 | 0.04 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
+0.03 | 0.05 | 4780 | 18297 | 4456 | gzip | /_astro/index.CAgX8X7v.css
+0.03 | 0.05 | 8195 | 34625 | 7863 | gzip | /_astro/Base.CSJKUEuY.css
+0.03 | 0.05 | 12908 | 12640 | 12640 | none | /cellestial/chrome/c-logo.webp
+0.03 | 0.05 | 43944 | 43676 | 43676 | none | /cellestial/roots/e4-node-alpha.webp
+0.03 | 0.05 | 61236 | 60968 | 60968 | none | /cellestial/loader/c-unlit.webp
+0.03 | 0.05 | 30589 | 78555 | 30174 | gzip | /_astro/index.astro_astro_type_script_index_0_lang.ChgYYqew.js
+0.08 | 0.08 | 994 | 673 | 441 | none | /_astro/contact-submit.3fcaacsQ.js
+0.09 | 0.10 | 104952 | 104682 | 104682 | none | /cellestial/loader/c-lit.webp
+0.09 | 0.10 | 53490 | 53222 | 53222 | none | /cellestial/loader/wordmark.webp
+0.09 | 0.10 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
+0.09 | 0.11 | 158078 | 600260 | 157085 | gzip | /_astro/sky.BrJ3uFy4.js
+0.09 | 0.10 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
+0.09 | 0.10 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
+0.09 | 0.10 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
+0.10 | 0.11 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
+0.10 | 0.11 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
 0.11 | 0.11 | 97684 | 97416 | 97416 | none | /cellestial/roots/soil-portrait-woven.avif
-0.23 | 0.23 | 921 | 0 | 0 | none | /favicon.ico
-0.47 | 0.47 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
-0.47 | 0.47 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
-0.47 | 0.47 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
-0.47 | 0.47 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
-0.68 | 0.68 | 1016 | 749 | 452 | none | /favicon.svg
+0.23 | 0.24 | 921 | 0 | 0 | none | /favicon.ico
+0.47 | 0.48 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
+0.47 | 0.48 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
+0.47 | 0.48 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
+0.47 | 0.48 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
+1.10 | 1.11 | 1016 | 749 | 452 | none | /favicon.svg
 requests: 25; third-party: none
 up to the load event (0.20 s): 19 requests, 738858 bytes on the wire, 732091 gzipped
 everything but the sky's own files (chunk + textures): 20 requests, 709710 bytes, 575458 gzipped
-the sky's own files: /_astro/sky.BrJ3uFy4.js 600260/157085; /cellestial/sky/b3-core.webp 5726/5726; /cellestial/sky/b3-ring.webp 87990/87990; /cellestial/sky/b4-empty.webp 19078/19078; /cellestial/sky/b5-lit-add.webp 21292/21292 — arriving by 0.47 s
+the sky's own files: /_astro/sky.BrJ3uFy4.js 600260/157085; /cellestial/sky/b3-core.webp 5726/5726; /cellestial/sky/b3-ring.webp 87990/87990; /cellestial/sky/b4-empty.webp 19078/19078; /cellestial/sky/b5-lit-add.webp 21292/21292 — arriving by 0.48 s
 all, once the sky has arrived: 25 requests, 1444056 bytes, 866629 gzipped
-the loader: live at 0.08 s, the sky on stage at 8.57 s: 8.48 s of loader (the spec: 6 to 8 s, never under 6)
-first paint 0.23 s; first contentful paint 0.23 s; DOMContentLoaded 0.09 s; load 0.20 s; the sky on stage at 8.57 s
+the loader: live at 0.09 s, the sky on stage at 8.63 s: 8.54 s of loader (the spec: 6 to 8 s, never under 6)
+first paint 0.21 s; first contentful paint 0.21 s; DOMContentLoaded 0.10 s; load 0.20 s; the sky on stage at 8.63 s
 LCP candidates: 
 Largest Contentful Paint: none s
-long tasks (> 50 ms): 6; total 931 ms; longest 418 ms; blocking time over 50 ms: 631 ms
-  each (start ms: length ms): 73: 89, 232: 95, 329: 138, 487: 140, 707: 418, 1181: 51
-  during the loader (to 8565 ms): 6 tasks, 931 ms; in the 4 s after: 0 tasks, 0 ms
+long tasks (> 50 ms): 5; total 851 ms; longest 391 ms; blocking time over 50 ms: 601 ms
+  each (start ms: length ms): 80: 90, 239: 95, 337: 138, 483: 137, 704: 391
+  during the loader (to 8627 ms): 5 tasks, 851 ms; in the 4 s after: 0 tasks, 0 ms
 
 ## first visit, CPU 4x slower, slow 4G (1.6 Mbit/s down, 750 kbit/s up, 150 ms)
 start s | end s | wire bytes | body | gzipped | encoding | url
 0.00 | 0.18 | 6917 | 22835 | 6626 | gzip | /?debug
-0.18 | 0.97 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
+0.18 | 1.01 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
 0.18 | 0.48 | 4780 | 18297 | 4456 | gzip | /_astro/index.CAgX8X7v.css
 0.18 | 0.56 | 8195 | 34625 | 7863 | gzip | /_astro/Base.CSJKUEuY.css
 0.18 | 0.65 | 12908 | 12640 | 12640 | none | /cellestial/chrome/c-logo.webp
 0.19 | 1.47 | 43944 | 43676 | 43676 | none | /cellestial/roots/e4-node-alpha.webp
-0.19 | 1.80 | 61236 | 60968 | 60968 | none | /cellestial/loader/c-unlit.webp
-0.19 | 1.43 | 30589 | 78555 | 30174 | gzip | /_astro/index.astro_astro_type_script_index_0_lang.ChgYYqew.js
-0.67 | 1.93 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
-0.67 | 1.70 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
-0.68 | 3.33 | 97684 | 97416 | 97416 | none | /cellestial/roots/soil-portrait-woven.avif
+0.19 | 1.79 | 61236 | 60968 | 60968 | none | /cellestial/loader/c-unlit.webp
+0.19 | 1.42 | 30589 | 78555 | 30174 | gzip | /_astro/index.astro_astro_type_script_index_0_lang.ChgYYqew.js
+0.67 | 1.92 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
+0.67 | 1.69 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
+0.68 | 3.34 | 97684 | 97416 | 97416 | none | /cellestial/roots/soil-portrait-woven.avif
 1.43 | 1.61 | 994 | 673 | 441 | none | /_astro/contact-submit.3fcaacsQ.js
 1.63 | 3.67 | 104952 | 104682 | 104682 | none | /cellestial/loader/c-lit.webp
 1.63 | 3.07 | 53490 | 53222 | 53222 | none | /cellestial/loader/wordmark.webp
-1.63 | 3.12 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
+1.63 | 3.11 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
 1.63 | 3.96 | 158078 | 600260 | 157085 | gzip | /_astro/sky.BrJ3uFy4.js
-1.63 | 2.22 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
-1.63 | 2.36 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
+1.63 | 2.21 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
+1.63 | 2.35 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
 1.63 | 2.40 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
 3.68 | 3.85 | 921 | 0 | 0 | none | /favicon.ico
-3.95 | 4.11 | 1016 | 749 | 452 | none | /favicon.svg
-4.29 | 4.53 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
-4.30 | 5.11 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
-4.30 | 4.75 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
-4.30 | 4.78 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
+3.96 | 4.11 | 1016 | 749 | 452 | none | /favicon.svg
+4.29 | 4.54 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
+4.29 | 5.11 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
+4.29 | 4.75 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
+4.29 | 4.78 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
 requests: 25; third-party: none
 up to the load event (3.67 s): 18 requests, 580780 bytes on the wire, 575006 gzipped
 everything but the sky's own files (chunk + textures): 20 requests, 709710 bytes, 575458 gzipped
@@ -75,9 +75,9 @@ the loader: live at 1.63 s, the sky on stage at 11.55 s: 9.93 s of loader (the s
 first paint 0.76 s; first contentful paint 0.76 s; DOMContentLoaded 1.63 s; load 3.67 s; the sky on stage at 11.55 s
 LCP candidates: 1.82 s IMG.loader-poster 104652px² /cellestial/loader/c-unlit.webp
 Largest Contentful Paint: 1.82 s
-long tasks (> 50 ms): 5; total 770 ms; longest 312 ms; blocking time over 50 ms: 520 ms
-  each (start ms: length ms): 2224: 93, 3685: 139, 3901: 51, 3985: 312, 5120: 175
-  during the loader (to 11554 ms): 5 tasks, 770 ms; in the 4 s after: 0 tasks, 0 ms
+long tasks (> 50 ms): 5; total 762 ms; longest 304 ms; blocking time over 50 ms: 512 ms
+  each (start ms: length ms): 2217: 92, 3685: 141, 3903: 51, 3987: 304, 5119: 174
+  during the loader (to 11553 ms): 5 tasks, 762 ms; in the 4 s after: 0 tasks, 0 ms
 
 ## first visit, CPU NOT slowed, localhost (the length of the loader on a fast device)
 start s | end s | wire bytes | body | gzipped | encoding | url
@@ -89,41 +89,41 @@ start s | end s | wire bytes | body | gzipped | encoding | url
 0.01 | 0.02 | 43944 | 43676 | 43676 | none | /cellestial/roots/e4-node-alpha.webp
 0.01 | 0.02 | 61236 | 60968 | 60968 | none | /cellestial/loader/c-unlit.webp
 0.01 | 0.02 | 30589 | 78555 | 30174 | gzip | /_astro/index.astro_astro_type_script_index_0_lang.ChgYYqew.js
-0.02 | 0.03 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
-0.02 | 0.03 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
-0.03 | 0.03 | 97684 | 97416 | 97416 | none | /cellestial/roots/soil-portrait-woven.avif
-0.05 | 0.05 | 994 | 673 | 441 | none | /_astro/contact-submit.3fcaacsQ.js
-0.05 | 0.06 | 104952 | 104682 | 104682 | none | /cellestial/loader/c-lit.webp
-0.05 | 0.06 | 53490 | 53222 | 53222 | none | /cellestial/loader/wordmark.webp
-0.05 | 0.06 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
-0.05 | 0.07 | 158078 | 600260 | 157085 | gzip | /_astro/sky.BrJ3uFy4.js
-0.05 | 0.06 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
-0.05 | 0.06 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
-0.05 | 0.06 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
-0.07 | 0.07 | 921 | 0 | 0 | none | /favicon.ico
-0.10 | 0.10 | 1016 | 749 | 452 | none | /favicon.svg
+0.02 | 0.03 | 994 | 673 | 441 | none | /_astro/contact-submit.3fcaacsQ.js
+0.03 | 0.03 | 104952 | 104682 | 104682 | none | /cellestial/loader/c-lit.webp
+0.03 | 0.03 | 53490 | 53222 | 53222 | none | /cellestial/loader/wordmark.webp
+0.03 | 0.03 | 25400 | 25132 | 25132 | none | /cellestial/loader/wordmark-matte.webp
+0.03 | 0.05 | 158078 | 600260 | 157085 | gzip | /_astro/sky.BrJ3uFy4.js
+0.03 | 0.04 | 10303 | 23660 | 9928 | gzip | /_astro/roots.11zF3yU1.js
+0.03 | 0.04 | 10460 | 24137 | 10080 | gzip | /_astro/fx.B67tH-rz.js
+0.03 | 0.04 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
+0.03 | 0.04 | 45134 | 44866 | 44866 | none | /cellestial/ui/brass-main.webp
+0.03 | 0.04 | 34034 | 33766 | 33766 | none | /cellestial/ui/brass-dark.webp
+0.04 | 0.04 | 97684 | 97416 | 97416 | none | /cellestial/roots/soil-portrait-woven.avif
 0.34 | 0.34 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
 0.34 | 0.34 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
 0.34 | 0.34 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
 0.34 | 0.34 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
+0.34 | 0.34 | 921 | 0 | 0 | none | /favicon.ico
+0.40 | 0.40 | 1016 | 749 | 452 | none | /favicon.svg
 requests: 25; third-party: none
-up to the load event (0.06 s): 18 requests, 580780 bytes on the wire, 575006 gzipped
+up to the load event (0.06 s): 19 requests, 738858 bytes on the wire, 732091 gzipped
 everything but the sky's own files (chunk + textures): 20 requests, 709710 bytes, 575458 gzipped
 the sky's own files: /_astro/sky.BrJ3uFy4.js 600260/157085; /cellestial/sky/b3-core.webp 5726/5726; /cellestial/sky/b3-ring.webp 87990/87990; /cellestial/sky/b4-empty.webp 19078/19078; /cellestial/sky/b5-lit-add.webp 21292/21292 — arriving by 0.34 s
 all, once the sky has arrived: 25 requests, 1444056 bytes, 866629 gzipped
-the loader: live at 0.05 s, the sky on stage at 7.96 s: 7.91 s of loader (the spec: 6 to 8 s, never under 6)
-first paint 0.04 s; first contentful paint 0.04 s; DOMContentLoaded 0.05 s; load 0.06 s; the sky on stage at 7.96 s
-LCP candidates: 0.04 s IMG.loader-poster 104652px² /cellestial/loader/c-unlit.webp
-Largest Contentful Paint: 0.04 s
-long tasks (> 50 ms): 1; total 239 ms; longest 239 ms; blocking time over 50 ms: 189 ms
-  each (start ms: length ms): 100: 239
-  during the loader (to 7964 ms): 1 tasks, 239 ms; in the 4 s after: 0 tasks, 0 ms
+the loader: live at 0.03 s, the sky on stage at 7.94 s: 7.91 s of loader (the spec: 6 to 8 s, never under 6)
+first paint 0.07 s; first contentful paint 0.07 s; DOMContentLoaded 0.03 s; load 0.06 s; the sky on stage at 7.94 s
+LCP candidates: 
+Largest Contentful Paint: none s
+long tasks (> 50 ms): 1; total 242 ms; longest 242 ms; blocking time over 50 ms: 192 ms
+  each (start ms: length ms): 95: 242
+  during the loader (to 7942 ms): 1 tasks, 242 ms; in the 4 s after: 0 tasks, 0 ms
 
 ## straight to the sky (?scene=sky), CPU 4x, localhost
 start s | end s | wire bytes | body | gzipped | encoding | url
 0.00 | 0.00 | 6917 | 22835 | 6626 | gzip | /?scene=sky&debug
-0.03 | 0.03 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
-0.03 | 0.03 | 4780 | 18297 | 4456 | gzip | /_astro/index.CAgX8X7v.css
+0.02 | 0.03 | 28656 | 28336 | 28336 | none | /_astro/fonts/d95047227dd0a96f.woff2
+0.03 | 0.04 | 4780 | 18297 | 4456 | gzip | /_astro/index.CAgX8X7v.css
 0.03 | 0.04 | 8195 | 34625 | 7863 | gzip | /_astro/Base.CSJKUEuY.css
 0.03 | 0.04 | 12908 | 12640 | 12640 | none | /cellestial/chrome/c-logo.webp
 0.03 | 0.04 | 43944 | 43676 | 43676 | none | /cellestial/roots/e4-node-alpha.webp
@@ -139,19 +139,19 @@ start s | end s | wire bytes | body | gzipped | encoding | url
 0.17 | 0.17 | 1104 | 1475 | 734 | gzip | /_astro/chrome.uXABp9y1.js
 0.19 | 0.19 | 921 | 0 | 0 | none | /favicon.ico
 0.34 | 0.34 | 1016 | 749 | 452 | none | /favicon.svg
-0.43 | 0.44 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
-0.43 | 0.44 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
-0.43 | 0.44 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
-0.43 | 0.44 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
+0.44 | 0.45 | 5992 | 5726 | 5726 | none | /cellestial/sky/b3-core.webp
+0.44 | 0.45 | 88258 | 87990 | 87990 | none | /cellestial/sky/b3-ring.webp
+0.44 | 0.45 | 19346 | 19078 | 19078 | none | /cellestial/sky/b4-empty.webp
+0.44 | 0.45 | 21560 | 21292 | 21292 | none | /cellestial/sky/b5-lit-add.webp
 requests: 22; third-party: none
-up to the load event (0.18 s): 16 requests, 555016 bytes on the wire, 549055 gzipped
+up to the load event (0.18 s): 15 requests, 396938 bytes on the wire, 391970 gzipped
 everything but the sky's own files (chunk + textures): 17 requests, 526674 bytes, 392422 gzipped
-the sky's own files: /_astro/sky.BrJ3uFy4.js 600260/157085; /cellestial/sky/b3-core.webp 5726/5726; /cellestial/sky/b3-ring.webp 87990/87990; /cellestial/sky/b4-empty.webp 19078/19078; /cellestial/sky/b5-lit-add.webp 21292/21292 — arriving by 0.44 s
+the sky's own files: /_astro/sky.BrJ3uFy4.js 600260/157085; /cellestial/sky/b3-core.webp 5726/5726; /cellestial/sky/b3-ring.webp 87990/87990; /cellestial/sky/b4-empty.webp 19078/19078; /cellestial/sky/b5-lit-add.webp 21292/21292 — arriving by 0.45 s
 all, once the sky has arrived: 22 requests, 1261020 bytes, 683593 gzipped
-the loader: live at 0.00 s, the sky on stage at 0.03 s: 0.03 s of loader (the spec: 6 to 8 s, never under 6)
-first paint 0.14 s; first contentful paint 0.14 s; DOMContentLoaded 0.17 s; load 0.18 s; the sky on stage at 0.03 s
+the loader: live at 0.00 s, the sky on stage at 0.04 s: 0.04 s of loader (the spec: 6 to 8 s, never under 6)
+first paint 0.14 s; first contentful paint 0.14 s; DOMContentLoaded 0.17 s; load 0.18 s; the sky on stage at 0.04 s
 LCP candidates: 0.14 s IMG 1968px² /cellestial/chrome/c-logo.webp
 Largest Contentful Paint: 0.14 s
-long tasks (> 50 ms): 3; total 372 ms; longest 184 ms; blocking time over 50 ms: 222 ms
-  each (start ms: length ms): 210: 91, 339: 97, 505: 184
-  during the loader (to 34 ms): 0 tasks, 0 ms; in the 4 s after: 3 tasks, 372 ms
+long tasks (> 50 ms): 3; total 386 ms; longest 188 ms; blocking time over 50 ms: 236 ms
+  each (start ms: length ms): 209: 93, 339: 105, 515: 188
+  during the loader (to 35 ms): 0 tasks, 0 ms; in the 4 s after: 3 tasks, 386 ms

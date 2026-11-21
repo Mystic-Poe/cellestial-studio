@@ -1,14 +1,39 @@
 CELLESTIAL STUDIO REDESIGN — INDEPENDENT INSPECTION: THE BUSINESS AND THE CODE
-Branch redesign-build at c345872, inspected 20-21 Nov 2026. Baseline: a31d2ee ("spec freeze"),
-which is byte-identical to orgin/main (the live site) on every protected path.
-Evidence beside this file: refs/verification/business-and-code/ (logs, scripts under tools/,
-screenshots under shots/). No file of the site was changed.
+====================================================================================
 
-STATUS OF THIS FILE: DRAFT IN PROGRESS. Sections are added as each check finishes; the table
-and the verdict at the end are written last.
+Branch redesign-build, site code as at c345872 (a99c4e3 on top of it changes PROGRESS.md
+only). Inspected 20-21 Nov 2026. Baseline: a31d2ee ("spec freeze"), which is byte-identical
+to orgin/main, the live site, on every protected path (git diff orgin/main a31d2ee over
+workers, src, public, wrangler.jsonc prints nothing).
+
+No file of the site was changed. Everything here was run by me; nothing is taken from
+PROGRESS.md. Evidence is beside this file in refs/verification/business-and-code/:
+  *.log, *.txt        the output of every run quoted below
+  suites/             the builders' check suites as I ran them (logs and their outputs)
+  tools/              the scripts I wrote (each says in its header how to run it)
+  shots/, sheet-*.jpg screenshots (written as PNG by the scripts, kept as JPEG, 1600 px at most)
+
+Browser runs: the builders' suites against the dev server; everything of mine against the
+PRODUCTION build (pnpm build with the Turnstile test key, pnpm astro preview --port 4611),
+system Chromium through playwright-core, real GPU (NVIDIA through ANGLE) unless stated,
+at 1440x900 and 390x844 (scale 2, mobile, touch).
+
+SHORT ANSWER
+  The business is not broken. The three protected systems are untouched in logic, the form
+  posts exactly what it posted before, /admin loads, /start links resolve, and the claim rule
+  holds end to end. My own checks on the production build: the claim rule 64 of 64, /admin
+  and /start 29 of 29, the degraded states 101 of 101, the form 121 of 126 (the five are one
+  opening in which Cloudflare's widget did not arrive; 15 of 15 when repeated).
+  Thirteen findings in the table at the end; three of them matter:
+    1. the browser-tab icon is the Astro framework's logo (an image that is not from the pack);
+    2. the loader runs over 8 s on anything slower than a fast desktop, and the builders' own
+       loader check fails with everything in (8.20 s);
+    3. a claimed star is lit only in the claimer's own browser, and for 47 of the 146 stars
+       the owner's email does not say which star was claimed.
+
 
 ====================================================================================
-1. THE THREE PROTECTED SYSTEMS — DIFF REVIEW
+1. THE THREE PROTECTED SYSTEMS — THE DIFF REVIEW  ("proof it didn't break the business")
 ====================================================================================
 
 1.1 The files that must not change at all
@@ -18,109 +43,568 @@ and the verdict at the end are written last.
         src/content/home.json src/config.ts | wc -c
   0
 
-  Nothing printed. Also checked: `git diff orgin/main a31d2ee` over workers, src, public and
-  wrangler.jsonc prints nothing, so a31d2ee really is the live site's plumbing.
+  Prints nothing. Run at c345872 and again at the last commit.
   sha256 of dist/admin/index.html and dist/admin/config.yml = public/admin = a31d2ee
-  (554583ad…, 33c61f74…): byte-identical.
+  (554583ad…, 33c61f74…): byte-identical, three ways.
 
-  Outside that list, what else changed that the three systems run through:
-    src/scripts/claim-controller.ts   deleted (replaced by src/experience/claim-flow.ts, 1.3)
-    src/components/ClaimDialog.astro  rewritten (markup of the dialog round the form, 1.2)
-    src/components/ContactDialog.astro new (a second dialog round the same ContactForm)
-    src/layouts/Base.astro            fonts, the reduced-motion script, the skip link's style
-    src/styles/global.css, tokens.css the palette; the old token names are kept as aliases
-    astro.config.mjs                  fonts only
-    package.json                      the test glob; three, @types/three, playwright-core, sharp
-    wrangler.jsonc, public/_headers   untouched (there is no _headers file, before or after)
+  What else changed that the three systems run through (all read):
+    src/scripts/claim-controller.ts    deleted; replaced by src/experience/claim-flow.ts (1.3)
+    src/components/ClaimDialog.astro   the markup round the form: a Panel, a heading, a close
+                                       button, one sentence. The form inside is still
+                                       <ContactForm id="claim-form" turnstile="explicit" withStar />
+    src/components/ContactDialog.astro new: a second dialog round
+                                       <ContactForm id="contact-box-form" turnstile="explicit" />
+    src/layouts/Base.astro             fonts; the reduced-motion script (the device setting
+                                       only, no stored switch any more); the skip link's look
+    src/styles/global.css, tokens.css  the palette. The old token names (night, glow, label,
+                                       secondary, faint, border, card…) are kept as aliases, so
+                                       the classes /start and /contact emit still mean something
+    astro.config.mjs                   fonts only
+    package.json                       the test glob; three, @types/three, playwright-core, sharp
+    wrangler.jsonc                     not changed. There is no _headers or _redirects, before or after
+    public/stars/*.svg, public/sky/sky.json   removed/moved; nothing left references them
 
 1.2 The three files that may change in class and CSS only
 
   $ git diff a31d2ee HEAD --stat -- src/components/ContactForm.astro src/pages/contact.astro src/pages/start
-   src/components/ContactForm.astro | 59 ++++++++---
+   src/components/ContactForm.astro | 59 +++++++++++++++++++++++++++++++---------
    src/pages/contact.astro          |  6 ++--
    src/pages/start/new.astro        |  4 +--
   (src/pages/start/index.astro: no change.)
 
-  Every changed line, read:
+  Every changed line was read.
 
-  ContactForm.astro — the diff begins at line 47, inside <style>. Lines 1-38, which are the
-  frontmatter and the whole <form>, are not in the diff at all. So unchanged, verified in the
-  file as it stands and in the built HTML of all three forms:
-    form        id={id} method="POST" action="/api/contact" class="cform" novalidate
-    name        input name="name" type="text" required maxlength="120" autocomplete="name"
-    email       input name="email" type="email" required maxlength="254" autocomplete="email"
-    message     textarea name="message" rows="5" required maxlength="5000"
-    star        {withStar && <input type="hidden" name="star" value="" data-star-input />}
-    Turnstile   implicit: <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" />
-                explicit: <div data-turnstile-slot data-sitekey={TURNSTILE_SITE_KEY} />
-    submit      <button class="pill pill--primary cform__send" type="submit" disabled={!ready}>Send</button>
-    status      <p class="cform__status" data-status role="status" aria-live="polite"></p>
+  ContactForm.astro — the first hunk starts at line 47, inside <style>. Lines 1 to 38, the
+  frontmatter and the whole <form>, are not in the diff. Unchanged, checked in the source and
+  in the built HTML of all three forms (dist/contact/index.html, dist/index.html twice):
+    form       id={id} method="POST" action="/api/contact" class="cform" novalidate
+    name       <input name="name" type="text" required maxlength="120" autocomplete="name">
+    email      <input name="email" type="email" required maxlength="254" autocomplete="email">
+    message    <textarea name="message" rows="5" required maxlength="5000">
+    star       {withStar && <input type="hidden" name="star" value="" data-star-input />}
+    Turnstile  implicit: <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" />
+               explicit: <div data-turnstile-slot data-sitekey={TURNSTILE_SITE_KEY} />
+    submit     <button class="pill pill--primary cform__send" type="submit" disabled={!ready}>Send</button>
+    status     <p class="cform__status" data-status role="status" aria-live="polite"></p>
+    ids        `${id}-name`, `${id}-email`, `${id}-message`, and the labels' for=
   The component has no script block, before or after.
-  Changed, all CSS: label size and weight; field border, face, text colour, padding and a
-  transition; textarea min-height and resize; hover and focus-visible rules; an :autofill
-  rule; the narrow-screen Turnstile scale (moved here from the old ClaimDialog, now also
-  matching .cf-turnstile); .cform__send lost its own border/cursor/disabled rules (the
-  disabled look now comes from `.pill:disabled` in global.css lines 240-253: checked, it is
-  there); .cform__status size, line-height, colour.
+  Changed, all of it CSS: label size and weight; the fields' border, face, text colour,
+  padding and a transition; the textarea's min-height and resize; hover and focus-visible
+  rules; an :autofill rule; the narrow-screen Turnstile scale (moved here from the old
+  ClaimDialog and now also matching .cf-turnstile); .cform__send lost its own border, cursor
+  and :disabled rules (the disabled look now comes from `.pill:disabled` in global.css
+  240-253: it is there); .cform__status size, line-height, colour.
 
   contact.astro — three class attributes: the "Cellestial Studio" link, the lede <p>, the
-  "not live yet" notice. Line 30 (<ContactForm id="contact-form" turnstile="implicit" />) and
-  the script block (wireContactForm(form, status, undefined, () => turnstile?.reset())) are
-  not in the diff. The Turnstile api.js <script> in the head is not in the diff.
+  "not live yet" notice. Not in the diff: <ContactForm id="contact-form" turnstile="implicit" />,
+  the Turnstile api.js <script> in the head, and the page's script
+  (wireContactForm(form, status, undefined, () => turnstile?.reset())).
 
   start/new.astro — two class strings: the fields' `border-border bg-card` became
-  `border-brass bg-black`, and the QR card's `bg-white` became `bg-[#fff]` (because
-  --color-white is now white at 90%: without this the QR card would have gone grey). Every
-  name, required, maxlength, radio value, data-builder, data-out, data-link, data-copy-link,
-  data-qr and the script are not in the diff.
+  `border-brass bg-black`; the QR card's `bg-white` became `bg-[#fff]` (--color-white is now
+  white at 90%; without this the QR card would have gone grey: measured rgb(255, 255, 255)).
+  Not in the diff: every name, required, maxlength, radio value, data-builder, data-out,
+  data-link, data-copy-link, data-qr, and the script.
 
-  VERDICT 1.2: class attributes and CSS only. Nothing else.
+  VERDICT: class attributes and CSS only. Nothing else differs.
 
 1.3 src/experience/claim-flow.ts against src/scripts/claim-controller.ts (a31d2ee)
 
-  Submits only through wireContactForm            YES. One call, claim-flow.ts:190, for each
-                                                  of the two forms. The file contains no
-                                                  fetch, no XMLHttpRequest, no sendBeacon, no
-                                                  FormData, no form.submit().
-  Turnstile rendered explicitly, same options     YES. Same URL (api.js?render=explicit), same
-                                                  dataset.turnstileApi marker, same
-                                                  render(slot, { sitekey, theme: 'dark',
-                                                  size: 'flexible' }) (line 118 vs old 82-86).
-  Reset on reopen                                 YES. ensureTurnstile(): a widget that exists
-                                                  is reset (line 110-112; old 67-70).
-  Reset on failure                                YES. onFail (line 205-207; old 163-165).
-  Script error: removed, retried on next open     YES (line 91-100; old 77).
-  Only name, email, message, star, token posted   YES. The body is `new FormData(form)` built
-                                                  inside contact-submit.ts (unchanged). The
-                                                  flow writes to exactly one field: the hidden
-                                                  star input (line 269), as the old one did
-                                                  (old line 103). Proven in the browser, 2.1.
-  Nothing ever added to the message               YES. The flow only READS the textarea
-                                                  (line 243, `askField?.value`), to remember
-                                                  the ask for the star. It never writes to it.
-  A claim only after a 200                        YES. claims.recordSent is called only from
-                                                  the `sent` hook, which wireContactForm calls
-                                                  only inside `if (response.ok)`. The old
-                                                  controller lit the star while the visitor was
-                                                  still typing (startClaim on open); the new
-                                                  one does not. Proven in the browser, 3.
-  No other code under src/ calls /api/            YES.
+  Submits ONLY through wireContactForm       YES. One call (claim-flow.ts:190) per form. The
+                                             file has no fetch, XMLHttpRequest, sendBeacon,
+                                             FormData or form.submit().
+  Turnstile rendered explicitly, same options YES. Same URL (…/turnstile/v0/api.js?render=explicit),
+                                             same script marker, same
+                                             render(slot, { sitekey, theme: 'dark', size: 'flexible' })
+                                             (line 118; old lines 82-86). sitekey read from the
+                                             slot's data-sitekey as before.
+  Reset on reopen                            YES (lines 110-112; old 67-70). Seen in the
+                                             browser: reopened, still one widget, one token field.
+  Reset on failure                           YES (onFail, lines 205-207; old 163-165).
+  Script failed to load: removed, retried    YES (lines 91-100; old 77).
+  Only name, email, message, star and the    YES. The body is `new FormData(form)` built inside
+  token are posted                           contact-submit.ts (unchanged). The flow writes to one
+                                             field only, the hidden star input (line 269), as
+                                             the old one did (old line 103). Proven in 2.1.
+  Nothing is ever added to the message       YES. The flow only READS the textarea (line 243)
+                                             to remember the ask for the star. It never writes
+                                             to it. Proven in 2.1 and 3.
+  A claim only after a 200                   YES. claims.recordSent is called only from the
+                                             `sent` hook, which the shared submit calls only
+                                             inside `if (response.ok)`. (The old controller lit
+                                             the star while the visitor was still typing; the
+                                             new one does not.) Proven in 3.
+  No other code under src/ calls /api/       YES.
     $ grep -rnE "\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource" src
-    src/scripts/contact-submit.ts:21   fetch(form.action, …)            (protected, unchanged)
-    src/scripts/start-flow.ts:24       fetch('/api/onboard/invites', …) (protected, unchanged)
-    src/scripts/start-flow.ts:35       fetch('/api/onboard/ping', …)    (protected, unchanged)
-    Nothing under src/experience fetches anything by script. The built first chunk imports
-    contact-submit and nothing else that talks to a server.
+    src/scripts/contact-submit.ts:21   fetch(form.action, …)             protected, unchanged
+    src/scripts/start-flow.ts:24       fetch('/api/onboard/invites', …)  protected, unchanged
+    src/scripts/start-flow.ts:35       fetch('/api/onboard/ping', …)     protected, unchanged
+    Nothing under src/experience fetches anything by script. On a first visit the page makes
+    25 requests, all to its own origin (weight.txt); challenges.cloudflare.com is asked only
+    when a dialog is opened.
 
-  Differences in behaviour from the old controller, all on the surface:
-    - two dialogs instead of one (the second has no star field);
-    - the dialog closes on a click on its backdrop;
-    - Send is re-enabled on reopen only if the page was built with a Turnstile key (the old
-      controller re-enabled it always, even when the form was not live: a fix);
-    - after "Sent." the dialog closes after 1.4 s (same beat as before) and the director is
-      asked to show the star.
+  Differences from the old controller, all on the surface: two dialogs (the second has no
+  star field); a click on the backdrop closes the dialog; Send is re-enabled on reopen only if
+  the page was built with a key (the old one re-enabled it even when the form was not live);
+  after "Sent." the dialog closes after the same 1.4 s and the director is asked to show the star.
 
-  One thing inherited from the unchanged shared submit, not introduced here: a send that is
+  Inherited from the unchanged shared submit, not introduced here, not ranked: a send that is
   overtaken (the dialog closed AND reopened while the request is on its way) is ignored when
-  its 200 arrives, so the email is delivered and no star is lit. It needs a close and a
-  reopen inside one round trip. Same as the live site. Not ranked.
+  its 200 arrives, so the email is delivered and no star is lit. Same as the live site.
+
+  src/config.ts carries the production site key as its default, so a build with no
+  PUBLIC_TURNSTILE_SITE_KEY in the environment still ships a live form.
+
+
+====================================================================================
+2. THE THREE FLOWS, IN A BROWSER, ON THE PRODUCTION BUILD
+====================================================================================
+
+2.1 The contact form — tools/flows-contact.mjs, log flows-contact.run2.log, sheet-forms.jpg
+    Three forms (/contact, the build request behind F1, the message box behind F2), two sizes,
+    three ways each: 126 checks. Second run: 121 ok, 5 FAIL, all five in ONE opening (below).
+
+  Stubbed 200, all six: exactly one POST to /api/contact; accept: application/json;
+  multipart/form-data. Posted fields, in order:
+    /contact and the message box   name, email, message, cf-turnstile-response
+    the build request              name, email, message, star, cf-turnstile-response
+  The message posted is what was typed, byte for byte
+  ("A site for my bakery.\r\nTwo lines, \"quotes\" & <b>tags</b>."). star is "" from F1 with
+  nothing picked and "slot-34" when that star was picked (section 3). The token is the real
+  widget's (XXXX.DUMMY.TOKEN.XXXX with the test key). The visitor sees "Sent. We will reply by
+  email.", the form is cleared, Send stays disabled, and a dialog closes by itself after the beat.
+
+  Stubbed 400 ({"error":"The spam check did not pass. Please try again."}), all six: one POST;
+  the visitor sees the Worker's own sentence; what was typed is kept; Send works again; a
+  dialog stays open; the only console line is the 400 itself.
+
+  Unstubbed: the real Turnstile widget renders in all three forms at both sizes (one iframe
+  from challenges.cloudflare.com, 328 to 528 px wide and 71 to 73 px tall, inside the screen,
+  one token field, "Success!"); reopened, a dialog still has one widget. A real Send against
+  the preview server (which has no Worker: POST answers 404) says "That did not send. Please
+  try again." and never claims success.
+
+  The five FAIL lines: in one opening (home, build request, phone) the widget never came
+  within 20 s: no iframe, no token. Repeated on purpose, tools/turnstile-repeat.mjs: 15 of 15
+  openings rendered, token after 1.7 to 2.2 s (turnstile-repeat.log). One miss in about forty
+  openings, and Cloudflare's script also stalled once for 30 s during the builders'
+  transitions suite on the same network (4.2). I put it down to the network, not the site: a
+  form whose widget has not come posts no token and the Worker answers "Please complete the
+  spam check and try again." Not ranked.
+
+2.2 /admin — tools/admin-start.mjs, admin-start.log, sheet-start.jpg
+  dist/admin/index.html and config.yml byte-identical to public/admin and to a31d2ee (1.1).
+  /admin/ answers 200; decap-cms@3.18.0 loads from unpkg (200); config.yml is read (200);
+  window.CMS exists; the screen is Decap's "Login with GitHub"; 0 console errors, 0 failed
+  requests.
+  What the owner should know (finding 8): the CMS edits src/content/home.json, and the new
+  home page reads only home.meta (title and description) from it. Hero, Work, Horizon, Soil,
+  Ownership, Closing and Footer can still be edited and saved, and nothing on the site will change.
+
+2.3 /start — same script, both sizes: 22 checks, all ok
+  /start/new: no link until the form is filled; filled (Rosa's Bakery, rosa@…,
+  "https://RosasBakery.example/menu") it shows
+  https://cellestialstudio.com/start/#eyJ2IjoxLCJuIjoiUm9zYSdzIEJha2VyeSIs… with its QR code
+  on a pure white card; the builder calls no API. That link opened on the preview server:
+  the guided flow starts ("STEP 1 OF 4 — Create your GitHub account", Open GitHub,
+  Done → Next step), the next button goes to step 2, and step 2 names the organization
+  "rosas-bakery" out of the link. A broken link says "This link is incomplete". The flow's
+  only console line is the 404 of /api/onboard/invites, which the preview server does not have.
+
+
+====================================================================================
+3. THE CLAIM RULE, END TO END — tools/claim-rule.mjs, claim-rule.log, sheet-claim.jpg
+====================================================================================
+  64 checks, 64 ok, at both sizes.
+
+  No send, no claim.   The sky starts with no star lit (src/content/stars.json is []). An empty
+                       star picked (slot-34): picked, nothing claimed. The request opened from
+                       its panel, filled, closed with Escape: nothing lit, nothing in
+                       localStorage, nothing posted. Reloaded: still nothing.
+  A 400 lights nothing. One POST; no star lit, no ask waiting, nothing stored; the dialog stays
+                       open with the error.
+  A 200 lights the chosen star. The same form sent again and answered 200: slot-34 and only it
+                       is lit; star=slot-34 was posted; the message posted is the ask exactly.
+  Still lit after a reload. With no stub at all: lit in the store and in the sky; its button is
+                       named "Claimed star in Virgo"; a new tab of the same browser has it too;
+                       asking to claim it again opens the request with no star.
+  A lit star shows exactly the ask and nothing else. The ask was
+                       <img src=x onerror="window.__xss=1"><script>window.__xss=2</script><b>bold</b> & "a quote"
+                       second line   with   spaces
+                       The panel's text is that, character for character; it has no child
+                       element; window.__xss was never set; the panel holds a close button and
+                       one <p> and nothing more: no name, no email, no label. (panels.ts sets
+                       textContent; there is no innerHTML anywhere under src/experience.)
+                       What the device stores is [{"slot":"slot-34","ask":"…"}]: neither name
+                       nor email.
+  Sent with no star.   From F1 with nothing picked: star posted empty; no star lit; the ask
+                       waits (also across a new load); the visitor is taken to the sky; the next
+                       empty star clicked (slot-3) takes the ask; nothing more is posted.
+
+  What this does NOT make true (findings 3 and 4): "site-wide". See the table.
+
+
+====================================================================================
+4. EVERYTHING STILL PASSES, WITH EVERYTHING IN?
+====================================================================================
+
+4.1 build, test, lint
+  pnpm build   exit 0. 4 pages. One warning: a chunk over 500 kB (the sky's). build.log
+  pnpm test    exit 0. 96 tests, 96 pass; contact worker 15, auth worker 16, onboard worker 14. test.log
+  pnpm lint    exit 0. "Checked 90 files … No fixes applied", 1 info (a deprecated key in
+               biome.json). Note what lint does not look at: *.astro, tools/, refs/. lint.log
+
+4.2 The builders' suites, run one after another on one dev server (suites/suites.status)
+
+  suite                               checks   pass   fail
+  tools/loader/measure.mjs               13     10      3    FAILS — below
+  tools/roots/words.mjs                 197    197      0    "ALL PASS"
+  tools/roots/measure.mjs               245    245      0
+  tools/chrome/compare.mjs --only checks 48     48      0
+  tools/transitions/measure.mjs         144    144      0    on the second run; the first
+                                                             crashed after 28 — below
+  tools/sky/meaning.mjs --only checks    38     38      0
+  tools/sky/measure.mjs                 201    201      0    9 min 15 s
+  tools/alignment/register.mjs            –      –      –    has no checks; it ran and printed its
+                                                             fits (rms 0.90 to 1.36 px)
+
+  THE LOADER CHECK FAILS, every time (finding 2).
+    full                   8.20 s  … FAIL (6.0 to 8.0 s)
+    Tab and modifiers      8.12 s  … FAIL (no skip: 6.0 to 8.0 s)
+    resize twice mid-run   8.18 s  … FAIL (keeps the time: 6.0 to 8.0 s)
+  Three runs on the dev server (8.20, 8.20, 8.21 s desktop and phone), and on the production
+  build (8.22 s; 8.96 s on the phone profile with the CPU slowed 4x). PROGRESS.md records
+  7.74 s: that was before the real sky was in. Why: the script is 6.2 s + a 1.5 s hand-off =
+  7.7 s when nothing whatever goes wrong; the clock credits at most 80 ms a frame
+  (loader/index.ts STEP_MAX), so every long frame is lost time; it does not begin until all
+  four of its pictures have arrived; and it holds the wordmark until the sky is ready. Each
+  of those only ever adds. My own measurement on the production build with the real GPU,
+  phone profile (weight.txt, "the loader: live … the sky on stage"):
+      CPU not slowed, localhost                 7.91 s, 7.91 s   (0.09 s inside the limit)
+      CPU slowed 4x, localhost                  8.48 s, 8.54 s
+      CPU slowed 4x, slow 4G                    9.93 s, 9.93 s   (11.6 s from the tap to the sky)
+  (two runs each: weight.run1.txt and weight.txt)
+  The floor holds (never under 6 s on a full play). The ceiling does not, except on a fast
+  machine on a fast line. The other ten runs pass: short version 3.9 s, skip by tap and by
+  key, a missing picture (x4), blocked sessionStorage, the sky failing to load (ends by
+  itself on the Roots at 6.8 s), the sky 30 s late (lets go at 12.6 s).
+
+  THE TRANSITIONS SUITE CRASHED ONCE (finding 12). First run: 28 ok, then
+  "page.goto: Timeout 30000ms exceeded … navigating to http://localhost:4611/contact, waiting
+  until load". /contact loads Cloudflare's Turnstile script, the script stalled, and the suite
+  has no allowance for it. Second run, nothing changed: 144 of 144. The site is not at fault;
+  the check depends on a third party's network.
+
+  The suites write into refs/roots, refs/sky and refs/transitions; I copied what they wrote to
+  suites/outputs/ and restored the tracked files, so those folders are as the builders left them.
+
+4.3 My own runs on the production build
+  flows-contact.mjs      126 checks   121 ok   5 fail (one Turnstile no-show, 2.1)
+  turnstile-repeat.mjs     2            2
+  admin-start.mjs         29           29
+  claim-rule.mjs          64           64
+  degrade.mjs            101          101
+  keyboard.mjs            37           36      1 fail (no <h1>, finding 9)
+  director-probes.mjs     34           34
+  director-storm.mjs       4            4
+
+
+====================================================================================
+5. TYPES — the first type-check this code has had
+====================================================================================
+  TypeScript 7.0.2 through `pnpm dlx --package typescript tsc`, strict, noEmit, a tsconfig in a
+  scratch folder extending astro/tsconfigs/strict (kept as typecheck.tsconfig.json), over
+  src/experience/**/*.ts and src/content/**/*.ts: 54 files with what they import
+  (contact-submit.ts and stars.json among them). typecheck.log
+
+  ONE error.
+    src/experience/loader/painter.ts(882,4): error TS2322: Type 'number' is not assignable to type '593'.
+      870   let right = WORD.letters[0].x;        // geometry.ts is `as const`: inferred as the literal 593
+      882   right = Math.max(right, box.x + …);   // a number
+  Can it bite at run time: NO. TypeScript is erased, not compiled; the value is a number and
+  is used as one. Fix: `let right: number = WORD.letters[0].x;`.
+
+  Errors that can bite at run time: none found.
+  For what it is worth, with noUncheckedIndexedAccess added (not asked for, and not Astro's
+  strict) there are 749 more, nearly all array and typed-array indexing in the painters.
+
+
+====================================================================================
+6. THE RULES
+====================================================================================
+
+6.1 Silent.  PASS. Searched dist/, src/ and public/ for <audio, <video, AudioContext,
+  webkitAudioContext, new Audio(, createOscillator, speechSynthesis, .play(), and any file
+  ending mp3 ogg wav m4a aac flac opus mp4 webm mov: nothing. (The one hit, "….mp4", is a
+  comment in loader/timeline.ts naming the reference video. The video is not shipped.)
+
+6.2 Imagery only from cellestial-assets/.  ONE FAILURE: the favicon (finding 1).
+  Every image file in dist/ (24) and where it comes from:
+    favicon.svg, favicon.ico          NOT FROM THE PACK. The Astro framework's own logo, left
+                                      from "Initial commit from Astro" (d87152c). favicon-shipped.jpg
+                                      shows both. It is what a visitor sees in the browser tab.
+    cellestial/chrome/c-logo.webp     A1_c-emblem_lit.jpg + A1_c-emblem_unlit.jpg (blended)
+    cellestial/loader/c-lit.webp      A1_c-emblem_lit.jpg
+    cellestial/loader/c-unlit.webp    A1_c-emblem_unlit.jpg
+    cellestial/loader/wordmark.webp, wordmark-matte.webp      A4_wordmark_cellestial.jpg
+    cellestial/sky/b3-core.webp       B3_core_radiant-star.jpg
+    cellestial/sky/b3-ring.webp       B3_ring_cracked-brass.jpg
+    cellestial/sky/b4-empty.webp      B4_star_empty-sleeping.jpg
+    cellestial/sky/b5-lit.webp, b5-lit-add.webp               B5_star_lit-claimed.jpg
+    cellestial/roots/e4-node.webp, e4-node-alpha.webp         E4_node.jpg
+    cellestial/roots/soil-landscape{,-woven}.{avif,webp}      E1_soil_landscape-16x9.jpg
+    cellestial/roots/soil-portrait{,-woven}.{avif,webp}       E1_soil_portrait-9x16.jpg
+    cellestial/ui/brass-main.webp     BRASS_skin_main-light.jpg
+    cellestial/ui/brass-dark.webp     BRASS_skin_dark-variant.jpg
+  (Traced through scripts/build-assets.mjs and scripts/assets/*.mjs by reading them. I did not
+  re-run the derivation: it writes into public/.)
+  Six of those are shipped and never fetched by the page (finding 11): soil-landscape.avif/.webp
+  and soil-portrait.avif/.webp (the old mirrored tiles), e4-node.webp, b5-lit.webp: 518 kB.
+  No <img>, <svg>, <video> or <iframe> in any built page but: the logo, the node picture (ten
+  times), the loader's poster. Inline SVG data URIs: five, all masks drawn by code (the soil's
+  top edge; the chevron and the circuit lines of the brass button). One data:image/gif in the
+  /start/new script: the QR library's. Nothing generated or stock stands in for a picture.
+
+6.3 No social icons or links.  PASS. None in the home page or /contact. github.com appears
+  only in /start (the onboarding steps, protected) and in credits.txt (the star catalogue's licence).
+
+6.4 Every visible string on the home page and its source.  PASS.
+  tools/strings.mjs, strings.txt: the page walked through the loader, the sky, the menu, B10,
+  B9, B11, a lit star, two completed figures, the five tiles, the Close, both dialogs (sending
+  and failed), and with script off. 128 strings; every one that can be SEEN has a source:
+    "studio"                                      BUILD_SPEC C1
+    The Sky / What we build / Claim your star / Contact me      addendum, Menu
+    B10's five lines (Site, Site + Systems, Site + App, Add-ons, Care, each with the first
+      sentence of its tile)                       addendum, tile copy
+    "claim yours"                                 BUILD_SPEC B9
+    "See what holds up the sky"                   addendum
+    the five tiles                                addendum, character for character (also checked
+                                                  by the builders' words.mjs, 197 of 197, and by
+                                                  mine with script off)
+    "Tell us what you want to build."             the first sentence of the old dialog's lede
+    Your name / Email / What do you need built? / Send / Sending… / Sent. We will reply by email.
+                                                  the form as on the live site
+    the error sentences                           the Worker's own
+    the twelve meanings (B7) and "Jesus is King." the meanings are word for word the owner's
+      Nov 18 sheet — but that sheet is NOT in the repo (finding 13); "Jesus is King." is BUILD_SPEC B7
+    <title> and description                       src/content/home.json, unchanged
+  Heard and not seen (accessible names): "Cellestial studio", "Menu", "The Sky", "What we
+  build", "Empty star in <figure>", "Claimed star in <figure>", "Return to the sky", "Close",
+  "slashed". Written by the builders, as they must be.
+  No price, offer or sentence on the page that is not the addendum's.
+
+6.5 "Google".  PASS. Not on the home page or /contact, in any state. It is in /start only
+  ("Google" as a business lane, "Continue with Google"): the protected onboarding, not offer copy.
+
+6.6 No Work section, no Ownership section.  PASS. The components are deleted; the built home
+  page has no such id, class, label or heading. The words remain only in home.json, which
+  nothing renders (finding 8).
+
+6.7 Nothing under src/pages/dev or wip/.  PASS. src/pages is contact.astro, index.astro,
+  start/index.astro, start/new.astro. No wip/. The build makes exactly those four pages.
+
+6.8 three.js is not in the first chunk.  PASS.
+    file                                      bytes     gzip   brotli
+    index.astro…ChgYYqew.js  (the first)      78,555   30,126   25,314   no three.js in it
+    contact-submit.js                            673      471      339   its one static import
+    sky.BrJ3uFy4.js   (three.js is here)     600,260  156,370  130,329   import(), asked for at boot
+    roots.11zF3yU1.js                         23,660    9,896    8,946   import()
+    fx.B67tH-rz.js                            24,137   10,082    9,049   import()
+    chrome.uXABp9y1.js                         1,475      748      602   import()
+    Base.css + index.css                      52,922   12,323   10,881
+    index.html                                22,835    6,564    5,028
+    Quicksand (one woff2)                     28,336
+  "WebGLRenderer" occurs in sky.*.js and in no other file.
+
+
+====================================================================================
+7. THE CODE, FOR REAL DEFECTS
+====================================================================================
+  Read in full: director.ts, main.ts, stage.ts, claims.ts, claim-flow.ts, chrome/index.ts,
+  contact-submit.ts, the Worker. Read in part: sky/index.ts (mount, ready, visibility,
+  context loss), gl/world.ts (the renderer), loader/index.ts (the clock), roots/index.ts.
+
+7.1 The director under rough handling — tools/director-probes.mjs, 34 of 34, both sizes
+  The window resized (rotated) twice during the fall: ends on the Roots, scrollY 0, spacer gone.
+  Reduced motion switched on mid-fall, and mid-warp: ends on the Roots / on the sky, drawn.
+  Twenty overlapping pairs of go/descend/ascend at random moments: ends in one resting scene,
+    its scroll model whole, no veil left over the page, and the menu answers again 4 s later.
+    With showStar in the mix (seven times) it answers after 15 s: showStar queues by design and
+    only a sent request calls it (director-storm.log). Nothing ever stuck.
+  The GPU context lost in flight (WEBGL_lose_context) and restored: the menu works while it is
+    gone, the sky is drawn again, the Roots are reachable. No console errors.
+  Back from /contact to the home page: one scene, scroll at 0.
+  The builders' own transitions checks, which I ran (144): a second press, the menu and
+    E6/B11 pressed during a fall or a warp do nothing; a reload 700 ms into the fall opens on
+    the sky; back and forward 700 ms into the fall leaves the page whole; focus is on the
+    ground after the fall and on the sky after the warp.
+  Focus after each transition, from my keyboard run: fall → main#roots; E6 → #sky-ui;
+    menu → build: main#roots; → claim: F1; → contact: the message box's name field; → sky: #sky-ui.
+
+7.2 A scene that fails to load — tools/degrade.mjs
+  The first chunk blocked: the watchdog drops the scene and the page is the page without
+    script (five tiles, two links). Not black.
+  The sky's chunk blocked: "[cellestial] the sky could not start", scene roots, not black.
+  The Roots' chunk blocked: the sky runs; the menu still reaches the Roots and every tile is
+    readable as written.
+  The effects' chunk blocked: the sky runs; the menu reaches the Roots by a plain fade.
+
+7.3 WebGL unavailable (--disable-gpu --disable-software-rasterizer; getContext('webgl2') and
+    ('webgl') both null) — both sizes, three ways (a first visit, reduced motion, ?scene=sky)
+  Never a black page. A first visit: loader at 0.3 s, the Roots by 1.0 s (mean luminance 26 of
+  255 on the desktop, 34 on the phone, 2% black pixels), and it stays. html[data-no-sky] is
+  set: no "Return to the sky" button, "The Sky" is gone from the menu (it offers What we
+  build / Claim your star / Contact me), every node opens its tile. Console: three.js's own
+  three lines about the context. sheet-degrade.jpg
+
+7.4 JavaScript off — both sizes
+  No scene set; no loader, no canvas, no button that needs script. The logo; five tiles, all
+  visible, in the spec's order, one under another, each one's text the addendum's character
+  for character; no sideways scroll; exactly two links in the ground, both to /contact, and
+  "Claim your star" really lands on /contact. The menu is a native popover and still opens.
+
+7.5 prefers-reduced-motion — both sizes
+  No loader: the scene is never "loading", nothing of the loader is ever painted (the
+  largest-paint log holds the logo and B11 only), twelve photographs in the first 1.2 s show
+  none. The page opens on the sky with B11 already there. At rest: 0 animation frames in 3 s
+  and 0 running CSS animations, in the sky and in the Roots. Wheel and keys do not fly. Down,
+  the menu, and E6 are plain fades (the scene goes straight from sky to roots and back, never
+  through fall or warp). A tile is simply there 80 ms after the press (opacity 1, no transform).
+
+7.6 What I found wrong in the code: nothing that breaks a visit. The defects are in what the
+  code is built on (findings 2, 3, 4), not in how it is written. Two notes:
+  - contracts.ts says of the Worker's 99-star limit "which is fine: the request still sends".
+    It is not fine for the owner (finding 3).
+  - ?debug works on the production site and puts the live store on window.__cellestial; a
+    visitor can light a star in their own browser from the console. So can anyone who edits
+    localStorage; it costs nothing because nothing is shared (finding 4).
+
+
+====================================================================================
+8. ACCESS AND WEIGHT
+====================================================================================
+
+8.1 The whole visit by keyboard — tools/keyboard.mjs, keyboard.log, sheet-keyboard.jpg (1440x900)
+  Loader: Tab reaches "Skip to content" only (the chrome is not there while it plays); Tab does
+    not skip it; Enter does, and the sky is up 1.7 s later.
+  Sky: Skip to content → logo → Menu → Virgo's twelve stars, each a button with a ring, each on
+    screen. Enter on a star opens its panel with focus inside; Tab: Close, "Claim your star";
+    Escape closes it and focus is back on the star.
+  The round by keyboard: PageDown twelve times (43 s) completes it; B11 appears; Tab reaches
+    it; Enter starts the fall; focus lands on the ground.
+  Roots: Tab is E6, Site, Site + Systems, Site + App, Add-ons — AI + automation, Care,
+    Claim your star, Contact me, each with a ring and on screen. Enter on a node opens its tile
+    with focus in it; Escape closes it and focus returns.
+  F1: the dialog opens with focus in "Your name"; Tab: Email, the message, Turnstile's three
+    stops, Send, Close; never the page behind; Escape returns focus to F1. F2 the same.
+  E6: back up, focus on the sky. Menu: opens on "The Sky", then the other three; aria-expanded
+    true; Escape returns focus to the button; all four destinations land where 7.1 says.
+  No console error in the whole visit.
+
+8.2 The accessibility tree at each scene — a11y-trees.txt (eight scenes)
+  Sound in structure: banner (link "Cellestial studio", button "Menu"), region "The Sky" with a
+  button for each star, dialog "Claim your star" for B10, main "What we build" with
+  button "Return to the sky", five buttons named by their offers, two links; a tile is an
+  article with heading level 2; both forms are dialogs named by their headings; the menu is
+  navigation "Menu". lang="en"; every image has alt; no unnamed button or link; pinch zoom is
+  not disabled.
+  Three gaps, all minor (findings 9, 10): there is no <h1> on the home page (seven h2s); the
+  twelve star buttons of a figure all have the same name; during the loader the tree is one
+  link, with nothing to say that something is loading or that any key skips it.
+
+8.3 Contrast — tools/contrast.mjs, contrast.txt
+  Measured from pixels, not from the stylesheet: each state photographed as it is and with
+  every glyph transparent; the text's colour is the core of what changed, the background is
+  what is behind it (median, and the worst twentieth). 194 text colours in context over the
+  sky, the menu, B10, the lit panel, "claim yours", B11, the five tiles, F1, F2, both dialogs
+  (with an error showing), /contact, /start/new and the /start flow, both sizes.
+  AA everywhere on the home page and /contact. The lowest:
+    "studio" under the logo, over soil        5.0:1 on the worst pixels (6.7 median)   13-15 px bold
+    "Contact me" (F2, dark brass)             5.2:1
+    "Send" / B11 / F1 (ink on brass)          5.5 to 5.8:1 worst, 6.4 to 7.1 median
+    brass words (#ae8a68) on the black panel  6.6:1
+    "claim yours"                             8.1:1
+    white body copy on the panel              15:1
+  Two lines read under 4.5 and are not failures: the two 12 px grey notes on /start/new
+  (white at 50% on black) measure 4.2 to 4.3 at scale 1 because the method reads antialiased
+  strokes; at scale 2 the same lines measure 5.3, which is the declared colour's true ratio.
+  Not measured: B7's written words (drawn letter by letter) and text typed into a field
+  (declared white at 90% on black, 17:1).
+
+8.4 Weight on a first visit — tools/weight.mjs, weight.txt (phone profile; the preview server
+    gzips text as a CDN would, so these are bytes on the wire)
+  25 requests, all first-party, 876 kB:
+      before the sky's own files   583 kB   HTML 7, CSS 13, font 29, first chunk 31, roots 10,
+                                            fx 10, chrome 1, pictures 481 (loader 245, soil 98,
+                                            brass 79, node 44, logo 13)
+      the sky's own files          293 kB   sky.js 158, four textures 135
+  The sky's chunk is asked for at boot, in parallel with the loader, so on a real line the two
+  totals arrive together: by 5.1 s on slow 4G.
+  Decoded: 1.44 MB.
+
+8.5 Largest Contentful Paint and long tasks — phone profile, CPU slowed 4x
+  LCP is the loader's poster (c-unlit.webp, fetchpriority high), painted with the first paint:
+      slow 4G (1.6 Mbit/s) 1.82 s, in both runs
+      localhost            first contentful paint 0.21 to 0.23 s. The LCP entry itself was
+                           recorded in only some localhost runs (0.15 s in one with the CPU
+                           slowed, 0.04 s unslowed in weight.run1.txt; none in the others):
+                           when it is recorded it is the poster, at first paint.
+  Long tasks, localhost: 5 or 6, 851 to 931 ms in all, the longest 391 to 418 ms beginning
+  0.7 s in (the sky's chunk being run and its shaders warmed while the C is powering up), all
+  of them in the first 1.2 s; none in the 4 s after the sky is on stage. Blocking time 601 to
+  631 ms. On slow 4G: 5 tasks, about 770 ms, longest 304 to 312 ms. With the CPU not slowed:
+  one task of about 240 ms.
+  That 0.4 s is a visible hitch in the first second of the loader on a slow phone (finding 7).
+
+
+====================================================================================
+THE TABLE
+====================================================================================
+
+ # | Finding | Severity | Evidence | Fix
+---+---------+----------+----------+----
+ 1 | The browser-tab icon is the Astro framework's logo. public/favicon.svg and favicon.ico are not from cellestial-assets/; they are stock, left from the project template. Inherited from the live site, but it is an image the site ships and every visitor sees, and the rule is "Use only the assets in cellestial-assets/. No generated, stock, or substitute imagery." | BLOCKER (it breaks a rule as written; a ten-minute fix) | favicon-shipped.jpg; `git log -- public/favicon.svg` → d87152c "Initial commit from Astro"; dist/index.html line 1 links both | Derive both from A1_c-emblem_lit.jpg in scripts/build-assets.mjs (the crop that makes c-logo.webp, squared, 32 px .ico and a 180 px PNG), replace the two files, keep the two <link> lines.
+ 2 | The loader runs over 8 s on anything but a fast machine on a fast line. The spec is 6 to 8 s. The builders' own check fails with everything in. | MAJOR | suites/suite-loader-measure*.log: full 8.20 s FAIL, three runs, and 8.22 s on the production build; weight.txt and weight.run1.txt: 7.91 s unslowed, 8.48 and 8.54 s with the CPU slowed 4x, 9.93 s on slow 4G (real GPU, phone profile). Nominal 6.2 + 1.5 = 7.7 s and every disturbance only adds (loader/index.ts: STEP_MAX 0.08, POSTER_CREDIT 0.25, the wait for four pictures, the hold for the sky) | Leave headroom and keep the floor: shorten FULL.end from 6.2 to about 5.6 s (5.6 + 1.5 = 7.1 s) by scaling the timeline; credit the time the poster really waited for the pictures up to about 1 s instead of 0.25 s; and when the clock has fallen behind wall time, shorten the hand-off (never below a 6.0 s total). Then make tools/loader/measure.mjs pass with --throttle 4.
+ 3 | For 47 of the 146 stars the owner's email does not say which star was claimed. The Worker (protected, unchanged) accepts only slot-1 to slot-99 and silently drops the rest; the redesign numbers stars to slot-146. Two of Virgo's twelve, the first figure a visitor meets, are among them; 19 of Pisces' 22. The star lights for the visitor; the owner cannot know which. | MAJOR | workers/contact/src/index.ts:90 `/^slot-[1-9]\d?$/`; run: "named in the email: 99 of 146; dropped silently: 47 (100..146)"; per figure: Virgo 2, Sagittarius 9, Capricornus 6, Aquarius 6, Pisces 19, Taurus 1, Gemini 2, Cancer 2; contracts.ts:17 admits it | The owner's call, because the only clean fix is in the Worker he said not to touch: `\d?` → `\d{0,2}`, one character class, with its test. Without touching it: nothing in the page can carry the number (nothing may be added to the message). Until decided, he should know an email with no "Claimed: open star N" line may still be a claim.
+ 4 | "Claimed star stays lit permanently (site-wide, not session-only)" is true only in the claimer's own browser. A claim is written to that device's localStorage. Every other visitor, and the same visitor on another device or after clearing site data, sees an empty sky; two visitors can claim the same star. The only shared record is src/content/stars.json, edited by hand and redeployed, which /admin cannot edit. With "the lit stars are the work", a new visitor will see no work until the owner hand-publishes each star. | MAJOR (a decision the owner must make; the builders listed it as call 1) | claims.ts:1-8 and 23-28; claim-rule.log: `localStorage cellestial:claims = [{"slot":"slot-34",…}]`; src/content/stars.json is `[]`; public/admin/config.yml has no stars collection | Either accept it and adopt a routine (each emailed claim → an entry {slot, ask} in stars.json → deploy), which needs finding 3 fixed and a note on which number is which star; or sanction a small server store, which is plumbing and his decision. Do not ship believing it is automatic.
+ 5 | The logo and the menu are not on screen during the loader (visibility hidden for its 7.7 s). The owner's line is "Logo and three-bar menu present throughout"; the spec says the chrome sits on every scene. Not on the builders' list of calls. | MINOR as ranked: the reference shows the emblem alone and a second emblem in the corner would fight it; by the letter it is a deviation, and the owner should rule on it | Chrome.astro: `html[data-scene='loading'] #chrome { visibility: hidden; opacity: 0 }`; a11y-trees.txt, LOADING: one link | If he wants it literal, delete that rule (or show only the three bars). If not, add it to the list of calls.
+ 6 | The transitions suite is not repeatable: it crashed once on a stall of Cloudflare's Turnstile script while opening /contact. | MINOR (a tool, not the site) | suites/suite-transitions-measure.log: "page.goto: Timeout 30000ms exceeded … /contact"; rerun 144 of 144 | In tools/transitions/measure.mjs (and tools/roots/lib.mjs openPage) route challenges.cloudflare.com to an empty 200, or wait for "domcontentloaded".
+ 7 | On a slow phone the first second of the loader hitches: a 0.4 s task 0.7 s in, while the C powers up (the sky's chunk is run and its shaders warmed at boot). | MINOR | weight.run1.txt and weight.txt, CPU 4x: "each (start ms: length ms): … 707: 418" and "… 704: 391" | Start `import('./sky/index.ts')` when the loader's reveal has finished (about 1.7 s in) or on requestIdleCallback; it still has 4.5 s before the hand-off. This also gives finding 2 back about a third of a second.
+ 8 | /admin loads, and edits almost nothing. The home page reads only meta.title and meta.description from home.json; Hero, Work, Horizon, Soil, Ownership, Closing and Footer are still in the CMS and change nothing. The tile copy is not editable there (it is locked, in src/content/offers.ts). | MINOR (nothing is broken; the owner must not be surprised) | src/pages/index.astro:43 is the only use of `home.`; public/admin/config.yml lists eight sections | Tell him. When he allows a change to config.yml, cut it down to "Page title & description".
+ 9 | The home page has no <h1>. | MINOR | keyboard.log: `"h1": 0`, headings are seven h2 | A visually hidden <h1>Cellestial Studio</h1> at the top of the shell (the logo's own name), or make "What we build" the heading of <main>.
+10 | The twelve star buttons of a figure all carry the same name ("Empty star in Virgo"), and while the loader plays a screen reader is given one link and no word that anything is loading or that a key skips it. | MINOR | a11y-trees.txt, THE SKY and LOADING | Name them "Empty star 3 of 12 in Virgo"; give the loader role="status" with visually hidden text "Loading. Press any key to skip."
+11 | Six pictures are shipped and never fetched: the old mirrored soil tiles (four files), e4-node.webp, b5-lit.webp. 518 kB in dist/, no cost to a visitor. | MINOR | 6.2; weight.txt's request list has none of them | Drop them from scripts/build-assets.mjs and from src/experience/assets.ts, delete from public/cellestial/.
+12 | One type error, compile-time only: painter.ts(882,4), a `let` inferred as the literal 593. | MINOR | typecheck.log | `let right: number = WORD.letters[0].x;` and add the type-check to `pnpm test`, since none runs today.
+13 | The twelve constellation meanings shown by B7 are in neither spec file in the repo. They are word for word the owner's Nov 18 sheet, which lies outside it (~/Downloads/Cellestial-Setup-Pack-2026-11-19/payload/reference/redesign-spec-sheet-2026-11-18.md, lines 58-69); an older note in the vault has different wording for seven of them. Not invented; not traceable from the repo either. | MINOR | strings.txt; src/content/constellations.ts `meaning:` ×12 compared line by line with that sheet: identical | Add the twelve lines to SPEC-ADDENDUM.md so the locked copy is all in one place.
+
+Checked and found right, for the record: the protected diff (empty); the forms' markup
+(unchanged); what is posted (five fields at most, the message untouched); the 200 and the 400;
+the real Turnstile widget; /admin; /start; no send no claim; a lit star shows only the ask,
+as text; silence; no social links; no Google; no Work or Ownership section; no dev pages;
+three.js out of the first chunk; every string sourced; no WebGL, no script, no chunk and
+reduced motion all degrade as asked; the keyboard path is complete; contrast is AA; first
+paint is 0.2 s locally and LCP 1.8 s on slow 4G.
+
+Not done, plainly: no real phone, no screen reader, no browser without popovers; the asset
+derivation was read, not re-run; the shared registry (stars.json) was verified by the unit
+tests and by reading, not in a browser; nothing here judges how any scene looks against its
+reference, which is another inspector's lens.
+
+
+====================================================================================
+VERDICT
+====================================================================================
+The owner's hardest requirement is met: the redesign sits on top of the business and did not
+reach into it. The three protected systems are byte-identical in logic, the form posts the
+same five fields and not one character more, a star is claimed by a 200 and by nothing else,
+/admin and /start work, and the page degrades to readable offers without WebGL, without
+script and under reduced motion; the code is careful and I could not make the director lose
+its place. It is not yet done by his own tests. One rule is broken as written, and trivially
+mended: the tab icon is a stock logo from outside the pack. One of his measurable criteria
+fails on real devices: the loader is built with a tenth of a second to spare under 8 s and
+runs 8.2 to 10 s on anything slower, and the builders' own check says so. And the promise
+behind the sky is thinner than it reads: a claimed star is lit in one browser only, and for a
+third of the stars the owner is not even told which was claimed, so "the lit stars are the
+work" will show every new visitor an empty sky until he decides how stars become shared.
+Fix the icon and the loader's timing, put the star question (findings 3 and 4) in front of
+the owner as the decision it is, and the business-and-code side of this site is ready.
