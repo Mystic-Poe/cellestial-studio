@@ -196,8 +196,9 @@ import Panel from '../ui/Panel.astro';
 	.sky-meaning__line {
 		display: block;
 	}
+	/* The final line stands apart from the meaning it follows. */
 	.sky-meaning__line + .sky-meaning__line {
-		margin-top: 0.1em;
+		margin-top: 0.42em;
 	}
 	/* Read, not seen. */
 	.sky-meaning__say {
@@ -215,12 +216,20 @@ import Panel from '../ui/Panel.astro';
 	.sky-meaning i {
 		position: relative;
 		display: inline-block;
-		background: linear-gradient(to bottom, var(--color-brass-hi) 22%, var(--color-brass-text) 78%);
+		/* The site's brass, lit from above as the wordmark's letters are: what
+		   shows of this layer is the letter's rim, its bevel, light on top and
+		   in shadow underneath; the face is laid over it by ::after. */
+		background: linear-gradient(
+			to bottom,
+			var(--color-brass-hi) 30%,
+			var(--color-brass-text) 58%,
+			var(--color-brass) 92%
+		);
 		-webkit-background-clip: text;
 		background-clip: text;
 		font-style: normal;
 		-webkit-text-fill-color: transparent;
-		-webkit-text-stroke: 0.03em var(--color-brass-text);
+		-webkit-text-stroke: 0.012em var(--color-brass-text);
 		opacity: 0;
 	}
 	.sky-meaning i + i {
@@ -243,11 +252,15 @@ import Panel from '../ui/Panel.astro';
 			0 0 0.3em var(--color-blue-white),
 			0 0 0.7em var(--color-blue);
 	}
+	/* The thin blue line set in the brass: the same letter in the lightest
+	   weight, in the blue, with a stroke of the brass laid over its edges so
+	   that only the middle of each stroke is left. A line, not a blue letter:
+	   the brass round it stays brass. */
 	.sky-meaning i::after {
 		font-weight: 400;
-		-webkit-text-fill-color: color-mix(in srgb, var(--color-blue) 88%, var(--color-blue-white));
-		-webkit-text-stroke: 0.02em var(--color-brass-text);
-		text-shadow: 0 0 0.14em color-mix(in srgb, var(--color-blue) 85%, transparent);
+		-webkit-text-fill-color: var(--color-blue);
+		-webkit-text-stroke: var(--groove, 0.038em) var(--color-brass-text);
+		paint-order: fill stroke;
 		transform: scaleX(var(--sx, 1));
 	}
 	.sky-meaning i[data-on] {

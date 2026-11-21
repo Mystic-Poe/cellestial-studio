@@ -3,14 +3,14 @@ ok   desk: at launch (Virgo) two figures are complete (Aries, Leo) and nothing i
 ok   desk: Aries: on arriving the meaning is being written (writing)
 ok   desk: Aries: the words are exactly "the Lamb"
 ok   desk: Aries: a screen reader gets each line once (the letters seen are hidden from it)
-ok   desk: Aries: the words are whole on screen: 165x44 px at 638, 746, type 34px Quicksand-2467c83bd1e4413d
+ok   desk: Aries: the words are whole on screen: 262x70 px at 566, 487, type 54px Quicksand-2467c83bd1e4413d
 ok   desk: Aries: they cover none of the 4 star buttons
 ok   desk: Aries: clear of the exit button and the chrome, and they take no pointer
 ok   desk: Aries: written: every letter there, the lightning's canvas gone
 ok   desk: Leo: on arriving the meaning is being written (writing)
 ok   desk: Leo: the words are exactly "the Lion of the tribe of Judah" then "Jesus is King."
 ok   desk: Leo: a screen reader gets each line once (the letters seen are hidden from it)
-ok   desk: Leo: the words are whole on screen: 514x92 px at 344, 698, type 34px Quicksand-2467c83bd1e4413d
+ok   desk: Leo: the words are whole on screen: 816x163 px at 106, 105, type 54px Quicksand-2467c83bd1e4413d
 ok   desk: Leo: they cover none of the 9 star buttons
 ok   desk: Leo: clear of the exit button and the chrome, and they take no pointer
 ok   desk: Leo: written: every letter there, the lightning's canvas gone
@@ -29,7 +29,7 @@ ok   phone: Aries: written: every letter there, the lightning's canvas gone
 ok   phone: Leo: on arriving the meaning is being written (writing)
 ok   phone: Leo: the words are exactly "the Lion of the tribe of Judah" then "Jesus is King."
 ok   phone: Leo: a screen reader gets each line once (the letters seen are hidden from it)
-ok   phone: Leo: the words are whole on screen: 318x57 px at 37, 524, type 21px Quicksand-2467c83bd1e4413d
+ok   phone: Leo: the words are whole on screen: 318x63 px at 37, 524, type 21px Quicksand-2467c83bd1e4413d
 ok   phone: Leo: they cover none of the 9 star buttons
 ok   phone: Leo: clear of the exit button and the chrome, and they take no pointer
 ok   phone: Leo: written: every letter there, the lightning's canvas gone

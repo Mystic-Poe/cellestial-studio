@@ -16,9 +16,12 @@
 // flown through with it. Under reduced motion nothing is written: the words
 // are there.
 //
-// Where it stands is chosen from the picture at the station: the free band
-// nearest the figure's foot that covers no star and no star's button, clear
-// of the logo and of the exit button.
+// Where it stands is chosen from the picture at the station. On a wide
+// screen the line is large and stands by its figure: in the largest free area
+// inside or beside the figure's own bounds, clear of every star, every star's
+// button and every line of the figure, of the logo and of the exit button;
+// if the figure leaves no such room at any size, in the band under it. On a
+// narrow screen it stands in the free band nearest the figure's foot.
 
 import { CONSTELLATIONS, FINAL_LINE } from '../../content/constellations.ts';
 import { bolt, flickerFrame, mix, seeded, strokeBolt } from '../loader/lightning.ts';
@@ -31,6 +34,8 @@ const LAST = CONSTELLATIONS.findIndex((figure) => figure.name === 'Leo');
 
 /** Type size at the station, CSS pixels, at or under `narrow` pixels of width and above it. */
 const TYPE = { phone: 21, desktop: 34, min: 12, narrow: 720, margin: 16 } as const;
+/** From this width up the line is set large and placed by its figure: the sizes tried, largest first. */
+const WIDE = { from: 1024, sizes: [54, 50, 46, 42, 38, 34], step: 10, air: 90 } as const;
 /** The writing, seconds. */
 const WRITE = {
 	/** One line is written in about this long, however many letters it has… */
@@ -38,8 +43,8 @@ const WRITE = {
 	/** …but no letter faster or slower than this. */
 	stepMin: 0.05,
 	stepMax: 0.11,
-	/** The pause before the final line. */
-	pause: 0.45,
+	/** The final line has its own beat: the meaning is written, it cools, and then. */
+	pause: 1.15,
 	/** How long the bolt stands on a letter, and how long the letter's outline burns. */
 	bolt: 0.15,
 	burn: 0.5,
@@ -223,19 +228,16 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		el.hidden = false;
 		el.style.transform = 'none';
 		el.style.visibility = 'hidden';
-		const base = layout.w <= TYPE.narrow ? TYPE.phone : TYPE.desktop;
-		el.style.fontSize = `${base}px`;
 		const room = layout.w - 2 * TYPE.margin;
-		if (el.offsetWidth > room) {
-			const size = Math.max(TYPE.min, Math.floor(((base * room) / el.offsetWidth) * 2) / 2);
-			el.style.fontSize = `${size}px`;
-		}
-		const w = el.offsetWidth;
-		const h = el.offsetHeight;
-		fitLines(entry);
-		el.style.visibility = '';
-		el.style.transform = was.transform;
-		el.hidden = was.hidden;
+		/** Set the type and say how large the words then are. */
+		const set = (px: number): { w: number; h: number } => {
+			el.style.fontSize = `${px}px`;
+			if (el.offsetWidth > room) {
+				const size = Math.max(TYPE.min, Math.floor(((px * room) / el.offsetWidth) * 2) / 2);
+				el.style.fontSize = `${size}px`;
+			}
+			return { w: el.offsetWidth, h: el.offsetHeight };
+		};
 
 		// The figure as it stands at its station.
 		const cam = layout.cameraAt(layout.station(figure));
@@ -265,44 +267,108 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		}
 		const xs = stars.map((s) => s.x);
 		const ys = stars.map((s) => s.y);
-		const middle = (Math.min(...xs) + Math.max(...xs)) / 2;
-		const foot = Math.max(...ys) + STAR_CLEAR + 6;
-		const half = w / 2;
-		const left = half + TYPE.margin;
-		const right = layout.w - half - TYPE.margin;
-		const hits = (cx: number, y: number): number => {
-			const x0 = cx - half - 4;
-			const x1 = cx + half + 4;
+		const bounds = {
+			x0: Math.min(...xs),
+			x1: Math.max(...xs),
+			y0: Math.min(...ys),
+			y1: Math.max(...ys),
+		};
+		const middle = (bounds.x0 + bounds.x1) / 2;
+		const foot = bounds.y1 + STAR_CLEAR + 6;
+		// The final line keeps the height of a line clear above the exit button, and so
+		// does any line set large: it is the figure's, not a caption to the button.
+		const lines = linesOf(figure).length;
+		/**
+		 * What a box of the words at (cx, y) would lie on, and how much air it
+		 * has: the distance from its edge to the nearest star or line.
+		 */
+		const lie = (cx: number, y: number, w: number, h: number): { hits: number; air: number } => {
+			const x0 = cx - w / 2 - 4;
+			const x1 = cx + w / 2 + 4;
 			const y0 = y - 4;
 			const y1 = y + h + 4;
-			let n = 0;
+			let hits = 0;
+			let air = Number.POSITIVE_INFINITY;
 			for (const s of blocks) {
 				const dx = Math.max(x0 - s.x, 0, s.x - x1);
 				const dy = Math.max(y0 - s.y, 0, s.y - y1);
-				if (dx * dx + dy * dy < s.r * s.r) n++;
+				const d = Math.hypot(dx, dy) - s.r;
+				if (d < 0) hits++;
+				if (d < air) air = d;
 			}
-			if (x0 < CHROME.w && y0 < CHROME.h) n++;
+			if (x0 < CHROME.w && y0 < CHROME.h) hits++;
+			const keep = EXIT.h + (lines > 1 || layout.w >= WIDE.from ? h / lines : 0);
 			if (
-				y1 > layout.h - EXIT.h &&
+				y1 > layout.h - keep &&
 				x1 > layout.w / 2 - EXIT.w / 2 &&
 				x0 < layout.w / 2 + EXIT.w / 2
 			) {
-				n++;
+				hits++;
 			}
-			return n;
+			return { hits, air };
 		};
-		let best = {
-			cx: clamp(middle, left, Math.max(left, right)),
-			y: foot,
-			score: Number.POSITIVE_INFINITY,
-		};
-		for (const shift of [0, -60, 60, -120, 120, -200, 200]) {
-			const cx = clamp(middle + shift, left, Math.max(left, right));
-			for (let y = 8; y + h <= layout.h - 8; y += 6) {
-				const score = hits(cx, y) * 1e6 + Math.abs(y - foot) + Math.abs(shift) * 0.5;
-				if (score < best.score) best = { cx, y, score };
+
+		let best: { cx: number; y: number; w: number; h: number } | null = null;
+		if (layout.w >= WIDE.from) {
+			// By the figure: the largest type that finds free room inside or beside
+			// the figure's bounds, and of that room the place with the most air.
+			for (const px of WIDE.sizes) {
+				const { w, h } = set(px);
+				const left = w / 2 + TYPE.margin;
+				const right = layout.w - w / 2 - TYPE.margin;
+				if (right < left) continue;
+				// "Beside": the words' box may reach out of the bounds, but it still touches them.
+				const fromX = Math.max(left, bounds.x0 - w / 2 + 24);
+				const toX = Math.min(right, bounds.x1 + w / 2 - 24);
+				const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h + 12);
+				// Well above the exit button wherever it stands across the screen.
+				const toY = Math.min(layout.h - EXIT.h - h - 48, bounds.y1 - 12);
+				let top = Number.NEGATIVE_INFINITY;
+				let found: { cx: number; y: number } | null = null;
+				for (let y = fromY; y <= toY; y += WIDE.step) {
+					for (let cx = fromX; cx <= toX; cx += WIDE.step) {
+						const at = lie(cx, y, w, h);
+						if (at.hits > 0 || at.air < 14) continue;
+						// Air first, up to a point; then the middle of the figure.
+						const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
+						const score = Math.min(at.air, WIDE.air) * 3 - off * 0.35;
+						if (score > top) {
+							top = score;
+							found = { cx, y };
+						}
+					}
+				}
+				if (found) {
+					best = { ...found, w, h };
+					break;
+				}
 			}
 		}
+		if (!best) {
+			// The free band nearest the figure's foot.
+			const { w, h } = set(layout.w <= TYPE.narrow ? TYPE.phone : TYPE.desktop);
+			const half = w / 2;
+			const left = half + TYPE.margin;
+			const right = layout.w - half - TYPE.margin;
+			let low = Number.POSITIVE_INFINITY;
+			best = { cx: clamp(middle, left, Math.max(left, right)), y: foot, w, h };
+			for (const shift of [0, -60, 60, -120, 120, -200, 200]) {
+				const cx = clamp(middle + shift, left, Math.max(left, right));
+				for (let y = 8; y + h <= layout.h - 8; y += 6) {
+					const score = lie(cx, y, w, h).hits * 1e6 + Math.abs(y - foot) + Math.abs(shift) * 0.5;
+					if (score < low) {
+						low = score;
+						best = { cx, y, w, h };
+					}
+				}
+			}
+		}
+		const { w, h } = best;
+		const half = w / 2;
+		fitLines(entry);
+		el.style.visibility = '';
+		el.style.transform = was.transform;
+		el.hidden = was.hidden;
 		entry.anchor = {
 			x: cam.x + (best.cx - layout.w / 2) / fit.scale,
 			y: cam.y - (best.y - layout.h / 2) / fit.scale,

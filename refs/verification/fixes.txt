@@ -99,3 +99,37 @@ code 7, look 15 (MINOR) — a long frame half a second in, while the C powers up
   a5-desk, a5-phone, short): frozen at a second of the script the build is set beside the reference's frame
   at that second, as before, and every caption now also gives the moment on the visitor's clock
   (script second / 1.107). The beats line up as they did.
+
+look 2 (MAJOR) — B7: the cooled words were grey, and on the desktop a small caption over the exit button.
+look 8 (MINOR) — "claim yours" drawn over a meaning.  BOTH FIXED.
+  Reproduced: refs/verification/matrix/sky/meaning-settled.jpg, b7-all-desk.jpg; letters #95888c.
+  Why grey: the "thin blue line" was the whole letter again in the regular weight, filled blue, over the
+  brass: more blue than brass. Why a caption: one placement rule for every width (the free band nearest
+  the figure's foot), at 34 px.
+  Done:
+  - src/components/scenes/Sky.astro: the letter is brass lit from above (--color-brass-hi to
+    --color-brass-text to --color-brass, which shows as the bevel at its rim); the line in it is the
+    regular-weight letter in --color-blue with a stroke of --color-brass-text laid over its edges, so only
+    the middle of each stroke is left: a line about a pixel wide at 54 px, in brass. The blue glow over the
+    brass is gone. The final line stands 0.42 em under the meaning (was 0.1).
+  - src/experience/sky/meaning.ts: at 1024 px and wider the line is set at 54 px (down through 50, 46, 42,
+    38 to 34 only if the figure leaves no room) and placed by its figure: every place where the words' box
+    touches the figure's bounds is tried, those that lie on a star, a star's button, a line of the figure,
+    the logo or the exit button's band are thrown out, and of the rest the one with the most air round it,
+    nearest the figure's middle, is taken; never lower than 48 px and a line's height above the exit
+    button's band. Only if no size finds room does it fall back to the band under the figure. Narrower
+    screens keep the placement the inspector found good. "Jesus is King." is written 1.15 s after the
+    meaning (was 0.45 s), and keeps a line's height clear above the button.
+  - src/experience/sky/answer.ts: a star whose "claim yours" would lie on a meaning that is showing is not
+    offered, and if the flight carries the words onto one they are hidden until they are clear of it.
+  Checked: node tools/sky/meaning-all.mjs (new: all 146 stars seeded, each figure in turn, real time, real
+  GPU, both sizes; refs/sky/compare/b7-all-desk.jpg, b7-all-phone.jpg, b7-all.txt): 24 of 24 whole on
+  screen, touching no star button, not the logo, not B11. Both sheets looked at. Desktop: all twelve at
+  54 px, ten inside the figure's bounds and two beside them (Libra, Sagittarius, Cancer "beside"), the
+  nearest 101 px above B11 (Aquarius); Leo's two lines stand top left inside the figure, 548 px above the
+  button. Phone: as before, under the figure (ten) or in the free band (Libra, Cancer). Letters sampled
+  from the screenshots: #9e8473 to #a18675 at every figure and both sizes ("studio" samples #a38264 the same
+  way; the tokens' brass text is #ae8a68; the blue line adds about 15 to the blue channel). Close crops at
+  both sizes looked at beside A4. node tools/sky/meaning.mjs --only checks: 38 of 38.
+  Not done: look 8 was not reproduced as a picture again after the fix (the rule is in the code and the
+  sky's own checks were run at the end; see "Final verification").

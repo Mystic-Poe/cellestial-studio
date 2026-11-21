@@ -61,6 +61,15 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	// ── choosing the star ──
 	const chosen = { slot: null as SlotId | null, layer: 0, star: null as PlanStar | null };
 
+	/** True if a box on screen lies on the words of a meaning that is showing (B7): nothing is written over those. */
+	const overMeaning = (x0: number, y0: number, x1: number, y1: number): boolean => {
+		for (const el of hooks.ui.querySelectorAll<HTMLElement>('.sky-meaning:not([hidden])')) {
+			const r = el.getBoundingClientRect();
+			if (r.width > 0 && x0 < r.right && x1 > r.left && y0 < r.bottom && y1 > r.top) return true;
+		}
+		return false;
+	};
+
 	/** The empty star nearest a point among those of one layer that can be shown with the words under them. */
 	const nearestIn = (layer: number, x: number, y: number) => {
 		const layout = hooks.layout();
@@ -78,6 +87,8 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (p.x < r || p.x > layout.w - r) continue;
 			if (p.y - r < 6 || p.y + r + WORDS.gap + WORDS.height > layout.h - 6) continue;
 			if (p.x - WORDS.half < CHROME.w && p.y - r < CHROME.h) continue;
+			const under = p.y + r * 1.1 + WORDS.gap;
+			if (overMeaning(p.x - WORDS.half, under, p.x + WORDS.half, under + WORDS.height)) continue;
 			const d = Math.hypot(p.x - x, p.y - y);
 			if (d < best) {
 				best = d;
@@ -118,6 +129,11 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		// Under the star's centre; beside a screen edge, only as far in as keeps them whole.
 		const w = hooks.layout().w;
 		const x = Math.min(Math.max(c.x, WORDS.half + 4), w - WORDS.half - 4);
+		// Never over a meaning: if the flight has carried the star's words onto one, they wait.
+		if (overMeaning(x - WORDS.half, y, x + WORDS.half, y + WORDS.height)) {
+			words.style.visibility = 'hidden';
+			return;
+		}
 		// Written so that words with no place yet (NaN) are given one.
 		if (!(Math.abs(x - wordsAt.x) <= 0.05 && Math.abs(y - wordsAt.y) <= 0.05)) {
 			wordsAt = { x, y };
