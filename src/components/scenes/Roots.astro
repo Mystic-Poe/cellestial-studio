@@ -116,15 +116,17 @@ const vars = [
 	/* ── The ground ──────────────────────────────────────────────────────
 	   #roots itself paints nothing: its top few pixels are the sky's. The
 	   soil is two layers under everything else, a strip cut to the uneven
-	   edge and the rest below it. Both show the same mirror-tiled picture,
-	   set so the strip is the tile's last rows: the two meet without a seam. */
+	   edge and the rest below it. Both show the same tile of E1, which
+	   repeats down the page without a seam and without a mirror in it
+	   (scripts/assets/roots.mjs), set so the strip is the tile's last rows:
+	   the two meet without a seam. */
 	#roots {
 		--node-w: 132px; /* the sprite's width; the bulb is 0.698 of it */
 		--stop-h: max(33rem, 84svh); /* from one node down to the next */
 		--tile-gap: 14px; /* bulb to tile, where the tile sits under it */
 		--soil: image-set(
-			url('/cellestial/roots/soil-portrait.avif') type('image/avif'),
-			url('/cellestial/roots/soil-portrait.webp') type('image/webp')
+			url('/cellestial/roots/soil-portrait-woven.avif') type('image/avif'),
+			url('/cellestial/roots/soil-portrait-woven.webp') type('image/webp')
 		);
 		position: relative;
 		z-index: 1;
@@ -135,8 +137,8 @@ const vars = [
 	@media (orientation: landscape) {
 		#roots {
 			--soil: image-set(
-				url('/cellestial/roots/soil-landscape.avif') type('image/avif'),
-				url('/cellestial/roots/soil-landscape.webp') type('image/webp')
+				url('/cellestial/roots/soil-landscape-woven.avif') type('image/avif'),
+				url('/cellestial/roots/soil-landscape-woven.webp') type('image/webp')
 			);
 		}
 	}
@@ -241,7 +243,7 @@ const vars = [
 	   a blended layer whose opacity is animated loses its blending and shows
 	   as a dark box.) */
 	.roots-node__glow {
-		filter: brightness(1.75) saturate(1.15);
+		filter: brightness(1.5) saturate(1.1);
 		opacity: 0;
 	}
 	.roots-node__bulb {
@@ -357,9 +359,12 @@ const vars = [
 		}
 	}
 
-	/* The nodes' light. Before the network has grown there is none; an unread
-	   node breathes; under the pointer or the keyboard it is brighter; once
-	   read it stays lit. With reduced motion nothing breathes, and the node
+	/* The nodes' light. Before the network has grown there is none. Then the
+	   picture itself stands a little dimmed, and the same picture, brightened,
+	   lies over it: an unread node breathes (the bright one comes and goes,
+	   and a halo of blue light swells and sinks on the soil round the bulb);
+	   under the pointer or the keyboard it is at its brightest; once read it
+	   stays steadily lit. With reduced motion nothing breathes, and the node
 	   the light would lead to is marked by a steady, stronger glow. */
 	#roots[data-live] .roots-node {
 		transition: opacity 320ms ease-out;
@@ -367,42 +372,51 @@ const vars = [
 	#roots[data-live] .roots-node:not([data-lit]) {
 		opacity: 0;
 	}
+	#roots[data-live] .roots-node__sprite {
+		filter: brightness(0.72) saturate(0.92);
+	}
 	#roots[data-live] .roots-node::before {
 		content: '';
 		position: absolute;
 		left: calc(var(--bulb-x) * 100%);
 		top: calc(var(--bulb-y) * 100%);
-		width: 150%;
+		width: 175%;
 		aspect-ratio: 1;
 		border-radius: 50%;
 		background: radial-gradient(
 			circle closest-side,
-			color-mix(in srgb, var(--color-blue) 46%, transparent),
-			color-mix(in srgb, var(--color-blue) 16%, transparent) 46%,
+			color-mix(in srgb, var(--color-blue-white) 34%, transparent),
+			color-mix(in srgb, var(--color-blue) 38%, transparent) 30%,
+			color-mix(in srgb, var(--color-blue) 12%, transparent) 62%,
 			transparent
 		);
-		transform: translate(-50%, -50%);
-		opacity: 0.35;
-		transition: opacity 260ms ease-out;
+		translate: -50% -50%;
+		scale: 0.8;
+		opacity: 0.25;
+		transition:
+			opacity 260ms ease-out,
+			scale 260ms ease-out;
 	}
 	#roots[data-live] .roots-node__glow {
-		opacity: 0.1;
+		opacity: 0.08;
 		transition: opacity 260ms ease-out;
 	}
 	@keyframes roots-breathe {
 		from {
-			opacity: 0.04;
+			opacity: 0;
 		}
 		to {
-			opacity: 0.5;
+			opacity: 0.72;
 		}
 	}
 	@keyframes roots-breathe-halo {
 		from {
-			opacity: 0.25;
+			opacity: 0.12;
+			scale: 0.72;
 		}
 		to {
-			opacity: 0.8;
+			opacity: 0.85;
+			scale: 1;
 		}
 	}
 	#roots[data-live][data-active] .roots-node[data-lit]:not([data-read]) .roots-node__glow {
@@ -412,24 +426,31 @@ const vars = [
 		animation: roots-breathe-halo 2.6s ease-in-out infinite alternate;
 	}
 	#roots[data-live] .roots-node[data-read] .roots-node__glow {
-		opacity: 0.42;
+		opacity: 0.6;
 	}
 	#roots[data-live] .roots-node[data-read]::before {
-		opacity: 0.7;
+		opacity: 0.6;
+		scale: 0.92;
 	}
 	#roots[data-live] .roots-node:is(:hover, :focus-within, [data-hot]) .roots-node__glow {
 		animation: none;
-		opacity: 0.85;
+		opacity: 1;
 	}
 	#roots[data-live] .roots-node:is(:hover, :focus-within, [data-hot])::before {
 		animation: none;
 		opacity: 1;
+		scale: 1.12;
 	}
 	html[data-motion='off'] #roots[data-live] .roots-node[data-next]:not(:hover, :focus-within) .roots-node__glow {
-		opacity: 0.66;
+		opacity: 0.85;
 	}
 	html[data-motion='off'] #roots[data-live] .roots-node[data-next]:not(:hover, :focus-within)::before {
 		opacity: 1;
-		width: 190%;
+		scale: 1.2;
+	}
+	/* The guided light has run down to F1: its line answers. */
+	.roots-close [data-open-claim][data-hot] {
+		--bb-line: var(--color-blue-white);
+		--bb-glow: 1;
 	}
 </style>

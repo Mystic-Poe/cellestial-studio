@@ -23,7 +23,6 @@
 // while it lasts. The guided light is one small canvas moved along the trunk;
 // its loop runs only while the light is travelling and on screen.
 
-import { ASSETS } from '../assets.ts';
 import { BLUE_RGB, BLUE_WHITE_RGB } from '../tokens.ts';
 import { EDGE, edgeY } from './edge.ts';
 
@@ -127,7 +126,7 @@ const COOL_MS = HOT_MS * 3.4;
 /** The soil under the light: each channel of the picture times 1 / (1 - this). */
 const DODGE = 'rgb(92 138 202)';
 /** The guided light: its canvas, the length of its tail, its pace and its rest. */
-const PULSE = { box: 360, tail: 170, speed: 0.4, rest: 1500 };
+const PULSE = { box: 460, tail: 230, speed: 0.4, rest: 1500 };
 
 const rgba = (c: readonly [number, number, number], a: number): string =>
 	`rgb(${Math.round(c[0] * 255)} ${Math.round(c[1] * 255)} ${Math.round(c[2] * 255)} / ${a})`;
@@ -163,8 +162,8 @@ interface Pass {
 const WHITE = [1, 1, 1] as const;
 /** The light on the soil, far and near. */
 const HALO: Pass[] = [
-	{ width: (w) => w * 8 + 15, alpha: (l) => 0.1 * l, colour: WHITE, heat: 1.6 },
-	{ width: (w) => w * 3.6 + 6, alpha: (l) => 0.3 * l, colour: WHITE, heat: 1.6 },
+	{ width: (w) => w * 8 + 15, alpha: (l) => 0.1 * l, colour: WHITE, heat: 1 },
+	{ width: (w) => w * 3.6 + 6, alpha: (l) => 0.3 * l, colour: WHITE, heat: 1 },
 ];
 /** The thread itself: its blue skin, its body, its white heart. */
 const CORE: Pass[] = [
@@ -208,6 +207,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 	const baked: Record<number, Uint8Array> = {};
 	let picked = new Uint8Array(0);
 	let runnerDone = 0;
+	let sparks: { xs: number[]; ys: number[] }[] = [];
 	let soil: HTMLImageElement | null = null;
 	let soilUrl = '';
 
@@ -421,7 +421,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 				ys.push(y + (dx / d) * off);
 				const taper = taperEnd ? 1 - 0.6 * u ** 3 : 1;
 				w.push(trunkW * (0.84 + 0.3 * thick(u * 9)) * taper);
-				lum.push(0.8 + 0.2 * dip(u * 7));
+				lum.push(0.66 + 0.16 * dip(u * 7));
 			}
 			const me = add(xs, ys, w, lum, 1.45, parent, parentAt, lag);
 			trunk.push(me);
@@ -681,9 +681,12 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 	// ──────────────────────────────────────────────────────── drawing it ──
 
 	function loadSoil(): void {
-		const a = matchMedia('(orientation: landscape)').matches
-			? ASSETS.roots.soilLandscape
-			: ASSETS.roots.soilPortrait;
+		// The same tile the stylesheet lays (Roots.astro): the woven one.
+		const name = matchMedia('(orientation: landscape)').matches ? 'landscape' : 'portrait';
+		const a = {
+			url: `/cellestial/roots/soil-${name}-woven.webp`,
+			avif: `/cellestial/roots/soil-${name}-woven.avif`,
+		};
 		if (soilUrl === a.url) return;
 		soilUrl = a.url;
 		const img = new Image();
@@ -912,6 +915,7 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		}
 		for (const k of ks) picked[k] = 0;
 		if (flash) {
+			drawSparks(ctx, t);
 			const heat = Math.exp(-t / 200);
 			if (heat > 0.01) {
 				glow(
@@ -1108,6 +1112,53 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		const i = clamp(Math.round((x + 24) / 5), 0, runner.xs.length - 1);
 		schedule(runner.at[i]);
 		impact = { x: runner.xs[i], y: runner.ys[i] - 6 };
+		// The blow itself: a few roots of pure light driven down from the point,
+		// which fade as the network takes the light over. Seeded by where it fell.
+		const rand = seeded(0xb1a57 + i);
+		sparks = [];
+		for (let k = 0; k < 5; k++) {
+			let h = Math.PI / 2 + (k - 2) * 0.42 + (rand() - 0.5) * 0.3;
+			let bend = 0;
+			let px = runner.xs[i];
+			let py = runner.ys[i];
+			const xs = [px];
+			const ys = [py];
+			const n = Math.round((60 + rand() * 120) / 4);
+			for (let q = 0; q < n; q++) {
+				bend = bend * 0.9 + (rand() - 0.5) * 0.09;
+				h += bend + Math.sin(Math.PI / 2 - h) * 0.01;
+				px += Math.cos(h) * 4;
+				py += Math.sin(h) * 4;
+				xs.push(px);
+				ys.push(py);
+			}
+			sparks.push({ xs, ys });
+		}
+	}
+
+	/** Draw the blow's own roots, `t` ms after it. */
+	function drawSparks(ctx: CanvasRenderingContext2D, t: number): void {
+		const fade = t < 260 ? 1 : Math.exp(-(t - 260) / 190);
+		if (fade < 0.02) return;
+		for (const sp of sparks) {
+			const n = Math.min(sp.xs.length - 1, Math.floor((t * 1.1) / 4));
+			for (let i = 1; i <= n; i++) {
+				const u = i / sp.xs.length;
+				const tip = Math.max(0, 1 - (n - i) / 14); // hottest at the growing tip
+				for (const [w, colour, a] of [
+					[6, BLUE_RGB, 0.14],
+					[1.9, MID_RGB, 0.65],
+					[0.8, BLUE_WHITE_RGB, 0.95],
+				] as const) {
+					ctx.beginPath();
+					ctx.moveTo(sp.xs[i - 1], sp.ys[i - 1]);
+					ctx.lineTo(sp.xs[i], sp.ys[i]);
+					ctx.lineWidth = w * (1 - 0.7 * u) * (1 + 0.6 * tip);
+					ctx.strokeStyle = rgba(colour, Math.min(1, a * fade * (0.55 + tip)));
+					ctx.stroke();
+				}
+			}
+		}
 	}
 
 	// ───────────────────────────────────────────────── the guided light ──
@@ -1188,10 +1239,10 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			const u = 1 - (headAt - at[i]) / PULSE.tail; // 1 at the head, 0 at the tail's end
 			const a = u * u * life;
 			for (const [w, colour, k] of [
-				[20, BLUE_RGB, 0.07],
-				[9, BLUE_RGB, 0.2],
-				[4.2, MID_RGB, 0.7],
-				[2, BLUE_WHITE_RGB, 1],
+				[34, BLUE_RGB, 0.07],
+				[15, BLUE_RGB, 0.2],
+				[6.5, MID_RGB, 0.75],
+				[3.2, BLUE_WHITE_RGB, 1],
 			] as const) {
 				ctx.beginPath();
 				ctx.moveTo(px, py);
@@ -1204,8 +1255,9 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			py = ys[i];
 			i--;
 		}
-		glow(ctx, hx, hy, 46, rgba(BLUE_WHITE_RGB, 0.95 * life), rgba(BLUE_RGB, 0.3 * life));
-		glow(ctx, hx, hy, 9, rgba([1, 1, 1], life), rgba(BLUE_WHITE_RGB, 0.6 * life));
+		glow(ctx, hx, hy, 84, rgba(BLUE_WHITE_RGB, 0.8 * life), rgba(BLUE_RGB, 0.3 * life));
+		glow(ctx, hx, hy, 30, rgba(BLUE_WHITE_RGB, life), rgba(BLUE_WHITE_RGB, 0.45 * life));
+		glow(ctx, hx, hy, 11, rgba([1, 1, 1], life), rgba([1, 1, 1], 0.7 * life));
 	}
 
 	function routeOnScreen(): boolean {

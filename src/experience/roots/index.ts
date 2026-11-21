@@ -118,6 +118,7 @@ export const mount: MountRoots = (ctx) => {
 	}
 
 	let measureTimer = 0;
+	let guideTimer = 0;
 	function remeasure(): void {
 		net.layout(measure());
 		// A growth caught by a resize is finished by it.
@@ -324,8 +325,19 @@ export const mount: MountRoots = (ctx) => {
 			grown = true;
 			ground.dataset.grown = '';
 			const g = ground.getBoundingClientRect();
-			const done = net.growFrom(x - g.left, light);
-			guide();
+			// Each node flares as the light reaches it, then settles to its breathing.
+			const done = net.growFrom(x - g.left, (i) => {
+				light(i);
+				const node = stops[i]?.node;
+				if (!node) return;
+				node.setAttribute('data-hot', '');
+				window.setTimeout(() => node.removeAttribute('data-hot'), 700);
+			});
+			// The guided light waits for the growth to pass: then it begins to lead.
+			done.then(() => {
+				window.clearTimeout(guideTimer);
+				guideTimer = window.setTimeout(guide, 900);
+			});
 			return done;
 		},
 

@@ -16,6 +16,10 @@
 //              and back; the tile whole on the screen and clear of the logo
 //   chrome     the menu's three destinations on the ground, F1 and F2 open
 //              the two dialogs, E6 returns to the sky
+//   light      the guided light: where it runs before anything is read, that
+//              it is still while a tile is open, sets off at once when the
+//              tile is closed, loops, never scrolls and never opens; out of
+//              order reading; all five read
 //   keys       Tab order (E6, the five nodes, F1, F2), Enter and Space open,
 //              Escape closes, focus returns; the accessibility tree of a node
 //              and its tile
@@ -33,7 +37,7 @@ import { launch, openPage, ROOT, rootsReady } from './lib.mjs';
 const { values } = parseArgs({
 	options: {
 		url: { type: 'string', default: 'http://localhost:4500' },
-		only: { type: 'string', default: 'contract,tiles,chrome,keys,phones,still,nojs,frames' },
+		only: { type: 'string', default: 'contract,tiles,chrome,light,keys,phones,still,nojs,frames' },
 	},
 });
 const only = new Set(values.only.split(','));
@@ -345,9 +349,348 @@ if (only.has('nojs')) {
 	}
 }
 
+/** Count requestAnimationFrame calls from the first script on. */
+const COUNT_RAF = () => {
+	window.__raf = 0;
+	const real = window.requestAnimationFrame.bind(window);
+	window.requestAnimationFrame = (fn) => {
+		window.__raf++;
+		return real(fn);
+	};
+};
+const rafOver = (page, ms) =>
+	page.evaluate(async (t) => {
+		const a = window.__raf;
+		await new Promise((res) => setTimeout(res, t));
+		return window.__raf - a;
+	}, ms);
+/** Where the guided light is: null when it is not showing. */
+const pulseAt = (page) =>
+	page.evaluate(() => {
+		const c = document.querySelector('.roots-net canvas[data-role="pulse"]');
+		if (!c || getComputedStyle(c).display === 'none') return null;
+		const r = c.getBoundingClientRect();
+		return { x: r.left + r.width / 2, y: r.top + r.height / 2 + scrollY };
+	});
+
+if (only.has('light')) {
+	for (const size of ['desk', 'phone']) {
+		section(`the guided light, ${size}`);
+		const { page, errors, context } = await openPage(browser, size, null);
+		await page.addInitScript(COUNT_RAF);
+		await page.goto(URL, { waitUntil: 'load' });
+		await rootsReady(page);
+		const where = await page.evaluate(() => {
+			const l = window.__cellestial.roots.debug.layout();
+			return { nodes: l.nodes.map((n) => n.bulb.y), close: l.close.y };
+		});
+		// Nothing read: it leads from the surface to node 1.
+		const first = [];
+		for (let i = 0; i < 24; i++) {
+			const p = await pulseAt(page);
+			if (p) first.push(p.y);
+			await page.waitForTimeout(80);
+		}
+		check('nothing read: the light runs from the surface down towards node 1', first.length >= 3 && first[0] < where.nodes[0] && first.at(-1) > first[0] && Math.max(...first) <= where.nodes[0] + 4, `seen at y ${first.slice(0, 8).map((v) => Math.round(v)).join(', ')} … (node 1 is at ${Math.round(where.nodes[0])})`);
+		// A tile open: the light is still.
+		const bulb = (id) => page.locator(`.roots-stop[data-offer="${id}"] .roots-node__bulb`);
+		await bulb('site').click();
+		await page.waitForTimeout(900);
+		const openRaf = await rafOver(page, 1500);
+		check('while a tile is open the light is still: no animation frame is asked for', (await pulseAt(page)) === null && openRaf === 0, `${openRaf} frames in 1.5 s`);
+		// Closed: it sets off at once from node 1 towards node 2.
+		const y0 = await page.evaluate(() => scrollY);
+		await page.keyboard.press('Escape');
+		const t0 = Date.now();
+		const run = [];
+		let seenAfter = -1;
+		let hot = -1;
+		while (Date.now() - t0 < 2600) {
+			const p = await pulseAt(page);
+			if (p) {
+				if (seenAfter < 0) seenAfter = Date.now() - t0;
+				run.push(Math.round(p.y));
+			}
+			if (hot < 0 && (await page.evaluate(() => document.querySelectorAll('.roots-node')[1].hasAttribute('data-hot')))) hot = Date.now() - t0;
+			await page.waitForTimeout(40);
+		}
+		check('tile 1 closed: the light sets off at once', seenAfter >= 0 && seenAfter < 250, `first seen ${seenAfter} ms after Escape`);
+		check('it leaves node 1 and travels down the trunk to node 2', run.length > 4 && run[0] < where.nodes[0] + 140 && run[0] > where.nodes[0] && Math.max(...run) > where.nodes[1] - 140 && Math.max(...run) <= where.nodes[1] + 4, `y ${run.filter((_, i) => i % 3 === 0).join(', ')} (node 1 at ${Math.round(where.nodes[0])}, node 2 at ${Math.round(where.nodes[1])})`);
+		check('node 2 answers when the light arrives', hot > 0, `${hot} ms after Escape`);
+		// It loops: gone during its rest, then again from node 1.
+		let again = -1;
+		let gap = false;
+		while (Date.now() - t0 < 7000 && again < 0) {
+			const p = await pulseAt(page);
+			if (!p) gap = true;
+			else if (gap && p.y < where.nodes[0] + 200) again = Date.now() - t0;
+			await page.waitForTimeout(50);
+		}
+		check('it rests and sets off again, every few seconds', again > 0, `second run began ${again} ms after the first`);
+		const after = await page.evaluate(() => ({ y: scrollY, open: window.__cellestial.roots.debug.state().open }));
+		check('it never scrolls the page and never opens a tile', after.y === y0 && after.open === null, `scrollY ${y0} → ${after.y}; open: ${after.open}`);
+		// Out of order: any node at any time; the light then leads on from the last read.
+		await bulb('app').scrollIntoViewIfNeeded();
+		await bulb('app').click();
+		await page.waitForTimeout(800);
+		await page.keyboard.press('Escape');
+		await page.waitForTimeout(300);
+		let st = await page.evaluate(() => window.__cellestial.roots.debug.state());
+		check('any node can be opened at any time (node 3 before node 2); the light then leads to node 4', st.read.join() === 'site,app' && st.next === 3, `read ${st.read.join(', ')}; next ${st.next + 1}`);
+		// The stretch it would run along is far off screen: nothing runs.
+		await page.evaluate(() => scrollTo(0, 0));
+		await page.waitForTimeout(2600);
+		const offRaf = await rafOver(page, 1500);
+		check('with that stretch off screen no animation frame is asked for', offRaf === 0 && (await pulseAt(page)) === null, `${offRaf} frames in 1.5 s`);
+		// All five read: it runs down to "Claim your star".
+		await page.evaluate(() => {
+			const d = window.__cellestial.roots.debug;
+			for (const id of ['systems', 'addons', 'care']) d.open(id);
+			d.close();
+			scrollTo(0, window.__cellestial.roots.anchorY('close'));
+		});
+		const last = [];
+		let f1Hot = false;
+		const t1 = Date.now();
+		while (Date.now() - t1 < 3200) {
+			const p = await pulseAt(page);
+			if (p) last.push(Math.round(p.y));
+			f1Hot ||= await page.evaluate(() => document.querySelector('#roots [data-open-claim]').hasAttribute('data-hot'));
+			await page.waitForTimeout(40);
+		}
+		st = await page.evaluate(() => window.__cellestial.roots.debug.state());
+		check('all five read: the light runs from node 5 down to "Claim your star", whose line answers', st.next === 5 && last.length > 4 && last[0] > where.nodes[4] && Math.max(...last) > where.close - 150 && f1Hot, `y ${last.filter((_, i) => i % 4 === 0).join(', ')} (node 5 at ${Math.round(where.nodes[4])}, F1 at ${Math.round(where.close)})`);
+		check('no page errors', real(errors).length === 0, real(errors).join(' | '));
+		await context.close();
+	}
+}
+
+if (only.has('keys')) {
+	section('keyboard, 1440x900');
+	const { page, errors, context } = await openPage(browser, 'desk', URL);
+	await rootsReady(page);
+	const focused = () =>
+		page.evaluate(() => {
+			const a = document.activeElement;
+			if (!a || a === document.body) return null;
+			const cs = getComputedStyle(a);
+			const inRoots = !!a.closest('#roots');
+			const name = a.matches('[data-ascend]') ? 'E6' : a.matches('.roots-node__bulb') ? `node:${a.closest('.roots-stop').dataset.offer}` : a.matches('[data-open-claim]') ? 'F1' : a.matches('[data-open-contact]') ? 'F2' : a.matches('[data-tile-close]') ? 'close' : a.matches('.roots-tile') ? `tile:${a.id}` : a.tagName.toLowerCase();
+			const r = a.getBoundingClientRect();
+			return { name, inRoots, ring: a.matches(':focus-visible') && cs.outlineStyle !== 'none' && Number.parseFloat(cs.outlineWidth) >= 2, outline: `${cs.outlineWidth} ${cs.outlineStyle} ${cs.outlineColor}`, onScreen: r.bottom > 0 && r.top < innerHeight };
+		});
+	const order = [];
+	const rings = [];
+	for (let i = 0; i < 30; i++) {
+		await page.keyboard.press('Tab');
+		await page.waitForTimeout(120);
+		const f = await focused();
+		if (!f) continue;
+		if (f.inRoots) {
+			order.push(f.name);
+			rings.push(f);
+		}
+		if (f.name === 'F2') break;
+	}
+	check('Tab reaches E6, the five nodes in order, F1, F2, and nothing else in the ground', order.join(' ') === 'E6 node:site node:systems node:app node:addons node:care F1 F2', order.join(' → '));
+	check('each shows a focus ring and is scrolled onto the screen', rings.every((f) => f.ring && f.onScreen), rings.map((f) => `${f.name}: ${f.outline}`).join('; '));
+	// Enter opens, focus goes in; Tab reaches the close button; Escape closes; focus returns.
+	const toNode = async (id) => {
+		await page.evaluate((i) => document.querySelector(`.roots-stop[data-offer="${i}"] .roots-node__bulb`).focus(), id);
+	};
+	await toNode('systems');
+	await page.keyboard.press('Enter');
+	await page.waitForTimeout(700);
+	let s = await tileState(page);
+	check('Enter on a node opens its tile and focus goes into it', openIds(s).join() === 'systems' && s.focus === 'tile:offer-systems', s.focus);
+	await page.keyboard.press('Tab');
+	let f = await focused();
+	check('Tab inside the tile reaches its close button, with a ring', f?.name === 'close' && f.ring, `${f?.name}: ${f?.outline}`);
+	await page.keyboard.press('Tab');
+	f = await focused();
+	check('Tab again goes on to the next node: focus is not trapped', f?.name === 'node:app', f?.name);
+	await page.keyboard.press('Escape');
+	await page.waitForTimeout(400);
+	s = await tileState(page);
+	check('Escape closes the tile and focus returns to its node', openIds(s).length === 0 && s.focus === 'bulb:systems', s.focus);
+	await toNode('care');
+	await page.keyboard.press('Space');
+	await page.waitForTimeout(700);
+	s = await tileState(page);
+	check('Space opens too', openIds(s).join() === 'care' && s.focus === 'tile:offer-care', s.focus);
+	await page.keyboard.press('Tab');
+	await page.keyboard.press('Enter');
+	await page.waitForTimeout(400);
+	s = await tileState(page);
+	check('Enter on the close button closes it and focus returns to its node', openIds(s).length === 0 && s.focus === 'bulb:care', s.focus);
+	// What a screen reader is given: a node closed, then open with its tile.
+	const stop = page.locator('.roots-stop[data-offer="site"]');
+	say('     the accessibility tree of node 1, closed:');
+	for (const line of (await stop.ariaSnapshot()).split('\n')) say(`       ${line}`);
+	await toNode('site');
+	await page.keyboard.press('Enter');
+	await page.waitForTimeout(700);
+	const tree = await stop.ariaSnapshot();
+	say('     and open:');
+	for (const line of tree.split('\n')) say(`       ${line}`);
+	check('open, it is a button "Site" (expanded) and a dialog "Site" with a heading, a "Close" button and the text', /button "Site" \[expanded\]/.test(tree) && /dialog "Site"/.test(tree) && /heading "Site" \[level=2\]/.test(tree) && /button "Close"/.test(tree) && tree.includes('You own it. Forever.'));
+	const whole = await page.locator('#roots').ariaSnapshot();
+	say(`     the ground as a whole: ${whole.split('\n').filter((l) => /^- \w|^  - (button|link)/.test(l)).map((l) => l.trim().replace(/^- /, '')).join(' | ')}`);
+	check('no page errors', real(errors).length === 0, real(errors).join(' | '));
+	await context.close();
+}
+
+if (only.has('phones')) {
+	for (const size of ['phone', 'narrow']) {
+		const vp = size === 'phone' ? '390x844' : '320x568';
+		section(`phones, ${vp}`);
+		const { page, errors, context } = await openPage(browser, size, URL);
+		await rootsReady(page);
+		const v = await page.evaluate(async () => {
+			const out = { sw: document.documentElement.scrollWidth, vw: innerWidth, targets: [] };
+			const add = (name, el) => {
+				const r = el.getBoundingClientRect();
+				out.targets.push({ name, w: Math.round(r.width), h: Math.round(r.height), left: r.left, right: r.right });
+			};
+			add('E6', document.querySelector('#roots [data-ascend]'));
+			for (const b of document.querySelectorAll('.roots-node__bulb')) add(`node ${b.textContent.trim()}`, b);
+			add('F1', document.querySelector('#roots [data-open-claim]'));
+			add('F2', document.querySelector('#roots [data-open-contact]'));
+			window.__cellestial.roots.debug.open('care');
+			await new Promise((r) => setTimeout(r, 500));
+			const tile = document.getElementById('offer-care');
+			add('close', tile.querySelector('[data-tile-close]'));
+			out.font = Number.parseFloat(getComputedStyle(tile.querySelector('p')).fontSize);
+			out.title = Number.parseFloat(getComputedStyle(tile.querySelector('h2')).fontSize);
+			out.tile = { h: tile.offsetHeight, inner: tile.scrollHeight, vh: innerHeight };
+			window.__cellestial.roots.debug.close();
+			// The whole page, top to bottom: never wider than the screen.
+			let widest = 0;
+			for (let y = 0; y < document.documentElement.scrollHeight; y += innerHeight) {
+				scrollTo(0, y);
+				widest = Math.max(widest, document.documentElement.scrollWidth, scrollX);
+			}
+			out.widest = widest;
+			return out;
+		});
+		check('no sideways scroll anywhere down the page', v.sw <= v.vw && v.widest <= v.vw, `page ${v.sw} px wide on a ${v.vw} px screen`);
+		check('every tap target is at least 44 px both ways and whole on the screen', v.targets.every((t) => t.w >= 44 && t.h >= 44 && t.left >= 0 && t.right <= v.vw), v.targets.map((t) => `${t.name} ${t.w}x${t.h}`).join(', '));
+		check('body text at least 16 px', v.font >= 16, `${v.font} px, headings ${v.title} px`);
+		check('the longest tile is no taller than the screen', v.tile.h <= v.tile.vh, `${v.tile.h} px of ${v.tile.vh}${v.tile.inner > v.tile.h + 1 ? `; its ${v.tile.inner} px of text scroll inside it` : ''}`);
+		check('no page errors', real(errors).length === 0, real(errors).join(' | '));
+		await context.close();
+	}
+}
+
+if (only.has('still')) {
+	for (const size of ['desk', 'phone']) {
+		section(`reduced motion, ${size}`);
+		const { page, errors, context } = await openPage(browser, size, null, { reducedMotion: 'reduce' });
+		await page.addInitScript(COUNT_RAF);
+		await page.goto(`${URL}&rm=1`, { waitUntil: 'load' });
+		await rootsReady(page);
+		await page.waitForTimeout(800);
+		const v = await page.evaluate(async () => {
+			const r = window.__cellestial.roots;
+			const out = {};
+			const lit = () => document.querySelectorAll('.roots-node[data-lit]').length;
+			out.grown = { state: r.debug.state().grown, lit: lit() };
+			out.animations = document.getAnimations().length;
+			const nodes = [...document.querySelectorAll('.roots-node')];
+			out.next = nodes.map((n) => n.hasAttribute('data-next'));
+			out.glow = nodes.map((n) => Number(getComputedStyle(n.querySelector('.roots-node__glow')).opacity));
+			out.halo = nodes.map((n) => Number(getComputedStyle(n, '::before').opacity));
+			out.pulse = !!document.querySelector('.roots-net canvas[data-role="pulse"]');
+			// An arrival: no growth, the whole network at once.
+			r.setActive(false);
+			r.setActive(true);
+			const t0 = performance.now();
+			const raf0 = window.__raf;
+			await r.growFrom(innerWidth / 2);
+			out.grow = { ms: performance.now() - t0, lit: lit(), frames: window.__raf - raf0, busy: r.debug.net.debug.busy() };
+			// A tile: open at once, no fade, no glide.
+			const y0 = scrollY;
+			r.debug.open('care');
+			const tile = document.getElementById('offer-care');
+			const cs = getComputedStyle(tile);
+			out.tile = { opacity: cs.opacity, transform: cs.transform, moved: scrollY !== y0 || tile.getBoundingClientRect().bottom <= innerHeight };
+			r.debug.close();
+			out.next2 = nodes.map((n) => n.hasAttribute('data-next'));
+			return out;
+		});
+		const rest = await rafOver(page, 3000);
+		check('the network is whole at once and all five nodes are lit', v.grown.state && v.grown.lit === 5);
+		check('growFrom() does not animate: it resolves at once with everything grown', v.grow.ms < 60 && v.grow.lit === 5 && !v.grow.busy && v.grow.frames === 0, `${v.grow.ms.toFixed(1)} ms, ${v.grow.frames} frames`);
+		check('no travelling light', !v.pulse);
+		check('nothing breathes: no animation is running', v.animations === 0, `${v.animations} animations`);
+		check('the next unread node is marked by a steady, stronger glow', v.next.join() === 'true,false,false,false,false' && v.glow[0] > v.glow[1] + 0.4 && v.halo[0] > v.halo[1] + 0.4, `node 1 glow ${v.glow[0]} and halo ${v.halo[0]}; the others ${v.glow[1]} and ${v.halo[1]}`);
+		check('after a tile is read the mark moves to the next node', v.next2.join() === 'true,false,false,false,false' || v.next2.indexOf(true) === 0, `marked: node ${v.next2.indexOf(true) + 1} (Care was opened last, so the light leads back to node 1)`);
+		check('a tile opens without motion', v.tile.opacity === '1' && (v.tile.transform === 'none' || v.tile.transform === 'matrix(1, 0, 0, 1, 0, 0)') && v.tile.moved, `opacity ${v.tile.opacity}, transform ${v.tile.transform}`);
+		check('at rest no animation frame is asked for', rest === 0, `${rest} frames in 3 s`);
+		check('no page errors', real(errors).length === 0, real(errors).join(' | '));
+		await context.close();
+	}
+}
+
+if (only.has('frames')) {
+	const { launch: again } = await import('./lib.mjs');
+	for (const gpu of [true, false]) {
+		section(`scrolling the whole page at 390x844, CPU slowed 4x, ${gpu ? 'the real GPU' : 'software rendering'}`);
+		const b2 = await again({ gpu });
+		const { page, errors, context } = await openPage(b2, 'phone', null);
+		await page.addInitScript(COUNT_RAF);
+		await page.goto(URL, { waitUntil: 'load' });
+		await rootsReady(page);
+		await page.waitForTimeout(1500);
+		const cdp = await context.newCDPSession(page);
+		await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+		const total = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
+		const measure = async (dir) => {
+			await page.evaluate(() => {
+				window.__d = [];
+				window.__go = true;
+				let last = 0;
+				const tick = (t) => {
+					if (last) window.__d.push(t - last);
+					last = t;
+					if (window.__go) requestAnimationFrame(tick);
+				};
+				requestAnimationFrame(tick);
+			});
+			await cdp.send('Input.synthesizeScrollGesture', { x: 195, y: 420, yDistance: dir * total, speed: 1400, gestureSourceType: 'touch', preventFling: true });
+			return page.evaluate(() => {
+				window.__go = false;
+				const d = window.__d.slice().sort((a, b) => a - b);
+				const sum = d.reduce((a, b) => a + b, 0);
+				return { n: d.length, avg: sum / d.length, p95: d[Math.floor(d.length * 0.95)], max: d.at(-1), over33: d.filter((v) => v > 33.4).length, over50: d.filter((v) => v > 50).length, y: scrollY };
+			});
+		};
+		const down = await measure(-1);
+		const up = await measure(1);
+		for (const [name, r] of [['down', down], ['back up', up]]) {
+			check(`${name}: ${total} px at 1400 px/s`, r.n > 60 && r.avg < 20 && r.over50 <= 2, `${r.n} frames, average ${r.avg.toFixed(2)} ms, 95th percentile ${r.p95.toFixed(1)} ms, worst ${r.max.toFixed(1)} ms, ${r.over33} over 33 ms, ${r.over50} over 50 ms`);
+		}
+		await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+		// At rest with a tile open nothing is asked for; while the light travels, frames are.
+		await page.evaluate(() => {
+			scrollTo(0, 0);
+			window.__cellestial.roots.debug.open('site');
+		});
+		await page.waitForTimeout(900);
+		const still = await rafOver(page, 2000);
+		check('at rest with a tile open: animation frames asked for', still === 0, `${still} in 2 s`);
+		await page.evaluate(() => window.__cellestial.roots.debug.close());
+		const moving = await rafOver(page, 3000);
+		say(`     with the guided light running from node 1 to node 2 and resting: ${moving} frames asked for in 3 s (it travels for about 1.5 s of every 3)`);
+		check('no page errors', real(errors).length === 0, real(errors).join(' | '));
+		await context.close();
+		await b2.close();
+	}
+}
+
 await browser.close();
 say(`\n${failed === 0 ? 'ALL PASS' : `${failed} FAILED`}`);
-if (values.only === 'contract,tiles,chrome,keys,phones,still,nojs,frames') {
+if (values.only === 'contract,tiles,chrome,light,keys,phones,still,nojs,frames') {
 	mkdirSync(join(ROOT, 'refs/roots'), { recursive: true });
 	writeFileSync(join(ROOT, 'refs/roots/measure.txt'), `${lines.join('\n')}\n`);
 }
