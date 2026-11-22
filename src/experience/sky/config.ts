@@ -149,6 +149,12 @@ export const FALL = {
 	/** A star's trail is as long as it falls in this many seconds, and at most `trailMax` of its radii. */
 	trail: 0.14,
 	trailMax: 24,
+	/**
+	 * The star that length is for, px in radius: a phone's. A larger star's trail
+	 * is longer in proportion, so the desktop's stars, half as big again, do not
+	 * drag a trail that looks short on them.
+	 */
+	trailStar: 13,
 	fade: 0.55,
 	timeout: 7,
 } as const;

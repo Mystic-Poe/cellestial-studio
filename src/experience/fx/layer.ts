@@ -312,10 +312,9 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		lastFrame = 0;
 		surface.clear();
 		surface.close();
-		if (warming) {
-			warming = 0;
-			canvas.style.opacity = '';
-		}
+		// (However the warm-up ended, the canvas is never left faint.)
+		warming = 0;
+		if (canvas.style.opacity) canvas.style.opacity = '';
 	};
 
 	const tick = (now: number): void => {
@@ -356,7 +355,9 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		lastFrame = now;
 		// A frame callback can carry a time just before the call that asked for it.
 		tick(Math.max(now, lastTick));
-		if (warming && --warming === 0) endWarm();
+		// The warm-up lasts its few frames and no longer.
+		if (warming > 1) warming--;
+		else if (warming === 1) endWarm();
 		if (!surface.isOpen) return;
 		if (gap > 0 && surface.paced(gap)) render();
 		if (!frameId) frameId = clock.frame(onFrame);

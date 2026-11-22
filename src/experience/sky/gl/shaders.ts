@@ -169,6 +169,7 @@ uniform vec3 uFar;
 uniform vec4 uFall;
 uniform float uMinPx;
 uniform float uTrailMax;
+uniform float uTrailStar;
 uniform float uTime;
 
 varying vec2 vP;
@@ -200,7 +201,7 @@ void main() {
 	float boost = aState.z;
 	float rpx = max(aStar.z, uMinScale) * uBaseR * scale * (1.0 + 0.08 * boost);
 	float reff = max(rpx, uMinPx);
-	float trailPx = min(speed * uFall.w * scale, uTrailMax * reff);
+	float trailPx = min(speed * uFall.w * scale * max(1.0, reff / uTrailStar), uTrailMax * reff);
 
 	vec2 px = position.xy * reff * REACH;
 	if (position.y > 0.0) px.y += trailPx;

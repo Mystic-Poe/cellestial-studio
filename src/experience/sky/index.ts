@@ -798,7 +798,7 @@ export const mount: MountSky = (ctx) => {
 				const t = Math.max(0, elapsed - star.seed * FALL.stagger);
 				const y = layout.h / 2 - (star.y - 0.5 * f.gravity * t * t - cam.y) * scale;
 				const trail = Math.min(
-					f.gravity * t * FALL.trail * quality.trail * scale,
+					f.gravity * t * FALL.trail * quality.trail * scale * Math.max(1, r / FALL.trailStar),
 					FALL.trailMax * r,
 				);
 				if (y + r >= ground) {
