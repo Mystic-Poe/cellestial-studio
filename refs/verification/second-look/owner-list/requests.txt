@@ -1,0 +1,18 @@
+A first visit to "/" made 24 requests: localhost:4615 24
+Pictures, media and fonts asked for:
+  font /_astro/fonts/d95047227dd0a96f.woff2
+  image /cellestial/chrome/c-logo.webp
+  image /cellestial/roots/e4-node-alpha.webp
+  image /cellestial/loader/c-unlit.webp
+  image /cellestial/loader/c-lit.webp
+  image /cellestial/loader/wordmark.webp
+  image /cellestial/loader/wordmark-matte.webp
+  image /cellestial/ui/brass-main.webp
+  image /cellestial/ui/brass-dark.webp
+  image /cellestial/roots/soil-landscape-woven.avif
+  image /cellestial/sky/b3-core.webp
+  image /cellestial/sky/b3-ring.webp
+  image /cellestial/sky/b4-empty.webp
+  image /cellestial/sky/b4-station.webp
+  image /cellestial/sky/b5-lit-add.webp
+From other hosts:

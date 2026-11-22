@@ -1,0 +1,4 @@
+desk: the loader skipped by a key 1 s in: the sky 1502 ms after the skip (2693 ms after navigation)
+   exit button hidden on arriving in the sky: true. Stations reported while flying forward: 1 2 3 4 5 6 7 8 9 10 11 0(button shown); round-complete fired 1 time(s); the button showed after 12 different figures; console errors none
+phone: the loader skipped by a tap 1 s in: the sky 1453 ms after the skip (2721 ms after navigation)
+   exit button hidden on arriving in the sky: true. Stations reported while flying forward: 1 2 3 4 5 6 7 8 9 10 11 0(button shown) 1(button shown); round-complete fired 1 time(s); the button showed after 12 different figures; console errors none

@@ -1,0 +1,10 @@
+desk the message box: the spam check's box none
+desk the message box, five openings: the most near-white in any frame 0.06% at +2342 ms, 0.06% at +2278 ms, 0.06% at +2283 ms, 0.06% at +2279 ms, 0.06% at +2275 ms
+desk the build request: the spam check's box none
+desk the build request, five openings: the most near-white in any frame 0.05% at +2264 ms, 0.05% at +2286 ms, 0.05% at +2260 ms, 0.05% at +2265 ms, 0.05% at +2264 ms
+desk console errors: none
+phone the message box: the spam check's box none
+phone the message box, five openings: the most near-white in any frame 0.17% at +2367 ms, 0.17% at +2288 ms, 0.17% at +2316 ms, 0.17% at +2348 ms, 0.17% at +2322 ms
+phone the build request: the spam check's box none
+phone the build request, five openings: the most near-white in any frame 0.18% at +2326 ms, 0.18% at +2284 ms, 0.18% at +2280 ms, 0.18% at +2290 ms, 0.18% at +2301 ms
+phone console errors: none

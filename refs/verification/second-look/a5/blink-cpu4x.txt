@@ -1,0 +1,14 @@
+desk cpu x4 run 1: sky at 7755 ms; 60 frames round the change; BLINK at -23 ms (3.9 -> 1.4 -> 3.9); errors 0
+desk cpu x4 run 2: sky at 7730 ms; 60 frames round the change; no blink; errors 0
+desk cpu x4 run 3: sky at 7668 ms; 60 frames round the change; BLINK at -24 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x4 run 4: sky at 7667 ms; 59 frames round the change; BLINK at -28 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x4 run 5: sky at 7667 ms; 60 frames round the change; no blink; errors 0
+desk cpu x4 run 6: sky at 7642 ms; 60 frames round the change; no blink; errors 0
+desk cpu x4: a frame without the star in 3 of 6 runs
+phone cpu x4 run 1: sky at 7658 ms; 60 frames round the change; no blink; errors 0
+phone cpu x4 run 2: sky at 7578 ms; 60 frames round the change; BLINK at -22 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x4 run 3: sky at 7601 ms; 60 frames round the change; BLINK at -21 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x4 run 4: sky at 7561 ms; 60 frames round the change; BLINK at -22 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x4 run 5: sky at 7561 ms; 60 frames round the change; no blink; errors 0
+phone cpu x4 run 6: sky at 7555 ms; 60 frames round the change; BLINK at -20 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x4: a frame without the star in 4 of 6 runs

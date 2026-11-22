@@ -1,15 +1,71 @@
 SECOND LOOK — AFTER THE FIXES
 Cellestial Studio redesign, branch redesign-build. An inspector independent of the builders, the first two
-inspectors and the fixer. Begun 2026-11-21. No file of the site was changed. IN PROGRESS: this file is written as
-the work goes (the checkpoint rule); a section marked [to come] has not been done yet.
+inspectors and the fixer. Written 2026-11-21. No file of the site was changed (nothing under src/, public/,
+workers/, scripts/, tools/, and no existing file under refs/). All five parts of the brief are done.
 
-HOW IT IS BEING DONE
-- Production build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port 4615)
-  for everything that is a judgment of what the visitor gets; the dev server on 4614 only for the builders' tools.
-- System Chromium, the real GPU (NVIDIA through ANGLE), 1440x900 and 390x844 (scale 2, mobile, touch).
-- Every picture judged was captured by me from the page as it is now. My scripts are in
-  refs/verification/second-look/tools/, my sheets and logs beside them. refs/verification/fixes.txt was not read
-  before a finding was ruled on.
+HOW IT WAS DONE
+- The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
+  4615) for everything that is a judgment of what the visitor gets. The dev server (port 4614) only for the
+  builders' own sheet tools.
+- System Chromium, the real GPU (NVIDIA RTX 3060 Ti through ANGLE), 1440x900 and 390x844 (scale 2, mobile, touch).
+- Every picture judged was captured by me from the page as it is now, and looked at. Nothing in refs/ was trusted.
+  The builders' tools were run fresh and their output copied to second-look/builders-tools/, their own folders
+  restored with git checkout (git status at the end shows only this report and my folder).
+- Real time means the DevTools screencast (frames as the compositor presents them), every animation frame's time
+  logged in the page, and where it mattered every recorded frame measured, not sixteen picked ones. Where a
+  recording could be doubted (the blink in A5) the page itself was made to read its own canvas back.
+- refs/verification/fixes.txt was read only after each finding had been ruled on from my own captures; where it
+  claims something my evidence contradicts, the finding says so.
+- My scripts: refs/verification/second-look/tools/ (lib.mjs; fall.mjs, fall-cut.mjs; a5.mjs, a5-repeat.mjs,
+  a5-probe.mjs, a5-probe-return.mjs; stars.mjs; b7.mjs, f8.mjs; phone-sky.mjs; flash.mjs; light.mjs;
+  turnstile.mjs; loader-stall.mjs, clock-nav.mjs, clock-slow.mjs; visit.mjs (the first look's walk, copied, its
+  output folder changed, a build request and a longer return added); round.mjs, flight-slow.mjs, misc.mjs,
+  favicon.mjs, net.mjs).
+- Evidence, all under refs/verification/second-look/:
+    fall/         the fall from Virgo, Aries and Sagittarius at both sizes: <size>-<figure>-whole.jpg (every
+                  100 ms), -dense.jpg (every 32 to 42 ms), -cut.jpg (the frames round the hard cut), fall.txt
+                  (every fx.impact call), fall-cut.txt (frame times; the screen's light frame by frame)
+    a5/           the hand-off: <size>-handoff-1/2.jpg, <size>-pieces.jpg, <size>-swap.jpg, <size>-blink.jpg,
+                  a5.txt, blink.txt, blink-cpu4x.txt, blink-probe.txt, blink-probe-summary.txt,
+                  blink-probe-return.txt
+    stars/        the empty and the lit star as they appear and enlarged, beside B4 and B5; stars.txt
+    b7/           all-desk-1.jpg, all-desk-2.jpg, all-phone.jpg, write-<figure>-<size>.jpg, b7.txt, f8.txt,
+                  claim-yours-desk.jpg, claim-yours-phone.jpg
+    phone-sky/    stations-empty.jpg, dense-figures.jpg, cellestial-star.jpg, phone-sky.txt
+    flash/        <size>-from-sky.jpg, <size>-from-roots.jpg, peak-desk.jpg, peak-phone.jpg, flash.txt,
+                  flash-dip.txt
+    loader/       stall-<size>[-cpu4x].jpg, stall.txt, clock-phone.txt, clock-from-navigation.txt,
+                  clock-slow-line.txt
+    roots/        light-desk.jpg, light-phone.jpg, light.txt
+    chrome/       turnstile-desk.jpg, turnstile-phone.jpg, turnstile.txt
+    walk/         desk-01..21 and phone-01..21 (the whole visit in order), still-*.jpg, frames-desk.txt,
+                  frames-phone.txt
+    owner-list/   reduced-motion-<size>.jpg, nojs-<size>.jpg, favicon.jpg, owner-list.txt, round.txt,
+                  flight-slow.txt, requests.txt, favicon.txt
+    builders-tools/  loading/ (reference beside build, 14 moments, both sizes; a5; short), sky/, roots/,
+                  transitions/, chrome/ : the builders' tools' own sheets, made fresh
+    logs/         what each tool printed; pnpm test, lint, typecheck
+- Looked at, each once: fall/ desk-virgo-whole, desk-virgo-dense, desk-virgo-cut, desk-aries-dense,
+  desk-sagittarius-dense, phone-virgo-dense, phone-aries-whole, phone-sagittarius-dense; a5/ desk-handoff-1 and
+  -2, phone-handoff-1, desk-pieces, phone-pieces, phone-swap, desk-blink; stars/ desk-aries-close,
+  phone-aries-close, desk-aries-station; b7/ all-desk-1, all-desk-2, all-phone, write-aries-desk, write-leo-desk,
+  claim-yours-desk; phone-sky/ all three; flash/ desk-from-sky, phone-from-sky, phone-from-roots, peak-desk,
+  peak-phone; loader/stall-desk; roots/light-desk; chrome/turnstile-phone; owner-list/ reduced-motion-desk,
+  nojs-desk, nojs-phone, favicon; walk/ desk-01, -03, -09, -16, -17, phone-03, -05, -10, -11, -14 and
+  still-desk-claim-2-form; builders-tools/ loading/desk-1, desk-2, phone-1, phone-2, short; chrome/logo, closed,
+  menu; roots/pulse-desk, descent-phone, descent-desk-1, tiles-desk, tiles-phone, node; transitions/warp-desk.
+  The other sheets in the folder were made and kept but NOT opened (the remaining figures and sizes of the
+  fall, the 4x-CPU strips, the rest of the walk, builders-tools/sky and the rest of builders-tools): where one of
+  them is the only evidence for a statement, the statement is a number from a log and says so. No ruling below
+  rests on a picture I did not open.
+
+WHAT THE BUILDERS' OWN CHECKS DID WHEN RUN AGAIN (second-look/logs/)
+- tools/chrome/compare.mjs 48 of 48; tools/sky/meaning.mjs 38 of 38; tools/sky/compare.mjs exit 0, and its
+  "introProgress(1) against reset(): 0 pixels differ" at both sizes (finding 19: the tool is right again, and it
+  cannot see the blink below, which lasts one frame of a moving page); loader, roots, strips: exit 0.
+- pnpm build (4 pages), pnpm test (exit 0), pnpm lint (92 files, exit 0), pnpm typecheck (exit 0).
+- git diff a31d2ee HEAD over workers/, src/onboard/, the three scripts, public/admin/, home.json, config.ts:
+  0 lines.
 
 PART 1 — THE 19 FINDINGS OF THE FIRST LOOK
 
@@ -30,8 +86,8 @@ Finding 1 (BLOCKER then) — the fall: one star crashed. RULING: PARTLY. What wa
      light 19.2, +1134 ms 11.6 (40% of the screen's light gone in 11 ms; 23.3 at +1103). Sagittarius 21.8 -> 15.6
      in one frame; phone Virgo 21.5 -> 16.8. Cause, read in src/experience/fx/layer.ts: IMPACTS_MAX = 18, "past
      this many at once the oldest, which is all but spent, makes way". It is not spent: the far stars' forty small
-     impacts all land within 150 ms of each other at the centre and push every large burst out while it is at
-     half its life. So the crash does not grow into the mycelium: it is switched off, and one trunk is left.
+     impacts all land within 150 ms of each other at the centre and push every large burst out while it is 270
+     to 650 ms into its 760 ms. So the crash does not grow into the mycelium: it is switched off, and one trunk is left.
      Fix: do not shift a live burst out. Either merge the far stars' impacts into a few (one per 100 ms at the
      centre), or drop the newest small one when the list is full, or raise the cap and draw the small ones as a
      spot only (no rays, no sparks), so the large bursts live out their 760 ms and fade.
@@ -46,10 +102,12 @@ Finding 1 (BLOCKER then) — the fall: one star crashed. RULING: PARTLY. What wa
      stepped down a level by the end at Virgo and Sagittarius. With the CPU slowed 4x: average 32 ms (30 a second),
      11 to 13 frames over 50 ms, worst 100 to 117 ms. The phone profile holds 16.7 ms unslowed and averages 20 to
      21 ms slowed 4x (worst 50). The first look measured three frames over 34 ms, worst 50, with one burst.
-     Fix: the bursts are drawn on a full-screen 2D canvas with blur glows; draw the small ones cheaply (see a).
+     Fix: the bursts are drawn on a full-screen 2D canvas, rays and sparks for each; draw the small ones cheaply
+     (see a).
 
   fixes.txt on this: "at most 18 play at once (the oldest, nearly spent, makes way)". My evidence contradicts
-  "nearly spent": the bursts thrown out are at about half their life and the brightest things on screen (a). Its
+  "nearly spent": the bursts thrown out are a third to five-sixths through their life and still the brightest
+  things on screen (a). Its
   frame times agree with mine (19.5 ms average, worst 67 to 83 on the desktop).
 
 Finding 6 (MAJOR then) — A5: the star's pieces never became the rings. RULING: PARTLY. The pieces now become the
@@ -68,7 +126,7 @@ Finding 6 (MAJOR then) — A5: the star's pieces never became the rings. RULING:
   - THE POP. a5-repeat.jpg/blink.txt: over ten first visits at each size, a recorded frame with the constellation
     there and Cellestial's star GONE (core and rings; the screen's mean light 3.8 -> 1.4 -> 3.8 on the desktop,
     6.1 -> 2.6 -> 6.1 on the phone) in 5 of 10 runs on the desktop and 6 of 10 on the phone, 15 ms before or 3 ms
-    after the scene becomes "sky" (desk-blink.jpg, phone-blink.jpg, phone-swap.jpg). To rule out the recording, an
+    after the scene becomes "sky" (desk-blink.jpg, phone-swap.jpg). To rule out the recording, an
     in-page probe with nothing recording (a5-probe.mjs: the sky canvas's own middle read back in the same frame
     it was drawn): in 8 of 12 runs the frame before the scene change has the middle of the sky's canvas at 3.8
     (desktop) / 13.9 (phone) where every frame before and after has 156 / 109 (blink-probe-summary.txt). It is
@@ -100,8 +158,8 @@ Finding 4 (MAJOR then) — the empty star does not show its asset. RULING: RESOL
 Finding 2 (MAJOR then) — B7: the words not brass, and a small caption over the exit button on the desktop.
   RULING: RESOLVED on the desktop and in colour; one MINOR left on the phone and one on the desktop.
   Evidence: second-look/b7/ (tools/b7.mjs): all-desk-1.jpg, all-desk-2.jpg, all-phone.jpg (all 146 claims seeded,
-  the camera stood at each figure), write-aries-desk.jpg, write-leo-desk.jpg, write-aries-phone.jpg,
-  write-leo-phone.jpg (the writing recorded in real time), b7.txt.
+  the camera stood at each figure), write-aries-desk.jpg, write-leo-desk.jpg (the
+  writing recorded in real time; the phone's two strips are beside them), b7.txt.
   - Brass: the cooled letters sample #a18674 (desktop) / #9f8573 (phone) with about 12% of their pixels the thin
     blue line; the logo's "studio" samples #a38264 in the same screenshots. It was #95888c. They read as the
     wordmark's brass.
@@ -121,7 +179,7 @@ Finding 2 (MAJOR then) — B7: the words not brass, and a small caption over the
      the figure's bounds before the band above B11.
 
 Finding 8 (MINOR then) — "claim yours" over the meaning. RULING: RESOLVED.
-  Evidence: second-look/b7/f8.txt, claim-yours-desk.jpg, claim-yours-phone.jpg (tools/f8.mjs): five figures seeded
+  Evidence: second-look/b7/f8.txt, claim-yours-desk.jpg (tools/f8.mjs): five figures seeded
   complete one at a time, three taps each at both sizes, 29 taps answered: the label was never over the meaning's
   box (clear by 2 to 303 px).
 
@@ -162,7 +220,7 @@ Finding 3 (MAJOR then) — the teleport flash was not the site's light. RULING: 
   flicker at the swap is still there on the desktop from the sky.
   Evidence: second-look/flash/ (tools/flash.mjs: the real page, the real menu, all four destinations from the sky
   and from the Roots at both sizes, recorded in real time, every recorded frame measured): desk-from-sky.jpg,
-  desk-from-roots.jpg, phone-from-sky.jpg, phone-from-roots.jpg (strips), peak-desk.jpg and peak-phone.jpg (the
+  phone-from-sky.jpg, phone-from-roots.jpg (strips; desk-from-roots.jpg by its numbers), peak-desk.jpg and peak-phone.jpg (the
   brightest frame whole, beside A1 lit whole and close up), flash.txt, flash-dip.txt.
   - Thin lines in blue on black, white only at the hub: at the brightest frame 5.3 to 8.3% of the screen is lit
     (was 25%), a line is a median 2 px wide (was 5), the median pixel of the frame is 4 to 9 of 255 (black; it
@@ -187,4 +245,336 @@ Finding 3 (MAJOR then) — the teleport flash was not the site's light. RULING: 
   recording of the same teleport, every frame measured, contradicts it: a dip to 61% of the peak there, and to
   25% on the other two.
 
-[the other findings: to come]
+Finding 7 (MINOR then) — the guided light is hard to see. RULING: RESOLVED.
+  Evidence: second-look/roots/light-desk.jpg, light.txt (tools/light.mjs, nine seconds in real time), walk/
+  desk-09-tiles-and-light.jpg, builders-tools/roots/pulse-desk.jpg. A white head with a long tail on a trunk that
+  is dimmed ahead of it; it is plainly the brightest thing on its stretch. Each journey takes about 1.1 s of
+  bright head; with the next node below the screen's edge the head is on screen 45 to 48% of the time (the rest
+  is the 0.8 s pause and the part of the journey past the edge). It suggests and never forces: a tile can be
+  opened in any order.
+
+Finding 9 (MINOR then) — the logo is nearer unlit than idle. RULING: RESOLVED, one nit.
+  Evidence: builders-tools/chrome/logo.jpg (the logo enlarged between A1 unlit and A1 lit), closed.jpg, menu.jpg.
+  A blue line now runs along every strut and the node is lit: it stands between the two pictures at both sizes.
+  Nit, MINOR: at 52 px on a 1x desktop the widened lines cover most of each strut, so the emblem reads
+  dusky mauve more than brass with blue lines (closed.jpg, top left). Fix: widen by 1 px, not 2, or lay the
+  lines on at 60%.
+
+Finding 17 (MINOR then) — the logo's link 43 px wide on the phone. RULING: RESOLVED. 44x64 (owner-list.txt).
+
+Finding 10 (MINOR then) — the trunk reads as lightning on a phone. RULING: RESOLVED.
+  Evidence: builders-tools/roots/descent-phone.jpg, tiles-phone.jpg, walk/phone-10-close.jpg. A gently bending
+  cord with branches leaning away like roots; no right-angle kinks.
+
+Finding 11 (MINOR then) — the warp's peak one flat pale field. RULING: RESOLVED.
+  Evidence: builders-tools/transitions/warp-desk.jpg (987 to 1188 ms: black, dense streaks, a flare at the
+  vanishing point), walk/phone-11-warp.jpg (on the narrow screen the flare's haze still covers the upper half
+  for 0.2 s, with the streaks showing through it).
+
+Finding 12 (MINOR then) — the Turnstile box white for a frame. RULING: RESOLVED (not seen in 20 openings).
+  Evidence: second-look/chrome/turnstile.txt, turnstile-phone.jpg (tools/turnstile.mjs: both
+  dialogs opened five times at each size, every frame measured): never more than 0.18% of a frame near-white; a
+  white box would be 1.5% (desktop) to 6% (phone). The widget comes in dark and is there afterwards.
+
+Finding 13 (MINOR then) — the fall only as big as the figure in front; short trails. RULING: PARTLY.
+  The stars of the figures behind now fall and strike too (as points, with small bursts), and the trails are
+  long on the phone (fall/phone-virgo-dense.jpg). Left, MINOR: at a sparse figure it is still four stars and a
+  knot of specks at the middle of the screen (fall/desk-aries-dense.jpg), and on the desktop the trails are
+  short beside the phone's. The far stars' landings are also what makes the white lozenge of finding 1b.
+
+Finding 14 (MINOR then) — the loader's wires and overload against the reference. RULING: RESOLVED to within
+  polish. Evidence: builders-tools/loading/desk-1.jpg, desk-2.jpg, phone-1.jpg, phone-2.jpg (reference beside
+  build at 14 moments, both sizes). The wires at 0.67 and 1.33 s are close (a touch whiter, with less blue glow
+  round them); the overload at 3.0 s blooms; the first arc at 3.67 s is still tamer than the reference's.
+
+Finding 15 (MINOR then) — one long frame at the start of every load. RULING: RESOLVED.
+  Evidence: second-look/loader/stall.txt, stall-desk.jpg (tools/loader-stall.mjs). Unslowed: one frame of 100 ms
+  at 0.3 s on the desktop (the C still dark), none on the phone; the sky's mounting is now two frames of 217 and
+  250 ms at 1.95 and 2.2 s (117 ms on the phone), in the loader's still moment: the recorded picture changes by
+  0.05 to 0.18 grey levels of 255 across them (a still picture). CPU 4x: 217 and 183 ms there, the same.
+  Nothing is seen to freeze. The time is not lost either: see the loader's clock in part 2.
+
+Finding 16 (MINOR then) — the runner's light behind the logo and bars. RULING: RESOLVED.
+  Evidence: builders-tools/chrome/closed.jpg, menu.jpg, roots/descent-desk-1.jpg: the runner starts to the right
+  of the bars at both sizes.
+
+Finding 18 (MINOR then) — E4's cyan beside the trunk's indigo-blue. RULING: NOT RESOLVED (nothing was done, and
+  fixes.txt does not claim it). builders-tools/roots/node.jpg. It comes from the pack. Still MINOR.
+
+Finding 19 (MINOR, a tool) — tools/sky/compare.mjs exits 1. RULING: RESOLVED. Exit 0, 0 pixels differ at both
+  sizes (logs/sky.log).
+
+THE 19 FINDINGS IN ONE TABLE
+ #  | first look | ruling        | evidence (second-look/)                 | what is left, and the fix
+ 1  | BLOCKER    | PARTLY        | fall/*-dense, *-cut, fall.txt, fall-cut | MAJOR: the bursts' light is cut off in one frame
+    |            |               |                                         | (IMPACTS_MAX 18 shifts live bursts out); a white
+    |            |               |                                         | lozenge lies on the ground 0.7 s; one white mass at
+    |            |               |                                         | Sagittarius; 50 frames a second on the desktop
+ 2  | MAJOR      | RESOLVED      | b7/all-*, write-*, b7.txt               | MINOR: phone Libra and Cancer 29 px over the button;
+    |            |               |                                         | desktop Aries, Pisces, Cancer over far points
+ 3  | MAJOR      | PARTLY        | flash/*, flash-dip.txt                  | MINOR: desktop, sky to the ground: peak, dip to 25 to
+    |            |               |                                         | 61%, peak again; a 100 to 117 ms frame at the swap
+ 4  | MAJOR      | RESOLVED      | stars/*-close, *-station, stars.txt     | MINOR: blotchy at 46 px on a 1x screen; the station
+    |            |               |                                         | star is a derived picture (owner to know)
+ 5  | MAJOR ph.  | PARTLY        | phone-sky/*                             | MAJOR (phone): four of Virgo's stars on Cellestial's
+    |            |               |                                         | rings; MINOR: knots in Aquarius, Taurus, Pisces; the
+    |            |               |                                         | wide figures still 20 to 27% of the height
+ 6  | MAJOR      | PARTLY        | a5/*-pieces, *-handoff, blink*.txt      | MAJOR: one frame without Cellestial's star at the
+    |            |               |                                         | scene change, in 8 of 12 probed first visits
+ 7  | MINOR      | RESOLVED      | roots/light-desk, light.txt             | —
+ 8  | MINOR      | RESOLVED      | b7/f8.txt, claim-yours-*                | —
+ 9  | MINOR      | RESOLVED      | builders-tools/chrome/logo, closed      | nit: mauve at 52 px on 1x
+ 10 | MINOR      | RESOLVED      | builders-tools/roots/descent-phone      | —
+ 11 | MINOR      | RESOLVED      | builders-tools/transitions/warp-desk    | —
+ 12 | MINOR      | RESOLVED      | chrome/turnstile.txt                    | —
+ 13 | MINOR      | PARTLY        | fall/desk-aries-dense                   | MINOR: a sparse figure is still a sparse fall
+ 14 | MINOR      | RESOLVED      | builders-tools/loading/desk-1, -2       | the first arc tamer (polish)
+ 15 | MINOR      | RESOLVED      | loader/stall.txt, stall-desk            | —
+ 16 | MINOR      | RESOLVED      | builders-tools/chrome/closed            | —
+ 17 | MINOR      | RESOLVED      | owner-list/owner-list.txt               | —
+ 18 | MINOR      | NOT RESOLVED  | builders-tools/roots/node               | unchanged; from the pack; MINOR
+ 19 | MINOR tool | RESOLVED      | logs/sky.log                            | —
+ Nothing is WORSE than it was. Two things are NEW: the blink at the end of A5 (under 6) and the hard cut in the
+ fall (under 1); both came with the fixes.
+
+PART 2 — WHAT THE FIXES MAY HAVE BROKEN
+The scenes the first look called done are still done.
+- Loading A1 to A4, 14 moments against the reference frames at both sizes (builders-tools/loading/desk-1.jpg,
+  desk-2.jpg, phone-1.jpg, phone-2.jpg): the build is the reference's picture at every moment, to the eye; the
+  rescaled timeline (the reference's 6.2 s played in 5.6) keeps every beat in its place. In real time
+  (walk/desk-01-loader.jpg) it plays as the frozen sheets show. The short version (builders-tools/loading/
+  short.jpg, walk/desk-17-return-loader.jpg): the C already lit, the word written in about a second.
+- The sky mounted at the loader's still moment: no visible freeze or stutter, unslowed or with the CPU slowed 4x
+  (finding 15 above; loader/stall.txt for all four cases, stall-desk.jpg for the picture).
+- The loader's clock, production build, phone profile (loader/clock-phone.txt: tools/loader/measure.mjs, from
+  the loader's mount):   unslowed  full 7.62 s  short 3.55  skip by tap 2.78  by key 2.77  Tab 7.23
+                         CPU 4x    full 7.61    short 3.71  skip 3.13 / 3.09                Tab 7.47
+                         slow 4G   full 7.29    short 3.78  skip 4.79 / 4.77 (sky ready at 3.3 s)  Tab 7.24
+                         both      full 7.70    short 3.82  skip 5.07 / 4.91               Tab 7.53
+  Never under 6, never over 8 by that clock; the short version and the skip work.
+  BUT on the visitor's own clock on a slow line it is at or just over 8 s (loader/clock-slow-line.txt, the
+  page's own times): on slow 4G the server's unlit C is first painted at 0.69 s, the script goes live at 1.61 s,
+  and the sky comes at 8.69 to 8.86 s: the loader's picture is on screen 8.00 to 8.17 s (five visits); with the
+  CPU slowed 4x as well, 8.16 to 8.20 s. Unslowed on a fast line: 7.10 to 7.38 s. fixes.txt says the loader
+  "keeps the time its picture has really been on screen, the server's own unlit C before the script arrived
+  included"; measured, the 0.9 s of unlit C before the script is not made up: the run is as long from the mount
+  (7.1 s) as on a fast line. MINOR, but it is the owner's number: see the list.
+- The Roots: soil, nodes, the five tiles one at a time, the mycelium, the guided light (builders-tools/roots/
+  tiles-desk.jpg, tiles-phone.jpg, descent-desk-1.jpg, descent-phone.jpg, node.jpg, pulse-desk.jpg; walk/
+  desk-09-tiles-and-light.jpg): done, and better for the trunk's new line on the phone and the brighter light.
+  The tiles' words are the addendum's, character for character (owner-list.txt: five titles and five bodies the
+  same: 313, 314, 277, 143, 461 characters).
+- The Close: "Claim your star" large in the brass, "Contact me" small and dark under it, each opens its dialog
+  (walk/phone-10-close.jpg, desk-10; chrome/turnstile-phone.jpg).
+- The warp back (builders-tools/transitions/warp-desk.jpg, walk/phone-11-warp.jpg; no frame over 17 ms in either
+  walk) and the menu (builders-tools/chrome/menu.jpg, 48 checks): done.
+- Broken by the fixes: nothing that was done is undone. New with the fixes: the two faults named above.
+
+PART 3 — THE WHOLE VISIT, IN REAL TIME, PRODUCTION BUILD (walk/*.jpg, frames-desk.txt, frames-phone.txt)
+First visit, desktop / phone.
+- Loader: the sky 7646 / 7532 ms after navigation. It is still the strongest thing on the site and it feels like
+  the reference video.
+- Hand-off: the star breaks, its brass pieces fly to the rings and become them, the letters sink away brass. It
+  is now a made thing and not a flash and a cut; the one-frame blink at its very end is the flaw (finding 6).
+- Flight: forward through Libra, Scorpius, Sagittarius, Capricornus, Aquarius, one burst back; every glide ends
+  on a station; 601 + 854 frames (desktop) and 618 + 891 (phone) with none over 17 ms; the governor at level 0.
+  With the CPU slowed 4x and 6x the phone profile still gives 16.7 ms a frame for 14 s of flying
+  (owner-list/flight-slow.txt), so the governor never had to act here. The empty stars now read as dark spheres
+  veined with brass. The sky away from Virgo is still spare: a handful of stars on black.
+- A tap and its beads (phone-05-tap-beads.jpg): blue beads run the honeycomb's edges to the nearest empty star in
+  about 1.3 s, its rim brightens, "claim yours" stands under it. No long frame.
+- An empty star and its panel: whole within 0.2 s; no long frame.
+- The round and the exit button: hidden on arriving in the sky, there after all twelve figures have been at
+  their stations (owner-list/round.txt, both sizes), 271x52 px, 32 px above the bottom edge.
+- The fall and the crash: every star strikes; the hard cut at about +1.1 s (finding 1). Three frames over 34 ms,
+  worst 67 (desktop); one of 50 ms (phone).
+- The five tiles and the guided light: each tile opens whole and reads cleanly; the light leads on. 1814 / 1818
+  frames in thirty seconds, none over 34 ms.
+- The two closing buttons: each opens its dialog.
+- The return to the sky: the warp, no frame over 17 ms.
+- The four menu teleports: each lands where the spec says ("What we build" the top of the ground; "Claim your
+  star" the closing buttons, scrollY 3304 / 3125; "Contact me" there with the message box open; "The Sky"
+  Virgo). One frame of 67 ms (desktop) / 50 ms (phone) at the landing of sky to "What we build".
+- A build request, /api/contact answered 200 from here (desk-16-claim-send.jpg, still-desk-claim-2-form.jpg):
+  the panel, the form with the star's number carried in it, the spam check passed, Send; the dialog goes, the
+  camera flies to the star, the charge runs down its traces, it flashes and settles lit; its panel says exactly
+  "A site for my bakery, with the week's bread on the first page." and nothing else. After a reload the star
+  is lit in the store and in the sky, and clicked it says the same sentence and nothing else.
+Returning in the same session (the reload): the sky 3708 / 3626 ms after the reload: the C already lit, the word
+written fast, the same hand-off (and the same blink, a5/blink-probe-return.txt: 4 of 6 and 3 of 6); the exit
+button there from the start; the lit star lit; a flight, the fall and the warp as before.
+Console, both walks, start to end: only the Turnstile test widget's own "Blocked script execution in
+'about:blank'" lines. No error of the site's anywhere, in any script I ran.
+Does it hold together as one made thing? Yes: one brass, one family of blue light, one typeface, one panel and
+one button everywhere, and since the fixes the flash, the meaning and the empty star belong to it too. Where it
+still pops: the end of the hand-off (one frame), the fall at about 1.1 s (the light switched off), the flash
+from the sky to the ground on the desktop (a dip). Where it looks unfinished: Cellestial's star on the phone,
+with four dark stars sitting on its rings. It waits nowhere. It stutters nowhere on this machine; the fall on
+the desktop runs at 50 frames a second.
+
+PART 4 — THE OWNER'S LIST, "WHAT DONE LOOKS LIKE", LINE BY LINE
+Loading
+  [done]   the C powers up, electricity writes "Cellestial" and cools to brass-and-blue (builders-tools/loading/*,
+           walk/desk-01-loader.jpg)
+  [partly] 6-8 s (never under 6): 7.1 to 7.7 s everywhere measured from the loader's mount, never under 6; but
+           8.0 to 8.2 s on screen on a slow 4G line, counted from the first paint (loader/clock-slow-line.txt)
+  [done]   skippable by tap / click / key: the sky 1.45 to 1.5 s after a tap or a key one second in
+           (owner-list/round.txt; loader/clock-phone.txt); Tab and the modifier keys do not skip
+  [done]   short version on same-session return: 3.5 to 3.8 s (loader/clock-*.txt, walk/desk-17)
+  [partly] "It must feel like the reference video": it does, through the wordmark. Its last second is now the
+           spec's A5 and good, with one frame without the star at the hand-over (a5/)
+Sky
+  [done]   endless 3D flight through the 12 constellations in the spec's order, real star patterns (round.txt:
+           stations 1 to 11 then 0 again; builders-tools/sky/stations-*; phone-sky/stations-empty.jpg)
+  [done]   faint brass honeycomb the light-beads actually travel (walk/phone-05-tap-beads.jpg; logs/sky.log: no
+           bead more than 0.00 px off its route)
+  [done]   starts empty except Cellestial's star (src/content/stars.json is []; stations-empty.jpg)
+  [done]   any empty star is pickable (phone: every star of the three densest figures takes a tap at its centre,
+           phone-sky.txt; logs/sky.log)
+  [done]   a star is claimed only when a build request is sent, then stays lit (walk, both sizes; the builders'
+           claim checks in logs/sky.log)
+  [done]   a lit star shows exactly what was asked, nothing added (frames-*.txt: the whole panel's text)
+  [done]   "See what holds up the sky" only after one full round (round.txt)
+  [done]   flight smooth on a phone; a governor that scales effects down exists and was not needed even with
+           the CPU slowed 6x (flight-slow.txt)
+  [partly] by his look test (a scene that matches its reference): the empty star, B7, the lit star and the
+           figures now match; on the phone Cellestial's star is partly covered (phone-sky/cellestial-star.jpg)
+Roots
+  [partly] stars fall, crash, and become mycelium: all of them fall, speed up and crash, each with its burst;
+           "become mycelium" is where it fails: the bursts' roots are switched off in one frame (fall/)
+  [done]   underground, 5 nodes in spec order, prices inside the tiles
+  [done]   guided light that suggests but never locks navigation
+  [done]   wording on screen matches the addendum character for character (owner-list.txt)
+Close and chrome
+  [done]   "Claim your star" big, "Contact me" smaller under it, both wired to the existing flows
+  [done]   logo and three-bar menu present throughout (they are hidden while the loader plays: already on the
+           owner's list); the menu's four teleports land on the spec's four destinations (flash.txt, sixteen)
+Accessibility
+  [done]   prefers-reduced-motion: the still sky 60 ms / 32 ms after navigation, no loader, the exit button there,
+           two screenshots 1.5 s apart identical to the pixel, a wheel or a swipe flies nowhere, the exit button,
+           the return and the menu are plain fades (owner-list/reduced-motion-desk.jpg, owner-list.txt for both sizes)
+  [done]   JavaScript off: the logo and "studio", the menu button, five readable tiles (57, 65, 59, 34, 82 words
+           at 17 / 16 px), "Claim your star" and "Contact me" as links to /contact, nothing that needs script
+           shown, no sideways scroll (owner-list/nojs-desk.jpg, nojs-phone.jpg, owner-list.txt)
+Proof it didn't break the business
+  [done]   the build passes; tests, lint and type-check pass; the protected-systems diff against a31d2ee is empty
+  [done]   the contact form still submits (a build request sent with the Worker's answer stubbed 200; the real
+           Worker was not called from here, by the brief); /contact, /start, /start/new and /admin/ answer 200
+Proof it looks right
+  [partly] every scene was screenshot at both sizes and set beside its asset or the spec: Loading A1 to A4, the
+           Roots, the Close, the menu, the warp, B7, the empty star and the flash's light match. A5, the fall,
+           the phone's Cellestial star and the flash's swap on the desktop do not yet, for the reasons listed.
+The owner's rules
+  [kept]   only the pack's assets: every picture the page asks for is under /cellestial/ and derived from the pack
+           by scripts/build-assets.mjs; no request leaves the site's own host on a first visit
+           (owner-list/requests.txt). One derived picture is worth his knowing: b4-station.webp (finding 4).
+  [kept]   no social icons; no sound (grep of src/ and public/ and the built files: nothing); no Work section, no
+           Ownership section; tile copy verbatim; no invented offer or price.
+
+PART 5 — THE TAB ICON
+public/favicon.png (180 px) and public/favicon.ico (32 and 16 px, PNGs inside) are the pack's emblem: scripts/
+build-assets.mjs, chrome(): the registered pair A1_c-emblem_lit.jpg and A1_c-emblem_unlit.jpg blended 60 / 40,
+the lit lines widened as for the logo, cropped square with a margin on the site's black (tabIcon()). Nothing
+else is in it. The page links the PNG, the .ico and the PNG again as the touch icon; /favicon.svg is gone (404).
+At 16 px (owner-list/favicon.jpg, favicon.txt): it can be read as a C, just. It is dim: a quarter of its pixels
+are brighter than L 40, the brightest is L 118 of 255, and the brass has gone to grey-mauve; on a light tab it is
+a black square with a faint C in it. MINOR. Fix: for the 16 and 32 px pictures crop tighter (no margin), use the
+fully lit emblem and lift it (gain about 1.6) so the C's body reaches L 200; keep the 180 px one as it is.
+
+EVERYTHING STILL STANDING BETWEEN THIS BUILD AND THE OWNER'S BAR, WORST FIRST
+
+No BLOCKER is left: nothing breaks one of his rules, and the one blocker of the first look (one star crashed)
+is gone. Three MAJORS stand.
+
+1. MAJOR — The fall: the crash's light is switched off in one frame, about 1.1 s after the press.
+   Evidence: fall/desk-virgo-cut.jpg (+1123 ms: two webs of root-light a third of the screen wide; +1134 ms:
+   gone), fall/fall-cut.txt (the screen's mean light 23.3 -> 19.2 -> 11.6 in two frames at Virgo on the desktop;
+   21.8 -> 15.6 in one at Sagittarius; 21.5 -> 16.8 on the phone), fall/desk-virgo-dense.jpg, desk-aries-dense.jpg,
+   desk-sagittarius-dense.jpg, phone-virgo-dense.jpg; fall/fall.txt (57, 38 and 72 impacts in 0.75 s).
+   Cause: src/experience/fx/layer.ts, IMPACTS_MAX = 18, "the oldest ... makes way": the forty small impacts of
+   the far figures' stars all land within 150 ms and shift every large burst out at half its life.
+   With it: a flat white lozenge on the ground beside the trunk's head for 0.7 s (those forty impacts, all at
+   the middle of the screen); at Sagittarius one solid white mass 250 px wide; and on the desktop 50 frames a
+   second through the fall on this machine (average 19 to 20 ms, worst 67 to 83 ms), 30 with the CPU slowed 4x.
+   Fix: never shift a live burst out. Draw a far star's landing as a small spot with no rays or sparks, outside
+   the cap (or merge them: one per 100 ms); spread the far landings over the width the stars fall across; cap
+   the summed light of overlapping bursts so it cannot clip to flat white; then every large burst lives its
+   760 ms and fades, and the frame time comes down with the ray count. Check by measuring the screen's mean
+   light on every recorded frame (tools/fall-cut.mjs): no frame-to-frame drop over 10%.
+
+2. MAJOR — A5: one frame without Cellestial's star at the instant the sky is handed over.
+   Evidence: a5/phone-swap.jpg, desk-blink.jpg (the constellation there, the star gone, one frame); a5/blink.txt
+   (5 of 10 first visits on the desktop, 6 of 10 on the phone, by recording),
+   a5/blink-probe-summary.txt (8 of 12 by the page reading its own canvas: the middle of the sky's canvas at
+   3.8 where it is 156 the frame before and after), blink-cpu4x.txt (7 of 12 with the CPU slowed 4x),
+   blink-probe-return.txt (also on the short loader of a return, 7 of 12; never after a skip, 0 of 12).
+   Fix: src/experience/sky/index.ts: the frame between the loader's last introProgress(1) and the director's
+   sky.reset() is composed without the intro's pose and before the flight is placed at station 0, so B3 is not
+   drawn. Place the flight at station 0 inside introProgress when t reaches 1 (or keep the intro pose until
+   reset() has run), and add a check that reads the canvas's middle on every frame through the change
+   (tools/a5-probe.mjs does it).
+
+3. MAJOR (phone) — Cellestial's star has four of Virgo's stars drawn over its rings.
+   Evidence: phone-sky/cellestial-star.jpg (device pixels, two moments), stations-empty.jpg (station 1),
+   phone-sky.txt (their centres 43, 50, 51 and 60 px from the star's, its rings reaching 65 px).
+   It is the first screen a phone visitor is handed. Fix: on a portrait screen let Virgo stand nearer (about
+   1.5 times the width, its two ends past the sides) so the nearest stars clear the rings; or hold the star at
+   about 100 px, draw the four nearest stars at 10 px and stop their lines at the rings' edge.
+
+4. MINOR — The flash dips at its peak on the desktop from the sky to the ground. flash/flash-dip.txt,
+   desk-from-sky.jpg ("Contact me" row). 6.2% lit -> 3.8% -> 6.1% ("What we build"); 5.4% -> 1.4% -> 5.4% and
+   5.6% -> 1.4% -> 5.6% (the other two), round a frame of 100 to 117 ms at the swap. Fix: hold the peak by frame
+   count across the swap and do not restart the rise after it; or make the ground ready before the flash starts.
+
+5. MINOR — On a slow line the loader's picture is on screen 8.0 to 8.2 s. loader/clock-slow-line.txt. The
+   0.9 s that the server's unlit C stands before the script arrives is not made up by the plan. Fix: start the
+   loader's clock at the first paint (performance's first-contentful-paint, or a timestamp set by an inline
+   script in the head) and shorten the hold and the hand-off by what has already passed, down to the floors the
+   plan already has; the floor of 6 s stays.
+
+6. MINOR — Phone, three dense figures: stars overlap by up to 59% (Aquarius), 64% (Taurus), 43% (Pisces).
+   phone-sky/dense-figures.jpg, phone-sky.txt. Fix: where two stars of a figure overlap by more than a third,
+   draw both at 0.6 of their distance (not under 9 px); the tap target stays 44 px.
+
+7. MINOR — B7's placement in five places. Phone, Libra and Cancer: 29 px above the exit button
+   (b7/all-phone.jpg). Desktop, Aries, Pisces and Cancer: over the points of the figures further on
+   (b7/write-aries-desk.jpg, all-desk-2.jpg). Fixes under finding 2.
+
+8. MINOR — The wide figures are still a fifth to a quarter of the phone's height (Virgo 20%, Leo 22%, Aquarius
+   23%, Pisces and Aries 26%, Capricornus 27%; phone-sky.txt). The same answer as 3 if more is wanted.
+
+9. MINOR — The tab icon is dim at 16 px (part 5).
+
+10. MINOR — The empty star at its station on a 1x desktop screen: the thickened traces merge into blotches
+    (stars/desk-aries-close.jpg). Fix: thicken by half as much for stars over 40 px across, or pick the mip
+    level so the traces stay lines. And for the owner to know: that star is drawn from a derived picture of B4
+    (its own traces thickened and recoloured in the wordmark's brass), not B4 pixel for pixel.
+
+11. MINOR — The logo reads mauve at 52 px on a 1x screen (finding 9's nit).
+
+12. MINOR — A sparse figure is a sparse fall; desktop trails short (finding 13).
+
+13. MINOR — E4's cyan beside the trunk's indigo-blue (finding 18; from the pack).
+
+14. MINOR — The loader's first arc at 3.67 s is tamer than the reference's (finding 14).
+
+Not looked at, by anyone still: a real phone, a landscape phone, a tablet, an ultrawide screen. Every frame time
+here is from headless Chromium on a desktop GPU; the phone profile is that GPU behind a phone's viewport.
+
+VERDICT
+By the owner's definition (a scene is done when it matches its reference, not when it renders). LOADING is done
+for A1 to A4 at both sizes, holds its 6 to 8 s on every device and line measured from its own start (8.0 to 8.2 s
+on screen on slow 4G), skips, and plays short on a return; A5, its last second, is now the spec's star-drop in
+brass and is NOT done only because the sky draws one frame without Cellestial's star at the hand-over in most
+visits. THE SKY is done on the desktop: the empty star shows its brass and is plainly not a lit one, the meaning
+is brass, large and by its figure, clear of everything, with "Jesus is King." under Leo's; on the PHONE it is not
+done: the stars are sized for the hand and every one can be tapped, but Cellestial's star has four of Virgo's
+stars sitting on its rings, and three dense figures have knots. THE FALL is not done: every star now falls,
+speeds up and strikes with its own burst, which is what the owner asked for, but the crash's light is switched
+off in a single frame instead of becoming the mycelium, and a white smear is left on the ground. THE ROOTS are
+done. THE CLOSE is done. THE CHROME is done: the logo is idle, the menu and its panel are right, and the
+teleport flash is the site's own light (one dip on the desktop from the sky is polish). THE WARP is done.
+REDUCED MOTION and the page without script are done. No rule on assets, copy, sound, social icons or sections is
+broken and the protected systems are untouched. Three majors stand between this build and the owner's bar, each
+with a known cause and a small fix: the cut in the fall, the blink in the hand-off, and Cellestial's star on the
+phone.
