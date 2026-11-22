@@ -3,7 +3,8 @@
 // is opened twice at each size: once as built, once with the station picture
 // (/cellestial/sky/b4-station.webp) answered from an earlier commit, so nothing else differs. Each
 // star is cut from the screenshot pixel for pixel (no JPEG, no resampling), shown as it is and
-// enlarged 6x with hard pixels. Production build, real GPU. Writes stars/side-by-side.png and .txt.
+// enlarged 6x with hard pixels. Production build, real GPU. Writes stars/side-by-side-<size>-<large|small>.png
+// (the largest and the smallest star on screen at Aries and at Taurus) and side-by-side.txt.
 //   node star-side.mjs [--rev c0cacf3]      the commit the "before" picture is taken from
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
@@ -73,14 +74,18 @@ await browser.close();
 const lh = 24, gap = 10;
 const cellW = Math.max(...rows.flatMap((r) => r.cells.map((c) => c.size))) * (Z + 1) + 3 * gap;
 const cellH = Math.max(...rows.flatMap((r) => r.cells.map((c) => c.size))) * Z + lh + 2 * gap;
-const W = 4 * cellW, H = rows.length * cellH;
-const parts = [];
-for (const [j, row] of rows.entries()) for (const [i, cell] of row.cells.entries()) {
-	const left = i * cellW + gap, top = j * cellH + gap;
-	parts.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${cellW - gap}" height="${lh}"><text x="0" y="16" font-family="sans-serif" font-size="13" fill="#ddd">${row.label}: ${cell.label} (as drawn, and x${Z})</text></svg>`), left, top });
-	parts.push({ input: cell.crop, left, top: top + lh });
-	parts.push({ input: await sharp(cell.crop).resize({ width: cell.size * Z, kernel: 'nearest' }).png().toBuffer(), left: left + cell.size + gap, top: top + lh });
+// Four sheets, each under 1600 px: a size, and its largest or its smallest star; before on the left.
+for (const size of ['desk', 'phone']) for (const [k, which] of ['large', 'small'].entries()) {
+	const mine = rows.filter((r) => r.label.startsWith(size));
+	const parts = [];
+	for (const [j, row] of mine.entries()) for (const [i, cell] of row.cells.slice(2 * k, 2 * k + 2).entries()) {
+		const left = i * cellW + gap, top = j * cellH + gap;
+		parts.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${cellW - gap}" height="${lh}"><text x="0" y="16" font-family="sans-serif" font-size="13" fill="#ddd">${row.label}: ${cell.label} (as drawn, and x${Z})</text></svg>`), left, top });
+		parts.push({ input: cell.crop, left, top: top + lh });
+		parts.push({ input: await sharp(cell.crop).resize({ width: cell.size * Z, kernel: 'nearest' }).png().toBuffer(), left: left + cell.size + gap, top: top + lh });
+	}
+	const file = `side-by-side-${size}-${which}.png`;
+	await sharp({ create: { width: 2 * cellW, height: mine.length * cellH, channels: 3, background: '#000' } }).composite(parts).png().toFile(join(dir, file));
+	say(`wrote stars/${file} (${2 * cellW}x${mine.length * cellH}); "before" is the station picture of ${values.rev}`);
 }
-await sharp({ create: { width: W, height: H, channels: 3, background: '#000' } }).composite(parts).png().toFile(join(dir, 'side-by-side.png'));
-say(`wrote stars/side-by-side.png (${W}x${H}); "before" is the station picture of ${values.rev}`);
 writeFileSync(join(dir, 'side-by-side.txt'), `${log.join('\n')}\n`);

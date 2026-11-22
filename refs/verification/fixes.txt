@@ -1027,3 +1027,41 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
     brought to 36, 46 and 58 px; the mean run of brass along a row under 2.5 px, fewer than 18% of
     runs 4 px or longer, brass over 15% of the disc). On the old picture: 2.73, 2.85, 3.24 px.
   Run again with: node scripts/build-assets.mjs modules.
+
+  d. THE LOGO AT 52 px ON A 1x SCREEN (finding 9's nit; closing list 11). DONE.
+  REPRODUCED (tools/chrome/compare.mjs --only sheets; kept as round-2/logo/before/closed.jpg, logo.jpg):
+  top left on the desktop the emblem is a dusky grey-mauve C; the brass of its struts is hardly seen.
+  THE CAUSE, from arithmetic and then measured in the page: the logo's emblem is the pack's pair (60%
+  lit over unlit) with the lit circuit lines found and WIDENED so they survive at logo size
+  (scripts/build-assets.mjs, litLines(): LOGO_LINE = 2 px of the pair's 1400 px frame to every side,
+  laid on at LOGO_CALM = 0.9 in the lines' own blue, #6775b1). On the desktop the emblem is 60 px high:
+  23 px of the frame to one of the screen, so a line widened by 2 px to each side and softened is a
+  good share of a strut's width, and reduced 23 times it is that share of blue mixed into every
+  pixel of the strut. Measured on the production build (round-2/tools/logo-side.mjs, new; the emblem
+  cut from the screenshot pixel for pixel): the struts' mean was #665754, red over blue by 18.4, 21% of
+  their pixels bluish; the pack's FULLY LIT emblem brought to the same height is #66544a, red over
+  blue by 28.2, 7% bluish. The idle logo was bluer than the lit emblem; and changing this one number
+  moves it (below).
+  CHANGED: scripts/build-assets.mjs, LOGO_LINE 2 -> 1 (the brief's first choice; LOGO_CALM is 0.9
+  still). Four pictures were built and looked at at 60 px before choosing (2 px at 0.9, 1 px at 0.9,
+  2 px at 0.6, 1 px at 0.7): 1 px at 0.9 and 2 px at 0.6 come to the same colour (red over blue 23.4
+  and 23.6), and 1 px keeps the line a line with brass on both sides of it, where 0.6 leaves a wide
+  pale one. Rebuilt: public/cellestial/chrome/c-logo.webp, and public/favicon.png (180 px), which is
+  the logo's emblem with a margin and so follows it (its lines 1 px narrower; nothing else of it
+  changed; piece 4b's two small pictures are byte for byte the same).
+  CHECKED AGAIN:
+  - round-2/tools/logo-side.mjs, production build, before and after in ONE run (the "before" page is
+    the same page with the logo's picture answered from commit c0cacf3), between A1 unlit and A1 lit
+    at the same height: round-2/logo/side-by-side-desk.png, side-by-side-phone.png, side-by-side.txt.
+    Desktop, 52x60 px: struts #665754 -> #67554f, red over blue 18.4 -> 23.6, bluish pixels 21% -> 13%
+    (A1 unlit 43.0 and 0%; A1 lit 28.2 and 7%). Phone, 84x96 device px: 21.1 -> 26.7, 27% -> 22% (A1
+    unlit 45.8 and 0%; A1 lit 31.1 and 18%). Looked at, at its real size and enlarged: on the desktop
+    the struts are brass with a blue line down them where they were mauve throughout; on the phone the
+    line is thinner and still plain. It is a small change at 52 px, and it is the right way.
+  - Still visibly between A1 unlit and A1 lit at both sizes (refs/chrome/compare/logo.jpg, rebuilt;
+    copy in round-2/logo/): a blue line along every strut and the node lit, which A1 unlit has not;
+    the node's light and the lines weaker than A1 lit's.
+  - tools/chrome/compare.mjs: 48 checks, 0 failed, 0 page errors (round-2/logs-piece-4/
+    chrome-compare-after-d.log). Its sheets are rebuilt and committed (refs/chrome/compare/: closed,
+    logo, bars, menu), since every one of them shows the logo.
+  Run again with: node scripts/build-assets.mjs chrome.

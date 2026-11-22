@@ -804,8 +804,14 @@ async function tabIcon(emblem, lit, c) {
 	write('favicon.ico', Buffer.concat([head, ...entries.map((e) => e.data)]));
 }
 
-/** How far each lit line of the emblem is widened for the logo, pixels of the pair's frame (1400). */
-const LOGO_LINE = 2;
+/**
+ * How far each lit line of the emblem is widened for the logo, to every side,
+ * pixels of the pair's frame (1400). It was 2: at 60 px high on a 1x screen
+ * (23 pixels of the frame to one of the screen) the lines then covered most of
+ * every strut, and the emblem read dusky mauve, bluer than the pack's fully
+ * lit emblem at that size. At 1 the brass shows on both sides of each line.
+ */
+const LOGO_LINE = 1;
 /** How strongly the widened lines are laid on: "on, but calm". */
 const LOGO_CALM = 0.9;
 
