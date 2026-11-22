@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Round 2, piece 1: which part of the fall costs the frames. The same fall with parts of it switched
 // off in the page (the bursts: fx.impact does nothing; the growth: roots.growFrom does nothing), with
-// the main thread's and the GPU process's busy time from a DevTools trace. Production build, real GPU.
+// the main thread's script and layout time from a DevTools trace (fall-profile.mjs has the GPU process's). Production build, real GPU.
 //   node fall-split.mjs [--size desk] [--fig 0] [--url http://localhost:4615] [--tag split] [--modes all,nofx,nogrow,neither]
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -47,8 +47,7 @@ for (const size of values.size.split(',')) for (const fig of values.fig.split(',
 	const names = new Map();
 	for (const e of events) if (e.ph === 'M' && e.name === 'thread_name') names.set(`${e.pid}:${e.tid}`, e.args.name);
 	const sum = (th, name) => events.filter((e) => e.ph === 'X' && e.name === name && names.get(`${e.pid}:${e.tid}`) === th).reduce((a, e) => a + e.dur / 1000, 0);
-	// the GPU process's busy time in each 200 ms after the press (trace time has its own zero: use the first event after the press)
-	say(`${size} fig ${fig} ${mode}: ${ft.text}; governor ${q}${trace ? `; main RunTask ${sum('CrRendererMain', 'RunTask').toFixed(0)} ms, FunctionCall ${sum('CrRendererMain', 'FunctionCall').toFixed(0)}, Layout+style ${(sum('CrRendererMain', 'Layout') + sum('CrRendererMain', 'UpdateLayoutTree')).toFixed(0)}, Commit ${sum('CrRendererMain', 'Commit').toFixed(0)}; GPU process main RunTask ${sum('CrGpuMain', 'RunTask').toFixed(0)} ms` : ''}`);
+	say(`${size} fig ${fig} ${mode}: ${ft.text}; governor ${q}${trace ? `; in the page's main thread: script (FunctionCall) ${sum('CrRendererMain', 'FunctionCall').toFixed(0)} ms, layout and style ${(sum('CrRendererMain', 'Layout') + sum('CrRendererMain', 'UpdateLayoutTree')).toFixed(0)} ms` : ''}`);
 	await o.context.close();
 }
 writeFileSync(join(dir, `${values.tag}.txt`), `${log.join('\n')}\n`);

@@ -388,26 +388,147 @@ PIECE 1 — THE FALL (second look: finding 1 a to d, finding 13; closing list 1 
     path of its own, and while a line is hot its heat is read every third point, so every third point
     is a new stroke, in each of five passes, for every hot line, in every band on screen, every frame.
 
-  FIXED SO FAR (checkpoint; the final numbers and sheets follow below when every run is in):
-  a. The cut. src/experience/fx/impacts.ts is new: the list of strikes that are playing, with no
-     canvas in it. A strike leaves it at its own end and for no other reason; IMPACTS_MAX and its
-     shift() are gone from layer.ts. Test: src/experience/fx-impacts.test.ts (six tests; sixty strikes
-     inside 200 ms, each on the list in every frame of its own 760 ms and in no other).
-  b, c. The white shapes. A star of a figure further on (nearer than 0.6 of the nearest it is still a
-     burst) now lands as a GLINT (createGlint in impact.ts): a point of light on the ground line and
-     two or three sparks, 420 ms, nothing in the soil, no shock. And strikes share their soft light:
-     the list gives each one a share (`gain`, and `wide` for the light it spreads along the ground)
-     such that a crowd glows like one and a half alone; rays and sparks are not shared, they stay
-     as crisp as alone. A burst with no neighbour is drawn as it always was.
-  d. Frame rate. The largest cost, the Roots' growth: brush() now gathers the stretches of a pass by
-     width and strength, from every line, and strokes each kind once (1,000 to 1,500 strokes a frame,
-     was 2,500 to 9,800). The bursts' sparks are gathered the same way (createSparks), and the dozen
-     strikes of one frame are drawn once, not once each.
-     Then the one long frame at the first strike (67 to 83 ms): it was the browser's graphics process
-     building its drawing programs the first time each kind of mark is asked for (a trace shows a
-     run of shader compiles, 8 to 25 ms each, from the first strike on; a second fall in the same
-     browser has none). Both the bursts and the growth are now drawn once, unseen, at the loader's
-     one still moment (layer.ts warm(), net.ts rehearse()).
-     And the press itself on a slow device: the ground was built a second time, identically, when it
-     came on stage (27 of the 111 ms of the click with the CPU slowed 4x were the rest). The same
-     measurements no longer rebuild the same network (net.ts layout()).
+  WHAT WAS CHANGED, AND WHY EACH THING IS THE CAUSE'S FIX
+
+  a. THE CUT. Cause as the inspector read it, confirmed: layer.ts kept 18 bursts and shifted the oldest
+     out. Now src/experience/fx/impacts.ts holds the list of strikes that are playing (no canvas in
+     it): a strike leaves at its own end and for no other reason. IMPACTS_MAX and the shift() are gone.
+     Test, in node: src/experience/fx-impacts.test.ts, six tests (pnpm test: 102 of 102, was 96). The
+     first lands sixty strikes inside 200 ms and requires each to be on the list in every frame of its
+     own 760 ms and in no other; the others: a strike is there from the moment it is added, bursts
+     and glints each run their own length, a strike alone gives all its light, a crowd of 25 and a
+     crowd of forty glints are shared out.
+
+  b, c. THE WHITE SHAPES. Cause: everything is drawn additively, and nothing limited the sum.
+     - A star of a figure further on now lands as a GLINT (createGlint, impact.ts): a point of light
+       on the ground line, a short hard glint along it and two or three sparks; 420 ms; nothing in the
+       soil, no shock. (A star at least 0.6 as near as the nearest still strikes with a burst, as big
+       as it is near: layer.ts BURST_FROM. In the three falls measured the far stars are 0.07 to 0.39.)
+       Every one still lands: fx.impact is called 57 / 38 / 72 times on the desktop and 57 / 33 / 72 on
+       the phone from Virgo / Aries / Sagittarius, as before: 12 / 4 / 25 bursts, the rest glints.
+     - Strikes share their soft light (impacts.ts shareGlow). Each frame every strike is given a share
+       `gain`: 1 when it has no neighbour, and cap / crowd when its own glow and its neighbours', weighed
+       by how near they are, come to more than the cap (1.5 strikes' worth for bursts, 1.2 for glints;
+       glints share among glints). `wide` is the same over three times the reach, for the light a
+       burst spreads along the ground. In a burst the flash, the white-hot light under the point, the
+       haze round the rays and the white-hot thickening at their roots take `gain`; the blue light
+       soaked into the soil and the shock's skirt take `wide`; the rays themselves, the shock's line
+       and every spark are drawn as they are alone. A burst with no neighbour is drawn exactly as before.
+
+  d. FRAME RATE. Three causes, each measured, each fixed where it was.
+     1. The Roots' growth (the largest cost; see above). brush() in roots/net.ts, while a growth is
+        drawn, no longer strokes each stretch of like width and strength by itself: the stretches of
+        a pass are gathered by width and strength from every line and each kind is stroked once
+        (flush()). Within a pass every stroke is one colour, so the order does not show; the grown
+        network (drawn cool, the old way) is pixel for pixel what it was. Strokes a frame during the
+        growth: 1,000 to 1,500 (was 2,500 to 9,800).
+        The bursts' sparks are gathered the same way (createSparks): 25 bursts' 500 streaks go down
+        as a few dozen strokes; and the strikes that land in one frame are drawn once together, not
+        the whole canvas once for each (layer.ts, a microtask after the sky's frame).
+     2. The one long frame at the first strike (67 to 83 ms on the desktop, 50 to 67 on the phone, in
+        every fall that is the first a browser draws). Cause, from a trace of the GPU process: a run
+        of shader compiles, 8 to 25 ms each, about 140 ms in all, from the first strike on: the first
+        time each kind of mark is asked for, the browser builds the program that draws it, and neither
+        a burst nor a line of the network had ever been drawn before the crash. A second fall in the
+        same browser has none, which is why the second look's phone runs (not the first in their
+        browser) showed 16.7 ms. Fix: both are drawn once beforehand where nobody sees them, at the
+        loader's one still moment (the moment the sky's own start already uses), or at once where no
+        loader plays: fx/layer.ts warm() (seven moments of a burst and three of a glint on the effects
+        canvas at one hundredth of its strength, three frames), roots/net.ts rehearse() (a sample of
+        the grown network and seven moments of a growth into a canvas that is in no document).
+        Tried first and found wanting: the rehearsal as a single pass. It was cut off whenever the
+        ground was measured again under it (fonts arriving), about every second run; it now starts
+        over until it has run through.
+     3. The press itself with the CPU slowed 4x (the longest frame of a slow device: 100 to 117 ms
+        before). 85 of the click's 111 ms were the ground being measured as it came on stage and the
+        whole network being built a second time from the same measurements. net.ts layout() no
+        longer builds the same network twice. The click is 23 ms.
+
+  e. THE TRAILS (finding 13, the minor). The governor was not the cause: quality.trail is 1 at its
+     levels 0 to 2 and the desktop ended the fall at level 1 at worst (now 0). A trail was as long as
+     the star falls in 0.14 s whatever the star's size: 97 px, 0.3 s after it lets go, on both
+     screens, behind a star 13 px in radius on the phone and 17 to 19.5 px on the desktop. Now it is
+     that long for a 13 px star and longer in proportion for a larger one (sky/config.ts
+     FALL.trailStar; the shader and stepFall alike). round-2/fall/desk-trails-before-after.jpg.
+     A sparse figure is still a sparse fall (Aries: four stars, four bursts): no star was invented.
+
+  CHECKED AGAIN (production build, real GPU, the second look's scripts; all in round-2/fall/)
+                                         before                      after
+  the steepest drop of the screen's light between two recorded frames, as a share of the run's peak
+    desktop Virgo / Aries / Sagittarius  22.0 / 5.8 / 17.5 %         3.3 / 3.0 / 3.5 %
+    phone   Virgo / Aries / Sagittarius  13.3 / 5.0 / 9.5 %          1.5 / 1.3 / 1.2 %
+  the widest solid near-white area at least 40 px tall, CSS px (and frames in which it is over 120)
+    desktop Virgo / Aries / Sagittarius  181 (9) / 98 (0) / 613 (23) 120 (0) / 60 (0) / 117 (0)
+    phone                                18 / 3 / 116                3 / 3 / 2
+  the same at least 12 px tall (this also counts the thick lit band along the ground)
+    desktop Virgo / Aries / Sagittarius  663 / 191 / 722             194 / 107 / 356
+    phone                                254 / 57 / 362              66 / 36 / 104
+  frame times, nothing recording, first 2.6 s (average ms; frames over 34 ms; worst ms; governor after)
+    desktop x1, Virgo                    19.7; 5; 83; 1              16.7; 0; 17; 0
+    desktop x1, Aries                    19.0; 3; 83; 0              16.7; 0; 17; 0
+    desktop x1, Sagittarius              18.3; 3; 50; 1              16.7; 0; 17; 0
+    the same, a new browser for each     19.6 / 19.6 / 19.3; 4-5; 83 16.7 / 16.7 / 16.7; 0; 17; 0
+    desktop CPU 4x                       33.1 / 31.9 / 34.4; 17-21;  19.3 / 18.7 / 19.9; 0; 33; 1
+                                         worst 100 to 117
+    the same, a new browser for each     34.0 / 33.1 / 34.9; 100-117 19.3 / 18.9 / 19.6; 0-1; 33-50
+    phone x1                             16.7; 0; 17; 0              16.7; 0; 17; 0
+    the same, a new browser for each     17.0; 1; 67                 16.7; 0; 17; 0
+    phone CPU 4x                         21.2 / 20.5 / 21.2; 1-5; 50 16.7 / 16.7 / 17.3; 0; 17-33
+    the same, a new browser for each     21.7 / 21.3 / 21.7; 3-5; 67 16.8 / 16.7 / 17.5; 0; 17-33
+  ("a new browser for each": fall-cut.mjs --fresh, added for this: every fall is then the first its
+  graphics process draws, as it is for a visitor. fall-cut-A-fresh.txt.)
+  Still true (fall.txt): one roots.growFrom, at the first strike; the first strike 346 to 564 ms after
+  the press, the last 1133 to 1219 ms (CPU 4x: 391 to 604, 1173 to 1293); every run ends in the Roots
+  at scrollY 0 with no console error; the effects canvas is put away when the last strike is over.
+
+  LOOKED AT: desk-virgo-dense.jpg, desk-virgo-whole.jpg, desk-aries-dense.jpg, desk-sagittarius-dense.jpg,
+  phone-virgo-dense.jpg, phone-sagittarius-dense.jpg, and close crops of the ground at Virgo and
+  Sagittarius on the desktop. Every star of the figure in front strikes with its own flash, rays and
+  sparks; the far stars land as a scatter of small sparks at the middle, with no white shape. At
+  Sagittarius the 25 strikes make one dense thatch of crisp rays about 500 px wide with no white
+  mass in it. From +0.8 to +1.3 s the webs of root-light thin and fade evenly while the trunk comes
+  down through the same ground and reaches the first node (+1.0 to +1.1 s); from +1.3 to +1.6 s the
+  trunk, the node and the runner under the surface are what is lit; the trunk's first branches show
+  from +1.6 to +1.7 s on the desktop and from +0.6 s on the phone (where they start nearer the
+  surface). The ground is never dark between, and nothing vanishes: it reads as the crash going
+  into the mycelium.
+  NOT CHANGED, AND SAID PLAINLY: a lit band along the ground line under a crowd (12 to 39 px tall,
+  356 px wide at Sagittarius on the desktop for about half a second) is still near-white: it is the
+  roots of 25 strikes side by side, each drawn crisp. It is not a mass (nowhere 40 px tall and wider
+  than 117 px). Where the trunk's branches begin is the Roots' own network and was not touched.
+
+  WHERE THE TIME GOES NOW (the same three tools; split.txt, profile.txt, ops-desk-virgo.txt)
+  - The GPU process's main thread is busy 1.2 of the 2.6 s (was 2.0 to 2.1); the page's script 600 to
+    640 ms with the profiler on (was 916 to 975); the Roots' brush() 130 ms of self time (was 377 to 407).
+  - Asked of the canvases in the worst frame: the growth 1,050 strokes on the bands and 1,180 on its
+    mask (was 5,450 and 5,040); the bursts 340 strokes and 570 sprites (was 2,650 and 1,840).
+  - With parts switched off, everything on / no bursts / no growth / neither: 16.7 ms each, none over 17.
+
+  THE SUITES, after the last change (dev server, logs in round-2/fall/suites/, every exit 0):
+    tools/loader/measure.mjs 13 of 13 (desktop, real GPU) and 13 of 13 (phone, CPU 4x);
+    tools/sky/measure.mjs 201 of 201; tools/sky/meaning.mjs 38 of 38; tools/sky/meaning-all.mjs 24 of 24;
+    tools/roots/words.mjs 197 of 197; tools/roots/measure.mjs 245 of 245 (and again after the last
+    edit to net.ts); tools/transitions/measure.mjs 148 of 148 (its fall part, 34 of 34, again after
+    the last edit: "12 bursts of 12 at 12 places (and 45 smaller ones for the figures behind); one
+    growth", "the effects canvas is where it belongs", reduced motion "no impact; the network
+    whole"); tools/chrome/compare.mjs 48 of 48. No check was changed.
+    pnpm build (4 pages), pnpm test (102 of 102; the Workers' own 15, 16, 14), pnpm lint (94 files),
+    pnpm typecheck: all pass. The protected systems against c3550fc: 0 lines.
+  SHEETS REBUILT ON PURPOSE (the rest that the suites rewrote were put back):
+    refs/transitions/compare/fall-desk.jpg (looked at) and fall-phone.jpg: the fall as it is now.
+    refs/fx/compare/impact-desk.jpg (looked at), impact-phone.jpg and measure.txt, as THE EFFECTS' OWN
+    SHEETS says (a copy of the checkout with the test page of 8385356, outside it). The burst alone
+    is what it was: against the sheet before, a mean difference of 0.007 of 255 a channel and none
+    over 22 (the sparks' widths now go in steps of 15%). "At rest: 0 frames asked for" still holds
+    there; on the site itself the warm-up asks for three frames once, at the start.
+
+  FOR WHOEVER COMES NEXT
+  - fall-cut.mjs in round-2/tools/ grew options (--url, --part, --figs, --sub, --only, --fresh), does
+    part B from Aries too and measures the white areas; its plain run still writes what it wrote.
+    fall-split.mjs, fall-profile.mjs and fall-ops.mjs are new there. round-2/fall/before/ is the
+    build as it stood at c3550fc, measured the same way.
+  - A "first fall in a browser" is slower than a later one unless measured with --fresh: the
+    graphics process keeps its programs. The second look's phone numbers were of later falls.
+  - The warm-up and the rehearsal cost one frame of 50 to 67 ms at the start of a page that has no
+    loader to hide them (?scene=sky, measured); the sky's governor stayed at level 0 through it in
+    eight openings of eight. Behind the loader they fall in its still moment.

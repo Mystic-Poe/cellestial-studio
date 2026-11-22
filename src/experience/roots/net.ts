@@ -1205,10 +1205,13 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 	let rehearsing = false;
 	let rehearsed = false;
 	let rehearsalTimer = 0;
+	/** How often it has waited or started over: it gives up in the end (a soil picture that never comes). */
+	let rehearsalTries = 0;
 	function rehearse(): void {
 		window.clearTimeout(rehearsalTimer);
 		if (rehearsed || rehearsing) return;
 		if (typeof createImageBitmap !== 'function') return;
+		if (++rehearsalTries > 40) return;
 		// A real growth builds what it needs as it goes: nothing is left to rehearse.
 		if (raf) {
 			rehearsed = true;

@@ -1,0 +1,4 @@
+desk fig 0 all: 155 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +137 ms; governor 0; in the page's main thread: script (FunctionCall) 566 ms, layout and style 51 ms
+desk fig 0 nofx: 155 frames, avg 16.7 ms, p95 16.8, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +245 ms; governor 0; in the page's main thread: script (FunctionCall) 512 ms, layout and style 48 ms
+desk fig 0 nogrow: 155 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +424 ms; governor 0; in the page's main thread: script (FunctionCall) 106 ms, layout and style 30 ms
+desk fig 0 neither: 155 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +535 ms; governor 0; in the page's main thread: script (FunctionCall) 49 ms, layout and style 27 ms

@@ -1,0 +1,42 @@
+stats {"active":true,"grown":true,"open":null,"read":[],"next":0}
+band1440x204.clearRect             total       1 max/frame     1
+band1440x800.clearRect             total     247 max/frame     4
+band1440x800.createRadialGradient  total   24246 max/frame   490
+band1440x800.drawImage             total     708 max/frame     8
+band1440x800.fill                  total     214 max/frame     2
+band1440x800.fillRect              total   24246 max/frame   490
+band1440x800.lineTo                total 1156339 max/frame 20865
+band1440x800.stroke                total   74269 max/frame  1050
+band620x620.clearRect              total      43 max/frame     1
+band620x620.createRadialGradient   total     129 max/frame     3
+band620x620.fillRect               total     129 max/frame     3
+band620x620.lineTo                 total    7247 max/frame   269
+band620x620.stroke                 total    7247 max/frame   269
+fx.clearRect                       total      98 max/frame     2
+fx.createLinearGradient            total    2496 max/frame    96
+fx.drawImage                       total   17765 max/frame   574
+fx.lineTo                          total  202384 max/frame  7436
+fx.stroke                          total   10205 max/frame   340
+off1440x800.clearRect              total       2 max/frame     1
+off1440x800.drawImage              total     712 max/frame     8
+off1440x800.fillRect               total       2 max/frame     1
+off360x200.clearRect               total     367 max/frame     4
+off360x200.createRadialGradient    total     493 max/frame     5
+off360x200.fillRect                total     847 max/frame     9
+off360x200.lineTo                  total 1122731 max/frame 19564
+off360x200.stroke                  total   69552 max/frame  1178
++0: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 0, roots lineTo 0, roots drawImage 0, roots fillRect 0
++200: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 0, roots lineTo 0, roots drawImage 0, roots fillRect 0
++400: frames 12, per frame: fx strokes 13, fx drawImage 14, roots strokes 258, roots lineTo 765, roots drawImage 3, roots fillRect 13
++600: frames 12, per frame: fx strokes 135, fx drawImage 187, roots strokes 1066, roots lineTo 4704, roots drawImage 4, roots fillRect 92
++800: frames 12, per frame: fx strokes 271, fx drawImage 457, roots strokes 1156, roots lineTo 6620, roots drawImage 4, roots fillRect 124
++1000: frames 12, per frame: fx strokes 307, fx drawImage 510, roots strokes 1393, roots lineTo 8407, roots drawImage 6, roots fillRect 135
++1200: frames 12, per frame: fx strokes 113, fx drawImage 242, roots strokes 1402, roots lineTo 7821, roots drawImage 8, roots fillRect 83
++1400: frames 12, per frame: fx strokes 12, fx drawImage 70, roots strokes 1160, roots lineTo 12021, roots drawImage 6, roots fillRect 96
++1600: frames 12, per frame: fx strokes 0, fx drawImage 1, roots strokes 1380, roots lineTo 26304, roots drawImage 8, roots fillRect 220
++1800: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 1236, roots lineTo 37804, roots drawImage 13, roots fillRect 480
++2000: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 1120, roots lineTo 38630, roots drawImage 16, roots fillRect 438
++2200: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 1006, roots lineTo 25713, roots drawImage 16, roots fillRect 243
++2400: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 465, roots lineTo 13079, roots drawImage 12, roots fillRect 121
++2600: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 520, roots lineTo 6659, roots drawImage 12, roots fillRect 44
++2800: frames 12, per frame: fx strokes 0, fx drawImage 0, roots strokes 426, roots lineTo 2000, roots drawImage 11, roots fillRect 13
