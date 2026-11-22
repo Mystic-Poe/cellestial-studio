@@ -80,9 +80,25 @@ Cellestial's rings) are not. `git status` is clean but for the untracked `claude
      `refs/verification/fixes.txt`, "ROUND 2", piece 3; runs in
      `refs/verification/round-2/phone-sky/`, `b7/`, `logs-piece-3/`; the scripts
      `round-2/tools/phone-sky.mjs` (`--size phone|small`), `phone-turn.mjs`, `desk-same.mjs`.
-   - [ ] 4. **Four minors.** B7 over the far figures' points on the desktop; the tab icon dim
-     at 16 px; the empty star's traces blotchy at 46 px on a 1x screen; the logo mauve at
-     52 px on a 1x screen.
+   - [x] 4. **Four minors** `8280bdf`. All four done, each reproduced first and shown beside what
+     it was. B7 on the desktop: the search now counts the points of the four figures further on
+     (a point bars a place within 24 px of the words but is not counted as air, and gives way
+     before the type would be made smaller): 0 points on the words at all twelve where there
+     were 31 (Pisces 24, Aries 6, Cancer 1), all twelve still 54 px; the phone's placement is
+     the same figure for figure. The tab icon: the 16 and 32 px pictures are the pack's fully
+     lit emblem, cropped to the C, lifted until its brass stands at L 200 (brightest L 118 ->
+     230 at 16 px; brass-toned pixels 9% -> 38%). The empty star: its traces are no longer
+     thickened one by one (bundles closed up into bands) but filtered to what a star of 36 to
+     58 px can show; on the 47 px desktop star the brass along a row came in runs 3.08 px long,
+     now 2.00; a test fails on the old picture (`src/experience/sky-station-picture.test.ts`).
+     The logo: its lit lines widened by 1 px, not 2 (it was bluer than the pack's lit emblem at
+     that size: red over blue 18.4 -> 23.6; A1 lit 28.2); 48 of 48. Every suite passes, no
+     check changed. Left: the sky's other sheets still show the old star and logo (piece 5
+     rebuilds them); `favicon.png` (180 px) follows the logo's emblem; the star's picture is
+     derived from B4, which the owner should be told. Record: `refs/verification/fixes.txt`,
+     "ROUND 2", piece 4; runs in `refs/verification/round-2/owner-list/`, `stars/`, `logo/`,
+     `b7/`, `logs-piece-4/`; the scripts `round-2/tools/star-side.mjs`, `logo-side.mjs` (before
+     and after in one run of one build) and `b7.mjs` (far points counted, a desktop verdict).
    - [ ] 5. **Close-out.** Every suite again, every sheet rebuilt and looked at, the
      protected-systems diff, this file brought up to date.
    Left as they are, by the orchestrator's ruling: the loader's first arc being tamer than
