@@ -125,4 +125,66 @@ Finding 8 (MINOR then) — "claim yours" over the meaning. RULING: RESOLVED.
   complete one at a time, three taps each at both sizes, 29 taps answered: the label was never over the meaning's
   box (clear by 2 to 303 px).
 
+Finding 5 (MAJOR on the phone then) — the sky is small on the phone. RULING: PARTLY.
+  Evidence: second-look/phone-sky/ (tools/phone-sky.mjs): stations-empty.jpg (all twelve stations at 390x844, the
+  sky as it starts), dense-figures.jpg (Pisces, Aquarius, Taurus at device pixels), cellestial-star.jpg,
+  phone-sky.txt; b7/all-phone.jpg shows the same twelve with every star lit.
+  - Stars are sized for the hand: radius 13.0 to 16.2 px at every figure (was 8.6); Cellestial's star is 130 px
+    across (was 83). Every star is on screen at every figure, 24 px clear of the sides.
+  - A tap takes the star the finger is on: Pisces 63 taps of 63, Aquarius 33 of 38, Taurus 29 of 31 (every star
+    tapped at its centre, on its free side, and on the side facing a neighbour it overlaps). All seven misses are
+    taps placed inside the overlap of two stars that cover each other by about 60%, where the neighbour's centre
+    is the nearer: no tap at a star's centre or free side ever took another star.
+  WHAT IS LEFT
+  a. MAJOR (phone): Cellestial's star has four of Virgo's stars drawn over its rings (their centres 43 to 60 px
+     from its centre, the rings reaching 65). cellestial-star.jpg: four dark spheres sit on the brass bands like
+     knobs while the rings turn behind them, and the figure's lines run under the rings. It does not look broken
+     (the order is consistent) but it does not look made either: the most important light in the sky, on the
+     first screen a phone visitor is handed, is partly covered. Fix: the two wants cannot both be had with Virgo
+     fitted to the phone's width. Either let Virgo stand nearer on a portrait screen (fit it to about 1.5 times
+     the width and let its two ends run off the sides, as the first look offered), which clears the rings and
+     makes the figure larger too; or keep the fit and hold the star at about 100 px with the four nearest stars
+     drawn smaller (10 px) and their lines stopped at the rings' edge.
+  b. MINOR: in three figures the larger stars overlap deeply. Aquarius: 7 overlapping pairs, the deepest 59% of a
+     star's width (the jar, and the pair at the right end); Taurus: 6 pairs, 64% (the Hyades, and the pair at the
+     horn); Pisces: 14 pairs, 43% (both fishes read as strings of beads, the ring still shows its hole);
+     Sagittarius 5 pairs (30%), Scorpius 2 (20%). No star is hidden and every one can be picked, but the knots in
+     Aquarius and Taurus read as lumps. Fix: where two stars of a figure would overlap by more than a third,
+     draw both smaller (radius = 0.6 of their distance, not under 9 px; the 44 px tap target stays).
+  c. MINOR: the wide figures are as small as they were, only their stars are larger: Virgo fills 20% of the
+     screen's height, Leo 22%, Aquarius 23%, Pisces and Aries 26%, Capricornus 27% (phone-sky.txt). With the
+     larger stars this now reads as a figure across a tall dark screen and not as a thin band of specks; it is
+     the same answer as (a) if more is wanted.
+  fixes.txt on this: says what it costs (the overlaps) and that the stars are drawn over the rings; nothing in it
+  is contradicted. It calls the finding "FIXED as ruled"; by the look, (a) is what the ruling bought.
+
+Finding 3 (MAJOR then) — the teleport flash was not the site's light. RULING: PARTLY. The light is right now; the
+  flicker at the swap is still there on the desktop from the sky.
+  Evidence: second-look/flash/ (tools/flash.mjs: the real page, the real menu, all four destinations from the sky
+  and from the Roots at both sizes, recorded in real time, every recorded frame measured): desk-from-sky.jpg,
+  desk-from-roots.jpg, phone-from-sky.jpg, phone-from-roots.jpg (strips), peak-desk.jpg and peak-phone.jpg (the
+  brightest frame whole, beside A1 lit whole and close up), flash.txt, flash-dip.txt.
+  - Thin lines in blue on black, white only at the hub: at the brightest frame 5.3 to 8.3% of the screen is lit
+    (was 25%), a line is a median 2 px wide (was 5), the median pixel of the frame is 4 to 9 of 255 (black; it
+    was lifted to slate blue), 0.4 to 0.8% of the frame is near-white and that is the hub and its rings. The
+    lines are a paler blue than the emblem's (their bright cores average #9eb6e2 against A1's #5178c2), which
+    at the flash's peak the spec allows. Right-angle traces and ring nodes; it now belongs to the site.
+  - All sixteen land where the spec says (scene and scrollY in flash.txt; "Contact me" with its box open).
+  - No frame shows the page through at the swap: the frames either side of the peak are lines on black. The sky
+    is seen under the lines while the flash comes up and the destination while it goes, which is the fade.
+  WHAT IS LEFT, MINOR
+  a. Desktop, from the sky to each of the three places on the ground: the flash reaches its peak, DIPS, and
+     comes back. flash-dip.txt: "What we build" 6.2% lit, down to 3.8% at +439 ms, back to 6.1% at +542;
+     "Claim your star" 5.4% -> 1.4% at +386 -> 5.4% at +473; "Contact me" 5.6% -> 1.4% at +383 -> 5.6% at +477
+     (desk-from-sky.jpg, the "Contact me" row: +337 bright, +408 dim with the hub a dark ring, +489 bright). It
+     reads as two flashes. It follows the one long frame of the swap (100 to 117 ms at about +310 ms, flash.txt).
+     From the Roots, and on the phone, the peak is level (never under 80% of itself).
+     Fix: the flash's clock must not run on through the frame the swap blocks, and must not restart its rise
+     after it: hold the peak by frame count across the swap (or prepare the Roots before the flash starts, so the
+     swap is not a 100 ms frame), then fade once.
+  fixes.txt on this: "The peak is level for a tenth of the flash to either side of the swap, with no flicker in
+  it, so the frame the swap takes shows no dip", checked on sky to "What we build" with sixteen frames. My
+  recording of the same teleport, every frame measured, contradicts it: a dip to 61% of the peak there, and to
+  25% on the other two.
+
 [the other findings: to come]

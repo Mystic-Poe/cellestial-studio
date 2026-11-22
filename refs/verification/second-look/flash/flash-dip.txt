@@ -1,0 +1,17 @@
+The flash's light through its peak, from flash.txt (the share of the frame brighter than L 110, per recorded frame). A DIP is a frame under 75% of the peak between two frames at 90% of it.
+desk sky -> "What we build": peak 6.2% lit; at or above half of it from +144 to +555 ms; between the first and last frames at 90% of the peak (+194..+542) the lowest frame is 3.8% at +439 ms (61% of the peak)  <-- DIP
+desk sky -> "Claim your star": peak 5.4% lit; at or above half of it from +145 to +495 ms; between the first and last frames at 90% of the peak (+196..+478) the lowest frame is 1.4% at +386 ms (26% of the peak)  <-- DIP
+desk sky -> "Contact me": peak 5.6% lit; at or above half of it from +156 to +539 ms; between the first and last frames at 90% of the peak (+206..+506) the lowest frame is 1.4% at +383 ms (25% of the peak)  <-- DIP
+desk sky -> "The Sky": peak 6.8% lit; at or above half of it from +146 to +312 ms; between the first and last frames at 90% of the peak (+212..+279) the lowest frame is 6.6% at +212 ms (97% of the peak)
+desk roots -> "What we build": peak 6.6% lit; at or above half of it from +149 to +378 ms; between the first and last frames at 90% of the peak (+198..+376) the lowest frame is 6.1% at +376 ms (92% of the peak)
+desk roots -> "Claim your star": peak 6.2% lit; at or above half of it from +152 to +380 ms; between the first and last frames at 90% of the peak (+202..+346) the lowest frame is 5.9% at +202 ms (95% of the peak)
+desk roots -> "Contact me": peak 5.3% lit; at or above half of it from +143 to +399 ms; between the first and last frames at 90% of the peak (+210..+363) the lowest frame is 5.2% at +210 ms (98% of the peak)
+desk roots -> "The Sky": peak 6.1% lit; at or above half of it from +141 to +342 ms; between the first and last frames at 90% of the peak (+208..+309) the lowest frame is 5.5% at +309 ms (90% of the peak)
+phone sky -> "What we build": peak 7.2% lit; at or above half of it from +113 to +429 ms; between the first and last frames at 90% of the peak (+229..+412) the lowest frame is 6.2% at +351 ms (86% of the peak)
+phone sky -> "Claim your star": peak 7.0% lit; at or above half of it from +115 to +581 ms; between the first and last frames at 90% of the peak (+232..+414) the lowest frame is 5.6% at +351 ms (80% of the peak)
+phone sky -> "Contact me": peak 7.7% lit; at or above half of it from +115 to +797 ms; between the first and last frames at 90% of the peak (+232..+398) the lowest frame is 6.3% at +351 ms (82% of the peak)
+phone sky -> "The Sky": peak 8.3% lit; at or above half of it from +197 to +798 ms; between the first and last frames at 90% of the peak (+230..+315) the lowest frame is 7.9% at +230 ms (95% of the peak)
+phone roots -> "What we build": peak 7.8% lit; at or above half of it from +196 to +364 ms; between the first and last frames at 90% of the peak (+229..+329) the lowest frame is 7.3% at +229 ms (94% of the peak)
+phone roots -> "Claim your star": peak 6.3% lit; at or above half of it from +197 to +798 ms; between the first and last frames at 90% of the peak (+230..+614) the lowest frame is 0.4% at +397 ms (6% of the peak)  <-- DIP
+phone roots -> "Contact me": peak 7.6% lit; at or above half of it from +179 to +797 ms; between the first and last frames at 90% of the peak (+229..+328) the lowest frame is 7.0% at +328 ms (92% of the peak)
+phone roots -> "The Sky": peak 7.9% lit; at or above half of it from +180 to +798 ms; between the first and last frames at 90% of the peak (+229..+314) the lowest frame is 7.2% at +229 ms (91% of the peak)
