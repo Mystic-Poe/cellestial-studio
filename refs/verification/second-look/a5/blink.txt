@@ -1,0 +1,22 @@
+desk cpu x1 run 1: sky at 7629 ms; 60 frames round the change; BLINK at -14 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x1 run 2: sky at 7325 ms; 60 frames round the change; BLINK at 3 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x1 run 3: sky at 7323 ms; 60 frames round the change; BLINK at -12 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x1 run 4: sky at 7220 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 5: sky at 7195 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 6: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 7: sky at 7218 ms; 60 frames round the change; BLINK at 3 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x1 run 8: sky at 7196 ms; 60 frames round the change; BLINK at -12 ms (3.8 -> 1.4 -> 3.8); errors 0
+desk cpu x1 run 9: sky at 7187 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 10: sky at 7174 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1: a frame without the star in 5 of 10 runs
+phone cpu x1 run 1: sky at 7348 ms; 60 frames round the change; BLINK at -15 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 2: sky at 7273 ms; 60 frames round the change; BLINK at 2 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 3: sky at 7192 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 4: sky at 7189 ms; 60 frames round the change; BLINK at -13 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 5: sky at 7193 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 6: sky at 7214 ms; 60 frames round the change; BLINK at 2 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 7: sky at 7192 ms; 60 frames round the change; BLINK at 3 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 8: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 9: sky at 7193 ms; 60 frames round the change; BLINK at 3 ms (6.1 -> 2.6 -> 6.1); errors 0
+phone cpu x1 run 10: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1: a frame without the star in 6 of 10 runs

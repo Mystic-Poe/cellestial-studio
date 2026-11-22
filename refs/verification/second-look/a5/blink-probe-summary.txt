@@ -1,0 +1,13 @@
+In-page probe (no recording): light of the sky canvas's middle 96 px, frame by frame, round the scene change. A DIP is a frame drawn without Cellestial's star (ms from the frame the scene became 'sky', scene, light).
+desk run 1: DIP [(-17, 'loading', 3.8)] (centre light otherwise 157.9)
+desk run 2: DIP [(-17, 'loading', 3.8)] (centre light otherwise 157.9)
+desk run 3: DIP [(-17, 'loading', 3.8)] (centre light otherwise 157.9)
+desk run 4: no dip (centre light otherwise 158.2)
+desk run 5: no dip (centre light otherwise 158.2)
+desk run 6: no dip (centre light otherwise 157.9)
+phone run 1: DIP [(-17, 'loading', 13.9)] (centre light otherwise 109.2)
+phone run 2: DIP [(-17, 'loading', 13.9)] (centre light otherwise 109.2)
+phone run 3: DIP [(-17, 'loading', 13.9)] (centre light otherwise 109.2)
+phone run 4: no dip (centre light otherwise 109.2)
+phone run 5: DIP [(-17, 'loading', 13.9)] (centre light otherwise 109.2)
+phone run 6: DIP [(-17, 'loading', 13.9)] (centre light otherwise 109.2)

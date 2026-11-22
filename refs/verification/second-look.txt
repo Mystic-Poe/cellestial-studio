@@ -48,4 +48,81 @@ Finding 1 (BLOCKER then) — the fall: one star crashed. RULING: PARTLY. What wa
      21 ms slowed 4x (worst 50). The first look measured three frames over 34 ms, worst 50, with one burst.
      Fix: the bursts are drawn on a full-screen 2D canvas with blur glows; draw the small ones cheaply (see a).
 
+  fixes.txt on this: "at most 18 play at once (the oldest, nearly spent, makes way)". My evidence contradicts
+  "nearly spent": the bursts thrown out are at about half their life and the brightest things on screen (a). Its
+  frame times agree with mine (19.5 ms average, worst 67 to 83 on the desktop).
+
+Finding 6 (MAJOR then) — A5: the star's pieces never became the rings. RULING: PARTLY. The pieces now become the
+  rings, in brass, with no white wash; but in most runs the sky draws ONE FRAME WITHOUT CELLESTIAL'S STAR at the
+  very end of the hand-off: a pop.
+  Evidence: second-look/a5/ (tools/a5.mjs, a5-repeat.mjs, a5-probe.mjs; a first visit to "/" on the production
+  build, recorded in real time, every recorded frame measured).
+  - desk-pieces.jpg, phone-pieces.jpg (every other frame, enlarged), desk-handoff-1/2.jpg, phone-handoff-1/2.jpg:
+    the little star whitens and breaks into about nine shards of brass (pale where they turn to the light, never
+    flat white); they sweep out on bends, a blue-white core is left where the star was and travels to the middle
+    of the screen as the view pulls in; the shards swing in and land on three ellipses round it (-850 to -750 ms
+    before the scene change), the sky's rings come up under them with the shards still riding the bands, and the
+    rings turn. The letters stay brass while they sink and fade. This is what the spec describes.
+  - No white wash: a5.txt. At no frame of the hand-off is more than 0.21% (desktop) / 0.33% (phone) of the screen
+    near-white, and that is the core. Mean light never moves by more than a unit between two frames... except:
+  - THE POP. a5-repeat.jpg/blink.txt: over ten first visits at each size, a recorded frame with the constellation
+    there and Cellestial's star GONE (core and rings; the screen's mean light 3.8 -> 1.4 -> 3.8 on the desktop,
+    6.1 -> 2.6 -> 6.1 on the phone) in 5 of 10 runs on the desktop and 6 of 10 on the phone, 15 ms before or 3 ms
+    after the scene becomes "sky" (desk-blink.jpg, phone-blink.jpg, phone-swap.jpg). To rule out the recording, an
+    in-page probe with nothing recording (a5-probe.mjs: the sky canvas's own middle read back in the same frame
+    it was drawn): in 8 of 12 runs the frame before the scene change has the middle of the sky's canvas at 3.8
+    (desktop) / 13.9 (phone) where every frame before and after has 156 / 109 (blink-probe-summary.txt). It is
+    drawn, it is one frame (16 ms), and it is the hero star at the moment the visitor is handed the sky.
+    Where to look: the frame between the loader's last sky.introProgress(1) and the director's sky.reset()
+    (src/experience/sky/index.ts compose(): with introT at 1 introOn() is false, so B3 is no longer drawn at the
+    intro's free pose but "in the next Virgo layer ahead", b3.layer, which for that one frame is null or the
+    Virgo twelve layers on). Fix: make introProgress(1) and reset() the same pose in the same frame (place the
+    flight at station 0 inside introProgress when t reaches 1, or have the director call reset() in the frame
+    the loader reports 1), and add a test that reads the canvas's middle on every frame through the change.
+  fixes.txt on this: "Not yet re-measured in real time." It was not, and the frozen fractions cannot show the blink.
+
+Finding 4 (MAJOR then) — the empty star does not show its asset. RULING: RESOLVED.
+  Evidence: second-look/stars/ (tools/stars.mjs): desk-aries-close.jpg, phone-aries-close.jpg (as it appears,
+  enlarged, beside B4; a lit star the same, beside B5), desk-aries-station.jpg (two of Aries lit, whole screen),
+  stars.txt.
+  - The brass traces show at the real size at both sizes: 22 to 24% of the disc is brass (mean #726150), on a dark
+    sphere (#2e2822); the rim is a thin dim blue-grey line (mean #42434a), no longer the bright steel ring. B4
+    itself reduced to the same size shows no trace at all (last cell of the sheets), so the pack's picture could
+    not do this unaided.
+  - Plainly different from a lit star at a glance: lit is a blue sphere (#356085) with a blue halo, empty a dark
+    brass-veined one.
+  Left, MINOR: on a 1x desktop screen (46 px across) the thickened traces merge into brass blotches, more marbled
+  than circuit; on the phone's 2x screen they read as traces. And a thing for the owner to know, not a fault: the
+  star at its station is drawn from a DERIVED picture, public/cellestial/sky/b4-station.webp, made by
+  scripts/assets/sky.mjs from the pack's B4: its own traces found, thickened, and recoloured in the wordmark's lit
+  brass (#d5ae88), the sphere lifted. Nothing is drawn that B4 does not have, but it is not B4 pixel for pixel.
+
+Finding 2 (MAJOR then) — B7: the words not brass, and a small caption over the exit button on the desktop.
+  RULING: RESOLVED on the desktop and in colour; one MINOR left on the phone and one on the desktop.
+  Evidence: second-look/b7/ (tools/b7.mjs): all-desk-1.jpg, all-desk-2.jpg, all-phone.jpg (all 146 claims seeded,
+  the camera stood at each figure), write-aries-desk.jpg, write-leo-desk.jpg, write-aries-phone.jpg,
+  write-leo-phone.jpg (the writing recorded in real time), b7.txt.
+  - Brass: the cooled letters sample #a18674 (desktop) / #9f8573 (phone) with about 12% of their pixels the thin
+    blue line; the logo's "studio" samples #a38264 in the same screenshots. It was #95888c. They read as the
+    wordmark's brass.
+  - Large and by the figure on the desktop: 54 px type at all twelve, standing in free room inside or beside the
+    figure (b7.txt: nearest star's edge 93 to 145 px away, no line of the figure crossed, 96 to 670 px above the
+    exit button, clear of the logo and menu at every figure). None is a caption to the button any more.
+  - Written by lightning, cooling into brass: a bolt from a star of the figure writes the letters left to right in
+    blue-white in about 0.9 s, and each has cooled to brass with its blue line by about 1.4 s
+    (write-aries-desk.jpg). "Jesus is King." is written as a second line under Leo's, in the same type, after it.
+  Left, MINOR:
+  a. Desktop, Aries, Pisces and Cancer: the free room chosen is the middle of the screen, where the stars of the
+     figures further on show through as points; a few sit against the letters (write-aries-desk.jpg, the "b";
+     all-desk-2.jpg, Cancer: Virgo's far star at the "H"). Fix: count the far layers' points as things to keep
+     clear of, or dim them under the words.
+  b. Phone, Libra and Cancer (the two tall figures): the words are 29 px above the exit button, as they were
+     (all-phone.jpg); there is open room beside both figures. Fix: on a narrow screen try the free room inside
+     the figure's bounds before the band above B11.
+
+Finding 8 (MINOR then) — "claim yours" over the meaning. RULING: RESOLVED.
+  Evidence: second-look/b7/f8.txt, claim-yours-desk.jpg, claim-yours-phone.jpg (tools/f8.mjs): five figures seeded
+  complete one at a time, three taps each at both sizes, 29 taps answered: the label was never over the meaning's
+  box (clear by 2 to 303 px).
+
 [the other findings: to come]
