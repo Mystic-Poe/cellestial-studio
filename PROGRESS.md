@@ -14,17 +14,15 @@
 
 ## Exact next step
 
-**Round 2 is done (22 Nov). Next: a third look (the orchestrator launches it), then the
-owner's decisions.** The second look (21 Nov, `refs/verification/second-look.txt`; its evidence
-and scripts under `refs/verification/second-look/`) found no blocker, three majors and eleven
-minors. Round 2's five pieces fixed the three majors (the fall's light cut off in one frame,
-the frame without Cellestial's star at the hand-over, four of Virgo's stars on Cellestial's
-rings on the phone) and numbers 4 to 11 of its closing list, with the short desktop trails
-of 12; the rest of 12, and 13 and 14, were left by the orchestrator's ruling (below). Every
-suite passes on the last build, the protected-systems diff prints nothing, and what each of
-the second look's scripts gives now is in "Final verification", part "Round 2". No inspector
-has looked since: that is the third look. `git status` is clean but for the untracked
-`claude-vault/` (local notes, never part of this build), and the branch is pushed.
+**The third look is done (22 Nov): at the owner's two sizes every scene is done, with no
+blocker and nothing major. Round 3 is running: it puts right the one major the third look
+found OUTSIDE those sizes (a phone held on its side) and six minors. Then a fourth, narrow
+look, then the owner's decisions.** The third look (`refs/verification/third-look.txt`; its
+evidence and scripts under `refs/verification/third-look/`) ruled every item round 2 worked
+on resolved (the three majors of the second look and the eight minors round 2 took on), found
+nothing that round 2 undid, and lists what still stands at its end. `git status` is clean but
+for the untracked `claude-vault/` (local notes, never part of this build), and the branch is
+pushed.
 
 0. **Round 2: done, all five boxes ticked (22 Nov).** Five fixers, ONE AFTER ANOTHER, one
    piece each. Each records what it did in `refs/verification/fixes.txt` under "ROUND 2" and
@@ -121,23 +119,49 @@ has looked since: that is the third look. `git status` is clean but for the untr
    the reference's (finding 14: polish; the loader is the strongest scene and is not reopened
    for it); the node's cyan beside the trunk's blue (finding 18: both from the pack; the
    owner's); a sparse figure giving a sparse fall (the sky as it is; no star is invented).
-1. **A third look** at what round 2 changed (the fall, A5, the phone's sky, the flash from
-   the sky to the ground, the loader's clock on a slow line, the four minors), by an
-   inspector who built none of it, on the production build at both sizes, with the second
-   look's scripts. Anything it still calls a major is fixed before the build is called
-   finished. Round 2's five boxes are ticked: this is the next thing to do. LAUNCHED 22 Nov by
-   the orchestrator: the brief is `refs/briefs/third-look.js` (one inspector, one workflow); it
-   writes `refs/verification/third-look.txt` and its evidence under
-   `refs/verification/third-look/`, with its own copy of the measuring scripts in
-   `refs/verification/third-look/tools/` (round 2's, writing only under `third-look/`; a short
-   phone, 375x667, added as `SIZES.short`). It changes no file of the site. If it is cut off,
-   launch the same brief again: it reads its own report and goes on from where it stopped. When
-   it reports: read its closing list; a BLOCKER or MAJOR gets one more bounded fix and a
-   re-check; otherwise the final report to the owner. For that inspector
-   to know: `tools/loader/measure.mjs` on the production build takes `--only
+1. **The third look: done (22 Nov), `8724ef5`.** One inspector who built none of it, on the
+   production build, in two runs (the first was cut off by the usage limit after part 1). Its
+   verdict: Loading, the Sky (the desktop and the upright phone), the fall, the Roots, the
+   Close, the chrome, the warp, reduced motion and the no-script page are done by the owner's
+   definition at 390x844 and 1440x900; all three majors of the second look and the eight
+   minors round 2 took on are resolved; every suite passes; the protected-systems diff prints
+   nothing. What it found standing: ONE MAJOR outside the owner's sizes (on a phone held on
+   its side the stars run under the exit button, and one of them cannot be taken) and six
+   minors (Leo's meaning written across a star on a short phone, 375x667; a skip pressed
+   before the loader's script has arrived is lost on a slow line; the unlit C seen arriving
+   in halves on a slow line; "claim yours" 5 px from the meaning at Aries and Taurus on the
+   desktop; one knot of two stars on the desktop; a note about console warnings on the debug
+   hooks). The report: `refs/verification/third-look.txt` (the closing list is at its end).
+   The brief: `refs/briefs/third-look.js`.
+1b. **Round 3: RUNNING (launched 22 Nov by the orchestrator).** Four fixers, ONE AFTER
+   ANOTHER, one piece each, as in round 2. Each records what it did in
+   `refs/verification/fixes.txt` under "ROUND 3" and ticks its line here in its last commit.
+   The briefs are `refs/briefs/fix-round-3.js`: one workflow, the pieces in order (`args: {
+   only: [2, 3, 4] }` runs only those pieces: use it to go on after a cut-off, leaving out
+   the pieces already ticked; a piece cut off half-way is run again, and its brief tells the
+   fixer to go on from what `fixes.txt` records). The third look's own scripts, ready to run
+   again, are in `refs/verification/round-3/tools/` (they write under
+   `refs/verification/round-3/`). The site as it stood before this round is commit `8724ef5`:
+   the owner's two sizes must come out of the round as they went in, but for the two thinned
+   stars of Taurus on the desktop and whatever "claim yours" needs. To know when measuring:
+   `tools/loader/measure.mjs` on the production build takes `--only
    full,short,skip,key,quiet-keys,broken,resize,no-storage` (its other two cases can only be
-   made on the dev server and fail by construction elsewhere); and one check's way of reading
-   was changed in the close-out (the warp's cover; `fixes.txt`, "ROUND 2", piece 5).
+   made on the dev server).
+   - [ ] 1. **The sky on a phone on its side** (major). No star under the exit button at
+     844x390, 667x375, 740x360 and 932x430; 146 of 146 stars can be taken; the knots thinned
+     at every size (Taurus's on the desktop too); the upright phone and the desktop unchanged.
+   - [ ] 2. **Where the meanings stand.** B7 on a phone on its side (type capped, placed as on
+     the phone); on a short phone (rows before the band, 18 px at least, never across a
+     star); "claim yours" never within 40 px of the words.
+   - [ ] 3. **The loader on a slow line.** A skip pressed before the script has arrived is
+     kept; the unlit C arrives first and whole; the visitor's clock starts when it is seen;
+     nothing changes on a fast line. A line here about the debug hooks' console warnings.
+   - [ ] 4. **Close-out.** Every suite again, every sheet rebuilt, the owner's two sizes shown
+     to be what they were, the protected-systems diff, this file brought up to date.
+1c. **A fourth, narrow look** at what round 3 changed, by an inspector who built none of it:
+   the phone on its side, the short phone, the slow line, "claim yours", and that the owner's
+   two sizes are what the third look ruled done. The orchestrator launches it when round 3's
+   four boxes are ticked. Then the final report to the owner.
 2. **Six things only the owner can decide** (the first five are the first inspector's
    findings, by number, in `refs/verification/business-and-code.txt`; the sixth came out of
    the close-out):
