@@ -1,17 +1,20 @@
 desk Aries before: a star 47 device px across (47 CSS px): brass 23.9% of the disc, mean #736251; across the rows 86 runs of brass, 3.08 px long on average, 30 of them 4 px or longer
-desk Aries before: a star 36 device px across (36 CSS px): brass 22.2% of the disc, mean #71604f; across the rows 47 runs of brass, 3.06 px long on average, 18 of them 4 px or longer
+desk Aries before: a star 36 device px across (36 CSS px): brass 21.9% of the disc, mean #716150; across the rows 46 runs of brass, 3.09 px long on average, 18 of them 4 px or longer
 desk Aries after: a star 47 device px across (47 CSS px): brass 19.7% of the disc, mean #716252; across the rows 109 runs of brass, 2.00 px long on average, 13 of them 4 px or longer
 desk Aries after: a star 36 device px across (36 CSS px): brass 18.2% of the disc, mean #6c5e4f; across the rows 58 runs of brass, 2.03 px long on average, 8 of them 4 px or longer
-desk Taurus before: a star 53 device px across (53 CSS px): brass 24.0% of the disc, mean #756351; across the rows 115 runs of brass, 2.91 px long on average, 42 of them 4 px or longer
+desk Taurus before: a star 53 device px across (53 CSS px): brass 24.1% of the disc, mean #756351; across the rows 113 runs of brass, 2.98 px long on average, 42 of them 4 px or longer
 desk Taurus before: a star 35 device px across (35 CSS px): brass 25.2% of the disc, mean #726150; across the rows 41 runs of brass, 3.78 px long on average, 16 of them 4 px or longer
-desk Taurus after: a star 53 device px across (53 CSS px): brass 20.3% of the disc, mean #746453; across the rows 130 runs of brass, 2.18 px long on average, 22 of them 4 px or longer
-desk Taurus after: a star 35 device px across (35 CSS px): brass 19.2% of the disc, mean #6c5d4f; across the rows 49 runs of brass, 2.41 px long on average, 10 of them 4 px or longer
-phone Aries before: a star 57 device px across (29 CSS px): brass 25.2% of the disc, mean #756452; across the rows 131 runs of brass, 3.20 px long on average, 44 of them 4 px or longer
-phone Aries before: a star 53 device px across (27 CSS px): brass 25.9% of the disc, mean #746351; across the rows 92 runs of brass, 4.04 px long on average, 34 of them 4 px or longer
+desk Taurus after: a star 53 device px across (53 CSS px): brass 20.1% of the disc, mean #746453; across the rows 131 runs of brass, 2.14 px long on average, 22 of them 4 px or longer
+desk Taurus after: a star 35 device px across (35 CSS px): brass 19.3% of the disc, mean #6c5e4f; across the rows 50 runs of brass, 2.38 px long on average, 10 of them 4 px or longer
+phone Aries before: a star 57 device px across (29 CSS px): brass 22.4% of the disc, mean #716150; across the rows 84 runs of brass, 4.43 px long on average, 41 of them 4 px or longer
+phone Aries before: a star 53 device px across (27 CSS px): brass 23.7% of the disc, mean #716150; across the rows 59 runs of brass, 5.76 px long on average, 32 of them 4 px or longer
 phone Aries after: a star 57 device px across (29 CSS px): brass 20.2% of the disc, mean #786755; across the rows 150 runs of brass, 2.24 px long on average, 25 of them 4 px or longer
 phone Aries after: a star 53 device px across (27 CSS px): brass 21.0% of the disc, mean #756454; across the rows 110 runs of brass, 2.75 px long on average, 22 of them 4 px or longer
 phone Taurus before: a star 60 device px across (30 CSS px): brass 24.6% of the disc, mean #756351; across the rows 115 runs of brass, 3.83 px long on average, 35 of them 4 px or longer
 phone Taurus before: a star 43 device px across (21 CSS px): brass 18.2% of the disc, mean #756556; across the rows 47 runs of brass, 3.60 px long on average, 17 of them 4 px or longer
 phone Taurus after: a star 60 device px across (30 CSS px): brass 21.0% of the disc, mean #766554; across the rows 126 runs of brass, 2.98 px long on average, 33 of them 4 px or longer
 phone Taurus after: a star 43 device px across (21 CSS px): brass 12.7% of the disc, mean #716254; across the rows 58 runs of brass, 2.03 px long on average, 7 of them 4 px or longer
-wrote stars/side-by-side.png (2584x2288); "before" is the station picture of c0cacf3
+wrote stars/side-by-side-desk-large.png (1292x1144); "before" is the station picture of c0cacf3
+wrote stars/side-by-side-desk-small.png (1292x1144); "before" is the station picture of c0cacf3
+wrote stars/side-by-side-phone-large.png (1292x1144); "before" is the station picture of c0cacf3
+wrote stars/side-by-side-phone-small.png (1292x1144); "before" is the station picture of c0cacf3

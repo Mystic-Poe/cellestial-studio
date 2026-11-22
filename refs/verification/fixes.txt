@@ -1009,7 +1009,9 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
   CHECKED AGAIN, production build, real GPU:
   - round-2/tools/star-side.mjs (new): before and after in ONE run of ONE build (the "before" page is
     the same page with the station picture answered from commit c0cacf3), each star cut from the
-    screenshot pixel for pixel, as drawn and enlarged 6x: round-2/stars/side-by-side.png, .txt. Read
+    screenshot pixel for pixel, as drawn and enlarged 6x: round-2/stars/side-by-side-desk-large.png,
+    -desk-small.png, -phone-large.png, -phone-small.png (the largest and the smallest star on screen
+    at Aries and at Taurus) and side-by-side.txt. Read
     along every row of the disc, the brass of the 47 px desktop star came in 86 runs 3.08 px long on
     average, 30 of them 4 px or longer; it comes in 109 runs 2.00 px long, 13 of them 4 px or longer.
     The 53 px star (Taurus): 115 runs of 2.91 px, 42 long -> 130 runs of 2.18 px, 22 long. The 36 px
@@ -1109,3 +1111,40 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
     sheets are rebuilt and committed (refs/sky/compare/b7-all-desk.jpg and the meaning-*.jpg).
   NOT DONE: no test in node. The search measures the words in the page (offsetWidth), so it cannot
   run without a browser; its check is b7.mjs's verdict above.
+
+  EVERYTHING AGAIN, on the last build (piece 4's four changes together):
+  - pnpm build passes; pnpm test: 138 of 138 in node (three of them new: the station picture), and the
+    three workers' own tests (15, 16, 14); pnpm lint and pnpm typecheck clean.
+  - tools/run-all.sh, checks (dev server on 4500 with the Turnstile test key; logs and status.txt in
+    round-2/logs-piece-4/, every exit 0): tools/loader/measure.mjs 13 of 13 on the desktop and 13 of
+    13 on the phone with the CPU slowed 4x (the full loader 7.49 s on the visitor's clock);
+    tools/sky/measure.mjs 201 of 201; tools/sky/meaning.mjs 38 of 38; tools/sky/meaning-all.mjs 24 of
+    24; tools/roots/words.mjs 197 of 197; tools/roots/measure.mjs 245 of 245; tools/transitions/
+    measure.mjs 148 of 148; tools/chrome/compare.mjs 48 of 48. No check was changed.
+  - On the production build (port 4615): round-2/tools/b7.mjs desk 12 of 12 and phone, small 24 of 24;
+    star-side.mjs; logo-side.mjs; stars.mjs; favicon.mjs. Their sheets are as named under a to d.
+  - Nothing under workers/, src/onboard/, src/scripts/, public/admin/, src/content/home.json or
+    src/config.ts was touched (git diff c0cacf3 over those paths: empty).
+  - Sheets: refs/chrome/compare/ (4d) and refs/sky/compare/b7-all-*.jpg, meaning-*.jpg (4a) were
+    rebuilt on purpose and are committed. What the last run of the suites rewrote besides (refs/roots,
+    refs/transitions, refs/sky/measure.txt) was restored.
+
+  LEFT, AND WHY
+  - The sky's own sheets (refs/sky/compare/, but for the B7 ones) and every other sheet that shows an
+    empty star or the logo were NOT rebuilt: they show the star's old picture and the logo's old lines.
+    Piece 5 rebuilds every sheet.
+  - The empty star is better, not perfect: at 36 px across it is a hint of a circuit, and no star of
+    36 to 58 px can show B4's traces one by one. The picture is DERIVED from B4 (now by a filter, not
+    by thickening): the owner should be told so in the close-out, as the second look asked.
+  - B7's placement has no test in node (it measures the words in the page); b7.mjs is its check.
+  - The tab icon was judged on the sheet (a dark and a light tab drawn by the script), not in a real
+    browser's tab strip. A real phone was not used anywhere: headless Chromium, real GPU.
+  - favicon.png (180 px) follows the logo's emblem (lines 1 px narrower): the brief said to keep it
+    as it is, and it is as it is in everything but that.
+
+  FILES: scripts/build-assets.mjs (tabIcon, LOGO_LINE), scripts/assets/sky.mjs; public/favicon.ico,
+  public/favicon.png, public/cellestial/chrome/c-logo.webp, public/cellestial/sky/b4-station.webp;
+  src/experience/sky/meaning.ts; src/experience/sky-station-picture.test.ts (new); round-2/tools/
+  b7.mjs (far points counted, a desktop verdict), star-side.mjs and logo-side.mjs (new). Evidence:
+  round-2/owner-list/ (before/), round-2/stars/ (before/, side-by-side-*.png), round-2/logo/
+  (before/, side-by-side-*.png), round-2/b7/ (desk-before/), round-2/logs-piece-4/.

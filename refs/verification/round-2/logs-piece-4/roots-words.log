@@ -1,0 +1,251 @@
+
+# 1440x900, script on, each tile opened by its node
+
+## tile 1, "Site" (addendum line 24)
+ok   textContent === offerText(OFFERS[i]) (313 characters)
+ok   textContent === the addendum, ** and lead-in removed (313 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (297 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]; bold in the addendum: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]
+ok   struck through — ["$990","$69/mo"]
+ok   "$990" struck with "FREE" after it; "$69/mo" struck with "$39/mo" after it
+ok   "slashed" is in the text and cannot be seen — hidden: [" slashed"," slashed"]
+ok   body text is at least 16 px — 17 px
+
+## tile 2, "Site + Systems" (addendum line 26)
+ok   textContent === offerText(OFFERS[i]) (314 characters)
+ok   textContent === the addendum, ** and lead-in removed (314 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (314 characters)
+ok   heading === OFFERS[i].title (14 characters)
+ok   heading === the addendum’s title (14 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your data."]; bold in the addendum: ["Price: by quote.","You own your site and your data."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 17 px
+
+## tile 3, "Site + App" (addendum line 28)
+ok   textContent === offerText(OFFERS[i]) (277 characters)
+ok   textContent === the addendum, ** and lead-in removed (277 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (277 characters)
+ok   heading === OFFERS[i].title (10 characters)
+ok   heading === the addendum’s title (10 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your app."]; bold in the addendum: ["Price: by quote.","You own your site and your app."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 17 px
+
+## tile 4, "Add-ons — AI + automation" (addendum line 30)
+ok   textContent === offerText(OFFERS[i]) (143 characters)
+ok   textContent === the addendum, ** and lead-in removed (143 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (143 characters)
+ok   heading === OFFERS[i].title (25 characters)
+ok   heading === the addendum’s title (25 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote."]; bold in the addendum: ["Price: by quote."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 17 px
+
+## tile 5, "Care" (addendum line 33)
+ok   textContent === offerText(OFFERS[i]) (461 characters)
+ok   textContent === the addendum, ** and lead-in removed (461 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (461 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]; bold in the addendum: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 17 px
+ok   no page errors
+
+# 390x844, script on, each tile opened by its node
+
+## tile 1, "Site" (addendum line 24)
+ok   textContent === offerText(OFFERS[i]) (313 characters)
+ok   textContent === the addendum, ** and lead-in removed (313 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (297 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]; bold in the addendum: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]
+ok   struck through — ["$990","$69/mo"]
+ok   "$990" struck with "FREE" after it; "$69/mo" struck with "$39/mo" after it
+ok   "slashed" is in the text and cannot be seen — hidden: [" slashed"," slashed"]
+ok   body text is at least 16 px — 16 px
+
+## tile 2, "Site + Systems" (addendum line 26)
+ok   textContent === offerText(OFFERS[i]) (314 characters)
+ok   textContent === the addendum, ** and lead-in removed (314 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (314 characters)
+ok   heading === OFFERS[i].title (14 characters)
+ok   heading === the addendum’s title (14 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your data."]; bold in the addendum: ["Price: by quote.","You own your site and your data."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 3, "Site + App" (addendum line 28)
+ok   textContent === offerText(OFFERS[i]) (277 characters)
+ok   textContent === the addendum, ** and lead-in removed (277 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (277 characters)
+ok   heading === OFFERS[i].title (10 characters)
+ok   heading === the addendum’s title (10 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your app."]; bold in the addendum: ["Price: by quote.","You own your site and your app."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 4, "Add-ons — AI + automation" (addendum line 30)
+ok   textContent === offerText(OFFERS[i]) (143 characters)
+ok   textContent === the addendum, ** and lead-in removed (143 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (143 characters)
+ok   heading === OFFERS[i].title (25 characters)
+ok   heading === the addendum’s title (25 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote."]; bold in the addendum: ["Price: by quote."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 5, "Care" (addendum line 33)
+ok   textContent === offerText(OFFERS[i]) (461 characters)
+ok   textContent === the addendum, ** and lead-in removed (461 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (461 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]; bold in the addendum: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+ok   no page errors
+
+# 390x844, script off, every tile open
+
+## tile 1, "Site" (addendum line 24)
+ok   textContent === offerText(OFFERS[i]) (313 characters)
+ok   textContent === the addendum, ** and lead-in removed (313 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (297 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]; bold in the addendum: ["$990 slashed → FREE","$69/mo slashed → $39/mo","You own it. Forever."]
+ok   struck through — ["$990","$69/mo"]
+ok   "$990" struck with "FREE" after it; "$69/mo" struck with "$39/mo" after it
+ok   "slashed" is in the text and cannot be seen — hidden: [" slashed"," slashed"]
+ok   body text is at least 16 px — 16 px
+
+## tile 2, "Site + Systems" (addendum line 26)
+ok   textContent === offerText(OFFERS[i]) (314 characters)
+ok   textContent === the addendum, ** and lead-in removed (314 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (314 characters)
+ok   heading === OFFERS[i].title (14 characters)
+ok   heading === the addendum’s title (14 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your data."]; bold in the addendum: ["Price: by quote.","You own your site and your data."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 3, "Site + App" (addendum line 28)
+ok   textContent === offerText(OFFERS[i]) (277 characters)
+ok   textContent === the addendum, ** and lead-in removed (277 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (277 characters)
+ok   heading === OFFERS[i].title (10 characters)
+ok   heading === the addendum’s title (10 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote.","You own your site and your app."]; bold in the addendum: ["Price: by quote.","You own your site and your app."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 4, "Add-ons — AI + automation" (addendum line 30)
+ok   textContent === offerText(OFFERS[i]) (143 characters)
+ok   textContent === the addendum, ** and lead-in removed (143 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (143 characters)
+ok   heading === OFFERS[i].title (25 characters)
+ok   heading === the addendum’s title (25 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["Price: by quote."]; bold in the addendum: ["Price: by quote."]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+
+## tile 5, "Care" (addendum line 33)
+ok   textContent === offerText(OFFERS[i]) (461 characters)
+ok   textContent === the addendum, ** and lead-in removed (461 characters)
+ok   what the eye reads === visibleText(OFFERS[i]) (461 characters)
+ok   heading === OFFERS[i].title (4 characters)
+ok   heading === the addendum’s title (4 characters)
+ok   the heading can be seen
+ok   the brass words are exactly the addendum’s bold words — brass on the page: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]; bold in the addendum: ["$39/mo founding, locked for life on basic.","No new pages, redesigns, or selling built in"]
+ok   struck through — []
+ok   nothing in this tile is hidden from sight — []
+ok   body text is at least 16 px — 16 px
+ok   no page errors
+
+# Every string a visitor can see in the scene, and where it comes from
+ok   "Claim your star" — the brief and BUILD_SPEC F1
+ok   "Contact me" — the brief and BUILD_SPEC F2
+ok   "Site" — offers.ts OFFERS[0].title = addendum line 24, the tile's name
+ok   "A custom site built for your business." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "Fast, beautiful, and made to be found." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "Includes: your pages, a working contact form, domain set up in your account." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "$990" — offers.ts OFFERS[0] (site) = addendum line 24
+ok   " → FREE" — offers.ts OFFERS[0] (site) = addendum line 24
+ok   " — founding cohort." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "Plus care: " — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "$69/mo" — offers.ts OFFERS[0] (site) = addendum line 24
+ok   " → $39/mo" — offers.ts OFFERS[0] (site) = addendum line 24
+ok   ", locked for life on basic." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "You own it. Forever." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   " Site, domain, and content are yours." — offers.ts OFFERS[0] (site) = addendum line 24
+ok   "Site + Systems" — offers.ts OFFERS[1].title = addendum line 26, the tile's name
+ok   "Everything in Site, plus the work behind it wired in." — offers.ts OFFERS[1] (systems) = addendum line 26
+ok   "Includes: intake or booking, follow-ups, payments, and lead capture — set up to run as one system." — offers.ts OFFERS[1] (systems) = addendum line 26
+ok   "Price: by quote." — offers.ts OFFERS[1] (systems) = addendum line 26; offers.ts OFFERS[2] (app) = addendum line 28; offers.ts OFFERS[3] (addons) = addendum line 30
+ok   " We see the ask first, then give you an honest number." — offers.ts OFFERS[1] (systems) = addendum line 26
+ok   "You own your site and your data." — offers.ts OFFERS[1] (systems) = addendum line 26
+ok   " The systems are built for you and saved to your accounts." — offers.ts OFFERS[1] (systems) = addendum line 26
+ok   "Site + App" — offers.ts OFFERS[2].title = addendum line 28, the tile's name
+ok   "Everything in Site, plus a real app your customers actually use." — offers.ts OFFERS[2] (app) = addendum line 28
+ok   "Built for phones first, connected to your site." — offers.ts OFFERS[2] (app) = addendum line 28
+ok   " Bigger asks get a longer window — we will be honest about cost and time up front." — offers.ts OFFERS[2] (app) = addendum line 28
+ok   "You own your site and your app." — offers.ts OFFERS[2] (app) = addendum line 28
+ok   " Built in your name, from day one." — offers.ts OFFERS[2] (app) = addendum line 28
+ok   "Add-ons — AI + automation" — offers.ts OFFERS[3].title = addendum line 30, the tile's name
+ok   "Upgrades that take work off your plate." — offers.ts OFFERS[3] (addons) = addendum line 30
+ok   "AI that answers, sorts, and drafts." — offers.ts OFFERS[3] (addons) = addendum line 30
+ok   "Automations that move the repetitive work for you." — offers.ts OFFERS[3] (addons) = addendum line 30
+ok   "Care" — offers.ts OFFERS[4].title = addendum line 33, the tile's name
+ok   "What keeps your site alive after launch." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   "Includes: security and patching, uptime and SSL watch, form tests, backups, domain renewal handled, email changes done for you, and a monthly report." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   "Support by email." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   "$39/mo founding, locked for life on basic." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   " True rate $69/mo." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   "Systems, apps, and AI cost more to care for. Their care goes up, and it is part of their quote." — offers.ts OFFERS[4] (care) = addendum line 33
+ok   "No new pages, redesigns, or selling built in" — offers.ts OFFERS[4] (care) = addendum line 33
+ok   " — those are upgrades, priced plainly when you ask." — offers.ts OFFERS[4] (care) = addendum line 33
+
+41 different strings seen (closed, each tile open, and the page without script).
+
+# Heard and not seen (accessible names; allowed by the brief)
+     aria-label on <main #roots>: "What we build"
+     aria-label on <button .brass-btn>: "Return to the sky"
+     aria-label on <button .panel__close>: "Close"
+     visually hidden text in <button>: "Site"
+     visually hidden text in <p>: " slashed"
+     visually hidden text in <button>: "Site + Systems"
+     visually hidden text in <button>: "Site + App"
+     visually hidden text in <button>: "Add-ons — AI + automation"
+     visually hidden text in <button>: "Care"
+     img alt: ""
+
+ALL PASS
