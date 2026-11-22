@@ -1,0 +1,182 @@
+desk run 1: no dark frame
+     -83 loading  middle  157.1   star x 720.0000141243702  y 449.9997211041236  r 27.0854641476271
+     -67 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000677967  y 449.9999954103469  r 27.043747889812487
+     -33 loading  middle  156.3   star x 720.0000000003066  y 449.99999992784717  r 27.0327453237966
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037399580318
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 2: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279606  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.000001562325  y 449.9999487250209  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000677967  y 449.9999954103469  r 27.043747889812487
+     -33 loading  middle  156.3   star x 720.0000000003213  y 449.9999999252102  r 27.03278986312289
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037399580318
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 3: no dark frame
+     -83 loading  middle  157.1   star x 720.0000144524826  y 449.99971613365386  r 27.08578613166408
+     -66 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      34 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 4: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279606  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 5: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279604  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.999948114719  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003213  y 449.99999992521026  r 27.032789863122883
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 6: no dark frame
+     -83 loading  middle  157.1   star x 720.0000144524826  y 449.99971613365386  r 27.08578613166408
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.9999481147187  r 27.061712563074828
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 7: no dark frame
+     -83 loading  middle  157.1   star x 720.0000144524826  y 449.9997161336538  r 27.08578613166408
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.9999481147187  r 27.061712563074828
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 8: no dark frame
+     -83 loading  middle  157.1   star x 720.0000144524827  y 449.99971613365346  r 27.08578613166408
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.9999481147188  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224934  r 27.032834664507796
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 9: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279604  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000677967  y 449.9999954103469  r 27.043747889812487
+     -33 loading  middle  156.3   star x 720.0000000003213  y 449.9999999252102  r 27.03278986312289
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 10: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279604  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.999948114719  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003213  y 449.9999999252102  r 27.03278986312289
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037399580318
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+phone run 1: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359011  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863015  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.0000000183616  y 421.99999803502715  r 17.55945390768688
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 2: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359012  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -50 loading  middle  107.9   star x 195.0000000183616  y 421.99999803502715  r 17.559453907686883
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.99999996798016  r 17.55243021004668
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle    107   star x 195  y 422  r 17.55
+phone run 3: no dark frame
+     -83 loading  middle  108.4   star x 195.000003914214  y 421.9998784680111  r 17.585315509299456
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863015  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 4: no dark frame
+     -83 loading  middle  108.7   star x 195.0000213239685  y 421.99955227018773  r 17.60219784366222
+     -67 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359011  r 17.585219916063338
+     -50 loading  middle  108.2   star x 195.00000042312968  y 421.99997804759073  r 17.570645533745548
+     -33 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -17 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+       0 sky      middle  107.5   star x 195  y 422  r 17.55
+      17 sky      middle  107.4   star x 195  y 422  r 17.55
+      33 sky      middle  107.2   star x 195  y 422  r 17.55
+phone run 5: no dark frame
+     -83 loading  middle  108.4   star x 195.000003914214  y 421.9998784680111  r 17.585315509299456
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863015  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.5595092424782
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.99999996798016  r 17.55243021004668
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 6: no dark frame
+     -83 loading  middle  108.4   star x 195.000003914214  y 421.99987846801105  r 17.585315509299456
+     -67 loading  middle  108.2   star x 195.0000004363355  y 421.9999775224406  r 17.5708018057382
+     -50 loading  middle  107.9   star x 195.00000001923212  y 421.99999796375005  r 17.559564726277895
+     -33 loading  middle  107.7   star x 195.00000000009115  y 421.9999999668171  r 17.55245914868943
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 7: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359012  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.99997778630143  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000009115  y 421.9999999668171  r 17.55245914868943
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 8: no dark frame
+     -83 loading  middle  108.4   star x 195.000003914214  y 421.99987846801105  r 17.585315509299456
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863015  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.00000001923212  y 421.99999796375005  r 17.559564726277895
+     -33 loading  middle  107.7   star x 195.00000000009115  y 421.9999999668171  r 17.55245914868943
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 9: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359011  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -50 loading  middle  107.9   star x 195.0000000183616  y 421.99999803502715  r 17.559453907686883
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.99999996798016  r 17.55243021004668
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 10: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359012  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.99999996798016  r 17.55243021004668
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+
+0 of 20 runs drew a dark frame; in 0 of those 0 the star's place in that frame was not a number.

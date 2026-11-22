@@ -532,3 +532,39 @@ PIECE 1 — THE FALL (second look: finding 1 a to d, finding 13; closing list 1 
   - The warm-up and the rehearsal cost one frame of 50 to 67 ms at the start of a page that has no
     loader to hide them (?scene=sky, measured); the sky's governor stayed at level 0 through it in
     eight openings of eight. Behind the loader they fall in its still moment.
+
+PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the flash's dip, the loader on a slow line; closing list 2, 4 and 5)
+
+  CUT OFF BY THE USAGE LIMIT at 20:24 on 21 Nov, twelve minutes in. This entry is the orchestrator's,
+  written from what the fixer left staged in the checkout (committed as it stood, after the unit
+  tests, the type check and the lint passed on it). Whoever takes the piece up continues from here
+  and replaces this entry with their own record.
+
+  2a, THE BLINK: THE FIX IS IN PLACE; THE BRIEF'S ACCEPTANCE RUNS ARE NOT YET DONE.
+  - Reproduced first, on the production build as it stood at 48afa05 (refs/verification/round-2/a5/before/):
+    pose.txt (tools/a5-pose.mjs, new: the second look's in-page probe, and beside it in the same frame
+    the pose the sky says its star has): 6 of 12 first visits drew a dark frame, one frame before the
+    scene became "sky", and in 6 of those 6 the star's x was not a number.
+    blink-probe-return.txt: a dark frame in 2 of 6 short loaders at each size, in 0 of 6 skipped ones.
+    NOTE: refs/verification/round-2/a5/blink-probe.txt is ALSO a "before" run (the unchanged probe,
+    20:14, dips in it). It has not been run again since the fix.
+  - The cause is the one the brief gives, now seen in the page: the quintic ease comes to a hair over
+    1 just under its end, one minus that is negative, and a negative number to the power 1.3 is not a
+    number.
+  - Changed: src/experience/sky/intro.ts (new: the hand-off's arithmetic alone; both eases capped to
+    0..1 where they are made; the pose at t >= 1 is the end, exactly; nothing below zero is raised to
+    a power). sky/index.ts takes its pose and its ease from there. The loader had its own copy of the
+    same ease in painter.ts: it is now one function in loader/timeline.ts, capped the same way.
+    src/experience/sky-intro.test.ts (new, 7 tests: both eases one ulp at a time up to 1 and in steps
+    of 1e-9 over the first and last two thousandths; the pose finite and on its path at every such t
+    and at every moment the loader can name; it begins on the loader's star and ends on the sky's,
+    exactly; it never goes back along its path).
+  - After, production build (refs/verification/round-2/a5/pose.txt): 0 of 20 first visits drew a dark
+    frame.
+  - tools/a5-probe.mjs gained --runs, --throttle and --only, and writes a summary that counts the dips.
+  - STILL TO DO for 2a: the brief's runs (a5-probe 20 first visits at each size; 12 with the CPU slowed
+    4x; a5-probe-return 12 of 12; a5-repeat 10 of 10); the hunt for the same hazard elsewhere (another
+    eased value over 1 or under 0 fed to a power, a square root or a division); the hand-off's strips
+    looked at; the suites.
+
+  2b (THE FLASH'S DIP) and 2c (THE LOADER ON A SLOW LINE): NOT STARTED.

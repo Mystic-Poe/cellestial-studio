@@ -1,0 +1,14 @@
+desk run 1: skipped loader: no dip; short loader (reload): no dip
+desk run 2: skipped loader: no dip; short loader (reload): DIP -17 ms: 3.8 (otherwise 158.5)
+desk run 3: skipped loader: no dip; short loader (reload): no dip
+desk run 4: skipped loader: no dip; short loader (reload): DIP -17 ms: 3.8 (otherwise 158.5)
+desk run 5: skipped loader: no dip; short loader (reload): no dip
+desk run 6: skipped loader: no dip; short loader (reload): no dip
+desk: a frame without the star at the scene change in 0 of 6 skipped loaders and 2 of 6 short loaders
+phone run 1: skipped loader: no dip; short loader (reload): DIP -17 ms: 13.9 (otherwise 109.6)
+phone run 2: skipped loader: no dip; short loader (reload): no dip
+phone run 3: skipped loader: no dip; short loader (reload): no dip
+phone run 4: skipped loader: no dip; short loader (reload): no dip
+phone run 5: skipped loader: no dip; short loader (reload): no dip
+phone run 6: skipped loader: no dip; short loader (reload): DIP -17 ms: 13.9 (otherwise 109.6)
+phone: a frame without the star at the scene change in 0 of 6 skipped loaders and 2 of 6 short loaders

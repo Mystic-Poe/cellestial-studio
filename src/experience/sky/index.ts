@@ -38,6 +38,7 @@ import { createWorld, type Frame, LOOK, PLANE_GAP, type World } from './gl/world
 import { createGovernor } from './governor.ts';
 import type { SkyDebug, SkyEvents, SkyHooks, SkyInternals } from './hooks.ts';
 import { attachInput } from './input.ts';
+import { introPose as poseAt, smoother } from './intro.ts';
 import { createHoneycomb } from './lattice.ts';
 import {
 	type Camera,
@@ -130,11 +131,6 @@ const FAINT = 0.03;
 const REACH = 1.75;
 
 const IGNITE_TOTAL = IGNITE.fire + IGNITE.flash + IGNITE.settle;
-
-const smoother = (t: number) => {
-	const c = clamp(t);
-	return c * c * c * (c * (c * 6 - 15) + 10);
-};
 
 function readRound(): boolean {
 	try {
@@ -277,21 +273,12 @@ export const mount: MountSky = (ctx) => {
 	let introHold = 0;
 	const introOn = () => introAt !== null && introT < 1;
 
+	/** Where Cellestial's star stands at `t` of the hand-off (intro.ts has the arithmetic). */
 	const introPose = (t: number): ScreenCircle => {
 		const at = introAt ?? { x: layout.w / 2, y: layout.h / 2, r: 1 };
 		const fit = layout.fits[0];
 		const endR = B3.ring * B3.core * layout.b3 * (fit?.scale ?? 1);
-		const e = smoother(t);
-		// Across first, then down: the arc of something let go.
-		const ex = 1 - (1 - e) ** 1.3;
-		const ey = e ** 1.3;
-		const from = Math.max(at.r, 0.5);
-		const swell = 1 + INTRO.swell * Math.sin(Math.PI * clamp(t));
-		return {
-			x: lerp(at.x, layout.w / 2, ex),
-			y: lerp(at.y, layout.h / 2, ey),
-			r: from * (endR / from) ** smooth(t) * swell,
-		};
+		return poseAt(t, at, { x: layout.w / 2, y: layout.h / 2, r: endR }, INTRO.swell);
 	};
 
 	// ── the fall ──

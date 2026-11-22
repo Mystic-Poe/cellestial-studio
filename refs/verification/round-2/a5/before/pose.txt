@@ -1,0 +1,110 @@
+desk run 1: DARK FRAME at -17 ms; its pose (NaN, 450, 27.029037535437027)
+     -83 loading  middle  157.1   star x 720.0000144524827  y 449.99971613365346  r 27.08578613166408
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.9999481147188  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224934  r 27.032834664507796
+     -17 loading  middle    3.8   star x NaN  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 2: no dark frame
+     -83 loading  middle  157.3   star x 720.000078734653  y 449.998954222448  r 27.115066263047343
+     -67 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279606  r 27.085625042567717
+     -50 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -33 loading  middle  156.6   star x 720.0000000677967  y 449.99999541034697  r 27.04374788981248
+     -17 loading  middle  156.3   star x 720.0000000003213  y 449.9999999252102  r 27.03278986312289
+       0 sky      middle  156.1   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+desk run 3: no dark frame
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279604  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -50 loading  middle  156.6   star x 720.0000000677967  y 449.99999541034697  r 27.04374788981248
+     -33 loading  middle  156.3   star x 720.0000000003213  y 449.99999992521026  r 27.032789863122883
+     -17 loading  middle  156.1   star x 720  y 450  r 27.029037399580318
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 4: DARK FRAME at -17 ms; its pose (NaN, 450.0000000000001, 27.029037942982878)
+     -83 loading  middle  157.1   star x 720.0000144524826  y 449.99971613365386  r 27.08578613166408
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.9999481147188  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000710108  y 449.9999952438627  r 27.043922179994894
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle    3.8   star x NaN  y 450.0000000000001  r 27.029037942982878
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 5: DARK FRAME at -17 ms; its pose (NaN, 450, 27.029037535437027)
+     -83 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279604  r 27.085625042567717
+     -67 loading  middle  156.8   star x 720.0000015865423  y 449.999948114719  r 27.06171256307482
+     -50 loading  middle  156.6   star x 720.0000000693876  y 449.9999953277206  r 27.04383491214338
+     -33 loading  middle  156.3   star x 720.0000000003365  y 449.9999999224936  r 27.032834664507796
+     -17 loading  middle    3.8   star x NaN  y 450  r 27.029037535437027
+       0 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.6   star x 720  y 450  r 27.029037399580318
+desk run 6: no dark frame
+     -83 loading  middle  157.3   star x 720.000078734653  y 449.9989542224481  r 27.115066263047343
+     -67 loading  middle  157.1   star x 720.0000142876102  y 449.9997186279605  r 27.085625042567713
+     -50 loading  middle  156.8   star x 720.000001562325  y 449.99994872502094  r 27.061586352816523
+     -33 loading  middle  156.6   star x 720.0000000677967  y 449.99999541034697  r 27.04374788981248
+     -17 loading  middle  156.3   star x 720.0000000003213  y 449.99999992521026  r 27.032789863122883
+       0 sky      middle  156.1   star x 720  y 450  r 27.029037399580318
+      17 sky      middle  155.9   star x 720  y 450  r 27.029037399580318
+      33 sky      middle  155.8   star x 720  y 450  r 27.029037399580318
+phone run 1: DARK FRAME at -17 ms; its pose (NaN, 422, 17.55000008821199)
+     -83 loading  middle  108.4   star x 195.000003914214  y 421.999878468011  r 17.585315509299456
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863016  r 17.570723608855957
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.9999979996521  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+     -17 loading  middle   13.9   star x NaN  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 2: no dark frame
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.9998795359012  r 17.585219916063338
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863015  r 17.57072360885596
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.5595092424782
+     -33 loading  middle  107.7   star x 195.00000000009115  y 421.9999999668171  r 17.55245914868943
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 3: no dark frame
+     -83 loading  middle  108.4   star x 195.00000382535026  y 421.9998805960233  r 17.585124409609847
+     -67 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -50 loading  middle  107.9   star x 195.0000000183616  y 421.99999803502715  r 17.559453907686883
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.99999996798016  r 17.55243021004668
+     -17 loading  middle  107.5   star x 195  y 422  r 17.55
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 4: no dark frame
+     -83 loading  middle  108.7   star x 195.00002113002014  y 421.9995554059819  r 17.60209126718391
+     -67 loading  middle  108.4   star x 195.00000386956108  y 421.99987953590113  r 17.585219916063334
+     -50 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -33 loading  middle  107.9   star x 195.0000000183616  y 421.99999803502715  r 17.55945390768688
+     -17 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+       0 sky      middle  107.5   star x 195  y 422  r 17.55
+      17 sky      middle  107.4   star x 195  y 422  r 17.55
+      33 sky      middle  107.2   star x 195  y 422  r 17.55
+phone run 5: DARK FRAME at -17 ms; its pose (NaN, 422, 17.55000008821199)
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.99987953590113  r 17.585219916063334
+     -67 loading  middle  108.2   star x 195.00000042312968  y 421.9999780475908  r 17.570645533745548
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+     -17 loading  middle   13.9   star x NaN  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+phone run 6: DARK FRAME at -17 ms; its pose (NaN, 422, 17.55000008821199)
+     -83 loading  middle  108.4   star x 195.00000386956108  y 421.99987953590113  r 17.585219916063334
+     -67 loading  middle  108.2   star x 195.00000042968855  y 421.9999777863016  r 17.570723608855957
+     -50 loading  middle  107.9   star x 195.0000000187925  y 421.99999799965224  r 17.559509242478196
+     -33 loading  middle  107.7   star x 195.00000000008703  y 421.9999999679802  r 17.552430210046676
+     -17 loading  middle   13.9   star x NaN  y 422  r 17.55000008821199
+       0 sky      middle  107.4   star x 195  y 422  r 17.55
+      17 sky      middle  107.2   star x 195  y 422  r 17.55
+      33 sky      middle  107.1   star x 195  y 422  r 17.55
+
+6 of 12 runs drew a dark frame; in 6 of those 6 the star's place in that frame was not a number.

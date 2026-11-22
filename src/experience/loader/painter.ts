@@ -45,6 +45,7 @@ import {
 	keyed,
 	lerp,
 	type Script,
+	smoother,
 	smoothstep,
 	smoothstepAt,
 } from './timeline';
@@ -175,11 +176,6 @@ function around(line: Line, at: number, behind: number, ahead: number): number[]
 	point(to);
 	return out;
 }
-
-const smoother = (x: number) => {
-	const t = clamp01(x);
-	return t * t * t * (t * (t * 6 - 15) + 10);
-};
 
 export function createPainter(canvas: HTMLCanvasElement, images: Images, script: Script): Painter {
 	const main = context(canvas);

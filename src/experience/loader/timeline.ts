@@ -13,6 +13,14 @@ export function smoothstep(a: number, b: number, x: number): number {
 	const t = clamp01((x - a) / (b - a));
 	return t * t * (3 - 2 * t);
 }
+/**
+ * 0 to 1 with no speed and no acceleration at either end. Capped: in floating
+ * point the quintic comes to a hair over 1 just under its end.
+ */
+export const smoother = (x: number) => {
+	const t = clamp01(x);
+	return clamp01(t * t * t * (t * (t * 6 - 15) + 10));
+};
 /** The moment at which a smoothstep from 0 to 1 reaches `y`. */
 export const smoothstepAt = (y: number) => 0.5 - Math.sin(Math.asin(1 - 2 * clamp01(y)) / 3);
 
