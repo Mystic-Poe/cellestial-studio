@@ -8,9 +8,9 @@ import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { PROD, launch, open, outDir, recorder, sharp, sheet, sleep } from './lib.mjs';
 
-const { values } = parseArgs({ options: { throttle: { type: 'string', default: '1' }, only: { type: 'string', default: 'desk,phone' } } });
+const { values } = parseArgs({ options: { out: { type: 'string', default: 'a5' }, throttle: { type: 'string', default: '1' }, only: { type: 'string', default: 'desk,phone' } } });
 const throttle = Number(values.throttle);
-const dir = outDir('a5');
+const dir = outDir(values.out);
 const log = [];
 const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });

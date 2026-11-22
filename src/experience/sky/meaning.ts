@@ -49,8 +49,32 @@ const WIDE = {
 	least: 14,
 	air: 90,
 	exit: 48,
+	/** How far outside the figure's bounds the words' box may begin or end: here it must reach into them. */
+	reach: -12,
+	/** The line is never broken. */
+	rows: [1],
+	/** The stars of the figures further on are not counted (they are small behind large type). */
+	far: 0,
 };
-const TALL = { sizes: [24, 22, 21, 20, 18], step: 6, least: 10, air: 44, exit: 24 };
+const TALL = {
+	sizes: [24, 22, 21, 20, 18],
+	step: 6,
+	least: 10,
+	air: 44,
+	exit: 24,
+	/** A figure that is not tall has its free room just above or under it. */
+	reach: 40,
+	/**
+	 * A long line may stand in two rows or three: at each size the whole line is tried first.
+	 * (Leo's two lines are as wide as the screen in one row, and Leo stands 73% of its height.)
+	 */
+	rows: [1, 2, 3],
+	/**
+	 * The stars of this many figures further on gather in the middle of a narrow screen, where
+	 * the free room often is: the words keep clear of those points too.
+	 */
+	far: 3,
+};
 /** The writing, seconds. */
 const WRITE = {
 	/** One line is written in about this long, however many letters it has… */
@@ -244,15 +268,22 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		el.style.transform = 'none';
 		el.style.visibility = 'hidden';
 		const room = layout.w - 2 * TYPE.margin;
-		/** Set the type and say how large the words then are. */
-		const set = (px: number): { w: number; h: number } => {
+		/** Set the type, in one row or broken evenly into `rows`, and say how large the words then are. */
+		const set = (px: number, rows = 1): { w: number; h: number } => {
+			el.style.whiteSpace = '';
+			el.style.maxWidth = '';
 			el.style.fontSize = `${px}px`;
-			if (el.offsetWidth > room) {
+			if (rows > 1) {
+				// A little over an even share of the whole line, so that it breaks into that many rows.
+				el.style.maxWidth = `${Math.ceil((el.offsetWidth / rows) * 1.14) + 2}px`;
+				el.style.whiteSpace = 'normal';
+			} else if (el.offsetWidth > room) {
 				const size = Math.max(TYPE.min, Math.floor(((px * room) / el.offsetWidth) * 2) / 2);
 				el.style.fontSize = `${size}px`;
 			}
 			return { w: el.offsetWidth, h: el.offsetHeight };
 		};
+		const by = layout.w >= WIDE.from ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
 
 		// The figure as it stands at its station.
 		const cam = layout.cameraAt(layout.station(figure));
@@ -278,6 +309,22 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 					y: p.y + ((q.y - p.y) * i) / steps,
 					r: 9,
 				});
+			}
+		}
+		// And, where it is asked for, the stars of the figures further on, as small as they are there.
+		for (let n = 1; n <= (by?.far ?? 0); n++) {
+			const further = mod(figure + n, FIGURES);
+			const planN = layout.plans[further];
+			const fitN = layout.fits[further];
+			if (!planN || !fitN) continue;
+			for (const [i, star] of planN.stars.entries()) {
+				const p = layout.project(cam, star.x, star.y, z - n * SPACING);
+				if (p.scale <= 0) continue;
+				const r =
+					i === planN.epicentre
+						? B3.ring * layout.b3 * p.scale
+						: Math.max(fitN.starR * layout.sizeOf(star) * p.scale, 1.25);
+				blocks.push({ x: p.x, y: p.y, r: r + 5 });
 			}
 		}
 		const xs = stars.map((s) => s.x);
@@ -311,7 +358,8 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 				if (d < 0) hits++;
 				if (d < air) air = d;
 			}
-			if (x0 < CHROME.w && y0 < CHROME.h) hits++;
+			// Standing on the chrome or on the exit button is worse than crossing any star or line.
+			if (x0 < CHROME.w && y0 < CHROME.h) hits += 100;
 			// On a narrow screen the band keeps its distance from the button too.
 			const keep =
 				EXIT.h +
@@ -324,45 +372,50 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 				x1 > layout.w / 2 - EXIT.w / 2 &&
 				x0 < layout.w / 2 + EXIT.w / 2
 			) {
-				hits++;
+				hits += 100;
 			}
 			return { hits, air };
 		};
 
 		let best: { cx: number; y: number; w: number; h: number } | null = null;
-		const by = layout.w >= WIDE.from ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
 		if (by) {
 			// By the figure: the largest type that finds free room inside or beside
 			// the figure's bounds, and of that room the place with the most air.
-			for (const px of by.sizes) {
-				const { w, h } = set(px);
-				const left = w / 2 + TYPE.margin;
-				const right = layout.w - w / 2 - TYPE.margin;
-				if (right < left) continue;
-				// "Beside": the words' box may reach out of the bounds, but it still touches them.
-				const fromX = Math.max(left, bounds.x0 - w / 2 + 24);
-				const toX = Math.min(right, bounds.x1 + w / 2 - 24);
-				const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h + 12);
-				// Well above the exit button wherever it stands across the screen.
-				const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 - 12);
-				let top = Number.NEGATIVE_INFINITY;
-				let found: { cx: number; y: number } | null = null;
-				for (let y = fromY; y <= toY; y += by.step) {
-					for (let cx = fromX; cx <= toX; cx += by.step) {
-						const at = lie(cx, y, w, h);
-						if (at.hits > 0 || at.air < by.least) continue;
-						// Air first, up to a point; then the middle of the figure.
-						const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
-						const score = Math.min(at.air, by.air) * 3 - off * 0.35;
-						if (score > top) {
-							top = score;
-							found = { cx, y };
+			search: for (const px of by.sizes) {
+				let whole = 0;
+				for (const rows of by.rows) {
+					const { w, h } = set(px, rows);
+					if (rows === 1) whole = w;
+					// Breaking a line that is short already gains nothing.
+					else if (whole < 0.45 * room) break;
+					const left = w / 2 + TYPE.margin;
+					const right = layout.w - w / 2 - TYPE.margin;
+					if (right < left) continue;
+					// "Beside": the words' box may reach out of the bounds, but it still touches them.
+					const fromX = Math.max(left, bounds.x0 - w / 2 + 24);
+					const toX = Math.min(right, bounds.x1 + w / 2 - 24);
+					const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h - by.reach);
+					// Well above the exit button wherever it stands across the screen.
+					const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 + by.reach);
+					let top = Number.NEGATIVE_INFINITY;
+					let found: { cx: number; y: number } | null = null;
+					for (let y = fromY; y <= toY; y += by.step) {
+						for (let cx = fromX; cx <= toX; cx += by.step) {
+							const at = lie(cx, y, w, h);
+							if (at.hits > 0 || at.air < by.least) continue;
+							// Air first, up to a point; then the middle of the figure.
+							const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
+							const score = Math.min(at.air, by.air) * 3 - off * 0.35;
+							if (score > top) {
+								top = score;
+								found = { cx, y };
+							}
 						}
 					}
-				}
-				if (found) {
-					best = { ...found, w, h };
-					break;
+					if (found) {
+						best = { ...found, w, h };
+						break search;
+					}
 				}
 			}
 		}

@@ -7,9 +7,9 @@ import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { GRID, PROD, frameTimes, launch, open, outDir, pnow, recorder, sheet, sleep } from './lib.mjs';
 
-const { values } = parseArgs({ options: { only: { type: 'string', default: 'desk,phone' }, figs: { type: 'string', default: '0,7,3' }, throttle: { type: 'string', default: '1,4' }, url: { type: 'string', default: PROD } } });
+const { values } = parseArgs({ options: { out: { type: 'string', default: 'fall' }, only: { type: 'string', default: 'desk,phone' }, figs: { type: 'string', default: '0,7,3' }, throttle: { type: 'string', default: '1,4' }, url: { type: 'string', default: PROD } } });
 const NAMES = ['Virgo', 'Libra', 'Scorpius', 'Sagittarius', 'Capricornus', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo'];
-const dir = outDir('fall');
+const dir = outDir(values.out);
 const log = [];
 const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });

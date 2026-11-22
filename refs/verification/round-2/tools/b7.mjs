@@ -10,12 +10,15 @@ import { parseArgs } from 'node:util';
 import { CONSTELLATIONS } from '../../../../src/content/constellations.ts';
 import { PROD, SIZES, hex, launch, open, outDir, recorder, sharp, sheet, sleep } from './lib.mjs';
 
-const { values } = parseArgs({ options: { only: { type: 'string', default: 'all,write' } } });
+const { values } = parseArgs({ options: { only: { type: 'string', default: 'all,write' }, sizes: { type: 'string', default: 'desk,phone' } } });
+const sizes = values.sizes.split(',');
 const only = new Set(values.only.split(','));
 const dir = outDir('b7');
 const log = [];
 const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });
+let fails = 0;
+const tally = [];
 const all = CONSTELLATIONS.flatMap((c) => c.stars.map((s) => s.slot).filter(Boolean)).map((slot) => ({ slot, ask: 'A site for my bakery' }));
 const seed = { fn: (list) => { sessionStorage.setItem('cellestial:round', '1'); localStorage.setItem('cellestial:claims', JSON.stringify(list)); }, arg: all };
 const ready = async (o) => {
@@ -44,7 +47,7 @@ async function colour(png, clip, dpr) {
 	return n ? { mean: hex(r / n, g / n, b / n), n, blue: (100 * blue) / n } : { mean: 'none', n: 0, blue: 0 };
 }
 
-if (only.has('all')) for (const size of ['desk', 'phone']) {
+if (only.has('all')) for (const size of sizes) {
 	const dpr = SIZES[size].deviceScaleFactor;
 	const o = await open(browser, size, { init: seed });
 	await ready(o);
@@ -89,18 +92,26 @@ if (only.has('all')) for (const size of ['desk', 'phone']) {
 		const edge = Math.round(Math.min(m.x, m.y, m.W - m.x - m.w));
 		say(`${size} ${String(k + 1).padStart(2)} ${c.name.padEnd(12)} "${m.text}" ${Math.round(m.w)}x${Math.round(m.h)} at ${Math.round(m.x)},${Math.round(m.y)}; type ${m.font}; ${where} (figure x ${Math.round(figLeft)}..${Math.round(figRight)}, y ${Math.round(figTop)}..${Math.round(figBottom)}); nearest star's edge ${Math.round(starGap)} px; ${toB11} px above B11; ${edge} px from the nearest side/top; touches: ${touch.length ? touch.join(', ') : 'nothing'}; letters' mean colour ${col.mean} (${col.n} px, ${col.blue.toFixed(0)}% bluish); css colour ${m.color}`);
 		cells.push({ img: png, label: `${k + 1} ${c.name}: "${m.text}"` });
+		// Round 2, piece 3: the phone's verdict. Nothing touched; and 40 px above the exit button
+		// unless the words stand in the figure's own room (inside its bounds).
+		if (size !== 'desk') {
+			const ok = touch.length === 0 && (toB11 === null || toB11 >= 40 || where === 'within the figure\'s bounds');
+			if (!ok) fails++;
+			tally.push(`${ok ? 'PASS' : 'FAIL'}  ${size} ${c.name}: touches ${touch.length ? touch.join(', ') : 'nothing'}; ${toB11} px above the exit button; ${where}; type ${m.font}; ${Math.round(starGap)} px from the nearest star's edge`);
+		}
 	}
+	for (const t of tally.splice(0)) say(t);
 	const studio = await o.page.evaluate(() => { const e = document.querySelector('.chrome-studio'); const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height, color: getComputedStyle(e).color }; });
 	const sc = await colour(await o.page.screenshot({ type: 'png' }), studio, dpr);
 	say(`${size} for comparison, the logo's "studio": letters' mean ${sc.mean}; css ${studio.color}`);
 	if (size === 'desk') {
 		await sheet(join(dir, 'all-desk-1.jpg'), cells.slice(0, 6), { cols: 3, cellW: 520, cellH: 325 });
 		await sheet(join(dir, 'all-desk-2.jpg'), cells.slice(6), { cols: 3, cellW: 520, cellH: 325 });
-	} else await sheet(join(dir, 'all-phone.jpg'), cells, { cols: 6, cellW: 258, cellH: 558 });
+	} else await sheet(join(dir, `all-${size}.jpg`), cells, { cols: 6, cellW: 258, cellH: Math.round((258 * SIZES[size].viewport.height) / SIZES[size].viewport.width) });
 	await o.context.close();
 }
 
-if (only.has('write')) for (const size of ['desk', 'phone']) for (const k of [7, 11]) {
+if (only.has('write')) for (const size of sizes) for (const k of [7, 11]) {
 	const c = CONSTELLATIONS[k];
 	const o = await open(browser, size, { init: seed });
 	await ready(o);
@@ -131,5 +142,6 @@ if (only.has('write')) for (const size of ['desk', 'phone']) for (const k of [7,
 	say(`${size} ${c.name}: the writing recorded (${rec.frames.length} frames); console errors ${o.errors.length ? o.errors.join(' | ').slice(0, 200) : 'none'}`);
 	await o.context.close();
 }
-writeFileSync(join(dir, `b7${only.has('all') ? '' : '-write'}.txt`), `${log.join('\n')}\n`);
+writeFileSync(join(dir, `b7${only.has('all') ? '' : '-write'}${values.sizes === 'desk,phone' ? '' : `-${sizes.join('-')}`}.txt`), `${log.join('\n')}\n`);
 await browser.close();
+if (fails) { console.log(`${fails} FAILED`); process.exit(1); }

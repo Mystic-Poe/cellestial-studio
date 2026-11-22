@@ -195,6 +195,8 @@ import Panel from '../ui/Panel.astro';
 	}
 	.sky-meaning__line {
 		display: block;
+		/* On a narrow screen a long line may stand in two or three rows: even ones. */
+		text-wrap: balance;
 	}
 	/* The final line stands apart from the meaning it follows. */
 	.sky-meaning__line + .sky-meaning__line {

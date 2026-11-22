@@ -849,3 +849,34 @@ PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 o
   logo, the menu and the exit button; deepest overlap 30.6% (Taurus), Aquarius 23%, Pisces 9%;
   Cellestial's star 96.9 px across, the four nearest discs 3.9, 13.7, 16.5 and 30.2 px beyond the
   rings' full reach, and the rings as drawn 7.7 and 4.3 px from the nearest disc at two moments.
+
+  B7 ON THE PHONE (finding 7; minor b under finding 2). With eight tall figures the words cannot live
+  in the band above the exit button (first run after the turn, round-2/b7: Leo's two lines stood ON
+  the button, and four lines stood over the far figures' points in the middle of the screen).
+  - src/experience/sky/meaning.ts. The desktop's search (the largest type that finds free room inside
+    or beside the figure's bounds, clear of every star, button and line, the logo and menu and the
+    exit button, and of that room the place with most air) now runs on a narrow screen too, with
+    numbers of its own (TALL): type 24, 22, 21, 20 or 18 px; at least 10 px of air; the words' foot at
+    least 24 px above the exit button's room (44 px above the button); the box may stand up to 40 px
+    outside the bounds, because a figure that is not tall (Taurus, Gemini) has its room just above or
+    under it; the stars of the three figures further on, which gather in the middle of a narrow
+    screen, count as things to keep clear of; and a long line may stand in two or three even rows
+    (text-wrap: balance, src/components/scenes/Sky.astro), tried at each size after the whole line.
+    The desktop's numbers (WIDE) are what they were and its search is the same code: b7.txt, desk,
+    gives all twelve the places and sizes the second look measured. Only if no room is found is the
+    band nearest the figure's foot used, and there standing on the logo, the menu or the button now
+    counts as worse than crossing any number of stars or lines (it counted as one).
+  - Measured (round-2/tools/b7.mjs, which now takes --sizes and prints a verdict for each phone
+    figure; round-2/b7/b7-all-phone.txt; all-phone.jpg looked at): all twelve at 24 px; nothing
+    touched; nearest star's edge 32 to 108 px; 50 to 603 px above the exit button (Cancer 50 and
+    Libra 80, both inside their figure's own room). Aquarius's line stands in two rows, Leo's in two
+    with "Jesus is King." under it, at the top right of the figure.
+
+  A PHONE TURNED ON ITS SIDE AND BACK, and REDUCED MOTION (round-2/tools/phone-turn.mjs, new;
+  round-2/phone-sky/phone-turn.txt, turn-and-back.jpg, reduced-motion.jpg; production, every star
+  lit, the clock held): at Virgo, Aquarius, Taurus and Leo, 390x844 -> 844x390 -> 390x844: every
+  star's button within 0.06 px of its star at each of the three, a lit star in the picture under
+  every button, six figures turned upright and none on the side, the third picture the first again
+  (0 pixels differ), no console error. Reduced motion, a first visit: the still sky is the turned
+  Virgo, the exit button there, Cellestial's star 96.9 px with the nearest disc 3.9 px beyond its
+  rings, 0 pixels changing in 1.5 s.
