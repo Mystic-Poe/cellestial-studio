@@ -1,0 +1,12 @@
+desk Aries: 4 star buttons; starPx 19.490000000000002; circles [{"x":207,"y":121,"r":19.1},{"x":970,"y":434,"r":23.3},{"x":1208,"y":636,"r":21.7},{"x":1235,"y":757,"r":18.1}]
+   empty star: radius 23.3 px; body mean #2a2521; warm (brass) pixels 18.4% of the disc, their mean #716151; rim (0.88-1.2 r, lit pixels) mean #43444b, brightest #bc9d80
+   lit star: radius 19.1 px; body mean #356085; warm (brass) pixels 0.0% of the disc; rim (0.88-1.2 r, lit pixels) mean #587b9d, brightest #8dcbe5
+desk Taurus: 12 star buttons; starPx 19.490000000000002; circles [{"x":371,"y":290,"r":20.8},{"x":688,"y":408,"r":26.3},{"x":725,"y":422,"r":19.7},{"x":770,"y":426,"r":19.1}]
+   empty star: radius 26.3 px; body mean #2c2a28; warm (brass) pixels 19.3% of the disc, their mean #746353; rim (0.88-1.2 r, lit pixels) mean #445466, brightest #99c7e6
+   lit star: radius 20.8 px; body mean #356085; warm (brass) pixels 0.0% of the disc; rim (0.88-1.2 r, lit pixels) mean #597b9c, brightest #90cce4
+phone Aries: 4 star buttons; starPx 12; circles [{"x":37,"y":666,"r":13},{"x":192,"y":286,"r":14.4},{"x":293,"y":168,"r":13.4},{"x":353,"y":154,"r":13}]
+   empty star: radius 14.4 px; body mean #2a2621; warm (brass) pixels 17.5% of the disc, their mean #6b5d4f; rim (0.88-1.2 r, lit pixels) mean #3f4046, brightest #a89076
+   lit star: radius 13.0 px; body mean #345f84; warm (brass) pixels 0.0% of the disc; rim (0.88-1.2 r, lit pixels) mean #557797, brightest #87c5e0
+phone Taurus: 12 star buttons; starPx 12; circles [{"x":37,"y":342,"r":13},{"x":180,"y":396,"r":10.7},{"x":197,"y":402,"r":10.7},{"x":217,"y":404,"r":13}]
+   empty star: radius 10.7 px; body mean #313131; warm (brass) pixels 18.3% of the disc, their mean #716252; rim (0.88-1.2 r, lit pixels) mean #435469, brightest #abcbe7
+   lit star: radius 13.0 px; body mean #345f84; warm (brass) pixels 0.0% of the disc; rim (0.88-1.2 r, lit pixels) mean #597c9e, brightest #9dccea

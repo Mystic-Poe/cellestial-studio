@@ -964,7 +964,8 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
   than L 40, 9% brass-toned, the brightest L 118 of 255. 32 px: 23%, 11%, L 154. A dim grey-mauve C in
   the middle of a black square.
   THE CAUSE, from the build's own numbers: three things multiply. (1) The small pictures were the
-  180 px one made smaller, margin and all: the C took 78% of the square's side, 12 of the 16 pixels.
+  180 px one made smaller, margin and all: the C took 90% of the square's side (1211 of 1351 px of
+  the pair's frame), 14 of the 16 pixels. The least of the three.
   (2) A strut of the emblem is a third of a pixel wide at 16 px, so it keeps a third of its light: the
   build now prints the brass's level at that size, L 84 at 16 px and L 99 at 32 px for the FULLY lit
   emblem, less for the idle one that was used (60% lit over unlit). (3) The idle emblem carries the
@@ -980,3 +981,49 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
   30%, 3%, L 238. Looked at on the sheet at its real size: a warm brass C with its blue node on the
   dark tab and on the light one, where before it was a faint mark in a black square.
   Run again with: node scripts/build-assets.mjs chrome.
+
+  c. THE EMPTY STAR ON A 1x DESKTOP SCREEN (finding 4's minor; closing list 10). DONE.
+  REPRODUCED (round-2/tools/stars.mjs; round-2/stars/before/: desk-aries-close.jpg, stars.txt): a star
+  47 px across, 22.4% of its disc brass, in broad bands: marble.
+  THE CAUSE, from the pack's picture and arithmetic, and then seen: B4's traces run in bundles of four
+  to eight, about 7 px apart in the 512 px frame the sky uses (looked at lifted and enlarged). A star
+  at its station is 36 to 53 px across on the desktop and 43 to 60 DEVICE px on the phone (stars.txt),
+  so a screen pixel is 8 to 13 px of that frame: two traces to a pixel. scripts/assets/sky.mjs
+  thickened every trace by a pixel to each side and softened it, so the traces of a bundle closed up
+  into one solid band 3 to 6 screen px wide. No star can show traces two to a pixel: thickening LESS
+  (the brief's first suggestion) only makes the band dimmer, and a sharper mip level only makes its
+  edge harder. Both were tried in a model of the GPU's sampling before anything was changed (the
+  picture reduced by box mips and sampled trilinearly at 38, 46 and 57 px; the model's "now" matched
+  the screenshot), and neither gave lines.
+  CHANGED: scripts/assets/sky.mjs, step 2. The traces are no longer thickened one by one. They are
+  filtered to the band a star of that size can show: a blur of 4 px less a blur of 11 px (FINE, WIDE:
+  a difference of Gaussians), on at a level of 0.1. A lone trace comes out a stroke about one screen
+  pixel wide; a tight bundle comes out as the strokes at its edges with the dark kept between them.
+  Nothing is drawn where the pack has no trace, but a bundle is not drawn trace by trace (it never
+  could be at this size): the owner should know that, as he should know the picture is derived at
+  all. The picture is public/cellestial/sky/b4-station.webp (256 px, 16,362 bytes; was 18,208). The
+  shader, the sizes and the crossfade to the pack's own picture (B4_CLOSE) are untouched.
+  One first attempt abandoned (once, not twice): keeping only the outermost trace of each bundle by
+  morphology (close, erode, subtract). The bundles are too irregular for it: it removed the core of
+  the two widest bundles only and thickened the rest into worse blotches (seen in the model).
+  CHECKED AGAIN, production build, real GPU:
+  - round-2/tools/star-side.mjs (new): before and after in ONE run of ONE build (the "before" page is
+    the same page with the station picture answered from commit c0cacf3), each star cut from the
+    screenshot pixel for pixel, as drawn and enlarged 6x: round-2/stars/side-by-side.png, .txt. Read
+    along every row of the disc, the brass of the 47 px desktop star came in 86 runs 3.08 px long on
+    average, 30 of them 4 px or longer; it comes in 109 runs 2.00 px long, 13 of them 4 px or longer.
+    The 53 px star (Taurus): 115 runs of 2.91 px, 42 long -> 130 runs of 2.18 px, 22 long. The 36 px
+    star: 3.06 -> 2.03 px. Looked at: where there were bands there are separate strokes with dark
+    between them, bends and branches to be seen; it reads as a circuit board more than as marble. It
+    is not B4's circuit line for line, and at 36 px it is still only a hint of one.
+  - The phone (2x): 57 device px (29 CSS px): 131 runs of 3.20 px -> 150 runs of 2.24 px; the traces
+    show, finer than before. The smallest star judged, 43 device px (21 CSS px, one of Taurus's knot):
+    brass 18.2% -> 12.7% of the disc, 47 runs -> 58: still plainly traced.
+  - Brass over the disc (stars.mjs, round-2/stars/stars.txt and sheets): desktop 22.4% -> 18.4%
+    (Aries), 22.8% -> 19.3% (Taurus); phone 21.3% -> 17.5%, 22.4% -> 18.3%. The sphere under it is the
+    same dark one (#2e2822 -> #2a2521). A lit star is as it was: blue (#356085), no brass at all, a
+    blue halo: the two cannot be mistaken (desk-aries-close.jpg, phone-aries-close.jpg).
+  - A test that fails on the old picture: src/experience/sky-station-picture.test.ts (the picture
+    brought to 36, 46 and 58 px; the mean run of brass along a row under 2.5 px, fewer than 18% of
+    runs 4 px or longer, brass over 15% of the disc). On the old picture: 2.73, 2.85, 3.24 px.
+  Run again with: node scripts/build-assets.mjs modules.
