@@ -5,6 +5,14 @@ src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
 STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
 is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
 PARTS DONE: 1a, 1b, 1c, 1d, 1e, 1f. Next: what round 2 broke (the warp, the loader against its reference, the builders' suites), the walk, the owner's list, the closing list and verdict.
+CUT OFF, noted by the orchestrator: the inspector was stopped by the account's usage limit at 12:55 on
+22 Nov, straight after its commit 396c77e. What it had captured and not yet written up is committed as it
+left it, for the next run of this brief to use or to make again: the warp (logs/warp-rec-*.log,
+logs/warp-probe.log, tools/warp-probe.mjs), the walk (walk/), the phone on its side (phone-sky/844/,
+phone-sky/on-its-side.jpg, logs/phone-side.log, side-stations.log), B7 with the phone on its side and being
+written (b7/all-side.jpg, words-side.jpg, b7-side.txt, b7-write.txt, write-*.jpg), "claim yours" beside
+the words on the desktop (b7/claim-yours-close-desk.jpg, logs/f8-close.log). The preview server it left on
+4615 was stopped: build and start the servers again.
 
 HOW IT IS BEING DONE
 - The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port

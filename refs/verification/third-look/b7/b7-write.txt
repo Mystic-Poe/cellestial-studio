@@ -1,0 +1,4 @@
+desk Aries: the writing recorded (372 frames); console errors none
+desk Leo: the writing recorded (522 frames); console errors none
+phone Aries: the writing recorded (372 frames); console errors none
+phone Leo: the writing recorded (522 frames); console errors none

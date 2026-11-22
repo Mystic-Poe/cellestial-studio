@@ -15,3 +15,15 @@ FAIL  Cellestial's star is at least 84 px across (72.7)
  9 Taurus      upright 12 claimable stars on screen of 12; figure 267x243 px (y 66..309: 62% of the height; centre to centre 57%); nearest side 288.4 px; star radius 8.9..13.4 px; overlapping pairs 6, deepest 63% of the smaller star's width; clear of the exit button -3 px, the logo 225 px, the menu button 187 px
 10 Gemini      upright 12 claimable stars on screen of 12; figure 259x244 px (y 65..310: 63% of the height; centre to centre 57%); nearest side 292.1 px; star radius 8.7..13.1 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button -4 px, the logo 227 px, the menu button 186 px
 11 Cancer      upright 5 claimable stars on screen of 5; figure 144x255 px (y 60..314: 65% of the height; centre to centre 60%); nearest side 350.1 px; star radius 8.4..9.9 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button -8 px, the logo 319 px, the menu button 269 px
+12 Leo         upright 9 claimable stars on screen of 9; figure 470x243 px (y 65..308: 62% of the height; centre to centre 57%); nearest side 186.8 px; star radius 9.4..12.8 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 9 px, the logo 196 px, the menu button 199 px
+PASS  every claimable star is on screen at every station (0 missing)
+PASS  every star is at least 20 px clear of the sides at every station (0 stations fail)
+FAIL  every star is clear of the logo, the menu button and the exit button (9 touches)
+FAIL  the six wide figures are at least 50% of the screen's height (1 are not)
+FAIL  no two stars overlap by more than a third (deepest 62.8%)
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/phone-sky/844/stations-empty.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/phone-sky/844/cellestial-star.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/phone-sky/844/dense-figures.jpg
+PASS  no console error (none)
+5 FAILED
+exit 1
