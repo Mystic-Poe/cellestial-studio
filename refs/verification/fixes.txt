@@ -952,3 +952,31 @@ PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 o
   phone-sky.mjs (extended), phone-turn.mjs and desk-same.mjs (new), b7.mjs (--sizes, verdicts),
   a5.mjs and fall.mjs (--out), lib.mjs (the 360x740 size). Evidence: round-2/phone-sky/ (before/,
   360/, a5/, fall/, desk-before/, desk-after/), round-2/b7/, round-2/logs-piece-3/.
+
+PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, part 5; closing list 7, 9, 10, 11)
+
+  Each was reproduced first with the second look's own script, on the production build as it stood at
+  c0cacf3; what each showed then is kept beside what it shows now (a before/ folder in each place).
+  Done in the order b, c, d, a (the three pictures first, the sky's words last).
+
+  b. THE TAB ICON (part 5; closing list 9). DONE.
+  REPRODUCED (round-2/owner-list/before/favicon.jpg, favicon.txt): 16 px: 25% of its pixels brighter
+  than L 40, 9% brass-toned, the brightest L 118 of 255. 32 px: 23%, 11%, L 154. A dim grey-mauve C in
+  the middle of a black square.
+  THE CAUSE, from the build's own numbers: three things multiply. (1) The small pictures were the
+  180 px one made smaller, margin and all: the C took 78% of the square's side, 12 of the 16 pixels.
+  (2) A strut of the emblem is a third of a pixel wide at 16 px, so it keeps a third of its light: the
+  build now prints the brass's level at that size, L 84 at 16 px and L 99 at 32 px for the FULLY lit
+  emblem, less for the idle one that was used (60% lit over unlit). (3) The idle emblem carries the
+  logo's widened blue lines, which at that size are mixed into every brass pixel: the grey-mauve.
+  CHANGED: scripts/build-assets.mjs, tabIcon(). The 16 and 32 px pictures are now the pack's fully lit
+  emblem (A1_c-emblem_lit.jpg as the loader registers it, no line widened), cropped to the C with no
+  margin, reduced, and lifted, every channel of a pixel by one factor so the brass keeps its hue,
+  until the brighter tenth of the brass stands at L 200 (TAB_BODY_L): 2.38x at 16 px, 2.01x at 32 px
+  (the brief guessed 1.6; that would have left the body at L 134 and L 158). Nothing is drawn. The
+  180 px favicon.png is byte for byte what it was (the build prints "=" for it), and so is the logo.
+  CHECKED AGAIN (round-2/tools/favicon.mjs; round-2/owner-list/favicon.jpg, favicon.txt): 16 px: 45%
+  of its pixels brighter than L 40, 38% brass-toned, 2% blue (the node), brightest L 230. 32 px: 35%,
+  30%, 3%, L 238. Looked at on the sheet at its real size: a warm brass C with its blue node on the
+  dark tab and on the light one, where before it was a faint mark in a black square.
+  Run again with: node scripts/build-assets.mjs chrome.

@@ -714,22 +714,62 @@ async function ui() {
 
 // ───────────────────────────────────────────────────────────── chrome ──
 
+/** What the brass of the C is lifted to in the two small tab icons: luminance, of 255. */
+const TAB_BODY_L = 200;
+
 /**
- * The browser-tab icon: the emblem as the logo has it (idle, its lit lines
- * widened), square, on the site's black. public/favicon.png (180 px) and
- * public/favicon.ico (32 and 16 px, each stored as a PNG).
+ * The browser-tab icon, public/favicon.png (180 px) and public/favicon.ico
+ * (32 and 16 px, each stored as a PNG), square, on the site's black.
+ *
+ * The 180 px one is the emblem as the logo has it: idle, its lit lines
+ * widened, with a margin. The two small ones are not that picture made
+ * smaller: at 16 px a strut is a third of a pixel wide and takes a third of
+ * its brightness, so the idle emblem came out a dim grey-mauve C on a black
+ * square (its brightest pixel L 118 of 255, the widened blue lines mixed into
+ * the brass). They are the pack's fully lit emblem instead, with no lines
+ * widened, cropped to the C with no margin (so it is as large as the square
+ * lets it be), and lifted, every channel by the same factor so the brass
+ * keeps its hue, until the body of the C stands at TAB_BODY_L.
  */
-async function tabIcon(emblem, c) {
-	const M = 70;
-	const side = Math.max(c.w, c.h) + 2 * M;
-	const x0 = Math.round(c.x + c.w / 2 - side / 2);
-	const y0 = Math.round(c.y + c.h / 2 - side / 2);
-	const square = px.crop(emblem, x0, y0, side, side);
+async function tabIcon(emblem, lit, c) {
+	const squareOf = (img, margin) => {
+		const side = Math.max(c.w, c.h) + 2 * margin;
+		const x0 = Math.round(c.x + c.w / 2 - side / 2);
+		const y0 = Math.round(c.y + c.h / 2 - side / 2);
+		return px.crop(img, x0, y0, side, side);
+	};
+	const encode = (pipeline) => pipeline.png({ compressionLevel: 9, palette: false }).toBuffer();
+	const square = squareOf(emblem, 70);
 	const png = (size) =>
-		fromImage(square)
+		encode(fromImage(square).resize({ width: size, height: size, kernel: 'lanczos3' }));
+	const tight = squareOf(lit, 0);
+	const small = async (size) => {
+		const { data, info } = await fromImage(tight)
 			.resize({ width: size, height: size, kernel: 'lanczos3' })
-			.png({ compressionLevel: 9, palette: false })
-			.toBuffer();
+			.raw()
+			.toBuffer({ resolveWithObject: true });
+		const ch = info.channels;
+		// The body of the C: the brighter half of what is brass at this size.
+		const body = [];
+		for (let i = 0; i < data.length; i += ch) {
+			const l = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+			if (data[i] > BRASS_LEVEL && data[i] >= data[i + 2]) body.push(l);
+		}
+		body.sort((a, b) => a - b);
+		const level = body[Math.floor(body.length * 0.9)];
+		const gain = TAB_BODY_L / level;
+		for (let i = 0; i < data.length; i += ch) {
+			// One factor for the three channels of a pixel, so that a pixel that
+			// would pass white keeps its colour.
+			const top = Math.max(data[i], data[i + 1], data[i + 2]) * gain;
+			const k = top > 255 ? (gain * 255) / top : gain;
+			for (let j = 0; j < 3; j++) data[i + j] = Math.round(data[i + j] * k);
+		}
+		console.log(
+			`  tab icon ${size} px: the lit emblem, no margin; its body at L ${level.toFixed(0)}, lifted ${gain.toFixed(2)}x to L ${TAB_BODY_L}`,
+		);
+		return encode(sharp(data, { raw: info }));
+	};
 	const write = (name, data) => {
 		const file = join(ROOT, 'public', name);
 		const same = existsSync(file) && readFileSync(file).equals(data);
@@ -741,8 +781,8 @@ async function tabIcon(emblem, c) {
 	write('favicon.png', await png(180));
 	// An .ico is a directory of pictures; each of these is a whole PNG.
 	const entries = [
-		{ size: 32, data: await png(32) },
-		{ size: 16, data: await png(16) },
+		{ size: 32, data: await small(32) },
+		{ size: 16, data: await small(16) },
 	];
 	const head = Buffer.alloc(6 + 16 * entries.length);
 	head.writeUInt16LE(0, 0);
@@ -840,7 +880,7 @@ async function chrome() {
 			blend[key][i] = blend[key][i] * (1 - t) + colour[k] * t;
 		}
 	}
-	await tabIcon(blend, c);
+	await tabIcon(blend, lit, c);
 	const keyed = px.key(blend, body, { floor: 6 });
 	const M = 12;
 	const x0 = c.x - M;
