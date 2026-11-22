@@ -102,7 +102,7 @@ has looked since: that is the third look. `git status` is clean but for the untr
      "ROUND 2", piece 4; runs in `refs/verification/round-2/owner-list/`, `stars/`, `logo/`,
      `b7/`, `logs-piece-4/`; the scripts `round-2/tools/star-side.mjs`, `logo-side.mjs` (before
      and after in one run of one build) and `b7.mjs` (far points counted, a desktop verdict).
-   - [ ] 5. **Close-out.** No file of the site changed. Build, test (138 of 138), lint and
+   - [x] 5. **Close-out** `5e81b31`. No file of the site changed. Build, test (138 of 138), lint and
      typecheck pass. `tools/run-all.sh`: thirteen tools, thirteen `exit 0`, the counts what they
      were before the round (loader 13 of 13 at each size, sky 201, meaning 38 and 24, roots 197
      and 245, transitions 148, chrome 48). ONE CHECK CHANGED, in the tool only: in the first run
