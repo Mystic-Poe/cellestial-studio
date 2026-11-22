@@ -14,22 +14,54 @@
 
 ## Exact next step
 
-**A second independent look, then the owner's decisions.** Both inspections are done, the fixer
-has worked through both reports, and every suite passes after the last change (see "Final
-verification"). Nothing is parked, `git status` is clean but for the untracked `claude-vault/`
+**Round 2 of fixes, then a third look, then the owner's decisions.** The second look is done
+(21 Nov, `refs/verification/second-look.txt`; its evidence and scripts under
+`refs/verification/second-look/`). It found no blocker, three majors and eleven minors. Its
+verdict: Loading A1 to A4, the Roots, the Close, the chrome, the warp, reduced motion and the
+page without script are done; A5 (one frame without Cellestial's star at the hand-over), the
+fall (the crash's light cut off in one frame) and the phone's sky (four of Virgo's stars on
+Cellestial's rings) are not. `git status` is clean but for the untracked `claude-vault/`
 (local notes, never part of this build), and the branch is pushed.
 
-0. **The second look (not yet run as this is written).** One independent inspector goes back
-   over everything the first look found not done (`refs/verification/look.txt`: findings 1 to
-   19 and its verdict), on the production build, at both sizes, from its own captures, and
-   walks the whole visit once more for anything the fixes broke. Its brief is
-   `refs/briefs/second-look.js` (the text between the backticks of `PROMPT`). It changes no
-   file of the site and writes `refs/verification/second-look.txt`, with its sheets under
-   `refs/verification/second-look/`. **If that report exists, this step is done:** read its
-   verdict; anything it still calls a blocker or a major is fixed next (one fixer,
-   checkpointing, recording in `refs/verification/fixes.txt`); otherwise go on to the points
-   below, which are the owner's.
-1. **Six things only the owner can decide** (the first five are the first inspector's
+0. **Round 2 (under way while a box below is unticked).** Five fixers, ONE AFTER ANOTHER, one
+   piece each. Each records what it did in `refs/verification/fixes.txt` under "ROUND 2" and
+   ticks its line here in its last commit. The briefs are `refs/briefs/fix-round-2.js`: one
+   workflow, the pieces in order (`args: { only: [3, 4, 5] }` runs only those pieces: use it
+   to go on after a cut-off, leaving out the pieces already ticked; a piece cut off half-way
+   is run again, and its brief tells the fixer to go on from what `fixes.txt` records). The
+   second look's own scripts, ready to run again, are in `refs/verification/round-2/tools/`
+   (they write under `refs/verification/round-2/`, never into the second look's folder).
+   `tools/run-all.sh` runs every suite and sheet tool with a log each.
+   - [ ] 1. **The fall** (major). No burst is ever taken off the screen before its end
+     (`IMPACTS_MAX` in `src/experience/fx/layer.ts` shifts live ones out); the far figures'
+     stars land as small glints; crowded strikes do not clip to a white mass; 60 frames a
+     second on the desktop.
+   - [ ] 2. **Three clocks.** The one-frame blink at the end of the hand-off (major). Cause
+     found by the orchestrator in plain arithmetic, to be confirmed in the page:
+     `smoother()` in `src/experience/sky/index.ts` rounds to a hair above 1 for t just under
+     1, and `introPose()` then raises a negative number to the power 1.3, which is NaN, so
+     the star has no place for that frame. The flash's dip on the desktop from the sky to the
+     ground (minor). The loader's picture on screen 8.0 to 8.2 s on a slow line (minor).
+   - [ ] 3. **The phone's sky** (major). On a portrait phone the six wide figures (Virgo,
+     Capricornus, Aquarius, Pisces, Aries, Leo) are turned a quarter-turn so they stand tall;
+     this REVERSES the earlier ruling "north stays up", which is what crowded Cellestial's
+     star. Cellestial's star clear of its neighbours; the knots in Taurus; B7's place on the
+     phone. One switch in `src/experience/sky/config.ts` turns the turn off.
+   - [ ] 4. **Four minors.** B7 over the far figures' points on the desktop; the tab icon dim
+     at 16 px; the empty star's traces blotchy at 46 px on a 1x screen; the logo mauve at
+     52 px on a 1x screen.
+   - [ ] 5. **Close-out.** Every suite again, every sheet rebuilt and looked at, the
+     protected-systems diff, this file brought up to date.
+   Left as they are, by the orchestrator's ruling: the loader's first arc being tamer than
+   the reference's (finding 14: polish; the loader is the strongest scene and is not reopened
+   for it); the node's cyan beside the trunk's blue (finding 18: both from the pack; the
+   owner's); a sparse figure giving a sparse fall (the sky as it is; no star is invented).
+1. **A third look** at what round 2 changed (the fall, A5, the phone's sky, the flash from
+   the sky to the ground, the loader's clock on a slow line, the four minors), by an
+   inspector who built none of it, on the production build at both sizes, with the second
+   look's scripts. Anything it still calls a major is fixed before the build is called
+   finished. Not started until round 2's five boxes are ticked.
+2. **Six things only the owner can decide** (the first five are the first inspector's
    findings, by number, in `refs/verification/business-and-code.txt`; the sixth came out of
    the close-out):
    - **code 3.** The Worker names only stars 1 to 99 in his email (`/^slot-[1-9]\d?$/`); the sky
@@ -53,9 +85,15 @@ verification"). Nothing is parked, `git status` is clean but for the untracked `
      form's logic, so it is his to ask for (`refs/verification/fixes.txt`, "The Turnstile
      miss").
    Also his, if wanted: look 18 (the node's cyan beside the trunk's blue: both from the pack).
-2. **Publishing.** `redesign-build` is 68 commits ahead of `main` and has never been
+   Also for him to know (calls made in round 2, if their boxes are ticked): on a phone six
+   constellations are turned a quarter-turn (the pattern is the real one, as the figure
+   stands when it rises; `src/experience/sky/config.ts` has the switch); and an empty star at
+   its station is drawn from a picture DERIVED from the pack's B4 (its own traces thickened and
+   recoloured in the wordmark's brass, `public/cellestial/sky/b4-station.webp`), not B4 pixel
+   for pixel.
+3. **Publishing.** `redesign-build` is more than 70 commits ahead of `main` and has never been
    merged or deployed. Whether and when it goes live is the owner's call.
-3. **What only a person with the device can do** (unchanged): a real phone (every frame time
+4. **What only a person with the device can do** (unchanged): a real phone (every frame time
    here is headless Chromium on a desktop GPU, or with the CPU slowed 4×), a screen reader, a
    browser without popovers, landscape phone, tablet and ultrawide.
 
@@ -1028,3 +1066,15 @@ than two tries. All four were reached.
   Turnstile script not arriving, not to the site (three more runs 126 of 126; a held request
   reproduces the recorded state exactly). Build, lint, type-check and tests pass at `c211d9e`.
   Next: the second look, then the owner's decisions and the question of publishing.
+- **21 Nov, evening — the second look, and round 2 begun.** An independent inspector went
+  back over the site after the fixes (`refs/verification/second-look.txt`, commits `f7c0321`
+  to `dcedab9`; no file of the site changed). Thirteen of the first look's nineteen findings
+  resolved, five partly, one untouched (from the pack); nothing worse. No blocker. Three
+  majors: the fall's light is cut off in one frame (a cap on bursts shifts live ones out), the
+  sky draws one frame without Cellestial's star at the end of the hand-off in about half of
+  visits, and on a phone four of Virgo's stars sit on Cellestial's rings. Eleven minors. The
+  orchestrator traced the blink to a rounding overshoot (see "Exact next step", piece 2) and
+  computed with the layout's own code what a quarter-turn buys each figure on a phone
+  (piece 3). Round 2 set up: the briefs (`refs/briefs/fix-round-2.js`), the second look's
+  scripts copied for running again (`refs/verification/round-2/tools/`), a runner for every
+  suite (`tools/run-all.sh`). Next: the five pieces of round 2, in order.
