@@ -1,6 +1,7 @@
 // The effects layer itself: what is playing, when each thing in it happens,
 // and the one frame loop that draws them. The pictures are in flash.ts,
-// impact.ts and warp.ts; this file is the timekeeping and the promises.
+// impact.ts and warp.ts; this file is the timekeeping and the promises (the
+// flash's own clock, with swap()'s time left out of it, is flash-time.ts).
 //
 // Nothing runs while nothing plays. The first effect opens the canvas and
 // starts the loop; the last one to end clears it, closes it and stops the
@@ -20,6 +21,7 @@ import {
 	type Flash,
 	type FlashDir,
 } from './flash.ts';
+import { advanceFlash, beginFlash, type FlashTime, flashTime, swapped } from './flash-time.ts';
 import {
 	createGlint,
 	createImpact,
@@ -61,12 +63,8 @@ export interface FxOptions {
 	clock?: Clock;
 }
 
-/** A wait for swap() is held at the peak for this long at most. */
-const HOLD_MAX_MS = 1000;
 /** With no frame for this long, the heartbeat moves time on by itself. */
 const BEAT_MS = 120;
-/** The frame after swap() pays for the new section. Past this, its lateness is swap time. */
-const SWAP_FRAME_MS = 34;
 /**
  * A star this near, against the nearest (1), strikes with a burst (D2), as big
  * as it is near. One farther off, a star of a figure further on, lands as a glint.
@@ -87,33 +85,18 @@ const WARM_GLINTS = [0.05, 0.3, 0.6];
 /** Reduced motion: the fade is solid black from here to the same distance past the peak. */
 const FADE_SOLID_FROM = 0.47;
 
-interface FlashRun {
+/** A flash: its clock (flash-time.ts), and what the clock is for. */
+interface FlashRun extends FlashTime {
 	swap: () => void | Promise<void>;
 	dir: FlashDir;
 	resolve: () => void;
 	reject: (reason: unknown) => void;
 	/** Null for the plain fade of reduced motion. */
 	art: Flash | null;
-	/** Its length in ms, without any wait. */
-	total: number;
 	solidFrom: number;
-	t0: number;
-	stage: 'in' | 'hold' | 'out';
-	/** Total ms its timeline has stood still: waiting for swap(), mostly. */
-	paused: number;
-	holdFrom: number;
-	/** A frame that was solid black has been drawn on an earlier tick. */
-	solidDrawn: boolean;
-	settled: boolean;
 	failed: boolean;
 	error: unknown;
 	finished: boolean;
-	/** The next tick is the first since swap() finished. */
-	afterSwap: boolean;
-	lastTick: number;
-	/** Where it is on this tick, 0 to 1, and how long it has stood still by now. */
-	u: number;
-	held: number;
 }
 
 interface WarpRun {
@@ -179,8 +162,7 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 
 	const startFlash = (run: FlashRun, now: number): void => {
 		flash = run;
-		run.t0 = now;
-		run.lastTick = now;
+		beginFlash(run, now);
 		if (!ctx.reducedMotion && !broken) {
 			try {
 				run.art = createFlash(takeSeed(), run.dir, surface.w, surface.h);
@@ -196,7 +178,6 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 
 	const callSwap = (run: FlashRun, now: number): void => {
 		let result: void | Promise<void>;
-		const before = clock.now();
 		try {
 			result = run.swap();
 		} catch (error) {
@@ -204,12 +185,11 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			run.error = error;
 			result = undefined;
 		}
-		// However long swap() itself took, the flash does not count it.
-		run.paused += Math.max(0, clock.now() - before);
-		run.afterSwap = true;
-		if (result && typeof (result as Promise<void>).then === 'function') {
-			run.stage = 'hold';
-			run.holdFrom = now;
+		// However long swap() itself took, the flash does not count it: it stands
+		// at the peak, and the next tick takes the time off its clock (flash-time.ts).
+		const pending = !!result && typeof (result as Promise<void>).then === 'function';
+		swapped(run, now, pending);
+		if (pending) {
 			(result as Promise<void>).then(
 				() => {
 					run.settled = true;
@@ -225,44 +205,7 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 					}
 				},
 			);
-		} else {
-			run.settled = true;
-			run.stage = 'out';
 		}
-	};
-
-	/** Move a flash on to `now`. False once it is over. */
-	const advanceFlash = (run: FlashRun, now: number): boolean => {
-		const gap = now - run.lastTick;
-		run.lastTick = now;
-		if (run.stage === 'in') {
-			const u = (now - run.t0 - run.paused) / run.total;
-			if (u >= FLASH_PEAK) {
-				if (run.solidDrawn) {
-					// The frame has been solid black on screen since an earlier tick:
-					// nothing of the old section can show. Swap, and carry on from the peak.
-					run.paused = now - run.t0 - FLASH_PEAK * run.total;
-					callSwap(run, now);
-				} else {
-					// A long frame jumped the solid stretch. Show the peak first; swap next tick.
-					run.paused = now - run.t0 - FLASH_PEAK * run.total;
-				}
-			}
-		} else if (run.stage === 'hold') {
-			if (run.settled || now - run.holdFrom >= HOLD_MAX_MS) {
-				run.paused += now - run.holdFrom;
-				run.stage = 'out';
-				run.afterSwap = true;
-			}
-		} else if (run.afterSwap) {
-			// The first frame after swap() is the browser laying the new section
-			// out. If it came late, that was swap time too.
-			run.afterSwap = false;
-			if (gap > SWAP_FRAME_MS) run.paused += gap - SWAP_FRAME_MS;
-		}
-		run.held = run.paused + (run.stage === 'hold' ? now - run.holdFrom : 0);
-		run.u = Math.max(0, (now - run.t0 - run.held) / run.total);
-		return run.u < 1;
 	};
 
 	// ───────────────────────────────────────────────────────── drawing ──
@@ -323,8 +266,9 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		lastTick = now;
 		const settle: (() => void)[] = [];
 
-		if (flash && !advanceFlash(flash, now)) {
-			const run = flash;
+		const playing = flash;
+		if (playing && !advanceFlash(playing, now, FLASH_PEAK, (at) => callSwap(playing, at))) {
+			const run = playing;
 			flash = null;
 			run.finished = true;
 			settle.push(() => (run.failed ? run.reject(run.error) : run.resolve()));
@@ -457,26 +401,16 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			endWarm();
 			return new Promise<void>((resolve, reject) => {
 				const run: FlashRun = {
+					...flashTime(FLASH_MS),
 					swap,
 					dir: dir === 'up' || dir === 'down' ? dir : 'none',
 					resolve,
 					reject,
 					art: null,
-					total: FLASH_MS,
 					solidFrom: FLASH_SOLID_FROM,
-					t0: 0,
-					stage: 'in',
-					paused: 0,
-					holdFrom: 0,
-					solidDrawn: false,
-					settled: false,
 					failed: false,
 					error: undefined,
 					finished: false,
-					afterSwap: false,
-					lastTick: 0,
-					u: 0,
-					held: 0,
 				};
 				wake();
 				// One at a time: a second call waits for the first to clear.

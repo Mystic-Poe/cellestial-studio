@@ -191,7 +191,9 @@ export function crackle(path: readonly number[], options: CrackleOptions): Polyl
 		const ease = f * f * (3 - 2 * f);
 		const slow = knots[Math.floor(k)] * (1 - ease) + knots[Math.floor(k) + 1] * ease;
 		let hold = 1;
-		if (pin === 'both') hold = Math.sqrt(Math.sin((Math.PI * i) / (n - 1)));
+		// (The sine of pi, give or take a rounding, can be a hair under zero at the
+		// last corner; its root would not be a number, and that corner was lost.)
+		if (pin === 'both') hold = Math.sqrt(Math.max(0, Math.sin((Math.PI * i) / (n - 1))));
 		else if (pin === 'start') hold = Math.min(1, i / 3);
 		const off = reach * hold * (0.7 * slow + 0.45 * (random() * 2 - 1));
 		out.push(steps[i * 4] - steps[i * 4 + 3] * off, steps[i * 4 + 1] + steps[i * 4 + 2] * off);

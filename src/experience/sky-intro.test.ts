@@ -5,6 +5,7 @@
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { smooth as lightSmooth } from './fx/light.ts';
 import { HANDOFF, smoother as loaderSmoother, smoothstep } from './loader/timeline.ts';
 import { introPose, smoother } from './sky/intro.ts';
 
@@ -130,5 +131,31 @@ test('the star never goes back along its path', () => {
 		assert.ok(p.x <= last.x + 1e-9, `x turns back at ${i / 20000}`);
 		assert.ok(p.y >= last.y - 1e-9, `y turns back at ${i / 20000}`);
 		last = p;
+	}
+});
+
+test('the cubic ease, which the warp, the flash and the loader raise to powers, never leaves 0 to 1', () => {
+	// Unlike the quintic it does not overshoot; this keeps it so.
+	const eases = [
+		(t: number) => smoothstep(0, 1, t),
+		(t: number) => lightSmooth(0, 1, t),
+		(t: number) => smoothstep(0.86, 1, t),
+		(t: number) => lightSmooth(0.9, 1, t),
+	];
+	let t = 1;
+	for (let i = 0; i < 1_000_000; i++) {
+		t = below(t);
+		for (const ease of eases) {
+			const e = ease(t);
+			assert.ok(e >= 0 && e <= 1, `ease(${t}) = ${e}`);
+		}
+	}
+	for (let d = 0; d < 2e-3; d += 1e-9) {
+		for (const ease of eases) {
+			for (const x of [1 - d, d, 0.86 + d, 0.9 + d]) {
+				const e = ease(x);
+				assert.ok(e >= 0 && e <= 1, `ease(${x}) = ${e}`);
+			}
+		}
 	}
 });

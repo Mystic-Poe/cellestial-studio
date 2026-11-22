@@ -535,36 +535,106 @@ PIECE 1 — THE FALL (second look: finding 1 a to d, finding 13; closing list 1 
 
 PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the flash's dip, the loader on a slow line; closing list 2, 4 and 5)
 
-  CUT OFF BY THE USAGE LIMIT at 20:24 on 21 Nov, twelve minutes in. This entry is the orchestrator's,
-  written from what the fixer left staged in the checkout (committed as it stood, after the unit
-  tests, the type check and the lint passed on it). Whoever takes the piece up continues from here
-  and replaces this entry with their own record.
+  The piece was begun by a fixer who was cut off by the usage limit twelve minutes in (commit ba194ad:
+  the blink reproduced and its fix in place, nothing else). A second fixer took it up from that
+  record, checked that what it said holds, and went on. This entry is the whole record of both.
 
-  2a, THE BLINK: THE FIX IS IN PLACE; THE BRIEF'S ACCEPTANCE RUNS ARE NOT YET DONE.
+  2a. THE BLINK AT THE END OF THE HAND-OFF (major). DONE.
+  - The finding: in about half of first visits and of same-session returns the sky drew one frame
+    with the constellation there and Cellestial's star gone (core and rings), the frame before the
+    scene became "sky".
   - Reproduced first, on the production build as it stood at 48afa05 (refs/verification/round-2/a5/before/):
     pose.txt (tools/a5-pose.mjs, new: the second look's in-page probe, and beside it in the same frame
-    the pose the sky says its star has): 6 of 12 first visits drew a dark frame, one frame before the
-    scene became "sky", and in 6 of those 6 the star's x was not a number.
-    blink-probe-return.txt: a dark frame in 2 of 6 short loaders at each size, in 0 of 6 skipped ones.
-    NOTE: refs/verification/round-2/a5/blink-probe.txt is ALSO a "before" run (the unchanged probe,
-    20:14, dips in it). It has not been run again since the fix.
-  - The cause is the one the brief gives, now seen in the page: the quintic ease comes to a hair over
-    1 just under its end, one minus that is negative, and a negative number to the power 1.3 is not a
-    number.
+    the pose the sky says its star has): a dark frame in 6 of 12 first visits, one frame before the
+    scene became "sky" (the middle of the sky's canvas at 3.8 where it is 156 before and after), and in
+    6 of those 6 the star's x was NaN (y and r were numbers). blink-probe.txt: the unchanged probe, dips
+    in it. blink-probe-return.txt: a dark frame in 2 of 6 short loaders at each size, 0 of 6 skipped.
+  - The cause, as the orchestrator worked it out, now seen in the page: the quintic ease
+    c*c*c*(c*(c*6 - 15) + 10), worked in floating point, comes to a hair OVER 1 for an argument a hair
+    under 1 (about 44% of the numbers within 5e-10 of 1: 2,187,500 of the 5,000,000 nearest). The pose
+    then took 1 - (1 - e) ** 1.3: one minus the ease is negative, a negative number to the power 1.3
+    is not a number, the star had no x for that frame, and neither its core nor its rings were drawn.
+    It needs the hand-off's last drawn frame to land within a thousandth of its end, which a hand-off
+    of exactly 1.5 s at 16.67 ms a frame does about every other visit, and a skipped one (whose length
+    is not a whole number of frames) does not. The second look's own guess (the frame between
+    introProgress(1) and reset() drawn at another pose) is NOT the cause: see the contract below.
   - Changed: src/experience/sky/intro.ts (new: the hand-off's arithmetic alone; both eases capped to
     0..1 where they are made; the pose at t >= 1 is the end, exactly; nothing below zero is raised to
-    a power). sky/index.ts takes its pose and its ease from there. The loader had its own copy of the
-    same ease in painter.ts: it is now one function in loader/timeline.ts, capped the same way.
-    src/experience/sky-intro.test.ts (new, 7 tests: both eases one ulp at a time up to 1 and in steps
-    of 1e-9 over the first and last two thousandths; the pose finite and on its path at every such t
-    and at every moment the loader can name; it begins on the loader's star and ends on the sky's,
-    exactly; it never goes back along its path).
-  - After, production build (refs/verification/round-2/a5/pose.txt): 0 of 20 first visits drew a dark
-    frame.
-  - tools/a5-probe.mjs gained --runs, --throttle and --only, and writes a summary that counts the dips.
-  - STILL TO DO for 2a: the brief's runs (a5-probe 20 first visits at each size; 12 with the CPU slowed
-    4x; a5-probe-return 12 of 12; a5-repeat 10 of 10); the hunt for the same hazard elsewhere (another
-    eased value over 1 or under 0 fed to a power, a square root or a division); the hand-off's strips
-    looked at; the suites.
+    a power; a t that is not a number is the end). sky/index.ts takes its pose and its ease from
+    there. The loader had its own copy of the same quintic in painter.ts: it is now one function in
+    loader/timeline.ts, capped the same way.
+  - Tests: src/experience/sky-intro.test.ts (8 tests: both quintics one ulp at a time for 2,000,000
+    numbers under 1, and in steps of 1e-9 over the first and last two thousandths; the pose finite and
+    on its path at every such t and at every moment the loader can name; it begins on the loader's
+    star and ends on the sky's, exactly; it never goes back along its path; the cubic ease never
+    leaves 0..1 either).
+  - THE SAME HAZARD ELSEWHERE. Every fractional power, root, logarithm and arc function under
+    src/experience was read with its base (45 places: the loader's painter, timeline and lightning,
+    the flash, the warp, the impacts, the Roots' net, the sky's beads and meaning):
+      * the quintic exists in two places only (sky/intro.ts, loader/timeline.ts), both now capped;
+      * the cubic ease t*t*(3 - 2*t) (nine copies: loader, fx/light, motion, sky, roots) does NOT
+        overshoot: 0 of 5,000,000 numbers one ulp apart under 1, 0 of 20,000,000 random ones; the
+        warp's (1 - smooth) ** 1.5 and the flash's are therefore sound, and a test now keeps it so;
+      * ONE MORE REAL ONE, the same kind: src/experience/loader/lightning.ts, crackle(): a bolt pinned
+        at both ends took Math.sqrt(Math.sin(Math.PI * i / (n - 1))), and at the last corner that is
+        the sine of pi give or take a rounding, a hair UNDER zero for 268 of the lengths n = 2..5000
+        (about one in nineteen). Its root is NaN, the canvas drops a corner with no place, and such a
+        bolt stopped one corner (3 to 6 px) short of the end it is pinned to. Nobody had seen it.
+        Cured the same way (the root of nothing below zero). Test: src/experience/loader-lightning.test.ts
+        (every corner finite and the last one on the path, for every length from 8 to 3000 px; it fails
+        without the fix at length 39).
+      * the rest have bases that cannot leave their range: clamped just before (the loader's heat,
+        cool, f; the flash's cos; the warp's speed), an index over a count (the net's (1 - u), the
+        light's falloff), or a guard that returns first (circuitNeon, the meaning's burn).
+  - THE CONTRACT (introProgress(1) is reset()'s pose): round-2/a5/pose.txt, every run: the frame just
+    before 1 is (720.0000000003, 449.9999999, r 27.0327), the frame at 1 is (720, 450, r
+    27.029037399580318) and the frame after reset() is (720, 450, r 27.029037399580318): the same
+    star to the last digit, and the middle of the canvas reads 156.3, 156.1, 155.9, 155.8 through them
+    (the rings turning), with no step.
+  - After, production build, real GPU (refs/verification/round-2/a5/):
+      a5-probe.mjs --runs 20          blink-probe-summary.txt        a dip in 0 of 20 first visits (desktop), 0 of 20 (phone)
+      a5-probe.mjs --runs 12 --throttle 4   blink-probe-cpu4x-summary.txt  0 of 12 (desktop), 0 of 12 (phone)
+      a5-probe-return.mjs             blink-probe-return.txt         0 of 12 short loaders (6 at each size), 0 of 12 skipped
+      a5-repeat.mjs --runs 10         blink.txt                      a frame without the star in 0 of 10 (desktop), 0 of 10 (phone)
+      a5-pose.mjs                     pose.txt                       0 of 20 dark frames; the star's place a number in every frame
+    tools/a5-probe.mjs gained --runs, --throttle and --only, and a summary that counts the dips.
 
-  2b (THE FLASH'S DIP) and 2c (THE LOADER ON A SLOW LINE): NOT STARTED.
+  2b. THE FLASH DIPS AT ITS PEAK (minor). THE FIX IS IN; THE FULL SIXTEEN AND THE SUITES ARE STILL TO RUN.
+  - The finding: on the desktop, from the sky to each of the three places on the ground, the flash
+    reached its peak, dipped (to 61%, 25% and 25% of the peak) and came back: two flashes.
+  - Reproducing it. On the build as it stands after piece 1 the dip is NOT there unslowed: piece 1 made
+    the Roots' first frames cheaper, and the frame of the swap, 100 to 117 ms at the second look, is now
+    33 to 50 ms (round-2/flash/flash-dip-before.txt: 0 of 9, lowest frame 90 to 97% of the peak). The
+    fault itself was untouched and comes back with any slower swap: with the CPU slowed 4x the frame of
+    the swap is 150 to 167 ms and the flash dips in 9 of 9 (flash-dip-before-cpu4x.txt: "What we build"
+    7.1% lit, down to 1.0 to 1.4% for four frames, back to 7.1%; the other two 5.8% down to 1.6%, back
+    to 4.3 to 5.4%; dip-desk-from-sky-before-cpu4x.jpg, "What we build" +433: the lines gone and the
+    ground showing through). tools/flash-dip.mjs is new: flash.mjs narrowed to this question, several
+    runs, with --throttle.
+  - The cause (the orchestrator's hypothesis, proven in node and then in the page): src/experience/fx/layer.ts
+    took the time a synchronous swap() blocks off the flash's clock TWICE: once in callSwap (paused +=
+    the time swap() took) and again on the next tick, whose gap is measured from the tick that called
+    swap() and so holds the same time (paused += gap - 34 ms). And the tick that called swap() was drawn
+    with a time taken before the block and a pause that already had the block in it. With a swap of
+    100 ms and a flash of 400 ms: the flash is at 0.5 (its peak), swap() runs, the frame after it is
+    drawn at 0.25, the next at 0.335, and it climbs to the peak a second time 66 ms later. flash.ts
+    starts its layer of lines again whenever time runs backwards, which is why the dip was so deep.
+    The unit test, run against the old arithmetic: "at the swap the flash stands at 0.25, not at its
+    peak" (4 of 6 tests fail).
+  - Changed: src/experience/fx/flash-time.ts (new: the flash's clock alone, no canvas and no promise:
+    flashTime, beginFlash, swapped, advanceFlash). The block is counted once, by the tick after it; the
+    tick that calls swap() is drawn at the peak. layer.ts keeps the promises and the drawing and takes
+    its clock from there (FlashRun extends FlashTime; HOLD_MAX_MS and SWAP_FRAME_MS moved with it).
+  - Test: src/experience/fx-flash-time.test.ts (6 tests, the flash played tick by tick as the layer
+    plays it: a swap that blocks 20 to 600 ms at 30, 60 and 120 frames a second with the next frame up to
+    80 ms late: at the swap the flash is at its peak exactly, from there never under it and never
+    backwards, the first tick after goes on by at most 34 ms, and the fade is then played whole; the
+    same for 400 starts against the frames; a swap that leaves a promise is held at the peak until it
+    settles; one that never settles is waited for 1 s; a stall that jumps the solid stretch shows the
+    peak first and swaps a tick later).
+  - After, production build, desktop, sky to the three places on the ground, three runs each, CPU
+    slowed 4x (round-2/flash/flash-dip-cpu4x.txt, dip-desk-from-sky-cpu4x.jpg): a dip in 0 of 9; the
+    lowest frame between the peak and the fade is 91 to 97% of the peak, with the frame of the swap 150
+    to 183 ms long; no second rise.
+
+  2c. THE LOADER ON A SLOW LINE: NOT STARTED.
