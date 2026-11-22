@@ -61,11 +61,25 @@ Cellestial's rings) are not. `git status` is clean but for the untracked `claude
      owner's 6 to 8 s on the visitor's clock now and prints both. Record:
      `refs/verification/fixes.txt`, "ROUND 2", piece 2; runs in
      `refs/verification/round-2/a5/`, `flash/`, `loader/`, `logs-piece-2/`.
-   - [ ] 3. **The phone's sky** (major). On a portrait phone the six wide figures (Virgo,
-     Capricornus, Aquarius, Pisces, Aries, Leo) are turned a quarter-turn so they stand tall;
+   - [x] 3. **The phone's sky** (major) `3cc6ce1`. On a portrait phone the six wide figures
+     (Virgo, Capricornus, Aquarius, Pisces, Aries, Leo) are turned a quarter counter-clockwise so
+     they stand tall (56 to 73% of the screen's height at 390x844, where they were 20 to 27%);
      this REVERSES the earlier ruling "north stays up", which is what crowded Cellestial's
-     star. Cellestial's star clear of its neighbours; the knots in Taurus; B7's place on the
-     phone. One switch in `src/experience/sky/config.ts` turns the turn off.
+     star. The layout chooses which way each figure stands and `layout.plans` is the one place
+     a star's place comes from (`src/experience/sky/layout.ts`, tested in node:
+     `src/experience/sky-layout.test.ts`); the world refills its buffers from it at a resize.
+     Cellestial's star is its world size there (97 px at 390 wide, 88 at 360), its rings 3.9 px
+     (2.3) short of the nearest star's disc, nothing drawn over them. Knots are drawn smaller
+     (no two stars more than 31% into each other; Taurus's closest pair needed more than the
+     brief's rule gives: 0.72 of their distance). B7 on the phone stands by its figure, all
+     twelve, a long line in two rows. 292 of 292 taps at each of 390x844 and 360x740; a phone
+     turned on its side and back; reduced motion; the hand-off; the fall. The desktop differs by
+     0 pixels in eight captures. Every suite passes with no check changed. ONE SWITCH:
+     `PORTRAIT.turn` in `src/experience/sky/config.ts`. Left: on phones shorter than the two
+     judged the star is clear but smaller (77 px at 375x667, 54 at 320x568). Record:
+     `refs/verification/fixes.txt`, "ROUND 2", piece 3; runs in
+     `refs/verification/round-2/phone-sky/`, `b7/`, `logs-piece-3/`; the scripts
+     `round-2/tools/phone-sky.mjs` (`--size phone|small`), `phone-turn.mjs`, `desk-same.mjs`.
    - [ ] 4. **Four minors.** B7 over the far figures' points on the desktop; the tab icon dim
      at 16 px; the empty star's traces blotchy at 46 px on a 1x screen; the logo mauve at
      52 px on a 1x screen.

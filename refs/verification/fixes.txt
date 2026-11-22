@@ -867,7 +867,7 @@ PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 o
     band nearest the figure's foot used, and there standing on the logo, the menu or the button now
     counts as worse than crossing any number of stars or lines (it counted as one).
   - Measured (round-2/tools/b7.mjs, which now takes --sizes and prints a verdict for each phone
-    figure; round-2/b7/b7-all-phone.txt; all-phone.jpg looked at): all twelve at 24 px; nothing
+    figure; round-2/b7/b7.txt; all-phone.jpg looked at): all twelve at 24 px; nothing
     touched; nearest star's edge 32 to 108 px; 50 to 603 px above the exit button (Cancer 50 and
     Libra 80, both inside their figure's own room). Aquarius's line stands in two rows, Leo's in two
     with "Jesus is King." under it, at the top right of the figure.
