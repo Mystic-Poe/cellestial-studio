@@ -4,15 +4,14 @@ inspectors and of both rounds of fixers. Written 2026-11-22. No file of the site
 src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
 STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
 is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
-PARTS DONE: 1a, 1b, 1c, 1d, 1e, 1f. Next: what round 2 broke (the warp, the loader against its reference, the builders' suites), the walk, the owner's list, the closing list and verdict.
-CUT OFF, noted by the orchestrator: the inspector was stopped by the account's usage limit at 12:55 on
-22 Nov, straight after its commit 396c77e. What it had captured and not yet written up is committed as it
-left it, for the next run of this brief to use or to make again: the warp (logs/warp-rec-*.log,
-logs/warp-probe.log, tools/warp-probe.mjs), the walk (walk/), the phone on its side (phone-sky/844/,
-phone-sky/on-its-side.jpg, logs/phone-side.log, side-stations.log), B7 with the phone on its side and being
-written (b7/all-side.jpg, words-side.jpg, b7-side.txt, b7-write.txt, write-*.jpg), "claim yours" beside
-the words on the desktop (b7/claim-yours-close-desk.jpg, logs/f8-close.log). The preview server it left on
-4615 was stopped: build and start the servers again.
+PARTS DONE: 1a, 1b, 1c, 1d, 1e, 1f (first run); the warp back (second run). Next: the rest of what round 2 broke (the loader against its reference, the desktop sky, the Roots, the builders' suites), the walk, the owner's list, the closing list and verdict.
+TWO RUNS. The first run of this brief was stopped by the account's usage limit at 12:55 on 22 Nov, straight
+after its commit 396c77e, with parts 1a to 1f written. The second run (the same brief, the same day, from
+15:00) read this report, checked that no file of the site had changed since (git diff 5991c9a HEAD outside
+this folder: nothing), built the production site again, and went on. What the first run had captured and
+not written up (the warp's recordings, the walk, the phone on its side, B7 being written, "claim yours"
+beside the words) was captured from this same build by this same brief's scripts; the second run read
+those logs, opened those sheets itself, and made new captures where it needed more.
 
 HOW IT IS BEING DONE
 - The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
@@ -370,3 +369,59 @@ PART 1 — THE ITEMS ROUND 2 WORKED ON
       +3300 to +3900, the bolt at +5100, the word written by +6900, the sky at +8300.
     fixes.txt, round 2, piece 2c, read afterwards: its numbers are mine (7.51 to 7.55 s on slow 4G). Its
     account of the cause (the loader's pictures asked for only once the script had come) fits what I see.
+
+PART 2 — WHAT ROUND 2 MAY HAVE BROKEN
+
+THE WARP BACK TO THE SKY — still done; round 2 did not touch it and nothing in it is broken.
+    (src/experience/fx/warp.ts and director.ts were last changed on 21 Nov, before the second look; round 2
+    changed only how the builders' own check reads the cover.) Ruled from recordings and from the page's own
+    canvas, not from that check:
+    - Recorded in real time on the production build, real GPU, both sizes, unslowed and with the CPU slowed
+      4x, two runs of each, started three ways: E6 pressed at the top of the Roots; from far down the
+      visitor's own way (a star picked, then the build request sent from the Close at scrollY 3304 / 3125,
+      which is the only way a visitor warps from far down); and E6 clicked from script 1800 px down (what the
+      builders' check does). 24 warps (my warp-rec.mjs; warp/warp-rec-top-picked-far.txt, warp-rec.txt; strips
+      warp/<size>[-cpu4x]-<way>-1-swap.jpg, every recorded frame within 200 ms of the change, and -whole.jpg).
+      The page says "sky" 999 to 1030 ms after the warp starts. In every recorded frame within 40 ms of that
+      moment the Roots' ground is not there: at most 0.26 to 0.79% of the frame's pixels are warm and lit
+      (the brass streaks and the logo; the Roots before the warp are 2.6 to 11.6% soil and 52 to 69% lit).
+      101 to 103 frames from the warp's start to 0.7 s after the change, 16.7 ms each, none over 17 ms
+      unslowed, at most two of 33 ms with the CPU slowed 4x. No console error.
+    - The page's own canvas (my warp-probe.mjs, independent of the builders' check and of the fixers'
+      warp-cover.mjs: a callback that runs last in every frame reads the effects canvas back, nothing
+      recording; warp/warp-probe.txt): 96 warps, real GPU and software, both sizes, unslowed and CPU 4x, from
+      the top and from 1800 px down, six of each. In the frame the page becomes the sky the cover's lowest
+      alpha is 255 in 96 of 96. On the real GPU it is whole from 33 to 50 ms before the change to 133 to
+      150 ms after it. In software with the CPU slowed 4x (frames 33 to 100 ms long) the frame BEFORE the
+      change, with the Roots still under it, reads 242 to 254 in 13 of 24 runs: that is the cover still
+      closing over the ground it is about to replace, 95 to 99.6% of the way; the swap itself waits for the
+      whole cover every time. So the builders' close-out is right that the cover is whole in the frame of
+      the change and that their check had read one beat late; the site needed no change.
+    - With my own eye (looked at: warp/desk-cpu4x-far-1-swap.jpg, phone-cpu4x-top-1-swap.jpg,
+      desk-top-1-whole.jpg; and the middle of the screen cut out and enlarged for the half second before the
+      change, my warp-ghost.mjs: warp/ghost-desk.jpg, ghost-phone.jpg, warp-ghost.txt): the streaks start
+      few and slow, the ground drops away down the screen, the streaks thicken, the frame goes black under
+      them (the darker half of the middle of the screen falls from L 11 to 0.5 of 255 by 200 ms before the
+      change), the flare opens from the vanishing point, and the change is made inside the flare: the
+      frames at -20 and +19 ms are the same picture. The page never shows through after the change, and
+      the sky never appears with a jump.
+    - One thing a reader of the question should know, which is the design and not a leak: for about 0.2 s
+      BEFORE the cover closes (from about -320 to -120 ms) the sky's opening pose, Cellestial's star and
+      the figure's stars, is seen dim ABOVE the falling ground line, under the darkening cover
+      (ghost-desk.jpg, second row; ghost-phone.jpg the same with the turned Virgo). director.ts says so
+      ("under it the ground drops away ... with the sky's opening pose already drawn behind it"). It is the
+      same pose the flare opens on 0.4 s later, so it reads as the sky coming into view above the ground as
+      the visitor leaves it. Not a fault.
+
+"CLAIM YOURS" BESIDE THE MEANING AT ARIES AND TAURUS, DESKTOP — MINOR, new with round 2.
+    Round 2 moved B7 at five figures. At Aries and Taurus the words now end 5 and 6 px to the left of where
+    "claim yours" is written under one empty star of the figure further on, on the same line: with the
+    figure complete and a tap on the empty sky to its right, the screen reads "the Lamb claim yours" and
+    "He comes to judge claim yours", the small words like a raised note on the large ones (b7/
+    claim-yours-close-desk.jpg, enlarged 3x, looked at; b7/f8.txt: the two boxes overlap at tap 3 of each;
+    b7/f8-close.txt: the letters themselves 5 and 6 px apart). The letters do not touch. The second look's
+    finding 8 (the two written over each other) stays fixed; this is its near miss come back by another
+    door. It needs a complete figure, so nobody sees it on the empty sky the site opens with. Fix:
+    src/experience/sky/meaning.ts: when it scores a place, keep the words 40 px clear of the "claim yours"
+    box of every empty star on screen (the far figures' too), or have the "claim yours" label give way
+    (above its star, or to the other side) when a meaning's box is within 40 px.

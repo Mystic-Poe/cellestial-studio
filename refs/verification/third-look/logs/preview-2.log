@@ -1,0 +1,2 @@
+$ astro preview --port 4615
+{"message":"Preview server running at http://localhost:4615 (pid 188118)\n  Stop:   astro preview stop\n  Status: astro preview status\n  Logs:   astro preview logs","label":"SKIP_FORMAT","level":"info"}

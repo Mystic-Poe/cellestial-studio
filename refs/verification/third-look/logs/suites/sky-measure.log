@@ -1,0 +1,15 @@
+INPUT, 1440x900 (wheel and keys)
+  wheel turned for 7.3 s: speed (world units a second) 0.3s 1.46, 1s 3.50, 2s 6.48, 3s 7.92, 4s 8.00, 5s 8.00, 6s 8.00, 7s 8.00
+  ok    the first turn of the wheel starts a medium cruise: 1.46
+  ok    speed builds with continued scrolling
+  ok    and has a ceiling: 8.00 to 8.00 over the last three seconds
+  ok    input stops: it glides and comes to rest on a station: layer 10.00 after 2.49 s
+  ok    wheel up flies backward: speed -4.83
+  ok    and rests on a station behind: layer 8.00
+  ok    a click on empty sky stops it dead: speed 4.07 before, 0 on the press; 0.07 units travelled between the two readings; still at layer 8.506 1.2 s later
+  ok    where it was, not on a station
+  ok    ArrowDown flies forward and rests on a station: layer 8.51 to 10.00
+  ok    ArrowUp flies backward and rests on a station: layer 10.00 to 9.00
+  ok    PageDown flies forward and rests on a station: layer 9.00 to 10.00
+  ok    PageUp flies backward and rests on a station: layer 10.00 to 9.00
+  ok    Space flies forward and rests on a station: layer 9.00 to 10.00
