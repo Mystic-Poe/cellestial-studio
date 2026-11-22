@@ -4,7 +4,7 @@ inspectors and of both rounds of fixers. Written 2026-11-22. No file of the site
 src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
 STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
 is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
-PARTS DONE: 1a (the fall).
+PARTS DONE: 1a (the fall), 1b (the end of the hand-off).
 
 HOW IT IS BEING DONE
 - The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
@@ -81,3 +81,33 @@ PART 1 — THE ITEMS ROUND 2 WORKED ON
     stood at level 1 after the fall in 2 of 12 unslowed runs on the phone profile (fall-cut-A.txt: phone Virgo;
     fall-cut-A-fresh.txt: phone Aries), with no frame over 17 ms in the fall itself. See the walk for what it
     is on a real visit.
+
+1b. THE END OF THE HAND-OFF — second look: MAJOR (one frame without Cellestial's star at the scene change in
+    about half of visits).
+    RULING: RESOLVED.
+    The second look's in-page probe (the middle of the sky's canvas read back in the frame it was drawn,
+    nothing recording; the probe itself is byte for byte the second look's, I compared the two files; my copy
+    also prints the LOWEST frame of the 24 round the change as a share of the usual, whatever the threshold):
+        first visits, unslowed        desktop 0 dips in 20   phone 0 in 20   lowest frame 100% of the usual
+        first visits, CPU slowed 4x   desktop 0 in 12        phone 0 in 12   lowest frame 99%
+        a skipped loader              desktop 0 in 12        phone 0 in 12
+        a return (the short loader)   desktop 0 in 12        phone 0 in 12
+      (a5/blink-probe-summary.txt, blink-probe-cpu4x-summary.txt, blink-probe-return.txt)
+    By recording (a5-repeat.mjs, every recorded frame's light, 10 first visits at each size): no frame without
+    the star, 0 of 10 and 0 of 10 (logs/a5-repeat.log). 112 hand-overs in all, not one dip. It was 8 in 12.
+    The six recorded frames round the change on the phone (a5/phone-swap.jpg): the star, its rings and the
+    turned Virgo the same in every one, mean light 4.6, 4.6, 4.6, 4.6, 4.6, 4.7.
+    The hand-off as a whole (a5.mjs; a5/desk-pieces.jpg, phone-pieces.jpg, every other frame of the middle of
+    the screen): still the spec's A5. The little star above the "i" whitens and breaks into about nine brass
+    shards; they sweep outward on bends; a blue-white core is left and grows and travels to the middle as the
+    view pulls in; the shards swing in and settle on three ellipses round it and the brass rings come up under
+    them (-790 to -690 ms before the change); the rings turn; the wordmark sinks and fades, brass to the end.
+    No white wash: within the hand-off's own 1.5 s at most 0.21% of the frame is near-white on the desktop and
+    0.18% on the phone (the core), and the largest step of the screen's mean light between two recorded frames
+    is 0.9 of 255 (desktop) and 0.3 (phone) (logs/a5.log, 90 frames each). On the phone
+    the pieces land on the rings where the sky then draws them, round the star of the TURNED Virgo: there is
+    no jump of the rings between the last frame of the hand-off and the first of the sky.
+    fixes.txt, round 2, piece 2a, read afterwards: its counts are mine (0 of 20, 0 of 12, 0 of 12, 0 of 10) and
+    nothing in it is contradicted. Its cause (an ease a hair over 1, a negative number to the power 1.3, the
+    star's place not a number for one frame) fits what the second look saw: about every other visit, never
+    after a skip.

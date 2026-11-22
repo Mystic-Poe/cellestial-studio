@@ -1,0 +1,435 @@
+desk run 1: 416 frames probed; the scene becomes "sky" at probe 372. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 162.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 162.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 161.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 161.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 161.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 161.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 161 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 160.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 160.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 160.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 160.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 160.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 159.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 159.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 159.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 159.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 2: 433 frames probed; the scene becomes "sky" at probe 389. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 159.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 159.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 158.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 158.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 158.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 158.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 157.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 157.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 157.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 157 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 156.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 3: 448 frames probed; the scene becomes "sky" at probe 404. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 155.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 4: 433 frames probed; the scene becomes "sky" at probe 390. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 160.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 159.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 159.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 159.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 159 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 158.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 158.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 158.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 158.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 157.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 157.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 157 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 156.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 5: 447 frames probed; the scene becomes "sky" at probe 403. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 158.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 157 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 6: 443 frames probed; the scene becomes "sky" at probe 400. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 7: 440 frames probed; the scene becomes "sky" at probe 397. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 8: 443 frames probed; the scene becomes "sky" at probe 400. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 9: 445 frames probed; the scene becomes "sky" at probe 401. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 155.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 10: 441 frames probed; the scene becomes "sky" at probe 398. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 11: 436 frames probed; the scene becomes "sky" at probe 393. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk run 12: 441 frames probed; the scene becomes "sky" at probe 398. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 158.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 157.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 157.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 157.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 157.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 156.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 156.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 156.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 156.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 155.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 155.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 155.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 155.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 1: 433 frames probed; the scene becomes "sky" at probe 389. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 77.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 77.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 77.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 77.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 77 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 76.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 76.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 76.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 76.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 76.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 2: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 3: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 4: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 5: 443 frames probed; the scene becomes "sky" at probe 399. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 6: 444 frames probed; the scene becomes "sky" at probe 400. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 77.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 7: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 8: 444 frames probed; the scene becomes "sky" at probe 400. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     133 sky      sky-canvas: 75 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 9: 447 frames probed; the scene becomes "sky" at probe 403. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      34 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 10: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 11: 446 frames probed; the scene becomes "sky" at probe 402. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+phone run 12: 448 frames probed; the scene becomes "sky" at probe 404. Frames round it (ms from that frame | canvas: light of the screen's middle / opacity / parent's opacity):
+    -133 loading  sky-canvas: 77.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -117 loading  sky-canvas: 76.9 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+    -100 loading  sky-canvas: 76.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -83 loading  sky-canvas: 76.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -67 loading  sky-canvas: 76.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -50 loading  sky-canvas: 76 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -33 loading  sky-canvas: 75.8 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+     -17 loading  sky-canvas: 75.7 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: 0 /1/1
+       0 sky      sky-canvas: 75.6 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      17 sky      sky-canvas: 75.5 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      33 sky      sky-canvas: 75.4 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      50 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      67 sky      sky-canvas: 75.3 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+      83 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     100 sky      sky-canvas: 75.2 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+     117 sky      sky-canvas: 75.1 /1/1 | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | ?: 0 /1/1 hidden | fx-canvas: 0 /1/1 display none | loader-canvas: -2 /1/1
+desk cpu x4 run 1: no dip (centre light otherwise 159.6; lowest of the 24 frames round the change 158.5 at 183 ms, 99%)
+desk cpu x4 run 2: no dip (centre light otherwise 156.1; lowest of the 24 frames round the change 155.5 at 167 ms, 100%)
+desk cpu x4 run 3: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 4: no dip (centre light otherwise 156.5; lowest of the 24 frames round the change 155.6 at 200 ms, 99%)
+desk cpu x4 run 5: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 100 ms, 100%)
+desk cpu x4 run 6: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 7: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 8: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 9: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 10: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 11: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 83 ms, 100%)
+desk cpu x4 run 12: no dip (centre light otherwise 155.4; lowest of the 24 frames round the change 155.4 at 100 ms, 100%)
+desk cpu x4: a dip in 0 of 12 first visits; the lowest frame round the change in any run was 99% of the usual
+phone cpu x4 run 1: no dip (centre light otherwise 75.9; lowest of the 24 frames round the change 75.5 at 183 ms, 99%)
+phone cpu x4 run 2: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 3: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 4: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 5: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 6: no dip (centre light otherwise 75.2; lowest of the 24 frames round the change 75 at 150 ms, 100%)
+phone cpu x4 run 7: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 8: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 9: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 10: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 11: no dip (centre light otherwise 75.1; lowest of the 24 frames round the change 74.9 at 183 ms, 100%)
+phone cpu x4 run 12: no dip (centre light otherwise 75.2; lowest of the 24 frames round the change 75 at 150 ms, 100%)
+phone cpu x4: a dip in 0 of 12 first visits; the lowest frame round the change in any run was 99% of the usual
+exit 0

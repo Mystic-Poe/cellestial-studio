@@ -53,6 +53,7 @@ if (only.has('all')) for (const size of sizes) {
 	const o = await open(browser, size, { init: seed });
 	await ready(o);
 	const cells = [];
+	const crops = [];
 	say(`B7 at every figure, ${size} (${all.length} claims seeded)`);
 	for (let k = 0; k < CONSTELLATIONS.length; k++) {
 		const c = CONSTELLATIONS[k];
@@ -100,6 +101,13 @@ if (only.has('all')) for (const size of sizes) {
 		say(`${size} ${String(k + 1).padStart(2)} ${c.name.padEnd(12)} "${m.text}" ${Math.round(m.w)}x${Math.round(m.h)} at ${Math.round(m.x)},${Math.round(m.y)}; type ${m.font}; ${where} (figure x ${Math.round(figLeft)}..${Math.round(figRight)}, y ${Math.round(figTop)}..${Math.round(figBottom)}); nearest star's edge ${Math.round(starGap)} px; ${toB11} px above B11; ${edge} px from the nearest side/top; touches: ${touch.length ? touch.join(', ') : 'nothing'}; letters' mean colour ${col.mean} (${col.n} px, ${col.blue.toFixed(0)}% bluish); css colour ${m.color}; points of the next four figures shown ${m.far.length}, ON THE WORDS ${farOn.length}${farOn.length ? ` (${farOn.map((q) => `+${q.n} at ${Math.round(q.x)},${Math.round(q.y)} r ${q.r.toFixed(1)}`).join('; ')})` : ''}, the nearest ${Number.isFinite(farGap) ? `${Math.round(farGap)} px from the words' box` : 'none'}`);
 		farTotal[size] = (farTotal[size] ?? 0) + farOn.length;
 		cells.push({ img: png, label: `${k + 1} ${c.name}: "${m.text}"` });
+		// The third look: the words and what lies round and under them, at the screen's own pixels.
+		{
+			const pad = size === 'desk' ? 70 : 40;
+			const left = Math.max(0, Math.round((m.x - pad) * dpr)), top = Math.max(0, Math.round((m.y - pad) * dpr));
+			const width = Math.min(Math.round(m.W * dpr) - left, Math.round((m.w + 2 * pad) * dpr)), height = Math.min(Math.round(m.H * dpr) - top, Math.round((m.h + 2 * pad) * dpr));
+			crops.push({ img: await sharp(png).extract({ left, top, width, height }).png().toBuffer(), label: `${k + 1} ${c.name}: the words as drawn (${Math.round(m.w)}x${Math.round(m.h)} css px, ${pad} px round them); far points shown ${m.far.length}, on the words ${farOn.length}`, enlarge: size === 'desk' });
+		}
 		// Round 2, piece 3: the phone's verdict. Nothing touched; and 40 px above the exit button
 		// unless the words stand in the figure's own room (inside its bounds).
 		// Round 2, piece 4: the desktop's verdict. Large type, nothing touched, and no point of a figure further on on the words.
@@ -123,6 +131,8 @@ if (only.has('all')) for (const size of sizes) {
 		await sheet(join(dir, 'all-desk-1.jpg'), cells.slice(0, 6), { cols: 3, cellW: 520, cellH: 325 });
 		await sheet(join(dir, 'all-desk-2.jpg'), cells.slice(6), { cols: 3, cellW: 520, cellH: 325 });
 	} else await sheet(join(dir, `all-${size}.jpg`), cells, { cols: 6, cellW: 258, cellH: Math.round((258 * SIZES[size].viewport.height) / SIZES[size].viewport.width) });
+	if (size === 'desk') for (let i = 0, n = 1; i < crops.length; i += 6, n++) await sheet(join(dir, `words-desk-${n}.jpg`), crops.slice(i, i + 6), { cols: 2, cellW: 780, cellH: 240 });
+	else await sheet(join(dir, `words-${size}.jpg`), crops, { cols: 4, cellW: 390, cellH: 300 });
 	await o.context.close();
 }
 

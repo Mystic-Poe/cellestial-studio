@@ -1,0 +1,22 @@
+desk cpu x1 run 1: sky at 7686 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 2: sky at 7326 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 3: sky at 7353 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 4: sky at 7346 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 5: sky at 7180 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 6: sky at 7199 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 7: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 8: sky at 7218 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 9: sky at 7198 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1 run 10: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+desk cpu x1: a frame without the star in 0 of 10 runs
+phone cpu x1 run 1: sky at 7530 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 2: sky at 7297 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 3: sky at 7196 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 4: sky at 7191 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 5: sky at 7202 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 6: sky at 7220 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 7: sky at 7190 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 8: sky at 7220 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 9: sky at 7192 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1 run 10: sky at 7192 ms; 60 frames round the change; no blink; errors 0
+phone cpu x1: a frame without the star in 0 of 10 runs
