@@ -14,14 +14,18 @@
 //   fade      only if there is no sky to hand over to: the overlay fades
 //   done      the overlay is off the page, everything is let go of
 //
-// The clock. The full version is planned to take `script.end / tempo` seconds
-// and the hand-off after it: 7.1 s from the mount. `wall` is the time this
-// page has really been on screen, the unlit C of the server's own markup
-// included; it says how late the run is. A run that is behind (the pictures
-// were slow, a frame stalled, the sky was not ready) may end up to LATE
-// seconds past the plan; if that is not enough it plays its hand-off faster,
-// down to HANDOFF_MIN, and past that hurries the script itself by at most
-// HURRY_MAX. It never ends under FLOOR seconds after the mount.
+// The clock is the visitor's: it starts at the first paint of the loader's
+// picture, which on a slow line is the unlit C of the server's own markup,
+// standing there before this script has arrived. The full version is planned
+// to take `script.end / tempo` seconds and the hand-off after it: 7.1 s.
+// `wall` is the time the picture has really been on screen (clock.ts); it
+// says how late the run is. A run that is behind (the script or the pictures
+// were slow to arrive, a frame stalled, the sky was not ready) may end up to
+// LATE seconds past the plan; if that is not enough it plays its hand-off
+// faster, down to HANDOFF_MIN, and past that hurries the script itself by at
+// most HURRY_MAX. It never ends under FLOOR seconds after the first paint.
+// (The three pictures besides the unlit C are asked for by the markup too,
+// Loader.astro, so that they are not a second and a half behind the script.)
 //
 // Whatever happens (a picture that will not load, an exception in a frame, a
 // sky that never comes) the run ends and `done` resolves. The loader may
@@ -33,6 +37,7 @@
 
 import { ASSETS } from '../assets.ts';
 import type { LoaderScene, MountLoader, SkyScene } from '../contracts.ts';
+import { FLOOR_SPARE, handoffLength, paceAt, paintedAfter, waitedBefore } from './clock.ts';
 import { WORDMARK_MATTE } from './geometry.ts';
 import { layoutFor } from './layout.ts';
 import { createPainter, type Images, type Painter } from './painter.ts';
@@ -41,10 +46,7 @@ import {
 	FLOOR,
 	FULL,
 	HANDOFF,
-	HANDOFF_MIN,
 	HOLD_MAX,
-	HURRY_MAX,
-	LATE,
 	type Script,
 	SETTLE,
 	SHORT,
@@ -58,8 +60,6 @@ const STEP_MAX = 0.08;
 const WALL_STEP_MAX = 1;
 /** The server-rendered C has been on screen already: at most this much of the script is credited. */
 const POSTER_CREDIT = 0.25;
-/** And at most this much of the time it stood there before the script arrived counts on the clock. */
-const WAIT_CREDIT = 1;
 /** The still moment is waited for this long, in milliseconds, before heavy work is let through anyway. */
 const QUIET_MAX_MS = 4500;
 /** The pictures are given this long, in seconds on screen, before the loader lets go. */
@@ -124,14 +124,13 @@ function load(url: string): Promise<HTMLImageElement> {
 
 type Phase = 'loading' | 'intro' | 'handoff' | 'fade' | 'done';
 
-/** Seconds the page's first picture has been on screen already, as far as the browser will say. */
-function waited(): number {
+/** When the page's first picture was painted, in ms on performance.now()'s clock, if the browser will say. */
+function firstPaint(): number | null {
 	try {
 		const paint = performance.getEntriesByName('first-contentful-paint')[0];
-		if (!paint) return 0;
-		return Math.max(0, Math.min(WAIT_CREDIT, (performance.now() - paint.startTime) / 1000));
+		return paint ? paint.startTime : null;
 	} catch {
-		return 0;
+		return null;
 	}
 }
 
@@ -169,12 +168,17 @@ export const mount: MountLoader = (ctx, opts) => {
 	let u = 0;
 	/** Seconds this page has been on screen since the mount (the clock, clamped like the rest). */
 	let shown = 0;
+	const mountedAt = performance.now();
 	/** What the visitor had already waited before the mount: the unlit C, standing. Full version only. */
-	const credit = script.mode === 'full' ? waited() : 0;
+	const credit = script.mode === 'full' ? waitedBefore(mountedAt, firstPaint()) : 0;
 	/** Seconds the loader's picture has really been on screen: the measure of how late the run is. */
 	let wall = credit;
-	/** The plan: the script at its tempo, then the hand-off. */
-	const planned = script.end / script.tempo + HANDOFF;
+	/**
+	 * Seconds on the visitor's clock: `wall`, less the moment between the mount
+	 * and the first paint where the script was there first (a fast line).
+	 */
+	const seen = () =>
+		wall - (script.mode === 'full' && credit === 0 ? paintedAfter(mountedAt, firstPaint()) : 0);
 	/** How long this run's hand-off takes; a late run's is shorter. */
 	let handoffFor = HANDOFF;
 	/** `wall` at the skip, or -1. */
@@ -374,27 +378,14 @@ export const mount: MountLoader = (ctx, opts) => {
 		phase = 'handoff';
 		u = 0;
 		settleFrom = null;
-		// A run that is behind its plan gives the time back here, as far as the hand-off can.
-		const due = skippedAt >= 0 ? skippedAt + SETTLE + HANDOFF : planned + LATE;
-		handoffFor = Math.max(HANDOFF_MIN, Math.min(HANDOFF, due - wall));
-		// Never under the floor, mount to done, for a full play that was not skipped.
-		if (script.mode === 'full' && skippedAt < 0) {
-			handoffFor = Math.max(handoffFor, FLOOR + 0.05 - (wall - credit));
-		}
+		// A run that is behind its plan gives the time back here, as far as the
+		// hand-off can; and never ends under the floor (clock.ts).
+		handoffFor = handoffLength(script, wall, seen(), skippedAt);
 		prime(to);
 	}
 
 	/** Seconds of script to a second on the clock, now: the tempo, and more when the run is late. */
-	function pace(): number {
-		const left = script.end - t;
-		if (left <= 0) return 1; // the finished wordmark waits in real seconds
-		if (skippedAt >= 0) return script.tempo;
-		// The latest the script may end and the hand-off still fit: hurry only past that.
-		const room = planned + LATE - HANDOFF_MIN - wall;
-		const top = script.tempo * HURRY_MAX;
-		if (room <= 0) return top;
-		return Math.max(script.tempo, Math.min(top, left / room));
-	}
+	const pace = (): number => paceAt(script, t, wall, skippedAt >= 0);
 
 	// ──────────────────────────────────────────────────── the clock ──
 
@@ -411,7 +402,7 @@ export const mount: MountLoader = (ctx, opts) => {
 				else if (skyLost || t >= script.end + HOLD_MAX) {
 					// The floor holds here too: a sky that never came does not make the run short.
 					const early =
-						script.mode === 'full' && skippedAt < 0 && wall - credit < FLOOR - FADE_OUT + 0.05;
+						script.mode === 'full' && skippedAt < 0 && seen() < FLOOR - FADE_OUT + FLOOR_SPARE;
 					if (!early) letGo();
 				}
 			}

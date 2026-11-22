@@ -1,0 +1,81 @@
+phone, unslowed, visit 1: the loader went live at 43 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 0 entries, the paint entries were [], the poster {"complete":true,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 96 ms (reported at 103); first-contentful-paint at 96 ms (reported at 103); the canvas first drew (the pictures were in, the script began) at 157 ms; the sky at 7567 ms
+         13 to    20 ms     28 KB  link     d95047227dd0a96f.woff2
+         13 to    27 ms      5 KB  link     index.CBtNvYUV.css
+         13 to    27 ms      8 KB  link     Base.D3sSKnUf.css
+         13 to    27 ms     52 KB  link     wordmark.webp
+         13 to    28 ms    103 KB  link     c-lit.webp
+         13 to    28 ms     25 KB  link     wordmark-matte.webp
+         14 to    28 ms     60 KB  img      c-unlit.webp
+         13 to    31 ms     13 KB  img      c-logo.webp
+         13 to    32 ms     43 KB  img      e4-node-alpha.webp
+         14 to    32 ms     31 KB  script   index.astro_astro_type_script_index_0_la
+         38 to    40 ms      1 KB  script   contact-submit.3fcaacsQ.js
+         44 to    47 ms     44 KB  css      brass-main.webp
+         44 to    47 ms     33 KB  css      brass-dark.webp
+         47 to    48 ms     95 KB  css      soil-portrait-woven.avif
+         62 to    67 ms      1 KB  script   chrome.uXABp9y1.js
+         61 to    68 ms     11 KB  script   roots.CZm4zOl_.js
+         62 to    69 ms     12 KB  script   fx.D5gltO_R.js
+         68 to    71 ms      2 KB  other    favicon.ico
+         61 to    75 ms    155 KB  script   sky.OxG6eOK1.js
+        106 to   112 ms      6 KB  img      b3-core.webp
+        106 to   112 ms     86 KB  img      b3-ring.webp
+        106 to   112 ms     19 KB  img      b4-empty.webp
+        106 to   112 ms     18 KB  img      b4-station.webp
+        106 to   112 ms     21 KB  img      b5-lit-add.webp
+phone, unslowed, visit 2: the loader went live at 38 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 0 entries, the paint entries were [], the poster {"complete":true,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 68 ms (reported at 98); first-contentful-paint at 68 ms (reported at 98); the canvas first drew (the pictures were in, the script began) at 149 ms; the sky at 7323 ms
+phone, unslowed, visit 3: the loader went live at 56 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 0 entries, the paint entries were [], the poster {"complete":true,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 56 ms (reported at 99); first-contentful-paint at 56 ms (reported at 99); the canvas first drew (the pictures were in, the script began) at 148 ms; the sky at 7386 ms
+phone, slow 4G, visit 1: the loader went live at 1919 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 692; first-contentful-paint 800], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 692 ms (reported at 705); first-contentful-paint at 800 ms (reported at 805); the canvas first drew (the pictures were in, the script began) at 2960 ms; the sky at 8309 ms
+        164 to   442 ms      5 KB  link     index.CBtNvYUV.css
+        174 to   550 ms      8 KB  link     Base.D3sSKnUf.css
+        174 to   642 ms     13 KB  img      c-logo.webp
+        164 to   986 ms     28 KB  link     d95047227dd0a96f.woff2
+        186 to  1214 ms     25 KB  link     wordmark-matte.webp
+        186 to  1672 ms     31 KB  script   index.astro_astro_type_script_index_0_la
+        186 to  1723 ms     52 KB  link     wordmark.webp
+       1674 to  1916 ms      1 KB  script   contact-submit.3fcaacsQ.js
+        653 to  2244 ms     33 KB  css      brass-dark.webp
+        186 to  2273 ms     60 KB  img      c-unlit.webp
+        653 to  2323 ms     44 KB  css      brass-main.webp
+       1920 to  2746 ms     11 KB  script   roots.CZm4zOl_.js
+       1920 to  2802 ms     12 KB  script   fx.D5gltO_R.js
+        186 to  2896 ms     43 KB  img      e4-node-alpha.webp
+        185 to  2910 ms    103 KB  link     c-lit.webp
+       1920 to  2924 ms      1 KB  script   chrome.uXABp9y1.js
+        655 to  3525 ms     95 KB  css      soil-portrait-woven.avif
+       3526 to  3704 ms      2 KB  other    favicon.ico
+       1920 to  3897 ms    155 KB  script   sky.OxG6eOK1.js
+       3903 to  4169 ms      6 KB  img      b3-core.webp
+       3903 to  4440 ms     19 KB  img      b4-empty.webp
+       3903 to  4448 ms     18 KB  img      b4-station.webp
+       3903 to  4483 ms     21 KB  img      b5-lit-add.webp
+       3903 to  4798 ms     86 KB  img      b3-ring.webp
+phone, slow 4G, visit 2: the loader went live at 1921 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 688; first-contentful-paint 784], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 688 ms (reported at 703); first-contentful-paint at 784 ms (reported at 786); the canvas first drew (the pictures were in, the script began) at 2938 ms; the sky at 8289 ms
+phone, slow 4G, visit 3: the loader went live at 1913 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 688; first-contentful-paint 796], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 688 ms (reported at 700); first-contentful-paint at 796 ms (reported at 800); the canvas first drew (the pictures were in, the script began) at 2952 ms; the sky at 8320 ms
+phone, CPU 4x and slow 4G, visit 1: the loader went live at 1942 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 716; first-contentful-paint 776], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 716 ms (reported at 732); first-contentful-paint at 776 ms (reported at 782); the canvas first drew (the pictures were in, the script began) at 3070 ms; the sky at 8312 ms
+        176 to   462 ms      5 KB  link     index.CBtNvYUV.css
+        176 to   540 ms      8 KB  link     Base.D3sSKnUf.css
+        177 to   627 ms     13 KB  img      c-logo.webp
+        175 to  1005 ms     28 KB  link     d95047227dd0a96f.woff2
+        217 to  1256 ms     25 KB  link     wordmark-matte.webp
+        219 to  1656 ms     31 KB  script   index.astro_astro_type_script_index_0_la
+        216 to  1741 ms     52 KB  link     wordmark.webp
+       1659 to  1929 ms      1 KB  script   contact-submit.3fcaacsQ.js
+        217 to  2279 ms     60 KB  img      c-unlit.webp
+        649 to  2300 ms     33 KB  css      brass-dark.webp
+        648 to  2335 ms     44 KB  css      brass-main.webp
+       1944 to  2786 ms     11 KB  script   roots.CZm4zOl_.js
+       1944 to  2822 ms     12 KB  script   fx.D5gltO_R.js
+        217 to  2879 ms     43 KB  img      e4-node-alpha.webp
+        215 to  2915 ms    103 KB  link     c-lit.webp
+       1944 to  2959 ms      1 KB  script   chrome.uXABp9y1.js
+        658 to  3530 ms     95 KB  css      soil-portrait-woven.avif
+       3535 to  3709 ms      2 KB  other    favicon.ico
+       1943 to  3909 ms    155 KB  script   sky.OxG6eOK1.js
+       3931 to  4196 ms      6 KB  img      b3-core.webp
+       3932 to  4467 ms     19 KB  img      b4-empty.webp
+       3932 to  4474 ms     18 KB  img      b4-station.webp
+       3932 to  4510 ms     21 KB  img      b5-lit-add.webp
+       3932 to  4824 ms     86 KB  img      b3-ring.webp
+phone, CPU 4x and slow 4G, visit 2: the loader went live at 1936 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 724; first-contentful-paint 784], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 724 ms (reported at 740); first-contentful-paint at 784 ms (reported at 791); the canvas first drew (the pictures were in, the script began) at 3067 ms; the sky at 8322 ms
+phone, CPU 4x and slow 4G, visit 3: the loader went live at 1949 ms (mode full); at that moment getEntriesByName('first-contentful-paint') gave 1 entry, the paint entries were [first-paint 724; first-contentful-paint 784], the poster {"complete":false,"natural":1400,"shown":"block"}; paints as they were reported: first-paint at 724 ms (reported at 740); first-contentful-paint at 784 ms (reported at 790); the canvas first drew (the pictures were in, the script began) at 3069 ms; the sky at 8304 ms

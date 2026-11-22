@@ -19,8 +19,14 @@
 // cover by itself (the scene adds .is-live the moment it mounts, which calls
 // that off). The shell has its own guard for a script that never ran at all.
 import { ASSETS } from '../../experience/assets.ts';
+import { WORDMARK_MATTE } from '../../experience/loader/geometry.ts';
 
 const c = ASSETS.loader.cUnlit;
+// The other three pictures the scene cannot begin without. Asked for from the
+// markup, with the unlit C, and not a second and a half later when the script
+// has arrived and asks for them itself: on a slow line that wait was the time
+// the unlit C stood still. Not asked for where the loader does not play.
+const pictures = [ASSETS.loader.cLit.url, ASSETS.loader.wordmark.url, WORDMARK_MATTE.url];
 /** Framing A, as in layout.ts. */
 const FRAME = { cHeight: 0.806, cWidthMax: 0.62, middle: 0.47 };
 const pct = (v: number) => `${(v * 100).toFixed(3)}`;
@@ -35,6 +41,17 @@ const vars = [
 ].join('; ');
 ---
 
+{
+	pictures.map((url) => (
+		<link
+			rel="preload"
+			as="image"
+			href={url}
+			fetchpriority="high"
+			media="(prefers-reduced-motion: no-preference)"
+		/>
+	))
+}
 <p id="loader-status" class="sr-only" role="status">Loading. Press any key to skip.</p>
 <div id="loader" aria-hidden="true" style={vars}>
 	<img
