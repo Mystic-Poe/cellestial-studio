@@ -20,7 +20,16 @@ import {
 	type Flash,
 	type FlashDir,
 } from './flash.ts';
-import { createImpact, IMPACT_MS, IMPACT_SIZE, type Impact } from './impact.ts';
+import {
+	createGlint,
+	createImpact,
+	createSparks,
+	GLINT_MS,
+	IMPACT_MS,
+	IMPACT_SIZE,
+	type Impact,
+} from './impact.ts';
+import { createImpacts } from './impacts.ts';
 import { nextSeed } from './rng.ts';
 import { createSurface } from './surface.ts';
 import { createWarp, drawWarpFade, type Warp } from './warp.ts';
@@ -58,12 +67,23 @@ const HOLD_MAX_MS = 1000;
 const BEAT_MS = 120;
 /** The frame after swap() pays for the new section. Past this, its lateness is swap time. */
 const SWAP_FRAME_MS = 34;
-/** The burst of the farthest star is this share of the nearest's. */
-const IMPACT_FAR = 0.3;
+/**
+ * A star this near, against the nearest (1), strikes with a burst (D2), as big
+ * as it is near. One farther off, a star of a figure further on, lands as a glint.
+ */
+const BURST_FROM = 0.6;
 /** On a phone a burst is this share of a desktop's, so a dozen side by side stay a dozen. */
 const IMPACT_NARROW = 0.72;
-/** How many bursts (D2) play at once. */
-const IMPACTS_MAX = 18;
+/** The glints of the far stars, however many land together, glow like this many alone. */
+const GLINT_CAP = 1.2;
+/**
+ * The warm-up (see warm() below): for this many frames the canvas is this
+ * faint, and what is on it are these moments of a burst and of a glint.
+ */
+const WARM_FRAMES = 3;
+const WARM_OPACITY = '0.01';
+const WARM_BURSTS = [0.02, 0.08, 0.16, 0.3, 0.45, 0.6, 0.8];
+const WARM_GLINTS = [0.05, 0.3, 0.6];
 /** Reduced motion: the fade is solid black from here to the same distance past the peak. */
 const FADE_SOLID_FROM = 0.47;
 
@@ -96,12 +116,6 @@ interface FlashRun {
 	held: number;
 }
 
-interface ImpactRun {
-	art: Impact;
-	t0: number;
-	u: number;
-}
-
 interface WarpRun {
 	/** Null for the plain fade of reduced motion. */
 	art: Warp | null;
@@ -126,9 +140,10 @@ const blind: FxLayer = {
 };
 
 export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
-	const canvas = opts.canvas ?? (document.getElementById('fx-canvas') as HTMLCanvasElement | null);
-	const surface = canvas instanceof HTMLCanvasElement ? createSurface(canvas) : null;
-	if (!surface) return blind;
+	const found = opts.canvas ?? document.getElementById('fx-canvas');
+	const canvas = found instanceof HTMLCanvasElement ? found : null;
+	const surface = canvas ? createSurface(canvas) : null;
+	if (!canvas || !surface) return blind;
 	const clock = opts.clock ?? wallClock;
 
 	let seed = (opts.seed ?? Math.floor(Math.random() * 0x100000000)) >>> 0;
@@ -140,7 +155,16 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 
 	let flash: FlashRun | null = null;
 	const queue: FlashRun[] = [];
-	let impacts: ImpactRun[] = [];
+	// Every strike plays out its own length: nothing is taken off these lists
+	// to make room (impacts.ts). Bursts share their soft light among bursts,
+	// glints among glints.
+	const bursts = createImpacts<Impact>();
+	const glints = createImpacts<Impact>(GLINT_CAP);
+	const sparks = createSparks();
+	/** A strike has landed since the last frame was drawn. */
+	let landed = false;
+	/** Frames of the warm-up still to come; 0 when it is not running. */
+	let warming = 0;
 	let warps: WarpRun[] = [];
 
 	let frameId = 0;
@@ -247,7 +271,13 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		surface.clear();
 		const { g, w, h } = surface;
 		try {
-			for (const run of impacts) run.art.draw(g, run.u);
+			for (const list of [glints, bursts]) {
+				for (const run of list.runs) {
+					run.art.draw(g, run.u, run.gain, run.wide);
+					run.art.sparks(sparks, run.u);
+				}
+			}
+			sparks.flush(g);
 			if (flash) {
 				if (flash.art && !broken) flash.art.draw(g, flash.u, flash.held);
 				else {
@@ -265,7 +295,8 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			// A picture failed. Never leave the screen half drawn: wipe it, fall
 			// back to plain fades, and keep the clockwork (and swap) going.
 			broken = true;
-			impacts = [];
+			bursts.clear();
+			glints.clear();
 			surface.clear();
 			report(error);
 		}
@@ -281,6 +312,10 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		lastFrame = 0;
 		surface.clear();
 		surface.close();
+		if (warming) {
+			warming = 0;
+			canvas.style.opacity = '';
+		}
 	};
 
 	const tick = (now: number): void => {
@@ -299,15 +334,16 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			const next = queue.shift();
 			if (next) startFlash(next, now);
 		}
-		for (const run of impacts) run.u = Math.max(0, (now - run.t0) / IMPACT_MS);
-		impacts = impacts.filter((run) => run.u < 1);
+		bursts.advance(now);
+		glints.advance(now);
+		landed = false;
 		for (const run of warps) {
 			run.u = Math.max(0, (now - run.t0) / run.ms);
 			if (run.u >= 1) settle.push(run.resolve);
 		}
 		warps = warps.filter((run) => run.u < 1);
 
-		if (flash || impacts.length > 0 || warps.length > 0) render();
+		if (flash || bursts.runs.length > 0 || glints.runs.length > 0 || warps.length > 0) render();
 		else sleep();
 		ticking = false;
 		// Only now, with the canvas clear of them, do finished effects report.
@@ -320,6 +356,7 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		lastFrame = now;
 		// A frame callback can carry a time just before the call that asked for it.
 		tick(Math.max(now, lastTick));
+		if (warming && --warming === 0) endWarm();
 		if (!surface.isOpen) return;
 		if (gap > 0 && surface.paced(gap)) render();
 		if (!frameId) frameId = clock.frame(onFrame);
@@ -343,6 +380,69 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 		if (!beatId) beatId = clock.beat(BEAT_MS, onBeat);
 	};
 
+	// ───────────────────────────────────────────────────── the warm-up ──
+	//
+	// The first time the browser is asked for each kind of mark a burst is made
+	// of, its graphics process stops to build the program that draws it: about
+	// 140 ms in all, measured, in the frames of the first star's crash, where a
+	// stall is seen (one frame of 67 to 83 ms on a desktop). So the same marks
+	// are asked for once beforehand, at the loader's one still moment (or at
+	// once, where no loader plays): a handful of bursts and glints at different
+	// moments of their length, on the canvas at one hundredth of its strength,
+	// which nobody can see, for three frames. Any real effect ends it at once.
+
+	const endWarm = (): void => {
+		if (!warming) return;
+		warming = 0;
+		bursts.clear();
+		glints.clear();
+		canvas.style.opacity = '';
+	};
+
+	const warm = (): void => {
+		// Something is playing already: it builds what it needs as it goes.
+		if (ctx.reducedMotion || broken || surface.isOpen || flash) return;
+		if (document.hidden) {
+			// No frame is drawn in a tab nobody is looking at: when it is looked at.
+			document.addEventListener('visibilitychange', warm, { once: true });
+			return;
+		}
+		canvas.style.opacity = WARM_OPACITY;
+		wake();
+		const now = clock.now();
+		const { w, h } = surface;
+		const narrow = Math.min(1, Math.max(IMPACT_NARROW, w / 900));
+		try {
+			WARM_BURSTS.forEach((u, i) => {
+				const x = w * (0.2 + (0.6 * i) / WARM_BURSTS.length);
+				bursts.add(
+					createImpact(0x5eed + i, x, h * 0.6, w, h, IMPACT_SIZE * narrow),
+					now - u * IMPACT_MS,
+				);
+			});
+			WARM_GLINTS.forEach((u, i) => {
+				glints.add(
+					createGlint(0x91e4 + i, w * (0.45 + 0.05 * i), h * 0.6, w, h, narrow, 0.3),
+					now - u * GLINT_MS,
+				);
+			});
+			warming = WARM_FRAMES;
+		} catch (error) {
+			report(error);
+			bursts.clear();
+			glints.clear();
+			canvas.style.opacity = '';
+		}
+	};
+
+	// A clock handed in is a test page freezing frames: it gets no warm-up.
+	if (!opts.clock && !ctx.reducedMotion) {
+		ctx
+			.when('loader')
+			.then((loader) => loader.quiet)
+			.then(warm, () => {});
+	}
+
 	surface.onResize = () => {
 		flash?.art?.resize(surface.w, surface.h);
 		for (const run of warps) run.art?.resize(surface.w, surface.h);
@@ -353,6 +453,7 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 
 	return {
 		teleportFlash(swap, dir) {
+			endWarm();
 			return new Promise<void>((resolve, reject) => {
 				const run: FlashRun = {
 					swap,
@@ -387,35 +488,39 @@ export function createFx(ctx: SceneContext, opts: FxOptions = {}): FxLayer {
 			// Reduced motion has no fall, so nothing lands.
 			if (ctx.reducedMotion || broken) return;
 			if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+			endWarm();
 			wake();
-			// A whole sky can land within half a second. Past this many at once the
-			// oldest, which is all but spent, makes way: frame time is kept.
-			if (impacts.length >= IMPACTS_MAX) impacts.shift();
+			const near = Number.isFinite(size) ? Math.min(1, Math.max(0, size)) : 1;
+			// A narrow screen has the same stars landing closer together.
+			const narrow = Math.min(1, Math.max(IMPACT_NARROW, surface.w / 900));
 			try {
-				impacts.push({
-					art: createImpact(
-						takeSeed(),
-						x,
-						y,
-						surface.w,
-						surface.h,
-						// A narrow screen has the same stars landing closer together.
-						IMPACT_SIZE *
-							Math.min(1, Math.max(IMPACT_NARROW, surface.w / 900)) *
-							Math.min(1, Math.max(IMPACT_FAR, Number.isFinite(size) ? size : 1)),
-					),
-					t0: clock.now(),
-					u: 0,
-				});
+				const seed = takeSeed();
+				if (near >= BURST_FROM) {
+					bursts.add(
+						createImpact(seed, x, y, surface.w, surface.h, IMPACT_SIZE * narrow * near),
+						clock.now(),
+					);
+				} else {
+					glints.add(createGlint(seed, x, y, surface.w, surface.h, narrow, near), clock.now());
+				}
 			} catch (error) {
 				report(error);
 			}
-			// The burst is on screen in the same frame the star lands, not the next.
-			if (!ticking) render();
+			// The strike is on screen in the same frame the star lands, not the
+			// next; and the dozen that land in one frame are drawn once, together.
+			if (!landed) {
+				landed = true;
+				queueMicrotask(() => {
+					if (!landed) return;
+					landed = false;
+					if (!ticking && surface.isOpen) render();
+				});
+			}
 		},
 
 		warp(ms) {
 			if (!(ms > 0) || !Number.isFinite(ms)) return Promise.resolve();
+			endWarm();
 			return new Promise<void>((resolve) => {
 				wake();
 				let art: Warp | null = null;

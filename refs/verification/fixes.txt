@@ -387,3 +387,27 @@ PIECE 1 — THE FALL (second look: finding 1 a to d, finding 13; closing list 1 
     Cause: brush() in src/experience/roots/net.ts strokes every stretch of like width and strength as a
     path of its own, and while a line is hot its heat is read every third point, so every third point
     is a new stroke, in each of five passes, for every hot line, in every band on screen, every frame.
+
+  FIXED SO FAR (checkpoint; the final numbers and sheets follow below when every run is in):
+  a. The cut. src/experience/fx/impacts.ts is new: the list of strikes that are playing, with no
+     canvas in it. A strike leaves it at its own end and for no other reason; IMPACTS_MAX and its
+     shift() are gone from layer.ts. Test: src/experience/fx-impacts.test.ts (six tests; sixty strikes
+     inside 200 ms, each on the list in every frame of its own 760 ms and in no other).
+  b, c. The white shapes. A star of a figure further on (nearer than 0.6 of the nearest it is still a
+     burst) now lands as a GLINT (createGlint in impact.ts): a point of light on the ground line and
+     two or three sparks, 420 ms, nothing in the soil, no shock. And strikes share their soft light:
+     the list gives each one a share (`gain`, and `wide` for the light it spreads along the ground)
+     such that a crowd glows like one and a half alone; rays and sparks are not shared, they stay
+     as crisp as alone. A burst with no neighbour is drawn as it always was.
+  d. Frame rate. The largest cost, the Roots' growth: brush() now gathers the stretches of a pass by
+     width and strength, from every line, and strokes each kind once (1,000 to 1,500 strokes a frame,
+     was 2,500 to 9,800). The bursts' sparks are gathered the same way (createSparks), and the dozen
+     strikes of one frame are drawn once, not once each.
+     Then the one long frame at the first strike (67 to 83 ms): it was the browser's graphics process
+     building its drawing programs the first time each kind of mark is asked for (a trace shows a
+     run of shader compiles, 8 to 25 ms each, from the first strike on; a second fall in the same
+     browser has none). Both the bursts and the growth are now drawn once, unseen, at the loader's
+     one still moment (layer.ts warm(), net.ts rehearse()).
+     And the press itself on a slow device: the ground was built a second time, identically, when it
+     came on stage (27 of the 111 ms of the click with the CPU slowed 4x were the rest). The same
+     measurements no longer rebuild the same network (net.ts layout()).

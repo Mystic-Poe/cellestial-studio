@@ -91,6 +91,12 @@ export interface Net {
 	 * passed the first node; the rest follows.
 	 */
 	growFrom(x: number, onNode: (i: number) => void): Promise<void>;
+	/**
+	 * Draw a few frames of a growth where nobody sees them, so that the first
+	 * real one finds the browser ready (see rehearse() below). Does nothing
+	 * while a growth is playing.
+	 */
+	rehearse(): void;
 	/** Nothing showing (before the arrival). */
 	hide(): void;
 	readonly shown: boolean;
@@ -752,6 +758,17 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		lit.height = BAND;
 	}
 
+	/**
+	 * While the growth is drawn, the stretches of one pass are not stroked one
+	 * by one: a hot line changes width and strength every few points, and
+	 * thousands of small strokes a frame is what the frame rate cannot carry.
+	 * They are gathered here by width and strength (the key below), from every
+	 * line of the pass, and each kind goes down as one stroke (flush). Within
+	 * a pass every stroke is one colour, so the order they go down in does not
+	 * show. Each entry is runs of points: NaN, then x, y, x, y, …
+	 */
+	const gathered = new Map<number, number[]>();
+
 	/** Brush one line, or the part of it the light has reached, with one pass. */
 	function brush(ctx: CanvasRenderingContext2D, k: number, pass: Pass, t: number): void {
 		const s = strands[k];
@@ -776,6 +793,8 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		let key = -1;
 		let open = false;
 		let heat = 0;
+		/** The run being gathered, while the growth is drawn. */
+		let run: number[] | null = null;
 		const fine = k !== 0 && s.w[0] < 1;
 		for (let i = i0; i <= i1; i++) {
 			// (The heat is read every third point, and once for a whole hair: it
@@ -788,6 +807,22 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			const alpha = Math.min(1, pass.alpha(s.lum[i]) * (1 + 2.2 * heat));
 			// Stretches of like width and strength go down as one stroke.
 			const q = Math.round(width * 4) * 64 + Math.round(alpha * 28);
+			if (growing) {
+				if (q !== key) {
+					run?.push(s.xs[i], s.ys[i]);
+					key = q;
+					run = null;
+					if (width > 0.05 && alpha > 0.004) {
+						run = gathered.get(q) ?? null;
+						if (!run) {
+							run = [];
+							gathered.set(q, run);
+						}
+						run.push(Number.NaN, s.xs[i], s.ys[i]);
+					}
+				} else run?.push(s.xs[i], s.ys[i]);
+				continue;
+			}
 			if (q !== key) {
 				if (open) {
 					ctx.lineTo(s.xs[i], s.ys[i]);
@@ -804,6 +839,28 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			} else if (open) ctx.lineTo(s.xs[i], s.ys[i]);
 		}
 		if (open) ctx.stroke();
+	}
+
+	/** Stroke what brush() gathered for one pass of the growth, each width and strength once. */
+	function flush(ctx: CanvasRenderingContext2D, pass: Pass): void {
+		const [r, g, b] = pass.colour;
+		ctx.strokeStyle = `rgb(${Math.round(r * 255)} ${Math.round(g * 255)} ${Math.round(b * 255)})`;
+		for (const [q, pts] of gathered) {
+			if (pts.length === 0) continue;
+			ctx.beginPath();
+			for (let p = 0; p < pts.length; p += 2) {
+				if (Number.isNaN(pts[p])) {
+					p++;
+					ctx.moveTo(pts[p], pts[p + 1]);
+				} else ctx.lineTo(pts[p], pts[p + 1]);
+			}
+			// The key is the width in quarter pixels and the strength in 28ths.
+			ctx.lineWidth = Math.floor(q / 64) / 4;
+			ctx.globalAlpha = (q % 64) / 28;
+			ctx.stroke();
+			pts.length = 0;
+		}
+		ctx.globalAlpha = 1;
 	}
 
 	/** A round glow. */
@@ -860,7 +917,10 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		m.setTransform(SOFT, 0, 0, SOFT, 0, -top * SOFT);
 		m.lineCap = 'round';
 		m.lineJoin = 'round';
-		for (const pass of HALO) for (const k of ks) brush(m, k, pass, t);
+		for (const pass of HALO) {
+			for (const k of ks) brush(m, k, pass, t);
+			if (growing) flush(m, pass);
+		}
 		for (const i of ns) {
 			const node = lay.nodes[i];
 			const heat = growing ? Math.exp(-(t - nodeTimes[i]) / 320) : 0;
@@ -919,7 +979,10 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		ctx.setTransform(dpr, 0, 0, dpr, 0, -top * dpr);
 		ctx.lineCap = 'butt';
 		ctx.lineJoin = 'round';
-		for (const pass of CORE) for (const k of ks) brush(ctx, k, pass, t);
+		for (const pass of CORE) {
+			for (const k of ks) brush(ctx, k, pass, t);
+			if (growing) flush(ctx, pass);
+		}
 		for (const k of ks) picked[k] = 1;
 		for (const j of joints) {
 			if (!picked[j.strand] || j.y < top - 20 || j.y > top + h + 20) continue;
@@ -1121,10 +1184,95 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 		raf = 0;
 		impact = null;
 		soilKept.clear();
+		gathered.clear();
 		for (const key of Object.keys(over)) {
 			over[Number(key)].remove();
 			delete over[Number(key)];
 		}
+	}
+
+	/**
+	 * THE REHEARSAL. The first time the browser is asked for each kind of mark
+	 * the network is made of (a stroke of this cap under that blend, a glow, a
+	 * picture let through a mask), its graphics process stops to build the
+	 * program that draws it. Nothing of the network is drawn before the first
+	 * growth, so all of that fell in the frames of the crash itself: about
+	 * 140 ms of it, one frame of 67 to 83 ms on a desktop, measured. So a few
+	 * frames of a growth, and a little of the grown network, are drawn once
+	 * beforehand into a canvas that is in no document, one a frame, and the
+	 * browser is made to carry each out (a bitmap is asked for and let go).
+	 */
+	let rehearsing = false;
+	let rehearsed = false;
+	let rehearsalTimer = 0;
+	function rehearse(): void {
+		window.clearTimeout(rehearsalTimer);
+		if (rehearsed || rehearsing) return;
+		if (typeof createImageBitmap !== 'function') return;
+		// A real growth builds what it needs as it goes: nothing is left to rehearse.
+		if (raf) {
+			rehearsed = true;
+			return;
+		}
+		if (!soil || !lay || strands.length === 0 || bands.length === 0) {
+			// The lit soil is part of every frame, and the ground must have been measured: wait.
+			rehearsalTimer = window.setTimeout(rehearse, 300);
+			return;
+		}
+		rehearsing = true;
+		const mine = token;
+		const stage = document.createElement('canvas');
+		stage.width = bands[0].width;
+		stage.height = bands[0].height;
+		const all = inBand(0);
+		const moments = [40, 110, 200, 320, 470, 650, 850];
+		let step = -1;
+		const rows: [number, number] = [0, Math.min(BAND, window.innerHeight)];
+		const frame = () => {
+			if (mine !== token || raf || !lay) {
+				// The ground was measured again under it (the fonts arrived, the window
+				// changed), or a real growth began: start over once that has settled.
+				rehearsing = false;
+				rehearsalTimer = window.setTimeout(rehearse, 300);
+				return;
+			}
+			if (step < 0) {
+				// What has cooled: a sample of the grown network.
+				paint(
+					stage,
+					0,
+					all.filter((_, i) => i % 5 === 0),
+					[0],
+					Number.POSITIVE_INFINITY,
+					true,
+				);
+			} else {
+				const t = moments[step];
+				if (step === 0) strike(lay.width / 2);
+				paint(
+					stage,
+					0,
+					all.filter((k) => k === 0 || strands[k].t0 <= t),
+					nodeTimes.map((at, n) => (at <= t ? n : -1)).filter((n) => n >= 0),
+					t,
+					true,
+					rows,
+				);
+			}
+			createImageBitmap(stage)
+				.then((bitmap) => bitmap.close())
+				.catch(() => {});
+			step++;
+			if (step < moments.length) requestAnimationFrame(frame);
+			else {
+				impact = null;
+				rehearsing = false;
+				rehearsed = true;
+				stage.width = 1;
+				stage.height = 1;
+			}
+		};
+		requestAnimationFrame(frame);
 	}
 
 	/** Where along the runner an impact at x lands. */
@@ -1367,9 +1515,15 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 			stopGrowth();
 			now = Number.POSITIVE_INFINITY;
 			stopGuide(); // index.ts points the guided light again after every layout
+			// The ground is measured again whenever it comes on stage, and nearly
+			// always nothing has moved. The same measurements make the same network
+			// (it is seeded), so it is not built a second time: on the press that
+			// starts the fall that was most of the longest frame of a slow device.
+			const same =
+				lay !== null && strands.length > 0 && JSON.stringify(next) === JSON.stringify(lay);
 			lay = next;
 			loadSoil();
-			build();
+			if (!same) build();
 			resize();
 			paintAll();
 		},
@@ -1424,6 +1578,8 @@ export function createNet(host: HTMLElement, onArrive: (stop: number) => void = 
 				raf = requestAnimationFrame(frame);
 			});
 		},
+
+		rehearse,
 
 		hide() {
 			stopGrowth();

@@ -305,6 +305,15 @@ export const mount: MountRoots = (ctx) => {
 	net.layout(measure());
 	new ResizeObserver(remeasureSoon).observe(ground);
 	document.fonts?.ready.then(remeasureSoon).catch(() => {});
+	// The growth is rehearsed unseen at the loader's one still moment (or at
+	// once, where no loader plays), so the crash itself does not stall on it.
+	if (!ctx.reducedMotion) {
+		ctx
+			.when('loader')
+			.then((loader) => loader.quiet)
+			.then(() => net.rehearse())
+			.catch(() => {});
+	}
 
 	const scene: RootsScene = {
 		setActive(on) {

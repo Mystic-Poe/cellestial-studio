@@ -1,0 +1,13 @@
+A. Frame times of the fall with nothing recording (first 2.6 s after the press)
+desk virgo cpu x1 (fresh browser): 132 frames, avg 19.6 ms, p95 33.4, >34 ms 5, >50 ms 3, >100 ms 0, worst 83 ms at +614 ms; governor level after 1
+desk virgo cpu x4 (fresh browser): 75 frames, avg 34.0 ms, p95 66.7, >34 ms 22, >50 ms 11, >100 ms 0, worst 100 ms at +160 ms; governor level after 1
+desk aries cpu x1 (fresh browser): 132 frames, avg 19.6 ms, p95 33.4, >34 ms 4, >50 ms 2, >100 ms 0, worst 83 ms at +489 ms; governor level after 1
+desk aries cpu x4 (fresh browser): 78 frames, avg 33.1 ms, p95 66.7, >34 ms 19, >50 ms 12, >100 ms 0, worst 100 ms at +161 ms; governor level after 2
+desk sagittarius cpu x1 (fresh browser): 134 frames, avg 19.3 ms, p95 33.4, >34 ms 4, >50 ms 2, >100 ms 0, worst 83 ms at +468 ms; governor level after 1
+desk sagittarius cpu x4 (fresh browser): 74 frames, avg 34.9 ms, p95 66.7, >34 ms 22, >50 ms 10, >100 ms 1, worst 117 ms at +173 ms; governor level after 2
+phone virgo cpu x1 (fresh browser): 152 frames, avg 17.0 ms, p95 16.8, >34 ms 1, >50 ms 1, >100 ms 0, worst 67 ms at +682 ms; governor level after 0
+phone virgo cpu x4 (fresh browser): 119 frames, avg 21.7 ms, p95 33.4, >34 ms 4, >50 ms 1, >100 ms 0, worst 67 ms at +745 ms; governor level after 1
+phone aries cpu x1 (fresh browser): 152 frames, avg 17.0 ms, p95 16.7, >34 ms 1, >50 ms 1, >100 ms 0, worst 67 ms at +669 ms; governor level after 1
+phone aries cpu x4 (fresh browser): 121 frames, avg 21.3 ms, p95 33.4, >34 ms 3, >50 ms 1, >100 ms 0, worst 67 ms at +745 ms; governor level after 1
+phone sagittarius cpu x1 (fresh browser): 152 frames, avg 17.0 ms, p95 16.8, >34 ms 1, >50 ms 1, >100 ms 0, worst 67 ms at +599 ms; governor level after 1
+phone sagittarius cpu x4 (fresh browser): 119 frames, avg 21.7 ms, p95 33.4, >34 ms 5, >50 ms 2, >100 ms 0, worst 67 ms at +671 ms; governor level after 1
