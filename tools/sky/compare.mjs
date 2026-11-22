@@ -296,6 +296,11 @@ if (only.has('stations')) {
 		const view = await open(size);
 		const vp = SIZES[size].viewport;
 		const cells = [];
+		// On a portrait screen the wide figures are turned a quarter counter-clockwise (north to
+		// the left): the caption says so, so that the build is not read against the real figure as it lies.
+		const turned = await view.page.evaluate(() =>
+			window.__cellestial.sky.debug.stats().stations.map((s) => s.turned),
+		);
 		console.log(`[${size}] figure        stars  clear at top  at bottom  at the sides`);
 		for (let k = 0; k < 12; k++) {
 			const png = await view.at(k);
@@ -303,7 +308,7 @@ if (only.has('stations')) {
 			const ok = m.top >= SAFE.top - 0.5 && m.bottom >= SAFE.bottom - 0.5 && m.side >= 0;
 			if (!ok) errors++;
 			console.log(
-				`[${size}] ${NAMES[k].padEnd(12)} ${String(m.stars).padStart(5)}  ${m.top.toFixed(0).padStart(12)}  ${m.bottom.toFixed(0).padStart(9)}  ${m.side.toFixed(0).padStart(12)}${ok ? '' : '   OUTSIDE THE SAFE AREA'}`,
+				`[${size}] ${NAMES[k].padEnd(12)} ${String(m.stars).padStart(5)}  ${m.top.toFixed(0).padStart(12)}  ${m.bottom.toFixed(0).padStart(9)}  ${m.side.toFixed(0).padStart(12)}${turned[k] ? '   turned a quarter' : ''}${ok ? '' : '   OUTSIDE THE SAFE AREA'}`,
 			);
 			const [bw, bh] = size === 'desk' ? [496, 310] : [185, 400];
 			const [rw, rh] = size === 'desk' ? [286, 310] : [185, 200];
@@ -312,7 +317,12 @@ if (only.has('stations')) {
 				.png()
 				.toBuffer();
 			cells.push({ img: await figure(k, rw, rh), w: rw, h: rh, caption: `${k + 1} ${NAMES[k]}: real` });
-			cells.push({ img: build, w: bw, h: bh, caption: `build, ${vp.width}x${vp.height}` });
+			cells.push({
+				img: build,
+				w: bw,
+				h: bh,
+				caption: turned[k] ? 'build, turned a quarter' : `build, ${vp.width}x${vp.height}`,
+			});
 		}
 		await view.close();
 		if (size === 'desk') {

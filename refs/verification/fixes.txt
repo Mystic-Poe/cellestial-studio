@@ -908,3 +908,47 @@ PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 o
     they stand, strike across the ground's width (57 and 65 bursts), and the Roots grow; no error.
   - The desktop again after the B7 change: 0 pixels differ in the eight captures; b7.txt, desk: the
     twelve places and sizes are the second look's (54 px; 93 to 145 px from the nearest star).
+
+  THE SUITES, after everything (dev server on 4500 with the Turnstile test key; tools/run-all.sh
+  refs/verification/round-2/logs-piece-3 checks, then tools/sky/compare.mjs; status.txt: every line
+  exit 0):
+      pnpm build, pnpm lint, pnpm typecheck                 pass
+      pnpm test                                             135 of 135 (it was 124: 11 new, sky-layout.test.ts)
+      tools/loader/measure.mjs (desktop)                    13 of 13     tools/loader/measure.mjs --throttle 4 --size phone   13 of 13
+      tools/sky/measure.mjs                                 201 of 201   tools/sky/meaning.mjs      38 of 38
+      tools/sky/meaning-all.mjs                             24 of 24     tools/sky/compare.mjs      exit 0
+      tools/roots/measure.mjs                               245 of 245   tools/roots/words.mjs      197 of 197
+      tools/transitions/measure.mjs                         148 of 148   tools/chrome/compare.mjs   48 of 48
+  NO CHECK WAS CHANGED. The brief expected one that says no figure is turned: there is none in the
+  tools (the sentence was prose, in PROGRESS.md's Sky row and its decision 17, both brought up to
+  date). Every one of the 201 passes on the new geometry as written, among them the empty-star panel
+  whole on the screen beside each of the 146 stars at 390x844. One tool was changed, for its reader:
+  tools/sky/compare.mjs captions a turned figure "build, turned a quarter" in the stations sheet and
+  says so in its log, so that the build is not read against the real figure as it lies.
+  The sky's sheets were rebuilt (refs/sky/compare/, refs/sky/measure.txt) and two looked at:
+  stations-phone.jpg (each turned figure is the real pattern beside it, a quarter counter-clockwise;
+  every figure inside the safe lines) and b7-all-phone.jpg (the twelve as in round-2/b7/all-phone.jpg).
+  The other scenes' sheets that the suites rewrite were restored (refs/chrome, refs/roots,
+  refs/transitions). Nothing under workers/, src/onboard/, src/scripts/, public/admin/,
+  src/content/home.json or src/config.ts was touched (git diff over those paths: empty).
+  On the last build, again: phone-sky.mjs --only stations ALL PASS; phone-turn.mjs 23 of 23;
+  desk-same.mjs after: 0 pixels differ.
+
+  LEFT, AND WHY
+  - Phones shorter than the two judged. The turn is limited by the screen's height there, so Virgo
+    gains less and Cellestial's star, which always stays clear, is smaller than 84 px: 77 px at
+    375x667, 70 px at 360x640, 54 px at 320x568 (from the layout, not looked at as pictures). Getting
+    84 px there would take neighbours smaller than the 13 px floor; the floor was kept.
+  - The far figures' points under B7 on the DESKTOP are piece 4's. The phone's search counts them
+    (TALL.far = 3 in meaning.ts); the desktop's does not yet (WIDE.far = 0), and setting it is one
+    number if piece 4 wants the same cure.
+  - With PORTRAIT.turn off the phone is as it was before this piece, fault and all, except the knots:
+    that path is covered by one unit test and was not looked at as a picture.
+  - A real phone was not used: headless Chromium at the two sizes, real GPU.
+
+  FILES: src/experience/sky/layout.ts, config.ts, index.ts, meaning.ts, gl/world.ts, gl/shaders.ts;
+  src/components/scenes/Sky.astro (one declaration: text-wrap: balance on a meaning's line);
+  src/experience/sky-layout.test.ts (new); tools/sky/compare.mjs (a caption); round-2/tools/
+  phone-sky.mjs (extended), phone-turn.mjs and desk-same.mjs (new), b7.mjs (--sizes, verdicts),
+  a5.mjs and fall.mjs (--out), lib.mjs (the 360x740 size). Evidence: round-2/phone-sky/ (before/,
+  360/, a5/, fall/, desk-before/, desk-after/), round-2/b7/, round-2/logs-piece-3/.
