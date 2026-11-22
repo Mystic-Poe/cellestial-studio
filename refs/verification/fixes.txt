@@ -349,3 +349,41 @@ THE EFFECTS' OWN SHEETS — rebuilt (the "not done" under look 3).
   of the flash; the warp's cover is black with the flare at the vanishing point. measure.txt: the flash
   420 to 434 ms with the frame opaque at the swap; the warp opaque from about 0.66 to 0.78 of its length
   (the swap is at 0.70).
+
+
+ROUND 2 (after the second look)
+===============================
+One fixer per piece, one after another. Evidence and scripts: refs/verification/round-2/.
+
+PIECE 1 — THE FALL (second look: finding 1 a to d, finding 13; closing list 1 and 12)
+
+  REPRODUCED first, on the production build as it stood at c3550fc (refs/verification/round-2/fall/before/):
+  - fall-cut.txt: the cut is there. Desktop Virgo 19.1 -> 11.6 between +1127 and +1140 ms (peak 34.0);
+    desktop Sagittarius 21.6 -> 15.8; phone Virgo 20.9 -> 17.1; phone Sagittarius 18.8 -> 15.6.
+    desk-virgo-dense.jpg: the webs of root-light whole at +924, gone at +966, a white lozenge beside the
+    trunk's head from +966 on. desk-sagittarius-dense.jpg: one white mass from +672 to +840.
+  - Frame times, nothing recording: desktop 19.7 / 19.0 / 18.3 ms average at Virgo / Aries / Sagittarius,
+    3 to 5 frames over 34 ms, worst 50 to 83 ms, the governor at level 1 afterwards at Virgo and
+    Sagittarius; phone 16.7 ms, none over 17. With the CPU slowed 4x: desktop 33.1 / 31.9 / 34.4 ms,
+    phone 21.2 / 20.5 / 21.2 ms.
+
+  WHERE THE TIME GOES (measured before anything was changed; tools/fall-split.mjs, fall-profile.mjs,
+  fall-ops.mjs, written for this and kept beside the second look's scripts):
+  - split.txt, the same fall on the desktop from Virgo with parts switched off in the page:
+      everything            19.7 ms average, 6 frames over 34, worst 83, governor 1
+      no bursts             18.7 ms, 3 over 34, worst 67
+      no growth (bursts on) 16.7 ms, none over 17
+      neither               16.7 ms, none over 17
+    The largest cost is not the effects canvas: it is the Roots' growth.
+  - profile.txt: the GPU process's main thread is busy 2.1 of the 2.6 s; the long frames are the page
+    waiting for it (RasterImplementation::Finish 40 to 70 ms inside a 50 to 87 ms task). The largest
+    JavaScript function is the Roots' brush() (377 to 407 ms of self time in 2.6 s).
+  - ops-desk-virgo.txt: what is asked of the canvases each frame. The Roots' growth strokes 2,500 to
+    4,000 separate paths a frame from +0.6 s and 7,000 to 9,800 a frame from +1.6 to +2.2 s (491,000
+    strokes in 2.6 s, 3.4 points each), and fills up to 490 radial gradients a frame; the bursts stroke
+    up to 2,650 paths and draw up to 1,840 sprites in their worst frame. A trace of the GPU process
+    says the same from its side: its time is path strokes (StrokeTessellateOp, drawPath, drawPoints),
+    about 100,000 in the 2.6 s with the growth alone.
+    Cause: brush() in src/experience/roots/net.ts strokes every stretch of like width and strength as a
+    path of its own, and while a line is hot its heat is read every third point, so every third point
+    is a new stroke, in each of five passes, for every hot line, in every band on screen, every frame.

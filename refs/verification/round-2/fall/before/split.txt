@@ -1,0 +1,4 @@
+desk fig 0 all: 131 frames, avg 19.7 ms, p95 33.4, >34 ms 6, >50 ms 1, >100 ms 0, worst 83 ms at +612 ms; governor 1; main RunTask 0 ms, FunctionCall 850, Layout+style 48, Commit 0; GPU process main RunTask 0 ms
+desk fig 0 nofx: 138 frames, avg 18.7 ms, p95 33.4, >34 ms 3, >50 ms 2, >100 ms 0, worst 67 ms at +1861 ms; governor 0; main RunTask 0 ms, FunctionCall 801, Layout+style 47, Commit 0; GPU process main RunTask 0 ms
+desk fig 0 nogrow: 155 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1477 ms; governor 0; main RunTask 0 ms, FunctionCall 151, Layout+style 30, Commit 0; GPU process main RunTask 0 ms
+desk fig 0 neither: 155 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +429 ms; governor 0; main RunTask 0 ms, FunctionCall 55, Layout+style 29, Commit 0; GPU process main RunTask 0 ms
