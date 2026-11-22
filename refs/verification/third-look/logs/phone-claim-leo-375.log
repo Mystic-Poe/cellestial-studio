@@ -1,0 +1,11 @@
+375x667, Leo (TURNED), the sky empty
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/phone-sky/beads-leo-375.jpg
+1. a tap on empty sky at 45,500 (144 px from the nearest star's edge): "claim yours" stands 96x24 px at 169,425 (type 13px), 8 px under the edge of slot-20 (centre 169,403, 0.0 px off its middle); the star nearest the tap was slot-20; inside the screen: true
+2. a tap on the empty star slot-55 at 127,215 (r 13.0): the sky picked ["slot-55"]; its panel 336x298 at 12,240, inside the screen true: "Site A custom site built for your business. Site + Systems Everything in Site, plus the work behind it wired in. Site + App Everything in Site, plus a real app your customers actually use. Add-ons Upgrades that take work off your plate. Care What keeps your si"
+3. the build request: the form's star field "slot-55", spam-check token present true; after Send: slot-55 lit in the store true, lit in the sky true; the panel shown: "A site for my bakery, with the week's bread on the first page."
+   in the picture (mean light inside each star's disc, before -> after): brightened most: slot-55 +50 (now 88), slot-50 +1 (now 42), slot-5 +1 (now 42); the rest changed by at most 11  => THE RIGHT STAR IS LIT
+4. after a reload: slot-55 lit in the store true, in the sky true; in the picture the brightest gain is slot-55 +50, the next slot-38 -0  => STILL LIT, THE RIGHT STAR
+   the lit star tapped: "A site for my bakery, with the week's bread on the first page."
+console errors: none
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/phone-sky/claim-leo-375.jpg
+exit 0

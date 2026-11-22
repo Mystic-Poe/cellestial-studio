@@ -1,0 +1,10 @@
+desk before: the emblem 52x60 CSS px (52x60 device px): struts' mean #665754 (red over blue by 18.4); 63% of their pixels warm (R > B + 12), 21% bluish (B > R + 5)
+desk after: the emblem 52x60 CSS px (52x60 device px): struts' mean #67554f (red over blue by 23.6); 70% of their pixels warm (R > B + 12), 13% bluish (B > R + 5)
+desk A1 unlit at that height: struts' mean #634b38 (red over blue by 43.0); 100% of their pixels warm (R > B + 12), 0% bluish (B > R + 5)
+desk A1 lit at that height: struts' mean #66544a (red over blue by 28.2); 75% of their pixels warm (R > B + 12), 7% bluish (B > R + 5)
+wrote logo/side-by-side-desk.png (1536x344); "before" is the logo's picture of c0cacf3
+phone before: the emblem 42x48 CSS px (84x96 device px): struts' mean #6f5e5a (red over blue by 21.1); 66% of their pixels warm (R > B + 12), 27% bluish (B > R + 5)
+phone after: the emblem 42x48 CSS px (84x96 device px): struts' mean #6f5c55 (red over blue by 26.7); 70% of their pixels warm (R > B + 12), 22% bluish (B > R + 5)
+phone A1 unlit at that height: struts' mean #69503b (red over blue by 45.8); 100% of their pixels warm (R > B + 12), 0% bluish (B > R + 5)
+phone A1 lit at that height: struts' mean #6c584d (red over blue by 31.1); 73% of their pixels warm (R > B + 12), 18% bluish (B > R + 5)
+wrote logo/side-by-side-phone.png (1568x332); "before" is the logo's picture of c0cacf3

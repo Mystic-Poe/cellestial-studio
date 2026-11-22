@@ -1,0 +1,26 @@
+A PHONE TURNED ON ITS SIDE AND BACK at a station (every star lit; the clock held)
+PASS  Virgo 390x844 (upright): 12 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Virgo 844x390 (on its side): 12 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 0 (want 0)
+PASS  Virgo 390x844 (upright again): 12 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Virgo: back upright, every star is where and as large as it was (yes), and the picture is the first again (0 of 1316640 pixels differ by more than 2 levels)
+PASS  Aquarius 390x844 (upright): 15 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Aquarius 844x390 (on its side): 15 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 0 (want 0)
+PASS  Aquarius 390x844 (upright again): 15 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Aquarius: back upright, every star is where and as large as it was (yes), and the picture is the first again (0 of 1316640 pixels differ by more than 2 levels)
+PASS  Taurus 390x844 (upright): 12 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Taurus 844x390 (on its side): 12 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 0 (want 0)
+PASS  Taurus 390x844 (upright again): 12 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Taurus: back upright, every star is where and as large as it was (yes), and the picture is the first again (0 of 1316640 pixels differ by more than 2 levels)
+PASS  Leo 390x844 (upright): 9 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Leo 844x390 (on its side): 9 stars; buttons off their star by more than 1 px 0 (worst 0.06 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 0 (want 0)
+PASS  Leo 390x844 (upright again): 9 stars; buttons off their star by more than 1 px 0 (worst 0.05 px); stars with no light under their button 0; stars or buttons missing 0; figures turned 6 (want 6)
+PASS  Leo: back upright, every star is where and as large as it was (yes), and the picture is the first again (0 of 1316640 pixels differ by more than 2 levels)
+PASS  no console error through the turns (none)
+
+REDUCED MOTION on the phone (a first visit to "/", prefers-reduced-motion: reduce)
+PASS  the exit button is there (at 59,760, 271x52)
+PASS  the still sky is Virgo turned, all 12 of its claimable stars on screen (12); figures turned: Virgo, Capricornus, Aquarius, Pisces, Aries, Leo
+PASS  Cellestial's star is clear: 96.9 px across, the nearest star's disc 3.9 px beyond its rings' full reach
+PASS  it is still: 0 pixels change in 1.5 s (flight rest, speed 0)
+PASS  no console error (none)
+ALL PASS

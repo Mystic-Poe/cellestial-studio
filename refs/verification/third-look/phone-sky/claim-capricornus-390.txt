@@ -1,0 +1,8 @@
+390x844, Capricornus (TURNED), the sky empty
+1. a tap on empty sky at 328,169 (149 px from the nearest star's edge): "claim yours" stands 96x24 px at 317,352 (type 13px), 8 px under the edge of slot-106 (centre 317,331, 0.0 px off its middle); the star nearest the tap was slot-106; inside the screen: true
+2. a tap on the empty star slot-108 at 37,166 (r 13.0): the sky picked ["slot-108"]; its panel 336x338 at 12,191, inside the screen true: "Site A custom site built for your business. Site + Systems Everything in Site, plus the work behind it wired in. Site + App Everything in Site, plus a real app your customers actually use. Add-ons Upgrades that take work off your plate. Care What keeps your si"
+3. the build request: the form's star field "slot-108", spam-check token present false; after Send: slot-108 lit in the store true, lit in the sky true; the panel shown: "A site for my bakery, with the week's bread on the first page."
+   in the picture (mean light inside each star's disc, before -> after): brightened most: slot-108 +49 (now 88), slot-113 +1 (now 41), slot-136 +1 (now 41); the rest changed by at most 16  => THE RIGHT STAR IS LIT
+4. after a reload: slot-108 lit in the store true, in the sky true; in the picture the brightest gain is slot-108 +49, the next slot-29 +0  => STILL LIT, THE RIGHT STAR
+   the lit star tapped: "A site for my bakery, with the week's bread on the first page."
+console errors: none

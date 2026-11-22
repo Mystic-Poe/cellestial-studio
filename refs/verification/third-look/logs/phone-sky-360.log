@@ -35,3 +35,10 @@ Aquarius     15 stars, 30 taps: the star under the finger 30, ANOTHER STAR 0, no
 Pisces       22 stars, 44 taps: the star under the finger 44, ANOTHER STAR 0, nothing 0
 Aries        4 stars, 8 taps: the star under the finger 8, ANOTHER STAR 0, nothing 0
 Taurus       12 stars, 24 taps: the star under the finger 24, ANOTHER STAR 0, nothing 0
+Gemini       12 stars, 24 taps: the star under the finger 24, ANOTHER STAR 0, nothing 0
+Cancer       5 stars, 10 taps: the star under the finger 10, ANOTHER STAR 0, nothing 0
+Leo          9 stars, 18 taps: the star under the finger 18, ANOTHER STAR 0, nothing 0
+PASS  a touch at the centre and one on the free side of every star of every figure takes that star (292 of 292; 146 stars)
+PASS  no console error (none)
+ALL PASS
+exit 0

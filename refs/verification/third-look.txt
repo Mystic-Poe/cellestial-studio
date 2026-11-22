@@ -4,7 +4,7 @@ inspectors and of both rounds of fixers. Written 2026-11-22. No file of the site
 src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
 STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
 is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
-PARTS DONE: 1a (the fall), 1b (the end of the hand-off).
+PARTS DONE: 1a (the fall), 1b (the end of the hand-off), 1c (the phone's sky; the phone on its side with nothing hidden still to add). Running: the flash, the clocks, the warp, the walk.
 
 HOW IT IS BEING DONE
 - The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
@@ -111,3 +111,98 @@ PART 1 — THE ITEMS ROUND 2 WORKED ON
     nothing in it is contradicted. Its cause (an ease a hair over 1, a negative number to the power 1.3, the
     star's place not a number for one frame) fits what the second look saw: about every other visit, never
     after a skip.
+
+1c. THE PHONE'S SKY — second look: MAJOR (four of Virgo's stars on Cellestial's rings), MINOR (knots of
+    overlapping stars in Aquarius, Taurus and Pisces), MINOR (the wide figures a fifth of the screen high).
+    RULING: RESOLVED at 390x844 and 360x740. At 375x667, the short phone nobody had looked at: the sky itself
+    is right, and two small things are left (see "left" below): B7 at Leo, and the size of Cellestial's star.
+    All of it from tools/phone-sky.mjs at the three sizes (phone-sky/phone-sky.txt, 360/, 375/), my
+    phone-figures.mjs (phone-sky/phone-figures.txt, turned-back-1.jpg, -2.jpg, smallest-stars.jpg), my
+    phone-claim.mjs (phone-sky/claim-*.txt and .jpg, beads-*.jpg), tools/b7.mjs at four sizes (b7/), tools/
+    phone-turn.mjs and my phone-side.mjs (phone-sky/phone-turn.txt, phone-side.txt, on-its-side.jpg). The
+    places the page gives its stars were not taken on trust: phone-turn.mjs finds a lit star in the picture
+    under every button (0 stars with no light under them), and phone-claim.mjs finds the claimed star by the
+    light inside its disc in the screenshot.
+    - Every star on screen, clear of everything, at every one of the twelve stations:
+                                    390x844            360x740            375x667
+        stars on screen             146 of 146         146 of 146         146 of 146
+        nearest side                23.9 px            23.9 px            23.9 px
+        nearest to the logo         35 px (Leo)        37 px (Leo)        24 px (Capricornus)
+        nearest to the menu button  44 px              44 px              44 px
+        nearest to the exit button  40 px              40 px              40 px
+        the six turned figures      56 to 73% high     59 to 70%          59 to 66%   (they were 20 to 27%)
+        deepest overlap of two      30.6% (Taurus)     31.5%              30.6%       (they were 43 to 64%)
+      Looked at: phone-sky/stations-empty.jpg, 360/stations-empty.jpg, 375/stations-empty.jpg (all twelve at
+      each size), dense-figures.jpg. The figures now fill the tall screen; each reads as a figure of joined
+      stars and not as a band of specks. The Hyades in Taurus and the knots of Sagittarius and Aquarius read
+      as separate spheres that touch.
+    - Cellestial's star (phone-sky/cellestial-star.jpg, 375/cellestial-star.jpg, device pixels, two moments of
+      the rings' turn; the pack's B3 core and ring for comparison): the rings stand clear of every star.
+      390x844: 96.9 px across, the nearest star's disc 3.9 px beyond the rings' full reach, 7.6 and 4.4 px
+      from the rings as drawn. 360x740: 87.7 px, 2.3 px, 5.7 and 2.7 px. 375x667: 77.1 px, 2.0 px, 5.0 and
+      2.3 px. It is the pack's two pictures: the blue-white core with its corona and three cracked brass
+      bands with blue circuit light, turning; nothing sits on the bands. It is the only thing in that sky
+      that glows and it reads at once as the most important light, at all three sizes. It IS smaller than it
+      was (130 px): on the phone it is now three and a half stars across, not five.
+    - Too small to read, or to take? Two stars of the 146 are small: Taurus's closest pair (slot-64 and
+      slot-77), radius 6.8 px at 390, 6.1 at 360, 6.5 at 375 (12 to 14 px across; the usual star is 26). At
+      device pixels (phone-sky/smallest-stars.jpg) each is still a rimmed sphere with brass in it, a close
+      double, plainly a star and plainly not one of the grey points of the figures behind. Eight more are
+      9.0 to 10.7 px in radius at one size or another (Taurus, Sagittarius, Aquarius). None is too small to
+      read. To take: a real touch at the centre AND on the free side of every star of every figure, 292
+      touches at each size: 292 of 292, 292 of 292 and 292 of 292 took the star under the finger. Not one
+      took a neighbour, not one took nothing.
+    - Is each turned figure the real pattern? Yes, exactly. The places of every star at every station,
+      fitted to src/content/constellations.ts by a turn, a scale and a shift: the six (Virgo, Capricornus,
+      Aquarius, Pisces, Aries, Leo) are turned 90.0 degrees counter-clockwise with the worst star 0.00 px
+      from its place; the other six 0.0 degrees, 0.00 px; fitted as mirror images they would be 63 to 320 px
+      off, so none is flipped. On the desktop nothing is turned. In pictures (turned-back-1.jpg: each turned
+      figure cut from the phone and turned BACK a quarter, beside the same figure cut from the desktop): the
+      same stars joined by the same lines, and Cellestial's star where Virgo's epicentre is.
+    - The honeycomb, the beads, "claim yours", the panel, a build request, on turned figures (Capricornus at
+      390x844, Aries at 360x740, Leo at 375x667; /api/contact answered 200 from here): a tap on empty sky
+      sends the beads along the honeycomb's edges, corner to corner (beads-aries-360.jpg, every 100 ms: a
+      zigzag of hexagon sides, about 1.3 s), to the empty star nearest the tap; its rim brightens and "claim
+      yours" stands 8 px under it, inside the screen. A tap on an empty star opens its panel whole on the
+      screen (336x338 / 336x298). The form carries that star's number; after Send the camera flies to the
+      star and its panel says exactly "A site for my bakery, with the week's bread on the first page." and
+      nothing else. Measured in the screenshot, the star that brightened is the one claimed (+49 to +50 of
+      255 inside its disc; no other star by more than 16) and after a reload it is still that one, in the
+      store, in the sky and in the picture (claim-capricornus-390.jpg looked at). The same on the desktop at
+      Scorpius (desk-sky/claim-scorpius-1440.txt).
+    - B7 on the phone, all twelve, every star lit (b7/all-phone.jpg, all-short.jpg looked at; b7.txt,
+      b7-small-short.txt): at 390x844 and at 360x740 every line is clear of every star, of the figure's lines,
+      of the logo, the menu and the exit button, and of the far figures' points (0 on the words); 24 px type
+      (Aquarius 22 and Leo 20 at 360); each stands in open room in or beside its figure, the long ones in two
+      even rows; Cancer's is the lowest, 50 px above the exit button. Sensible at every one. At 375x667
+      eleven of twelve the same; LEO IS NOT (below).
+    - The hand-off on the phone: the pieces land on the rings where the sky draws them (1b).
+    - The fall from a turned figure (fall/phone-virgo-dense.jpg, phone-aries-whole.jpg: Virgo and Aries are
+      both turned on the phone): the stars fall from where they stand, strike along the ground, the roots
+      grow; 16.7 ms a frame (1a).
+    - A phone turned on its side and back, 390x844 -> 844x390 -> 390x844 (phone-turn.txt: Virgo, Aquarius,
+      Taurus, Leo, every star lit): on its side no figure is turned and all stand upright as on a desktop;
+      every button within 0.06 px of its star each way; back upright the picture is the first again (0 of
+      1,316,640 pixels differ). With nothing hidden: see phone-side.txt under "left".
+    - Reduced motion on the phone (phone-turn.txt, owner-list/owner-list.txt): the still sky is the turned
+      Virgo 34 ms after navigation, no loader, the exit button there (271x52 at 59,760), Cellestial's star
+      clear, 0 pixels change in 1.5 s, a swipe flies nowhere.
+    - The turn itself, as a visitor sees it: it does not read wrong. There are no labels in the sky and no
+      horizon; a figure lying a quarter round is how it stands when it rises. What the visitor sees is a
+      figure that fills the screen instead of a strip across it, and Cellestial's star unobstructed.
+    LEFT
+    - MINOR, 375x667 only, and only when all nine of Leo's stars are lit: "the Lion of the tribe of Judah"
+      is written ACROSS one of Leo's stars (the star sits on the "n" of "Lion") and its box crosses three of
+      the figure's lines; "Jesus is King." under it stands between two stars (b7/words-short.jpg, last cell;
+      all-short.jpg; b7-small-short.txt: 318x63 px at 27,98, 21 px type, "touches 2 STAR(S), 3 LINE(S)", -13 px
+      from the nearest star's edge). At 360x740 the same words are set in two rows at 20 px and clear by
+      33 px; at 375x667 the search took one row at 21 px and found no free room for it. Fix:
+      src/experience/sky/meaning.ts, TALL: try the rows (two, then three) at every size BEFORE falling back
+      to the band, and let the type go down to 18 px there; a place that touches a star must never win over
+      a smaller type that touches nothing. Check with tools/b7.mjs --sizes short (and 360x640, 320x568).
+    - MINOR, 375x667: Cellestial's star is 77 px across, under the build's own floor (PORTRAIT.b3MinPx = 84,
+      "never less than this across"), with the nearest star's disc 2.0 px from the rings' full reach. It
+      still reads as the chief light (375/cellestial-star.jpg). fixes.txt says so itself ("77 px at 375x667
+      ... from the layout, not looked at as pictures"); it is looked at now. Not worth a change by itself.
+    fixes.txt, round 2, piece 3, read afterwards: its numbers at 390x844 and 360x740 are mine. It did not
+    run B7 at 375x667; the Leo fault is new here.

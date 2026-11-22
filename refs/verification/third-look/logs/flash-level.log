@@ -1,0 +1,19 @@
+The flash's light through its peak, from third-look/flash/flash.txt (the share of the frame brighter than L 110, per recorded frame). Between the first and last frames at 90% of the peak, the lowest frame; under 80% of the peak is a DIP, and so is a fall under 80% followed by a rise of a quarter of the peak to at least half of it that falls away again (light that comes up and stays is the place arrived at).
+desk sky -> "What we build": peak 5.5% lit at +231 ms; level stretch +197..+369 ms (8 frames), its lowest frame 5.0% at +197 ms: 91% of the peak; no second rise
+desk sky -> "Claim your star": peak 5.8% lit at +215 ms; level stretch +199..+342 ms (7 frames), its lowest frame 5.3% at +199 ms: 91% of the peak; no second rise
+desk sky -> "Contact me": peak 5.5% lit at +231 ms; level stretch +214..+344 ms (6 frames), its lowest frame 5.4% at +214 ms: 98% of the peak; no second rise
+desk sky -> "The Sky": peak 6.6% lit at +230 ms; level stretch +197..+280 ms (6 frames), its lowest frame 6.1% at +197 ms: 92% of the peak; no second rise
+desk roots -> "What we build": peak 6.1% lit at +226 ms; level stretch +210..+365 ms (6 frames), its lowest frame 5.9% at +210 ms: 97% of the peak; no second rise
+desk roots -> "Claim your star": peak 5.5% lit at +216 ms; level stretch +199..+354 ms (6 frames), its lowest frame 5.1% at +199 ms: 93% of the peak; no second rise
+desk roots -> "Contact me": peak 7.0% lit at +232 ms; level stretch +199..+323 ms (6 frames), its lowest frame 6.5% at +199 ms: 93% of the peak; no second rise
+desk roots -> "The Sky": peak 5.5% lit at +226 ms; level stretch +210..+293 ms (6 frames), its lowest frame 5.3% at +210 ms: 96% of the peak; no second rise
+phone sky -> "What we build": peak 9.3% lit at +303 ms; level stretch +231..+342 ms (7 frames), its lowest frame 8.7% at +231 ms: 94% of the peak; no second rise
+phone sky -> "Claim your star": peak 9.1% lit at +248 ms; level stretch +231..+333 ms (7 frames), its lowest frame 8.7% at +231 ms: 96% of the peak; a second rise not looked for (the place arrived at is itself 59% as lit as the peak)
+phone sky -> "Contact me": peak 6.9% lit at +248 ms; level stretch +230..+332 ms (7 frames), its lowest frame 6.6% at +230 ms: 96% of the peak; a second rise not looked for (the place arrived at is itself 72% as lit as the peak)
+phone sky -> "The Sky": peak 9.3% lit at +247 ms; level stretch +230..+314 ms (6 frames), its lowest frame 8.8% at +230 ms: 95% of the peak; a second rise not looked for (the place arrived at is itself 45% as lit as the peak)
+phone roots -> "What we build": peak 7.5% lit at +247 ms; level stretch +230..+315 ms (6 frames), its lowest frame 7.2% at +230 ms: 96% of the peak; no second rise
+phone roots -> "Claim your star": peak 7.6% lit at +286 ms; level stretch +229..+320 ms (6 frames), its lowest frame 6.9% at +229 ms: 91% of the peak; a second rise not looked for (the place arrived at is itself 74% as lit as the peak)
+phone roots -> "Contact me": peak 7.5% lit at +247 ms; level stretch +230..+317 ms (6 frames), its lowest frame 7.0% at +230 ms: 93% of the peak; a second rise not looked for (the place arrived at is itself 67% as lit as the peak)
+phone roots -> "The Sky": peak 8.5% lit at +247 ms; level stretch +230..+314 ms (6 frames), its lowest frame 8.0% at +230 ms: 94% of the peak; a second rise not looked for (the place arrived at is itself 49% as lit as the peak)
+A dip in 0 of 16 flashes.
+exit 0

@@ -1,0 +1,37 @@
+REDUCED MOTION (prefers-reduced-motion: reduce), a first visit to "/"
+desk: scene "sky" 35 ms after navigation; the loader shown at 1.8 s: false; the sky still: true; exit button hidden false, opacity 1, at y 816; two screenshots 1.5 s apart differ in 0 pixels; after a wheel/swipe the flight is at -2.0720915499887402 (was -2.0720915499887402), scene sky, scrollY 0
+   exit button pressed: lands in scene roots; then the return button and a menu teleport: scene roots, scrollY 3304; console errors none
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/owner-list/reduced-motion-desk.jpg
+phone: scene "sky" 34 ms after navigation; the loader shown at 1.8 s: false; the sky still: true; exit button hidden false, opacity 1, at y 760; two screenshots 1.5 s apart differ in 0 pixels; after a wheel/swipe the flight is at -2.5086946838051865 (was -2.5086946838051865), scene sky, scrollY 0
+   exit button pressed: lands in scene roots; then the return button and a menu teleport: scene roots, scrollY 3125; console errors none
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/owner-list/reduced-motion-phone.jpg
+
+JAVASCRIPT OFF, "/"
+desk: the logo shown true (/cellestial/chrome/c-logo.webp, "studio"); menu button shown true; tiles: site shown 57 words 17px; systems shown 65 words 17px; app shown 59 words 17px; addons shown 34 words 17px; care shown 82 words 17px; links shown: "studio" -> / (52x78), "Claim your star" -> /contact (259x68), "Contact me" -> /contact (137x44); things marked data-needs-js still shown: 0; canvases shown 0; page width 1440 of 1440; page 1440x3910 device px
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/owner-list/nojs-desk.jpg
+phone: the logo shown true (/cellestial/chrome/c-logo.webp, "studio"); menu button shown true; tiles: site shown 57 words 16px; systems shown 65 words 16px; app shown 59 words 16px; addons shown 34 words 16px; care shown 82 words 16px; links shown: "studio" -> / (44x64), "Claim your star" -> /contact (259x68), "Contact me" -> /contact (137x44); things marked data-needs-js still shown: 0; canvases shown 0; page width 390 of 390; page 780x7380 device px
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/owner-list/nojs-phone.jpg
+
+THE TILES' WORDS against SPEC-ADDENDUM.md, character for character (textContent, white space folded)
+tile 1: title on the page "Site" (addendum "Site") same; body the same, 313 characters
+   as seen (innerText): "A custom site built for your business. Fast, beautiful, and made to be found. Includes: your pages, a working contact form, domain set up in your account. $990 slashed → FREE — founding cohort. Plus care: $69/mo slashed → $39/mo, locked for life on basic. You "
+tile 2: title on the page "Site + Systems" (addendum "Site + Systems") same; body the same, 314 characters
+tile 3: title on the page "Site + App" (addendum "Site + App") same; body the same, 277 characters
+tile 4: title on the page "Add-ons — AI + automation" (addendum "Add-ons — AI + automation") same; body the same, 143 characters
+tile 5: title on the page "Care" (addendum "Care") same; body the same, 461 characters
+
+THE OTHER PAGES
+/contact: 200 text/html
+/contact/: 200 text/html
+/start: 200 text/html
+/start/: 200 text/html
+/start/new: 200 text/html
+/start/new/: 200 text/html
+/admin/: 200 text/html
+/admin/index.html: 200 text/html;charset=utf-8
+/credits.txt: 200 text/plain
+/favicon.png: 200 image/png
+/favicon.ico: 200 image/x-icon
+/favicon.svg: 404 
+/nothing-here: 404 
+exit 0
