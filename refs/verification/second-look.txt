@@ -1,0 +1,51 @@
+SECOND LOOK — AFTER THE FIXES
+Cellestial Studio redesign, branch redesign-build. An inspector independent of the builders, the first two
+inspectors and the fixer. Begun 2026-11-21. No file of the site was changed. IN PROGRESS: this file is written as
+the work goes (the checkpoint rule); a section marked [to come] has not been done yet.
+
+HOW IT IS BEING DONE
+- Production build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port 4615)
+  for everything that is a judgment of what the visitor gets; the dev server on 4614 only for the builders' tools.
+- System Chromium, the real GPU (NVIDIA through ANGLE), 1440x900 and 390x844 (scale 2, mobile, touch).
+- Every picture judged was captured by me from the page as it is now. My scripts are in
+  refs/verification/second-look/tools/, my sheets and logs beside them. refs/verification/fixes.txt was not read
+  before a finding was ruled on.
+
+PART 1 — THE 19 FINDINGS OF THE FIRST LOOK
+
+Finding 1 (BLOCKER then) — the fall: one star crashed. RULING: PARTLY. What was asked for is there; a hard cut is new.
+  Evidence: second-look/fall/*.jpg, fall.txt, fall-cut.txt (tools/fall.mjs, fall-cut.mjs; real time, DevTools
+  screencast, every fx.impact call logged in the page).
+  - Every star strikes with its own burst. fx.impact was called 57 times from Virgo, 38 (desktop) / 33 (phone) from
+    Aries, 72 from Sagittarius: the figure's own stars at full size, the stars of the other layers as small ones.
+    One roots.growFrom, from the first strike. Seen in desk-virgo-dense.jpg, phone-virgo-dense.jpg,
+    desk-aries-dense.jpg, desk-sagittarius-dense.jpg, phone-aries-whole.jpg.
+  - They accelerate: nearly still for 0.25 s, then longer and longer steps, with trails (long on the phone, short on
+    the desktop). The first strike is 0.35 to 0.56 s after the press, the last 1.1 to 1.2 s.
+  - The soil rises under them without standing still; the half-second of black the first look saw is gone (the
+    ground is in the lower 40% of the frame from +1.1 s and keeps climbing).
+  WHAT IS LEFT
+  a. A HARD CUT at about +1.0 to +1.15 s. The web of root-light that the bursts threw into the ground, a third of
+     the screen wide and the brightest thing on screen, vanishes in ONE frame. desk-virgo-cut.jpg: +1123 ms mean
+     light 19.2, +1134 ms 11.6 (40% of the screen's light gone in 11 ms; 23.3 at +1103). Sagittarius 21.8 -> 15.6
+     in one frame; phone Virgo 21.5 -> 16.8. Cause, read in src/experience/fx/layer.ts: IMPACTS_MAX = 18, "past
+     this many at once the oldest, which is all but spent, makes way". It is not spent: the far stars' forty small
+     impacts all land within 150 ms of each other at the centre and push every large burst out while it is at
+     half its life. So the crash does not grow into the mycelium: it is switched off, and one trunk is left.
+     Fix: do not shift a live burst out. Either merge the far stars' impacts into a few (one per 100 ms at the
+     centre), or drop the newest small one when the list is full, or raise the cap and draw the small ones as a
+     spot only (no rays, no sparks), so the large bursts live out their 760 ms and fade.
+  b. A flat white lozenge lies on the ground beside the head of the trunk from about +1.0 s to +1.8 s (those same
+     forty small impacts, all at the screen's centre, drawn on top of each other): desk-virgo-whole.jpg +1200 to
+     +1800, desk-aries-dense.jpg +966 on. It reads as a white smear, not as stars landing. Fix: spread the far
+     stars' landings across the width they fall over, and cap the summed light so it cannot clip to flat white.
+  c. At Sagittarius on the desktop the 25 bursts land within 350 px of each other and add up to one solid white
+     mass 250 px wide for 0.25 s (desk-sagittarius-dense.jpg +672 to +840). Same fix: cap the sum.
+  d. Frame times on the desktop during the fall are not 60 a second, on this machine's own GPU and CPU, with
+     nothing recording: average 19 to 20 ms, 2 to 4 frames over 34 ms, worst 67 to 83 ms; the sky's governor has
+     stepped down a level by the end at Virgo and Sagittarius. With the CPU slowed 4x: average 32 ms (30 a second),
+     11 to 13 frames over 50 ms, worst 100 to 117 ms. The phone profile holds 16.7 ms unslowed and averages 20 to
+     21 ms slowed 4x (worst 50). The first look measured three frames over 34 ms, worst 50, with one burst.
+     Fix: the bursts are drawn on a full-screen 2D canvas with blur glows; draw the small ones cheaply (see a).
+
+[the other findings: to come]
