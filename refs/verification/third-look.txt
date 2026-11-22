@@ -4,7 +4,7 @@ inspectors and of both rounds of fixers. Written 2026-11-22. No file of the site
 src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
 STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
 is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
-PARTS DONE: 1a (the fall), 1b (the end of the hand-off), 1c (the phone's sky; the phone on its side with nothing hidden still to add). Running: the flash, the clocks, the warp, the walk.
+PARTS DONE: 1a, 1b, 1c, 1d, 1e, 1f. Next: what round 2 broke (the warp, the loader against its reference, the builders' suites), the walk, the owner's list, the closing list and verdict.
 
 HOW IT IS BEING DONE
 - The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
@@ -206,3 +206,159 @@ PART 1 — THE ITEMS ROUND 2 WORKED ON
       ... from the layout, not looked at as pictures"); it is looked at now. Not worth a change by itself.
     fixes.txt, round 2, piece 3, read afterwards: its numbers at 390x844 and 360x740 are mine. It did not
     run B7 at 375x667; the Leo fault is new here.
+
+1d. THE FLASH — second look: MINOR (on the desktop from the sky to each of the three places on the ground:
+    peak, dip to 25 to 61%, peak again).
+    RULING: RESOLVED.
+    tools/flash.mjs (all sixteen teleports once, every recorded frame measured: flash/flash.txt, strips
+    flash/desk-from-sky.jpg looked at) and tools/flash-dip.mjs many times over (flash/flash-dip*.txt): 88
+    flashes recorded in all. I did not take the scripts' own DIP lines: every flash was read again from its
+    frames by a rule of my own (tools/flash-mine.mjs, logs: flash/flash-mine.txt): from the peak back while
+    the light holds and forward to the LAST frame at 80% of the peak, is any frame between under 80%?
+        desktop, sky to the three places on the ground, unslowed, 3 runs each (9)    lowest 80 to 89%   no dip
+        the same with the CPU slowed 4x (9)                                           lowest 82 to 91%   no dip
+          (the swap's frame is then 133 to 150 ms long; the flash stands at its peak across it)
+        phone, the same nine, unslowed and CPU 4x (18)                                lowest 80 to 94%   no dip
+        from the Roots to all four, both sizes, unslowed and CPU 4x, 2 runs each (32) lowest 80 to 91%   no dip (*)
+        sky to "The Sky", both sizes, CPU 4x (4)                                      lowest 82 to 86%   no dip
+        all sixteen once more (flash.txt)                                             lowest 80 to 87%   no dip
+      (*) (My rule marks two of those runs, phone, the Roots to "Contact me": the flash is over, the screen is dark for
+      five frames, and then the message box comes up, which on a phone is itself as bright as the flash's
+      peak. That is the box arriving, not the flash coming back: the flash's own stretch there is level.)
+    The strip of the desktop from the sky (desk-from-sky.jpg, each row): the menu, the lines rising with the
+    hub's ring, the hub white at the peak for three cells (+180 to +370 ms), then the ground, once. One
+    flash.
+    All sixteen land where they should (flash.txt): "What we build" the top of the ground (scrollY 0);
+    "Claim your star" the Close (3304 on the desktop, 3125 on the phone); "Contact me" there with its box
+    open; "The Sky" the sky; from the sky and from the Roots, at both sizes.
+    fixes.txt, round 2, piece 2b, read afterwards: not contradicted. Its "91 to 97% of the peak" is by a
+    narrower measure than mine (the lowest frame between frames at 90%); by mine the level stretch is 80 to
+    91%, which is the same thing said more strictly.
+
+1f. THE FOUR MINORS
+  B7 ON THE DESKTOP — second look: MINOR (the words over the small stars of the figures further on at Pisces,
+    Aries and Cancer). RULING: RESOLVED, and one thing it brought with it (below).
+    tools/b7.mjs at 1440x900, every star lit, all twelve (b7/all-desk-1.jpg, all-desk-2.jpg looked at; my copy
+    also cuts each figure's words out at the screen's own pixels with 70 px round them: b7/words-desk-1.jpg,
+    words-desk-2.jpg, the second looked at; b7.txt). No point of a figure further on is on or against a
+    letter at any of the twelve: the nearest is 36 px from the words' box (Scorpius), 38 (Cancer), 39 (Aries),
+    40 (Taurus), 41 (Pisces), 83 px or more at the other seven. All twelve in 54 px type, brass (#a18674,
+    11 to 13% of the letters' pixels the thin blue line), 93 to 208 px from the nearest star's edge, crossing
+    no line of the figure, 96 to 670 px above the exit button, clear of the logo and the menu (Leo's, the
+    nearest, starts 35 px under the logo's "studio"). Each still stands by its own figure, in open room in
+    or beside it: Pisces's to the right of the fish's cord above the cluster of far points, Aries's under
+    it, Cancer's to the right. Sensibly placed, all twelve. "Jesus is King." is the second line under Leo's.
+  THE TAB ICON — second look: MINOR (too dim to read at 16 px). RULING: RESOLVED.
+    tools/favicon.mjs (owner-list/favicon.jpg looked at, favicon.txt). At 16 px on a dark tab it is a warm
+    brass C with its blue node, read at once; 45% of its pixels are brighter than L 40 (it was 25%), the
+    brightest L 230 (it was 118). On a light tab it is the same C on its own black square, as clear. At
+    32 px the struts and the node show. It is plainly the pack's emblem and nothing else: the C of
+    A1_c-emblem_lit.jpg, cropped to the C and brightened; nothing drawn. public/favicon.png (180 px) is
+    still the emblem whole, idle (the logo's picture with a margin). The page links the .png (180), the
+    .ico (32 and 16 inside) and the .png again as the touch icon. Judged on a drawn tab, not in a real
+    browser's tab strip.
+  THE EMPTY STAR AT ITS STATION ON A 1x DESKTOP — second look: MINOR (blotches of brass, marble rather than
+    circuit). RULING: RESOLVED, as far as a star of that size can be.
+    tools/stars.mjs and star-side.mjs (stars/side-by-side-desk-large.png: the same build with the station
+    picture of c0cacf3 and with today's, the 47 and 53 px stars as drawn and enlarged 6x; stars/
+    desk-aries-close.jpg, beside the pack's B4 and B5; stars.txt, side-by-side.txt). Where there were solid
+    bands of brass there are now separate strokes one to two pixels wide with dark between them, with bends
+    and branches: across the rows of the 47 px star the brass comes in 109 runs 2.0 px long (it was 85 of
+    3.1 px), 13 of them 4 px or longer (30). At its real size it reads as a dark globe veined with brass
+    lines; at 36 px, the smallest, as a hint of them. It is still plainly B4: brass traces on a dark globe
+    with a thin dim rim (the pack's own picture reduced to that size shows no trace at all). And plainly not
+    a lit star: that is a blue sphere (#356085, no brass) with a blue halo. On the phone (2x) the traces are
+    finer still; the smallest stars there (12 to 14 px across) show brass but no line.
+  THE LOGO AT 52 px — second look: MINOR (dusky mauve on a 1x screen). RULING: RESOLVED.
+    tools/logo-side.mjs (logo/side-by-side-desk.png looked at: A1 unlit, the logo before, the logo now, A1
+    lit, each as drawn and enlarged 5x; side-by-side.txt). The struts are brass with a blue line down them
+    and the node is lit but calm: 70% of the struts' pixels are warm (63% before; A1 lit at that height 75%,
+    A1 unlit 100%), 13% bluish (21% before; A1 lit 7%). It stands between the pack's two pictures, nearer
+    the lit one, which is what "circuits on but calm" asks. On the phone (42x48 px at 2x) the same, the line
+    thinner.
+  fixes.txt, round 2, piece 4, read afterwards: its numbers are mine. It did not run the second look's f8.mjs
+  again after moving B7 at Aries and Taurus; see "what round 2 broke".
+
+1e. THE LOADER ON A SLOW LINE — second look: MINOR (its picture on screen 8.0 to 8.2 s on slow 4G, counted from
+    the first paint).
+    RULING: RESOLVED on the clock it was found on. Three small things come with it (below, "left").
+    My own clock (tools/clock-all.mjs: the page's own times; five first visits at each size in each of four
+    conditions, 40 in all; loader/clock-all.txt), FIRST PAINT TO THE SKY, seconds:
+                              phone 390x844                        desktop 1440x900
+        a fast line           7.35 7.25 7.10 7.10 7.10             7.14 7.18 7.10 7.10 7.10
+        CPU slowed 4x         7.43 7.39 7.43 7.45 7.40             7.44 7.43 7.43 7.43 7.43
+        slow 4G               7.52 7.51 7.51 7.51 7.52             7.52 7.52 7.52 7.51 7.51
+        CPU 4x and slow 4G    7.57 7.53 7.55 7.53 7.52             7.54 7.52 7.52 7.55 7.55
+      40 of 40 between 6 and 8; the least 7.10, the most 7.57. (It was 8.00 to 8.20 on slow 4G.)
+      tools/clock-slow.mjs and clock-nav.mjs say the same (loader/clock-slow-line.txt: slow 4G 7.51 to 7.53,
+      both 7.52 to 7.54; clock-from-navigation.txt).
+      The short version of a return: 3.39 to 3.43 s on screen (3.79 with the CPU slowed 4x on slow 4G).
+      A skip one second after the first paint: the sky 1.68 to 1.72 s after the tap or the key on a fast line
+      and with the CPU slowed 4x. On slow 4G: see "left", the first item.
+    IS THE FIRST PAINT THE OWNER'S NUMBER? Yes, with one caution. "6-8 s (never under 6)" is how long a
+    visitor sits before the loading screen; his clock cannot start before there is a loading screen to look
+    at, and it must not start as late as the script's own start (on a slow line the unlit C has stood a
+    second by then: that was the second look's point). So tools/loader/measure.mjs is right to judge from the
+    first paint, and it prints both clocks. The caution: the BROWSER's first paint is not always the first
+    thing SEEN. On slow 4G the unlit C's file comes down the line top first and its top rows are black, so
+    the browser reports its first paint at 0.79 s while the screen is still black; something of the C is
+    first seen at 1.82 s (loader/slow-desk.jpg, loader-seen.txt; "left", second item). Counted from what is
+    seen, the loader is on screen 6.5 s on slow 4G, not 7.5: still inside 6 to 8, with less to spare than
+    the builders' number says. From the tap on the link it is 8.3 s to the sky on slow 4G (0.7 s of the page
+    before, 1.1 s of black, then the loader).
+    The builders' suite on the PRODUCTION build (--only full,short,skip,key,quiet-keys,broken,resize,
+    no-storage), 11 of 11 lines OK in each of six runs (logs/loader-measure-*.log):
+                                  full: from the mount / the visitor's clock   short   skip (tap / key)   Tab
+        phone, unslowed           7.49 / 7.34                                  3.50    2.83 / 2.77        7.29
+        phone, CPU 4x             7.61 / 7.49                                  3.63    3.07 / 3.03        7.51
+        phone, slow 4G            6.41 / 7.56                                  3.46    4.33 / 4.32        6.37 (7.50)
+        phone, CPU 4x, slow 4G    6.64 / 7.76                                  3.83    4.44 / 4.41        6.54 (7.66)
+        desktop, unslowed         7.49 / 7.34                                  3.45    2.82 / 2.82        7.28
+        desktop, slow 4G          6.41 / 7.51                                  3.54    4.55 / 4.50        6.38 (7.51)
+      (skip: seconds from the mount to the end, the tap one second after the mount; on a slow line the sky
+      is not ready until 2.9 to 3.1 s.) Its numbers and my clock agree.
+    THE THREE PRELOADED PICTURES and the console (my preload-console.mjs: every console message of any kind,
+    the console API and the browser's own log, the page left open 7 s after it settles; loader/
+    preload-console.txt), both sizes:
+        a first visit played through                  0 messages
+        a return in the same session (short loader)   0
+        a skipped loader                              0
+        reduced motion (the device's own setting)     0   (the three pictures are not even asked for)
+        /contact                                      0
+        ?scene=sky    ?scene=roots    ?rm=1           3 warnings each, at both sizes: "The resource ...
+            /cellestial/loader/c-lit.webp [wordmark.webp, wordmark-matte.webp] was preloaded using link
+            preload but not used within a few seconds from the window's load event."
+      No visitor's path raises anything. The three that warn are the debug hooks, which skip the loader
+      while the markup still asks for its pictures. Not a fault of the site; worth a line in PROGRESS.md so
+      that nobody chases it. (With JavaScript off the three pictures, 183 KB, are fetched and never used.)
+    LEFT
+    - MINOR, slow lines only, and older than round 2: A SKIP MADE BEFORE THE SCRIPT HAS ARRIVED IS LOST. On
+      slow 4G the unlit C stands from about 0.8 s (1.8 s to the eye) and the loader's script goes live at
+      1.92 s. A tap (phone) or a key (desktop) 0.3 s after the first paint: the sky at 8.31 s, exactly as if
+      nothing had been pressed (4 runs of 4, loader/loader-slow.txt; clock-all.txt: all four slow-4G skips).
+      The same tap 0.3 s after the script is live: the sky at 5.94 to 6.06 s. The owner's line is "skippable
+      by tap/click/key". Round 2 widened the window by 0.3 s (the script now shares the line with the three
+      pictures: live at 1.92 s, it was 1.61 s). Fix: three lines of inline script in the head that remember
+      a pointerdown or a keydown made before the loader is live (not Tab, not a modifier), read by the
+      loader when it mounts.
+    - MINOR, slow lines only: THE UNLIT C IS SEEN HALF-DRAWN, and later than the clock says. On slow 4G the
+      server's unlit C comes in top first: loader/slow-desk.jpg, the cells at +1800 and +2100 ms after
+      navigation show the upper half of the C and nothing below it; it is whole at +2400. Timed from the
+      recording, three first visits at each size (my loader-seen.mjs, loader/loader-seen.txt): the browser's
+      first paint at 0.79 to 0.82 s (black rows of the file); something of the C first SEEN at 1.82 s; the C
+      whole at 2.28 to 2.31 s (half-drawn for 0.45 to 0.49 s); the script live at 1.91 s; the sky at 8.31 s.
+      So on slow 4G the visitor has the loader in front of him 6.5 s (6.0 s from the whole C), not the 7.5 s
+      the first-paint clock gives; and a line a little slower than slow 4G would take that under 6.
+      Round 2 did not make the half-drawn C but it moved it later: the three preloaded pictures (c-lit
+      105 KB, wordmark 53 KB, its matte 25 KB, all asked for at high priority) share the line with the
+      unlit C's own file (61 KB), the only one the visitor is looking at; fixes.txt gives the price itself
+      ("the unlit C's own file is complete at 2.27 s for 1.77 s") without having looked at the picture.
+      Fix: let the unlit C go first (its <img> fetchpriority="high"; the three preloads at low priority or
+      placed after it), keep the <img> unseen until it has loaded (opacity 0 until its load event) so that
+      it appears whole, and start the loader's clock from that load event, not from the browser's first
+      paint (src/experience/loader/clock.ts; tools/loader/measure.mjs to follow).
+    - NOTE, not ranked: on a slow line the loader's script is played up to 35% faster and the hand-off in
+      1.1 s (the loader's old way of giving time back, untouched by round 2): slow-desk.jpg, the wires at
+      +3300 to +3900, the bolt at +5100, the word written by +6900, the sky at +8300.
+    fixes.txt, round 2, piece 2c, read afterwards: its numbers are mine (7.51 to 7.55 s on slow 4G). Its
+    account of the cause (the loader's pictures asked for only once the script had come) fits what I see.

@@ -1,0 +1,37 @@
+desk first visit: scene became "sky" 7573 ms after navigation
+desk loader: 550 frames, avg 17.5 ms, >34 ms 3, >50 ms 3, >100 ms 2, worst 300 ms at +2387 ms  [desk-01-loader.jpg]
+desk handoff: 562 frames, avg 17.4 ms, >34 ms 3, >50 ms 3, >100 ms 2, worst 300 ms at +2387 ms  [desk-02-handoff.jpg]
+desk flight-a: 601 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +9264 ms  [desk-03-flight-a.jpg]
+desk flight-b: 855 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +2897 ms  [desk-04-flight-b.jpg]
+desk after flight: {"pos":40.12302941876699,"level":0}
+desk tap-beads: 162 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +614 ms  [desk-05-tap-beads.jpg]
+desk empty-panel: 96 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +465 ms  [desk-06-empty-panel.jpg]
+desk round: 485 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +28 ms  [desk-07-round.jpg]
+desk exit button: {"hidden":false,"x":584.296875,"y":816,"w":271.390625,"h":52,"text":"See what holds up the sky"}
+desk fall: 211 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +966 ms  [desk-08-fall.jpg]
+desk after the fall: scene roots, scrollY 0
+desk tiles-and-light: 1812 frames, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms, 30258 ms in all
+desk warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +43 ms  [desk-11-warp.jpg]
+desk after the warp: scene sky
+desk teleport-build: 106 frames, avg 17.5 ms, >34 ms 1, >50 ms 1, >100 ms 0, worst 50 ms at +836 ms  [desk-12-teleport-build.jpg]
+desk teleport "What we build": scene roots, scrollY 0, dialog open false
+desk teleport-claim: 105 frames, avg 17.3 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +841 ms  [desk-13-teleport-claim.jpg]
+desk teleport "Claim your star": scene roots, scrollY 3304, dialog open false
+desk teleport-contact: 106 frames, avg 17.1 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +742 ms  [desk-14-teleport-contact.jpg]
+desk teleport "Contact me": scene roots, scrollY 3304, dialog open true
+desk teleport-sky: 109 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1038 ms  [desk-15-teleport-sky.jpg]
+desk teleport "The Sky": scene sky, scrollY 0, dialog open false
+desk build request: star field slot-74, spam-check token present true
+desk claim-send: 541 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +482 ms  [desk-16-claim-send.jpg]
+desk after sending: star slot-74 lit in the store true, lit in the sky true; the lit star's panel says: "A site for my bakery, with the week's bread on the first page."; whole panel text: "A site for my bakery, with the week's bread on the first page."
+desk return visit: scene became "sky" 3677 ms after the reload; exit button hidden: false
+desk return-loader: 308 frames, avg 17.6 ms, >34 ms 3, >50 ms 2, >100 ms 1, worst 233 ms at +392 ms  [desk-17-return-loader.jpg]
+desk after the reload: star slot-74 lit in the store true, lit in the sky true; localStorage claims [{"slot":"slot-74","ask":"A site for my bakery, with the week's bread on the first page."}]
+desk return-lit-star: 198 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +249 ms  [desk-18-return-lit-star.jpg]
+desk the lit star clicked on the return: "A site for my bakery, with the week's bread on the first page."
+desk return-flight: 571 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6345 ms  [desk-19-return-flight.jpg]
+desk return-fall: 188 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +500 ms  [desk-20-return-fall.jpg]
+desk return-warp: 145 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1754 ms  [desk-21-return-warp.jpg]
+desk at the end: scene sky
+desk console errors: Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+desk screencast frames recorded: 4137

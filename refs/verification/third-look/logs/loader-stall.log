@@ -1,0 +1,29 @@
+desk cpu x1: the sky 7509 ms after navigation (7506 ms after the page's time origin). 419 frames while the loader played: average 17.5 ms, over 34 ms 3, over 50 ms 2, over 100 ms 1. Long tasks: 85 ms at 65, 79 ms at 1906, 280 ms at 2025
+   a frame of 67 ms from 1906 ms: the picture changed by 0.96 over the 150 ms before it, 0.00 across it, 0.11 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 283 ms from 2022 ms: the picture changed by 0.08 over the 150 ms before it, 0.44 across it, 0.55 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/loader/stall-desk.jpg
+   console errors: none
+desk cpu x4: the sky 7741 ms after navigation (7738 ms after the page's time origin). 410 frames while the loader played: average 18.7 ms, over 34 ms 6, over 50 ms 6, over 100 ms 4. Long tasks: 68 ms at 95, 168 ms at 220, 142 ms at 398, 198 ms at 2112, 77 ms at 2311, 181 ms at 2389
+   a frame of 83 ms from 79 ms: the picture changed by -1.00 over the 150 ms before it, -1.00 across it, 8.66 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 150 ms from 229 ms: the picture changed by -1.00 over the 150 ms before it, 0.00 across it, 0.29 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 183 ms from 379 ms: the picture changed by 0.00 over the 150 ms before it, 0.29 across it, 0.75 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 183 ms from 2112 ms: the picture changed by 1.02 over the 150 ms before it, 0.02 across it, 0.30 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 83 ms from 2295 ms: the picture changed by 0.00 over the 150 ms before it, 0.13 across it, 0.25 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 200 ms from 2378 ms: the picture changed by 0.02 over the 150 ms before it, 0.30 across it, 0.52 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/loader/stall-desk-cpu4x.jpg
+   console errors: none
+phone cpu x1: the sky 7471 ms after navigation (7469 ms after the page's time origin). 419 frames while the loader played: average 17.7 ms, over 34 ms 2, over 50 ms 2, over 100 ms 2. Long tasks: 186 ms at 1786, 252 ms at 2003
+   a frame of 183 ms from 1786 ms: the picture changed by 0.79 over the 150 ms before it, 0.12 across it, 0.00 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 267 ms from 1986 ms: the picture changed by 0.00 over the 150 ms before it, 0.17 across it, 0.44 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/loader/stall-phone.jpg
+   console errors: none
+phone cpu x4: the sky 7659 ms after navigation (7656 ms after the page's time origin). 412 frames while the loader played: average 18.4 ms, over 34 ms 6, over 50 ms 6, over 100 ms 3. Long tasks: 70 ms at 98, 96 ms at 223, 138 ms at 328, 158 ms at 2051, 85 ms at 2210, 179 ms at 2296
+   a frame of 83 ms from 84 ms: the picture changed by -1.00 over the 150 ms before it, 255.00 across it, 5.03 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 83 ms from 234 ms: the picture changed by 249.97 over the 150 ms before it, 0.45 across it, 0.00 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 183 ms from 317 ms: the picture changed by 249.97 over the 150 ms before it, 0.45 across it, 0.25 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 150 ms from 2050 ms: the picture changed by 0.90 over the 150 ms before it, 0.12 across it, 0.24 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 83 ms from 2200 ms: the picture changed by 0.11 over the 150 ms before it, 0.13 across it, 0.21 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 200 ms from 2284 ms: the picture changed by 0.06 over the 150 ms before it, 0.39 across it, 0.38 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/loader/stall-phone-cpu4x.jpg
+   console errors: none
+exit 0

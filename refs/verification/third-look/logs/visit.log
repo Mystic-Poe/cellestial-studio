@@ -1,0 +1,81 @@
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-01-loader.jpg
+desk loader: 550 frames, avg 17.5 ms, >34 ms 3, >50 ms 3, >100 ms 2, worst 300 ms at +2387 ms  [desk-01-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-02-handoff.jpg
+desk handoff: 562 frames, avg 17.4 ms, >34 ms 3, >50 ms 3, >100 ms 2, worst 300 ms at +2387 ms  [desk-02-handoff.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-03-flight-a.jpg
+desk flight-a: 601 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +9264 ms  [desk-03-flight-a.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-04-flight-b.jpg
+desk flight-b: 855 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +2897 ms  [desk-04-flight-b.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-05-tap-beads.jpg
+desk tap-beads: 162 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +614 ms  [desk-05-tap-beads.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-06-empty-panel.jpg
+desk empty-panel: 96 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +465 ms  [desk-06-empty-panel.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-07-round.jpg
+desk round: 485 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +28 ms  [desk-07-round.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-08-fall.jpg
+desk fall: 211 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +966 ms  [desk-08-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-09-tiles-and-light.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-10-close.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-11-warp.jpg
+desk warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +43 ms  [desk-11-warp.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-12-teleport-build.jpg
+desk teleport-build: 106 frames, avg 17.5 ms, >34 ms 1, >50 ms 1, >100 ms 0, worst 50 ms at +836 ms  [desk-12-teleport-build.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-13-teleport-claim.jpg
+desk teleport-claim: 105 frames, avg 17.3 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +841 ms  [desk-13-teleport-claim.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-14-teleport-contact.jpg
+desk teleport-contact: 106 frames, avg 17.1 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +742 ms  [desk-14-teleport-contact.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-15-teleport-sky.jpg
+desk teleport-sky: 109 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1038 ms  [desk-15-teleport-sky.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-16-claim-send.jpg
+desk claim-send: 541 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +482 ms  [desk-16-claim-send.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-17-return-loader.jpg
+desk return-loader: 308 frames, avg 17.6 ms, >34 ms 3, >50 ms 2, >100 ms 1, worst 233 ms at +392 ms  [desk-17-return-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-18-return-lit-star.jpg
+desk return-lit-star: 198 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +249 ms  [desk-18-return-lit-star.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-19-return-flight.jpg
+desk return-flight: 571 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6345 ms  [desk-19-return-flight.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-20-return-fall.jpg
+desk return-fall: 188 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +500 ms  [desk-20-return-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/desk-21-return-warp.jpg
+desk return-warp: 145 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1754 ms  [desk-21-return-warp.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-01-loader.jpg
+phone loader: 551 frames, avg 17.3 ms, >34 ms 2, >50 ms 2, >100 ms 1, worst 267 ms at +2157 ms  [phone-01-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-02-handoff.jpg
+phone handoff: 559 frames, avg 17.3 ms, >34 ms 2, >50 ms 2, >100 ms 1, worst 267 ms at +2157 ms  [phone-02-handoff.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-03-flight-a.jpg
+phone flight-a: 618 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +7299 ms  [phone-03-flight-a.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-04-flight-b.jpg
+phone flight-b: 890 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +530 ms  [phone-04-flight-b.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-05-tap-beads.jpg
+phone tap-beads: 163 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +865 ms  [phone-05-tap-beads.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-06-empty-panel.jpg
+phone empty-panel: 97 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +32 ms  [phone-06-empty-panel.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-07-round.jpg
+phone round: 426 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +174 ms  [phone-07-round.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-08-fall.jpg
+phone fall: 212 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +233 ms  [phone-08-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-09-tiles-and-light.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-10-close.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-11-warp.jpg
+phone warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +112 ms  [phone-11-warp.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-12-teleport-build.jpg
+phone teleport-build: 112 frames, avg 16.8 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 33 ms at +780 ms  [phone-12-teleport-build.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-13-teleport-claim.jpg
+phone teleport-claim: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +998 ms  [phone-13-teleport-claim.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-14-teleport-contact.jpg
+phone teleport-contact: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +254 ms  [phone-14-teleport-contact.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-15-teleport-sky.jpg
+phone teleport-sky: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1008 ms  [phone-15-teleport-sky.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-16-claim-send.jpg
+phone claim-send: 544 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +77 ms  [phone-16-claim-send.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-17-return-loader.jpg
+phone return-loader: 310 frames, avg 17.4 ms, >34 ms 3, >50 ms 1, >100 ms 1, worst 167 ms at +259 ms  [phone-17-return-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-18-return-lit-star.jpg
+phone return-lit-star: 199 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +2597 ms  [phone-18-return-lit-star.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-19-return-flight.jpg
+phone return-flight: 594 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +5727 ms  [phone-19-return-flight.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-20-return-fall.jpg
+phone return-fall: 188 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +198 ms  [phone-20-return-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/third-look/walk/phone-21-return-warp.jpg
+phone return-warp: 146 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +296 ms  [phone-21-return-warp.jpg]
+exit 0

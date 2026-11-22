@@ -8,6 +8,9 @@ SIZES.small = { viewport: { width: 360, height: 740 }, deviceScaleFactor: 2, isM
 // The third look: a short phone that nobody has yet looked at as a picture.
 SIZES.short = { viewport: { width: 375, height: 667 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
 
+// The third look: a phone on its side.
+SIZES.side = { viewport: { width: 844, height: 390 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+
 export { ROOT, SIZES, launch, sheet, sharp };
 export const OUT = join(ROOT, 'refs/verification/third-look');
 export const PROD = 'http://localhost:4615';

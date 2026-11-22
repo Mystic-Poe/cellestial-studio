@@ -1,0 +1,5 @@
+phone, unslowed: navigation to the sky 7.52, 7.22, 7.19 s (first paint at 68 ms on the last); same-session reload to the sky 3.53 s
+phone, CPU 4x: navigation to the sky 7.73, 7.57, 7.56 s (first paint at 172 ms on the last); same-session reload to the sky 3.66 s
+phone, slow 4G: navigation to the sky 8.34, 8.30, 8.32 s (first paint at 800 ms on the last); same-session reload to the sky 4.11 s
+phone, CPU 4x and slow 4G: navigation to the sky 8.31, 8.30, 8.30 s (first paint at 776 ms on the last); same-session reload to the sky 4.24 s
+exit 0

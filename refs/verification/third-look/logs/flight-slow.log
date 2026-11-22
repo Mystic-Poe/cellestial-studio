@@ -1,0 +1,5 @@
+phone, CPU x1: 14 s of flying: 879 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +5515 ms; the governor ends at level 0 (pixel ratio 2); flown to 104.3; console errors 0
+phone, CPU x4: 14 s of flying: 867 frames, avg 16.7 ms, p95 16.8, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +13684 ms; the governor ends at level 0 (pixel ratio 2); flown to 102.7; console errors 0
+phone, CPU x6: 14 s of flying: 862 frames, avg 16.7 ms, p95 16.8, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +13592 ms; the governor ends at level 0 (pixel ratio 2); flown to 102.3; console errors 0
+desk, CPU x4: 14 s of flying: 843 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +7302 ms; the governor ends at level 0 (pixel ratio 1); flown to 100.5; console errors 0
+exit 0

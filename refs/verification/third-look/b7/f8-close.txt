@@ -1,0 +1,2 @@
+Aries: "claim yours" letters at x 783..863, y 574..590; the meaning's letters at x 515..778, y 562..632; the letters do not overlap (5 px apart sideways)
+Taurus: "claim yours" letters at x 717..797, y 569..585; the meaning's letters at x 195..711, y 559..629; the letters do not overlap (6 px apart sideways)
