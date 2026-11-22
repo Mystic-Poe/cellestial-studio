@@ -1,0 +1,13 @@
+desk sagittarius +571 ms: solid near-white 7.9% of the box; longest white run on one row 700 css px
+desk sagittarius +621 ms: solid near-white 9.5% of the box; longest white run on one row 387 css px
+desk sagittarius +670 ms: solid near-white 10.3% of the box; longest white run on one row 675 css px
+desk sagittarius +719 ms: solid near-white 12.4% of the box; longest white run on one row 700 css px
+desk sagittarius +771 ms: solid near-white 14.9% of the box; longest white run on one row 700 css px
+desk sagittarius +819 ms: solid near-white 18.2% of the box; longest white run on one row 700 css px
+desk sagittarius +870 ms: solid near-white 18.3% of the box; longest white run on one row 700 css px
+desk sagittarius +918 ms: solid near-white 19.7% of the box; longest white run on one row 700 css px
+desk sagittarius +968 ms: solid near-white 19.0% of the box; longest white run on one row 700 css px
+desk sagittarius +1018 ms: solid near-white 16.9% of the box; longest white run on one row 662 css px
+desk sagittarius +1068 ms: solid near-white 14.6% of the box; longest white run on one row 508 css px
+desk sagittarius +1118 ms: solid near-white 12.0% of the box; longest white run on one row 256 css px
+console errors: none

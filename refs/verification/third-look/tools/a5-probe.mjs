@@ -20,7 +20,7 @@ const dir = outDir('a5');
 const log = [];
 const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });
-for (const size of values.only.split(',')) { let dipped = 0; for (let run = 1; run <= RUNS; run++) {
+for (const size of values.only.split(',')) { let dipped = 0; const lowest = []; for (let run = 1; run <= RUNS; run++) {
 	const o = await open(browser, size, { throttle, init: { fn: () => {
 		window.__probe = [];
 		const pad = document.createElement('canvas');
@@ -62,9 +62,13 @@ for (const size of values.only.split(',')) { let dipped = 0; for (let run = 1; r
 	const usual = light(rows[Math.min(rows.length - 1, k + 6)]);
 	const dips = rows.slice(Math.max(0, k - 12), k + 12).filter((r) => light(r) >= 0 && light(r) < usual * 0.5);
 	if (dips.length) dipped++;
-	summary.push(`${size} cpu x${throttle} run ${run}: ${dips.length ? `DIP ${dips.map((r) => `(${Math.round(r.t - rows[k].t)} ms, ${r.scene}, ${light(r)})`).join(' ')}` : 'no dip'} (centre light otherwise ${usual})`);
+	// The third look: the lowest frame of the 24 round the change as a share of the usual, whatever the threshold.
+	const round = rows.slice(Math.max(0, k - 12), k + 12).filter((r) => light(r) >= 0);
+	const low = round.reduce((a, b) => (light(b) < light(a) ? b : a));
+	lowest.push(light(low) / usual);
+	summary.push(`${size} cpu x${throttle} run ${run}: ${dips.length ? `DIP ${dips.map((r) => `(${Math.round(r.t - rows[k].t)} ms, ${r.scene}, ${light(r)})`).join(' ')}` : 'no dip'} (centre light otherwise ${usual}; lowest of the 24 frames round the change ${light(low)} at ${Math.round(low.t - rows[k].t)} ms, ${(100 * light(low) / usual).toFixed(0)}%)`);
 	await o.context.close();
-} summary.push(`${size} cpu x${throttle}: a dip in ${dipped} of ${RUNS} first visits`); }
+} summary.push(`${size} cpu x${throttle}: a dip in ${dipped} of ${RUNS} first visits; the lowest frame round the change in any run was ${(100 * Math.min(...lowest)).toFixed(0)}% of the usual`); }
 for (const s of summary) console.log(s);
 writeFileSync(join(dir, `blink-probe${tag}.txt`), `${log.join('\n')}\n`);
 writeFileSync(join(dir, `blink-probe${tag}-summary.txt`), `In-page probe (no recording): light of the sky canvas's middle 96 px, frame by frame, round the scene change. A DIP is a frame drawn without Cellestial's star (ms from the frame the scene became 'sky', scene, light).\n${summary.join('\n')}\n`);

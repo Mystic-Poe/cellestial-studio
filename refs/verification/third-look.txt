@@ -1,0 +1,83 @@
+THIRD LOOK — AFTER ROUND 2
+Cellestial Studio redesign, branch redesign-build. An inspector independent of the builders, of the first two
+inspectors and of both rounds of fixers. Written 2026-11-22. No file of the site was changed (nothing under
+src/, public/, workers/, scripts/, tools/, and no existing file under refs/).
+STATE OF THIS REPORT: IN PROGRESS. It is written as the work goes (the owner's checkpoint rule). What is below
+is established; what is not yet below has not been looked at. The line "PARTS DONE" says how far it has got.
+PARTS DONE: 1a (the fall).
+
+HOW IT IS BEING DONE
+- The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build; pnpm astro preview --port
+  4615) for everything that is a judgment of what the visitor gets. The dev server (port 4500) only for the
+  builders' own suites and sheet tools.
+- System Chromium, the real GPU (NVIDIA RTX 3060 Ti), 1440x900 and 390x844 (scale 2, mobile, touch); for the
+  phone's sky also 360x740 and 375x667.
+- Every picture judged was captured by me from the page as it is now, and opened once. Nothing already in refs/
+  was trusted. A verdict line printed by a script that a fixer wrote or changed was not leaned on: I read what
+  the script measures, and ruled from the frames, the strips and the numbers.
+- Real time means the DevTools screencast (frames as the compositor presents them) and every animation frame's
+  time logged in the page.
+- refs/verification/fixes.txt, "ROUND 2": each entry was read only after I had ruled on its item from my own
+  captures; where it claims something my evidence contradicts, the item says so.
+- Scripts: refs/verification/third-look/tools/ (the second look's as round 2 left them, and my own:
+  fall-crowd.mjs, preload-console.mjs; my copies of a5-probe.mjs and a5-probe-return.mjs print more).
+- Evidence: refs/verification/third-look/<item>/, logs in refs/verification/third-look/logs/.
+
+PART 1 — THE ITEMS ROUND 2 WORKED ON
+
+1a. THE FALL — second look: MAJOR (the crash's light cut off in one frame at about +1.1 s; a white lozenge on
+    the ground; one white mass at Sagittarius; 50 frames a second on the desktop).
+    RULING: RESOLVED.
+    Recorded in real time from Virgo, Aries and Sagittarius at both sizes, unslowed and with the CPU slowed 4x
+    (fall/<size>-<figure>-whole.jpg every 100 ms, -dense.jpg every 32 to 42 ms; fall/fall.txt), the screen's
+    light measured on every recorded frame (logs/fall-cut-B.log, fall/fall-cut-B.txt), frame times with nothing
+    recording, a fresh browser for each fall and the same browser for all (fall/fall-cut-A-fresh.txt,
+    fall-cut-A.txt), and the ground under a crowd cut out and enlarged frame by frame (my fall-crowd.mjs:
+    fall/desk-sagittarius-crowd-1.jpg, -2.jpg, desk-virgo-crowd-1.jpg, -2.jpg and their .txt).
+    - Does every star strike with its own burst? Yes. fx.impact is called once for every star on screen: from
+      Virgo 57 times at both sizes (the figure's 12 at full size, 45 smaller for the figures behind), from Aries
+      38 on the desktop and 33 on the phone (4 and 34 / 29), from Sagittarius 72 (25 and 47). The first strike
+      344 to 483 ms after the press, the last 1159 to 1236 ms (CPU 4x: 383 to 514, 1231 to 1286). One growth of
+      the mycelium, started at the first strike. Every run ends in the Roots at scrollY 0, no console error.
+      In the enlarged frames each star of the figure in front lands as its own white flash on the ground line
+      with its own spray of sparks above and its own web of root-light below (desk-virgo-crowd-1.jpg +715 to
+      +865 ms: four and five separate strikes side by side, each whole).
+    - The far figures' stars: they still fall (small dark spheres with their trails, in the middle of the
+      screen, desk-virgo-crowd-1.jpg +715 to +815) and they still land, each as a small glint with two or three
+      sparks at the ground line; no burst, nothing in the soil. Nothing white is left where they land.
+    - Is any light switched off? No. The steepest drop of the screen's mean light between two consecutive
+      recorded frames, as a share of that run's peak: desktop Virgo 4.3% (22.0 -> 20.7 at +1219 -> +1236 ms),
+      Aries 3.3%, Sagittarius 3.4%; phone Virgo 0.9%, Aries 0.7%, Sagittarius 1.2%. Nothing near 10%. (It was
+      22% at Virgo on the desktop.) In the strips the webs thin and fade evenly from about +1.0 to +1.4 s.
+    - Does the root-light fade INTO the growing mycelium? Yes; the ground is never dark between. On the desktop
+      the trunk is coming down through the same ground from the first strike, reaches the first node at about
+      +1.0 s (the node is lit in desk-virgo-dense.jpg from +966 ms, while the webs are still at full strength)
+      and is what is left when the webs have gone (+1.3 to +1.5 s); its first branches show from +1.7 s. On the
+      phone the mycelium's own branches are already there under the webs from +0.45 s and the webs fade into
+      them (phone-virgo-dense.jpg, phone-sagittarius-dense.jpg).
+    - Any flat white shape? No lozenge, no mass. A solid near-white area at least 40 px tall is never wider
+      than 123 px (one frame, the flash of one strike at Virgo); on the phone 2 px.
+    - Under a crowd (Sagittarius on the desktop, +0.55 to +1.15 s, desk-sagittarius-crowd-1.jpg, -2.jpg): from
+      +570 to +670 ms a row of separate strikes. From about +720 to +920 ms the soft light of 25 strikes that
+      landed within 550 px runs together into one band of light along the ground line, about 25 px tall and
+      350 to 500 px wide (near-white at least 12 px tall: 368 px at its widest, wider than 120 px for half a
+      second), lumpy, with every strike's sparks above it and the roots of all 25 fanning out below it. It is
+      not flat and it is not a shape lying on the ground: it reads as a crowd hitting at once. From +920 ms it
+      thins into a thatch of roots. I do not rank it: it is what 25 stars landing side by side should be.
+    - Frame times, nothing recording, first 2.6 s after the press (average; worst):
+        desktop, a fresh browser each   Virgo 16.7; 17    Aries 16.7; 17    Sagittarius 16.7; 17 ms
+        desktop, CPU 4x, fresh          18.9; 33          18.7; 50          19.6; 33
+        phone, fresh                    16.7; 17          16.7; 17          16.7; 17
+        phone, CPU 4x, fresh            16.7; 17          16.7; 17          17.1; 33
+      A later fall in the same browser is the same (fall-cut-A.txt). With the recorder on: 16.7 ms and no frame
+      over 17 on the desktop at all three figures (logs/fall.log). 60 frames a second, where it was 50.
+    - Does it read as "crashing into the ground, sinking in, and exploding into the mycelium"? Yes. The stars
+      let go, speed up with lengthening trails, strike the ground line in white, and each strike bursts
+      downward and sideways into blue-white roots while the soil rises; the roots thin to the trunk, which
+      carries on down to the first node as the camera follows.
+    fixes.txt, round 2, piece 1, read afterwards: its numbers are mine to within a point (3.3 / 3.0 / 3.5% for
+    my 4.3 / 3.3 / 3.4; 356 px for my 368; the same frame times). One thing it says that my runs do not bear out
+    as written: "the governor ... (now 0)" after the fall. On the test page ?scene=sky (no loader) the governor
+    stood at level 1 after the fall in 2 of 12 unslowed runs on the phone profile (fall-cut-A.txt: phone Virgo;
+    fall-cut-A-fresh.txt: phone Aries), with no frame over 17 ms in the fall itself. See the walk for what it
+    is on a real visit.

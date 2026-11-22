@@ -1,0 +1,9 @@
+desk virgo +715 ms: solid near-white 4.1% of the box; longest white run on one row 342 css px
+desk virgo +765 ms: solid near-white 7.6% of the box; longest white run on one row 430 css px
+desk virgo +815 ms: solid near-white 8.7% of the box; longest white run on one row 640 css px
+desk virgo +865 ms: solid near-white 11.7% of the box; longest white run on one row 700 css px
+desk virgo +918 ms: solid near-white 11.6% of the box; longest white run on one row 700 css px
+desk virgo +965 ms: solid near-white 10.1% of the box; longest white run on one row 700 css px
+desk virgo +1014 ms: solid near-white 7.7% of the box; longest white run on one row 700 css px
+desk virgo +1065 ms: solid near-white 6.4% of the box; longest white run on one row 452 css px
+console errors: none

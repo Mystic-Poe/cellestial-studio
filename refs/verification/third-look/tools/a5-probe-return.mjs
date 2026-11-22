@@ -25,7 +25,7 @@ const dips = (rows) => { const k = rows.findIndex((r) => r.scene === 'sky'); con
 const browser = await launch({ gpu: true });
 for (const size of ['desk', 'phone']) {
 	let short = 0, skip = 0;
-	const N = 6;
+	const N = Number(process.argv[2] ?? 12); // the third look: 12, as the second look ran it
 	for (let run = 0; run < N; run++) {
 		const o = await open(browser, size, { init: { fn: probe } });
 		await o.page.goto(`${PROD}/`, { waitUntil: 'commit' });
