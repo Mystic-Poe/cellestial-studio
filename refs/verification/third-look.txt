@@ -211,6 +211,45 @@ PART 1 — THE ITEMS ROUND 2 WORKED ON
       "never less than this across"), with the nearest star's disc 2.0 px from the rings' full reach. It
       still reads as the chief light (375/cellestial-star.jpg). fixes.txt says so itself ("77 px at 375x667
       ... from the layout, not looked at as pictures"); it is looked at now. Not worth a change by itself.
+    - MAJOR, ON A PHONE HELD ON ITS SIDE ONLY (844x390; added by the second run, which finished what the
+      first had captured): THE STARS RUN UNDER THE EXIT BUTTON, and B7 is not placed for that screen.
+      Turned on its side and back, the page itself behaves: no figure is turned on its side, every star's
+      button stays on its star, and upright again the picture is the first one to the pixel (above). But
+      with nothing hidden, and the exit button shown (after a round, or on any return), what is on the
+      side-held screen is not where it belongs:
+        * the figure is laid out down to y 309 to 317 and the exit button begins at y 306: at nine of the
+          twelve stations the lowest star's disc lies 3 to 11 px INTO the button, eleven stars in all
+          (Libra -10, Scorpius -11, two; Sagittarius -8; Capricornus -3; Aquarius -3; Pisces -4, two;
+          Taurus -3; Gemini -4; Cancer -8). Looked at: phone-sky/taps-side.jpg (Libra, Scorpius, Aquarius,
+          Cancer at 844x390): Libra's lowest star and Cancer's are half hidden behind the button's top
+          edge, Scorpius's tail runs along it.
+        * a real touch at the centre of every star of every figure there (my all-taps.mjs, phone-sky/
+          all-taps-side.txt): 145 of 146 take the star. The one that does not is Libra's lowest (slot-70,
+          centre 359,306): the finger lands on the exit button and THE FALL BEGINS. "Any empty star is
+          pickable" fails for that star on that screen.
+        * how short a screen must be (my short-scope.mjs, phone-sky/short-scope.txt): 844x390 eleven
+          stars reach the button, 667x375 eleven, 740x360 twelve, 932x430 three (by 1 to 3 px); a desktop
+          window 1024x500 or 1280x560 none (13 to 19 px clear), 1280x600 and taller none (33 px or more);
+          a tablet upright 768x1024 none. So it is phones on their side, every one of them, and nothing else.
+        * B7 there, every star lit (tools/b7.mjs --sizes side: b7/b7-side.txt; b7/all-side.jpg; phone-sky/
+          on-its-side.jpg looked at): Leo's two lines are set in 34 px type across the top of the screen,
+          over three of Leo's stars and two of its lines (the nearest star 11 px inside the words' box);
+          Pisces's words lie over 27 of the far figures' points, Cancer's over 4, Aries's over 1;
+          Aquarius's stand 5 px from a star and 26 px above the exit button. Eight of twelve are clear.
+        * the knots are not thinned there (Taurus's closest pair 63% into each other, Sagittarius's 47%:
+          the phone's rule is applied only to the upright phone) and Cellestial's star is 72.7 px, with
+          one of Virgo's stars 0.6 px inside the rings' full reach (11 and 6 px clear as drawn at two
+          moments). Every one of those stars still takes its tap.
+      Nobody had looked at a phone on its side before (the second look says so); round 2's piece 3 checked
+      that the buttons follow the stars through the turn and did not look at what the stars run into.
+      It is ranked MAJOR because it is plain to see and one star cannot be taken, and scoped: it is NOT
+      one of the owner's two sizes, and at those nothing like it happens.
+      Fix: src/experience/sky/layout.ts: the safe area's bottom must be the exit button's top less a
+      star's radius and 12 px in px, not a share of the height (at 390 high: 306 - 13 - 12 = 281, where it
+      is now 317), and the knots' rule and Cellestial's floor should apply at every size, not only to
+      PORTRAIT; src/experience/sky/meaning.ts: on a screen under 450 px high cap the type (22 to 24 px)
+      and score places as on the phone. Check with tools/b7.mjs --sizes side, tools/phone-sky.mjs --size
+      side (the copies in refs/verification/third-look/tools/ know that size) and all-taps.mjs --size side.
     fixes.txt, round 2, piece 3, read afterwards: its numbers at 390x844 and 360x740 are mine. It did not
     run B7 at 375x667; the Leo fault is new here.
 
