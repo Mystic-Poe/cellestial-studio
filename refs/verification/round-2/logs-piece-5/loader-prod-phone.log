@@ -1,0 +1,13 @@
+full                   7.65 s (visitor's clock 7.48 s)  mode=full  frames avg 18.1 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (6.0 to 8.0 s on the visitor's clock)
+short (reload)         3.50 s (visitor's clock 3.46 s)  mode=short  frames avg 17.3 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (short version, ends)
+skip at 1 s (tap)      2.84 s (visitor's clock 2.80 s)  mode=full  frames avg 18.6 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (the hand-off only; the sky was ready at 1.49 s)
+skip at 1 s (key a)    2.81 s (visitor's clock 2.77 s)  mode=full  frames avg 17.3 ms, p95 16.7 ms  → scene=sky, overlay=none  OK (the hand-off only; the sky was ready at 1.25 s)
+Tab and modifiers      7.29 s (visitor's clock 7.29 s)  mode=full  frames avg 17.4 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (no skip: 6.0 to 8.0 s on the visitor's clock)
+404 c-unlit.webp       0.01 s (visitor's clock -0.00 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 c-lit.webp         0.03 s (visitor's clock 0.00 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 wordmark.webp      0.01 s (visitor's clock 0.00 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 wordmark-matte.webp 0.01 s (visitor's clock 0.00 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+resize twice mid-run   7.19 s (visitor's clock 7.19 s)  mode=full  frames avg 17.1 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (keeps the time: 6.0 to 8.0 s on the visitor's clock)
+sessionStorage blocked 7.27 s (visitor's clock 7.24 s)  mode=full  frames avg 17.4 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (full version, ends)
+
+full version, mount to done: 7.65 s; first paint to done (the visitor's clock): 7.48 s

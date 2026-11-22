@@ -1296,3 +1296,39 @@ PIECE 5 — THE CLOSE-OUT
      frame without Cellestial's star in 0 of 20 first visits on the desktop and 0 of 20 on the phone;
      0 of 12 and 0 of 12 with the CPU slowed 4x; 0 of 12 short loaders and 0 of 12 skipped loaders (6
      at each size). The second look: 8 of 12, 7 of 12 slowed, 7 of 12 on a return.
+     THE PHONE'S SKY (phone-sky.mjs, and --size small; round-2/phone-sky/phone-sky.txt, 360/):
+     ALL PASS at 390x844 and at 360x740. Cellestial's star 96.9 px (87.7 at 360) and its rings 3.9 px
+     (2.3) short of the nearest star's disc at their full reach; the six wide figures all at least half
+     the screen's height; no two stars more than a third into each other (deepest 30.6%; 31.5% at 360);
+     292 of 292 touches take their star (146 stars, twice each) at each size; no star off the screen,
+     within 20 px of a side or under the logo, the menu or the exit button; no console error. The second
+     look: four of Virgo's stars 43 to 60 px from the star's centre, inside rings reaching 65 px.
+     B7 (b7.mjs; round-2/b7/b7.txt, the sheets there): 24 of 24: on the desktop all twelve at 54 px,
+     0 far points on the words (the second look: 31), touching nothing; on the phone all twelve at
+     24 px by their figure, touching nothing, the nearest to the exit button 80 px above it (Libra;
+     the second look: Libra and Cancer 29 px above it).
+     THE FLASH (flash.mjs, then flash-level.mjs on its log; round-2/flash/flash.txt, flash-level.txt):
+     all sixteen teleports land where they should (the ground at 0, the Close at 3304 on the desktop
+     and 3125 on the phone, "Contact me" with its box open, the sky at 0). A dip in 0 of 16: the lowest
+     frame of each flash's level stretch is 90 to 97% of its peak, no second rise (the second look: 6.2%
+     lit -> 3.8% -> 6.1%, and 5.4% -> 1.4% -> 5.4%, from the sky to the ground on the desktop). The
+     lit lines' mean colour #95a9cd to #a1b8e3, near-white under 1% of the frame, the lines 1 to 3 px.
+     THE LOADER'S CLOCK ON A SLOW LINE (clock-slow.mjs; round-2/loader/clock-slow-line.txt), five first
+     visits each, the loader's picture on screen from the first paint to the sky: unslowed 7.49, 7.29,
+     7.27, 7.14, 7.14 s; slow 4G 7.51, 7.51, 7.52, 7.52, 7.51 s; slow 4G with the CPU slowed 4x 7.54,
+     7.52, 7.52, 7.52, 7.53 s (the second look: 8.0 to 8.2 s on slow 4G).
+     THE TAB ICON (favicon.mjs; round-2/owner-list/favicon.txt, favicon.jpg): 16 px: 45% of its pixels
+     brighter than L 40, brass-toned 38%, brightest L 230; 32 px: 35%, brass-toned 30%, brightest L 238
+     (before piece 4: brass-toned 9% and brightest L 118 at 16 px).
+     tools/loader/measure.mjs ON THE PRODUCTION BUILD, phone (--gpu --size phone --url
+     http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage: the eleven
+     cases that can run there; no-sky and late-sky block the dev server's source file by name, as the
+     tool's header says). MY MISTAKE FIRST: the four were run with all thirteen cases and each exited
+     1 on "sky 30 s late", which on the production build is not made late at all; status.txt in
+     logs-piece-5 keeps those four lines, marked, above the four runs that count:
+                            from the mount   the visitor's clock
+       unslowed             full 7.65        7.48        short 3.50  skip 2.84 / 2.81  Tab 7.29
+       --throttle 4         full 7.62        7.50        short 3.68  skip 3.07 / 3.19  Tab 7.50
+       --net slow4g         full 6.46        7.61        short 3.53  skip 4.38 / 4.29  Tab 6.38 (7.52)
+       both                 full 6.65        7.79        short 3.83  skip 4.44 / 4.41  Tab 6.57 (7.71)
+     11 of 11 in each: the owner's 6 to 8 s holds on the visitor's clock in all four.
