@@ -591,15 +591,25 @@ PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the
     27.029037399580318) and the frame after reset() is (720, 450, r 27.029037399580318): the same
     star to the last digit, and the middle of the canvas reads 156.3, 156.1, 155.9, 155.8 through them
     (the rings turning), with no step.
-  - After, production build, real GPU (refs/verification/round-2/a5/):
+  - After, production build, real GPU (refs/verification/round-2/a5/). Run twice, with the same
+    counts both times: on the build with this fix alone, and again on the piece's last build with 2b
+    and 2c in it (the files are the second run's):
       a5-probe.mjs --runs 20          blink-probe-summary.txt        a dip in 0 of 20 first visits (desktop), 0 of 20 (phone)
       a5-probe.mjs --runs 12 --throttle 4   blink-probe-cpu4x-summary.txt  0 of 12 (desktop), 0 of 12 (phone)
       a5-probe-return.mjs             blink-probe-return.txt         0 of 12 short loaders (6 at each size), 0 of 12 skipped
       a5-repeat.mjs --runs 10         blink.txt                      a frame without the star in 0 of 10 (desktop), 0 of 10 (phone)
       a5-pose.mjs                     pose.txt                       0 of 20 dark frames; the star's place a number in every frame
     tools/a5-probe.mjs gained --runs, --throttle and --only, and a summary that counts the dips.
+  - The good part of A5 is as it was (a5.mjs on the last build; desk-pieces.jpg, desk-handoff-1/2.jpg,
+    phone-pieces.jpg, phone-handoff-1/2.jpg, desk-swap.jpg, phone-swap.jpg, looked at): the little star
+    breaks into its shards of brass, they sweep out and land on the three ellipses, the rings come up
+    under them; no white wash (a5.txt: within the hand-off at most 0.21% of the desktop's frame and
+    0.33% of the phone's is near-white, the second look's own two numbers). The six frames round the
+    scene change have the star in every one, the screen's mean light 3.7, 3.7, 3.7, 3.7, 3.8, 3.8 on
+    the desktop and 6.0, 6.0, 6.0, 6.0, 6.0, 6.1 on the phone (it was 6.0 -> 2.5 -> 6.0).
+  - tools/sky/compare.mjs exits 0: "introProgress(1) against reset(): 0 pixels differ" at both sizes.
 
-  2b. THE FLASH DIPS AT ITS PEAK (minor). THE FIX IS IN; THE FULL SIXTEEN AND THE SUITES ARE STILL TO RUN.
+  2b. THE FLASH DIPS AT ITS PEAK (minor). DONE.
   - The finding: on the desktop, from the sky to each of the three places on the ground, the flash
     reached its peak, dipped (to 61%, 25% and 25% of the peak) and came back: two flashes.
   - Reproducing it. On the build as it stands after piece 1 the dip is NOT there unslowed: piece 1 made
@@ -636,8 +646,31 @@ PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the
     slowed 4x (round-2/flash/flash-dip-cpu4x.txt, dip-desk-from-sky-cpu4x.jpg): a dip in 0 of 9; the
     lowest frame between the peak and the fade is 91 to 97% of the peak, with the frame of the swap 150
     to 183 ms long; no second rise.
+    The same unslowed, on the piece's last build (flash-dip.txt, dip-desk-from-sky.jpg): 0 of 9, the
+    lowest frame 91 to 98% of the peak (the frame of the swap 33 to 50 ms).
+  - All sixteen (flash.mjs on the last build: flash.txt; desk-from-sky.jpg looked at, with
+    desk-from-roots.jpg, phone-from-sky.jpg, phone-from-roots.jpg, peak-desk.jpg, peak-phone.jpg beside
+    it): every one lands where the second look found it, scene, scrollY and dialog the same in all
+    sixteen lines (the ground at 0, the Close at 3304 on the desktop and 3125 on the phone, "Contact me"
+    with its box open, the sky at 0). In the strip from the sky no frame between the rise and the
+    arrival is anything but lines on black: the "Contact me" row is bright at +183, +275 and +368 and
+    the ground at +432, where the second look had +337 bright, +408 dim with the hub a dark ring, +489
+    bright.
+    How level, all sixteen (flash-level.txt, tools/flash-level.mjs, new: the second look's own rule
+    worked from flash.txt): the lowest frame between the first and last at 90% of the peak is 90 to 97%
+    of the peak in every one. From the sky on the desktop 92, 96, 90% (the second look: 61, 26, 25%);
+    from the Roots on the desktop 91 to 97% (90 to 98%); on the phone 94 to 96% (80 to 95%, leaving out
+    its "Claim your star" from the Roots, where that rule ran on into the arrival).
+  - Two things about the measure, for whoever runs it next. The second look's rule (the lowest frame
+    between the first and last at 90% of the peak) misses a dip the flash does not climb back out of to
+    90%, so flash-dip.mjs and flash-level.mjs also call a DIP a fall under 80% that is followed by a
+    rise of a quarter of the peak to at least half of it which then falls away again. And that second
+    rise is looked for only where the place arrived at is dark beside the flash: on the phone the sky
+    and the Close are themselves 57 to 89% as lit as the flash's peak, and their coming up as the flash
+    goes is the arrival. (Without that gate it called six of the phone's eight arrivals dips, in the
+    second look's log as in this one.)
 
-  2c. THE LOADER ON A SLOW LINE (minor, the owner's number). THE FIX IS IN AND MEASURED; THE LAST RUNS ON THE FINAL BUILD ARE STILL TO DO.
+  2c. THE LOADER ON A SLOW LINE (minor, the owner's number). DONE.
   - The finding: on slow 4G the loader's picture was on screen 8.0 to 8.2 s (first paint to the sky),
     8.2 s with the CPU slowed 4x as well; the owner's rule is 6 to 8.
   - Reproduced (round-2/loader/before/clock-slow-line.txt, tools/clock-slow.mjs, production build as it
@@ -715,3 +748,22 @@ PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the
     35%, the hand-off no shorter than 1.1 s: those are the look, and they were not touched). The
     Roots' pictures (e4-node-alpha.webp, the brass, the soil: 215 KB) are fetched ahead of the loader's
     on a line with no priorities, as the preview's HTTP/1.1 is; they are another scene's and were left.
+
+  THE SUITES, after all three (dev server on 4500 with the Turnstile test key; logs in
+  refs/verification/round-2/logs-piece-2/, status.txt: every line exit 0):
+      pnpm build, pnpm lint, pnpm typecheck                 pass
+      pnpm test                                             124 of 124 (it was 102 before this piece: 22 new)
+      tools/loader/measure.mjs (desktop)                    13 of 13     tools/loader/measure.mjs --throttle 4 --size phone   13 of 13
+      tools/sky/measure.mjs                                 201 of 201   tools/sky/meaning.mjs      38 of 38
+      tools/sky/meaning-all.mjs                             24 of 24     tools/sky/compare.mjs      exit 0
+      tools/roots/measure.mjs                               245 of 245   tools/roots/words.mjs      197 of 197
+      tools/transitions/measure.mjs                         148 of 148   tools/chrome/compare.mjs   48 of 48
+  The sheets those tools rewrite under refs/<scene>/ were restored (no scene's sheets were meant to be
+  rebuilt by this piece). Nothing under workers/, src/onboard/, src/scripts/, public/admin/,
+  src/content/home.json or src/config.ts was touched.
+
+  FILES: src/experience/sky/intro.ts (new), sky/index.ts, loader/timeline.ts, loader/painter.ts,
+  loader/lightning.ts, loader/clock.ts (new), loader/index.ts, fx/flash-time.ts (new), fx/layer.ts,
+  src/components/scenes/Loader.astro, tools/loader/measure.mjs; tests src/experience/sky-intro.test.ts,
+  loader-lightning.test.ts, fx-flash-time.test.ts, loader-clock.test.ts; round-2/tools/a5-pose.mjs,
+  flash-dip.mjs, flash-level.mjs, clock-credit.mjs (new), a5-probe.mjs (options).

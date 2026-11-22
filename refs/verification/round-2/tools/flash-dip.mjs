@@ -4,7 +4,8 @@
 // recorded in real time; in every recorded frame the share of the screen that is lit (brighter than
 // L 110, flash.mjs's own measure). Between the first and the last frame at 90% of the peak (the level
 // stretch: the peak to the start of the fade) the lowest frame is found. UNDER 80% OF THE PEAK IS A DIP. So is a second rise: a frame under 80% of the peak
-// followed by one a quarter of the peak brighter and at least half the peak.
+// followed by one a quarter of the peak brighter and at least half the peak, that falls away again.
+// (The second rise is looked for only where the place arrived at is dark beside the flash: see below.)
 // Also, from the page's own frame times, the longest frame of the flash (the swap).
 //   node flash-dip.mjs [--runs 3] [--sizes desk] [--from sky] [--dest build,claim,contact] [--tag before] [--throttle 4]
 // --throttle slows the CPU (the swap then blocks for longer: on the build of the second look it blocked 100 to
@@ -21,7 +22,7 @@ const RUNS = Number(values.runs);
 const tag = values.tag ? `-${values.tag}` : '';
 const LABEL = { build: 'What we build', claim: 'Claim your star', contact: 'Contact me', sky: 'The Sky' };
 const dir = outDir('flash');
-const log = [`The flash's light through its peak (the share of the frame brighter than L 110, per recorded frame; ${RUNS} runs of each teleport${throttle > 1 ? `; CPU slowed ${throttle}x` : ''}). Between the first and last frames at 90% of the peak, the lowest frame; under 80% of the peak is a DIP, and so is a fall under 80% followed by a rise of a quarter of the peak to at least half of it.`];
+const log = [`The flash's light through its peak (the share of the frame brighter than L 110, per recorded frame; ${RUNS} runs of each teleport${throttle > 1 ? `; CPU slowed ${throttle}x` : ''}). Between the first and last frames at 90% of the peak, the lowest frame; under 80% of the peak is a DIP, and so is a fall under 80% followed by a rise of a quarter of the peak to at least half of it that falls away again (light that comes up and stays is the place arrived at).`];
 const say = (s) => { console.log(s); log.push(s); };
 async function lit(img) {
 	const { data, info } = await sharp(img).raw().toBuffer({ resolveWithObject: true });
@@ -58,18 +59,26 @@ for (const size of values.sizes.split(',')) for (const from of values.from.split
 		const low = level.reduce((m, c) => (c.lit < m.lit ? c : m), level[0]);
 		const share = low.lit / peak.lit;
 		// A second rise: after the peak is first reached, a frame under 80% of it and, later, a frame a quarter of
-		// the peak brighter than that one and at least half the peak (a flash that dips and comes back, even if not
-		// all the way: the level stretch above would stop short of such a dip).
+		// the peak brighter than that one and at least half the peak, which then falls away again by a quarter of
+		// the peak (a flash that dips and comes back, even if not all the way: the level stretch above would stop
+		// short of such a dip).
+		// Only where the place arrived at is dark beside the flash (its last recorded frames under 40% of the
+		// peak): on the phone the sky and the Close are themselves 57 to 89% as lit as the flash, and their
+		// coming up as the flash goes is the arrival, not a second flash.
+		const settled = Math.max(...rows.slice(-5).map((x) => x.lit));
+		const dark = settled < 0.4 * peak.lit;
 		let again = null;
-		for (let i = rows.indexOf(high[0]); i < rows.length && !again; i++) {
+		for (let i = rows.indexOf(high[0]); dark && i < rows.length && !again; i++) {
 			if (rows[i].lit >= 0.8 * peak.lit) continue;
 			const back = rows.slice(i + 1).find((x) => x.lit >= rows[i].lit + 0.25 * peak.lit && x.lit >= 0.5 * peak.lit);
-			if (back) again = { from: rows[i], to: back };
+			// ...and falls away again: light that comes up and STAYS is the place arrived at (on the phone the sky
+			// and the Close are themselves half as lit as the flash), not a second flash.
+			if (back && rows.slice(rows.indexOf(back) + 1).some((x) => x.lit <= back.lit - 0.25 * peak.lit)) again = { from: rows[i], to: back };
 		}
 		const dip = share < 0.8 || !!again;
 		total++;
 		if (dip) dips++;
-		say(`${size}${throttle > 1 ? ` cpu x${throttle}` : ''} ${from} -> "${LABEL[dest]}" run ${run}: lands scene ${end.scene}, scrollY ${end.y}, dialog ${end.dialog}; peak ${peak.lit.toFixed(1)}% lit at +${peak.t} ms; level stretch +${a}..+${z} ms (${level.length} frames), its lowest frame ${low.lit.toFixed(1)}% at +${low.t} ms: ${(100 * share).toFixed(0)}% of the peak; ${again ? `falls to ${again.from.lit.toFixed(1)}% at +${again.from.t} ms and RISES AGAIN to ${again.to.lit.toFixed(1)}% at +${again.to.t} ms` : 'no second rise'}${dip ? '  <-- DIP' : ''}; the page's frames: ${ft.text}`);
+		say(`${size}${throttle > 1 ? ` cpu x${throttle}` : ''} ${from} -> "${LABEL[dest]}" run ${run}: lands scene ${end.scene}, scrollY ${end.y}, dialog ${end.dialog}; peak ${peak.lit.toFixed(1)}% lit at +${peak.t} ms; level stretch +${a}..+${z} ms (${level.length} frames), its lowest frame ${low.lit.toFixed(1)}% at +${low.t} ms: ${(100 * share).toFixed(0)}% of the peak; ${again ? `falls to ${again.from.lit.toFixed(1)}% at +${again.from.t} ms and RISES AGAIN to ${again.to.lit.toFixed(1)}% at +${again.to.t} ms` : dark ? 'no second rise' : `a second rise not looked for (the place arrived at is itself ${Math.round((100 * settled) / peak.lit)}% as lit as the peak)`}${dip ? '  <-- DIP' : ''}; the page's frames: ${ft.text}`);
 		say(`   lit, frame by frame (ms:%): ${rows.filter((x) => x.lit > 0.2).map((x) => `${x.t}:${x.lit.toFixed(1)}`).join(' ')}`);
 		if (run === 1) {
 			const span = rows.filter((x) => x.lit > 0.4 && x.t > 30);
