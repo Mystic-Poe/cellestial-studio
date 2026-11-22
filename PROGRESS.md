@@ -42,12 +42,25 @@ Cellestial's rings) are not. `git status` is clean but for the untracked `claude
      crash does not wait for the browser to build its drawing programs. Desktop trails are
      now in proportion to the star. Record: `refs/verification/fixes.txt`, "ROUND 2", piece
      1; runs in `refs/verification/round-2/fall/` (`before/` is the build as it stood).
-   - [ ] 2. **Three clocks.** The one-frame blink at the end of the hand-off (major). Cause
-     found by the orchestrator in plain arithmetic, to be confirmed in the page:
-     `smoother()` in `src/experience/sky/index.ts` rounds to a hair above 1 for t just under
-     1, and `introPose()` then raises a negative number to the power 1.3, which is NaN, so
-     the star has no place for that frame. The flash's dip on the desktop from the sky to the
-     ground (minor). The loader's picture on screen 8.0 to 8.2 s on a slow line (minor).
+   - [x] 2. **Three clocks** `64a40dc`. The blink (major): the quintic ease comes to a hair
+     over 1 just under its end, and the star's place was then a negative number to the power
+     1.3, not a number, for that frame (seen in the page: x was NaN in 6 of 6 dark frames).
+     The eases are capped where they are made and the pose is its own tested file
+     (`src/experience/sky/intro.ts`): no frame without the star in 20 of 20 first visits at
+     each size, 12 of 12 with the CPU slowed 4x, 12 of 12 returns, 10 of 10 recorded. The same
+     kind of fault was found and cured in the loader's lightning (the root of a sine a hair
+     under zero). The flash (minor): a swap that blocks was taken off the flash's clock twice,
+     so the flash stood before its peak when the ground came up and rose to it again; its
+     clock is `src/experience/fx/flash-time.ts`, tested; level through the peak in all sixteen
+     teleports (90 to 97%), and with the CPU slowed 4x (it dipped in 9 of 9 before). The
+     loader on a slow line (minor): the cause was not the one expected (the wait before the
+     script WAS counted): the loader's other three pictures were asked for only when the
+     script had arrived. The markup asks for them now, and the loader's clock is the
+     visitor's, from the first paint (`src/experience/loader/clock.ts`, tested): 7.5 s on slow
+     4G where it was 8.0 to 8.2, a fast line unchanged. `tools/loader/measure.mjs` judges the
+     owner's 6 to 8 s on the visitor's clock now and prints both. Record:
+     `refs/verification/fixes.txt`, "ROUND 2", piece 2; runs in
+     `refs/verification/round-2/a5/`, `flash/`, `loader/`, `logs-piece-2/`.
    - [ ] 3. **The phone's sky** (major). On a portrait phone the six wide figures (Virgo,
      Capricornus, Aquarius, Pisces, Aries, Leo) are turned a quarter-turn so they stand tall;
      this REVERSES the earlier ruling "north stays up", which is what crowded Cellestial's
