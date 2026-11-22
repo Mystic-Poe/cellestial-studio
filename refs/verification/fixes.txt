@@ -1214,7 +1214,7 @@ PIECE 5 — THE CLOSE-OUT
   THE WARP'S COVER — the one failed check: the check's own reading was late; the site is not at fault.
   THE CHECK'S PROBE IS CHANGED (tools/transitions/measure.mjs); no file of the site is.
     Finding: transitions-measure 147 of 148 (above). The same check passed in every earlier run that is
-    kept (23 of 23 software runs in the logs of round 1 and of pieces 2 to 4).
+    kept (20 of 20 software runs in the logs of round 1 and of pieces 2 to 4).
     Reproduced first: round-2/tools/warp-cover.mjs (new) plays the check's own scenario (software, CPU
     slowed 4x, desktop, from scrollY 1800) many times and keeps the page's clocks for the swap's frame.
     The cover read less than 255 in 3 of 16 and 4 of 16 runs (dev server), so it is not a one-off.
@@ -1245,3 +1245,28 @@ PIECE 5 — THE CLOSE-OUT
     software runs at 255 each time (12 of 12). The first run's status.txt and failing log are kept:
     round-2/warp/first-run-status.txt, first-run-transitions-measure.log. run-all.sh is then run
     again from the top, so that round-2/logs/ is one run of the tools as they now stand (2b below).
+
+  2b. EVERY SUITE AND EVERY SHEET TOOL, AGAIN FROM THE TOP, with the corrected check (the same
+     command; 10:01 to 10:27). round-2/logs/ is this run. status.txt: thirteen tools, thirteen "exit 0".
+       loader-measure            13 of 13 (as before the round); full 7.57 s, 7.45 on the visitor's
+                                 clock (the owner's 6 to 8 s is judged on that clock since piece 2);
+                                 short 3.60; skipped at 1 s 2.71 / 2.71; Tab and modifiers 7.21; two
+                                 resizes 7.12; storage blocked 7.11; no sky 6.06; sky 30 s late 11.99
+       loader-measure-phone-4x   13 of 13 (as before); full 7.60 s (7.50); short 3.65; skipped 3.00 /
+                                 3.08; Tab 7.45; resizes 7.45; storage blocked 7.43; no sky 6.07; sky
+                                 30 s late 12.06
+       sky-measure               201 of 201 (as before)
+       sky-meaning               38 of 38 (as before)
+       sky-meaning-all           24 of 24 (as before)
+       roots-words               197 of 197 (as before)
+       roots-measure             245 of 245 (as before)
+       transitions-measure       148 of 148 (as before: the fall 34, the warp 34, the teleport 80); the
+                                 four software runs of the warp's cover at 255
+       chrome-compare            48 of 48 (as before)
+       sky-compare               no figure outside the safe area; introProgress(1) against reset():
+                                 0 pixels differ at both sizes
+       roots-compare, transitions-strip, loader-compare   exit 0
+     One check was changed in this round's close-out and none in pieces 1 to 4 but those their own
+     entries name: the warp's cover, for the reason above.
+     The sheets in refs/loading, sky, roots, transitions and chrome /compare, and the three
+     measure.txt, are this second run's.

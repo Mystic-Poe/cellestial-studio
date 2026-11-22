@@ -1,14 +1,14 @@
-  fall-desk: 94 pictures in 3300 ms
+  fall-desk: 95 pictures in 3300 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/fall-desk.jpg
   fall-phone: 99 pictures in 3300 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/fall-phone.jpg
   warp-desk: 61 pictures in 2100 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-desk.jpg
-  warp-deep-desk: 60 pictures in 2100 ms
+  warp-deep-desk: 62 pictures in 2100 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-deep-desk.jpg
-  warp-phone: 64 pictures in 2100 ms
+  warp-phone: 63 pictures in 2100 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-phone.jpg
-  warp-deep-phone: 64 pictures in 2100 ms
+  warp-deep-phone: 63 pictures in 2100 ms
   wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-deep-phone.jpg
   desk sky → The Sky: {"scene":"sky","y":0,"focus":"claim yoursSite A custom","dialog":null}
   desk sky → What we build: {"scene":"roots","y":0,"focus":"SiteSite A custom site b","dialog":null}

@@ -13,7 +13,7 @@ exit 0 (roots-words)
 === roots-measure: node tools/roots/measure.mjs
 exit 0 (roots-measure)
 === transitions-measure: node tools/transitions/measure.mjs
-exit 1 (transitions-measure)
+exit 0 (transitions-measure)
 === chrome-compare: node tools/chrome/compare.mjs
 exit 0 (chrome-compare)
 === sky-compare: node tools/sky/compare.mjs
