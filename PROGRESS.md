@@ -32,10 +32,16 @@ Cellestial's rings) are not. `git status` is clean but for the untracked `claude
    second look's own scripts, ready to run again, are in `refs/verification/round-2/tools/`
    (they write under `refs/verification/round-2/`, never into the second look's folder).
    `tools/run-all.sh` runs every suite and sheet tool with a log each.
-   - [ ] 1. **The fall** (major). No burst is ever taken off the screen before its end
-     (`IMPACTS_MAX` in `src/experience/fx/layer.ts` shifts live ones out); the far figures'
-     stars land as small glints; crowded strikes do not clip to a white mass; 60 frames a
-     second on the desktop.
+   - [x] 1. **The fall** (major) `b032db7`. No burst is ever taken off the screen before its
+     end (the list is `src/experience/fx/impacts.ts`, tested in node; `IMPACTS_MAX` is gone);
+     the far figures' stars land as small glints; strikes that land close together share
+     their soft light and do not clip to a white mass; 60 frames a second on the desktop
+     (16.7 ms at each of three figures in a browser's first fall, none over 17; the largest
+     cost was the Roots' growth, 2,500 to 9,800 strokes a frame, now 1,000 to 1,500). The
+     bursts and the growth are drawn once unseen at the loader's still moment, so the first
+     crash does not wait for the browser to build its drawing programs. Desktop trails are
+     now in proportion to the star. Record: `refs/verification/fixes.txt`, "ROUND 2", piece
+     1; runs in `refs/verification/round-2/fall/` (`before/` is the build as it stood).
    - [ ] 2. **Three clocks.** The one-frame blink at the end of the hand-off (major). Cause
      found by the orchestrator in plain arithmetic, to be confirmed in the page:
      `smoother()` in `src/experience/sky/index.ts` rounds to a hair above 1 for t just under
