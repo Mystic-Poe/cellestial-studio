@@ -1,0 +1,19 @@
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-1.png: 0 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-6.png: 75 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-9.png: 4585 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-12.png: 0 pixels differ from desk-before (of 1296000)
+empty: console errors none
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+lit-station-1.png: 0 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+lit-station-6.png: 75 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+lit-station-9.png: 4585 pixels differ from desk-before (of 1296000)
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+lit-station-12.png: 0 pixels differ from desk-before (of 1296000)
+lit: console errors none
+TOTAL: 9320 pixels differ

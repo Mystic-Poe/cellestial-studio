@@ -162,7 +162,10 @@ if (only.has('fall')) {
 		for (let i = 0; i < slots.length; i++) {
 			let last = [stood[i].x, stood[i].y], moved = false;
 			for (const r of rows) {
-				if (r.t < p0 || !r.c[i]) continue;
+				if (r.t < p0) continue;
+				// The fall is over for this star when the page no longer gives it a place, or the scene
+				// has changed to the ground: after that the sky is put back as it was, unseen.
+				if (!r.c[i] || (r.scene !== 'sky' && r.scene !== 'fall')) { if (moved) break; continue; }
 				const [x, y] = r.c[i];
 				if (!moved && Math.abs(y - last[1]) > 0.01) {
 					moved = true;

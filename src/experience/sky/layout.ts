@@ -381,7 +381,7 @@ export function createLayout(
 	// Knots. Where two stars of a figure would cover each other by more than a third of the
 	// smaller one's width, both are drawn smaller, so that they read as two stars and not
 	// as a lump. Only what is drawn changes: a star's tap target is as large as ever. On
-	// every screen: the closest pair of the Hyades is a knot on a desktop too.
+	// every screen: Taurus's closest pair is a knot on a desktop too.
 	for (const [i, plan] of plans.entries()) {
 		const scale = (fits[i] as FigureFit).scale;
 		for (let pass = 0; pass < 4; pass++) {

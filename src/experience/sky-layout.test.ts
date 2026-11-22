@@ -410,7 +410,7 @@ test('the sizes that are done stand where they stood: every figure, at 1440x900 
 	}
 });
 
-test('at 1440x900 the knot of the Hyades is drawn smaller, and nothing else is', () => {
+test("at 1440x900 Taurus's closest pair is drawn smaller, and nothing else is", () => {
 	const layout = createLayout(1440, 900, set);
 	const smaller = layout.plans.flatMap((plan) =>
 		plan.stars

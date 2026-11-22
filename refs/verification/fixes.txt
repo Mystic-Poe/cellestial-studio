@@ -1443,5 +1443,11 @@ PIECE 1 — THE SKY ON A PHONE HELD ON ITS SIDE (third look: closing list 1, the
     (MAG.faintScale); if it then still would touch, the rings give way (b3 under 1; at no size tried).
     The portrait branch is untouched.
 
-  (This entry is being written as the work goes: the layout and its tests are in; the browser's
-  checks, the pictures and the suites follow in the next commits.)
+  CHECKED SO FAR on the production build with the change (the full account follows when the last
+  runs are in): all-taps.mjs --size side 146 of 146, side667 (667x375) 146 of 146, desk 146 of 146;
+  short-scope.mjs: 844x390 +12, 932x430 +12, 667x375 +14, 740x360 +12, every other row as before;
+  sky-same.mjs (twelve stations, empty and seeded, the clock held): 390x844, 360x740 and 375x667 0
+  pixels differ in 24 captures each; 1440x900 differs at stations 5 to 9 only, inside the box of
+  Taurus's closest pair; side-scenes.mjs: the stars stand in the same place with the button shown or
+  not (0.0000 px), a phone turned on its side has the fresh load's picture to the pixel and upright
+  again its first. (This entry is being written as the work goes.)
