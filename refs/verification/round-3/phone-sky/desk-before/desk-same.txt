@@ -1,0 +1,18 @@
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-1.png: written
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-6.png: written
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-9.png: written
+   quality level 0 of 3, dpr 1, last frame 16.7 ms
+empty-station-12.png: written
+empty: console errors none
+   quality level 0 of 3, dpr 1, last frame 16.6 ms
+lit-station-1.png: written
+   quality level 0 of 3, dpr 1, last frame 16.6 ms
+lit-station-6.png: written
+   quality level 0 of 3, dpr 1, last frame 16.6 ms
+lit-station-9.png: written
+   quality level 0 of 3, dpr 1, last frame 16.6 ms
+lit-station-12.png: written
+lit: console errors none

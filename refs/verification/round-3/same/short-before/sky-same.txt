@@ -1,0 +1,27 @@
+THE SKY AT 375x667 (short), before: twelve stations, the clock held, empty and seeded
+empty-station-1.png: written
+empty-station-2.png: written
+empty-station-3.png: written
+empty-station-4.png: written
+empty-station-5.png: written
+empty-station-6.png: written
+empty-station-7.png: written
+empty-station-8.png: written
+empty-station-9.png: written
+empty-station-10.png: written
+empty-station-11.png: written
+empty-station-12.png: written
+empty: console errors none
+lit-station-1.png: written
+lit-station-2.png: written
+lit-station-3.png: written
+lit-station-4.png: written
+lit-station-5.png: written
+lit-station-6.png: written
+lit-station-7.png: written
+lit-station-8.png: written
+lit-station-9.png: written
+lit-station-10.png: written
+lit-station-11.png: written
+lit-station-12.png: written
+lit: console errors none

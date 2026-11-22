@@ -11,6 +11,7 @@ import type { SlotId } from '../contracts.ts';
 import {
 	B3,
 	B3_PORTRAIT_PX,
+	B11,
 	FIGURES,
 	FOCAL,
 	KNOT,
@@ -213,9 +214,11 @@ export interface Layout {
 	 */
 	readonly minScale: number;
 	/**
-	 * Cellestial's star here, as a multiple of its world size: 1 everywhere but
-	 * on a portrait screen, where it is never drawn too small for the hand and
-	 * never so large that its rings would reach one of Virgo's stars.
+	 * Cellestial's star here, as a multiple of its world size. On a portrait
+	 * screen it is never drawn too small for the hand and never so large that
+	 * its rings would reach one of Virgo's stars. Everywhere else it is 1,
+	 * unless a star of Virgo drawn at the faintest star's size would still
+	 * touch its rings: then the rings give way.
 	 */
 	readonly b3: number;
 	/**
@@ -266,19 +269,25 @@ export function createLayout(
 	const height = Math.max(1, h);
 	const focal = FOCAL * Math.max(width, height);
 	const side = width <= SAFE.narrow ? SAFE.sidePhone : SAFE.sideDesktop;
-	// On a very short viewport (a phone on its side) the chrome's room is cut down in proportion.
+	// On a very short viewport (a phone on its side) the chrome's room is cut down in
+	// proportion. The exit button is not: it is as high on every screen, and the room
+	// under the figures is never less than the button, its distance from the screen's
+	// bottom and the clear space above it (96 px; a fifth of the height from 480 px up).
+	const footRoom = B11.above + B11.height + B11.clear;
 	const safe = {
 		top: Math.min(SAFE.top, 0.16 * height),
-		bottom: Math.min(SAFE.bottom, 0.2 * height),
+		bottom: Math.min(SAFE.bottom, Math.max(0.2 * height, footRoom)),
 		side,
 	};
+	/** No star's disc stands lower than this at its station, viewport pixels from the top. */
+	const footLine = height - footRoom;
 	// A portrait screen is held in the hand: its stars are sized for that, with a floor.
 	const portrait = height > width && width <= SAFE.narrow;
 	const starPx = portrait
 		? STAR_PX.portrait
 		: clamp(STAR_PX.base + STAR_PX.slope * Math.min(width, height), STAR_PX.min, STAR_PX.max);
 	const minScale = portrait ? STAR_PX.floor / starPx : 0;
-	/** The stars this viewport draws at a size of its own (a portrait screen only): see below. */
+	/** The stars this viewport draws at a size of its own (knots, and Virgo's star nearest the rings): see below. */
 	const sizes = new Map<PlanStar, number>();
 	const natural = (star: PlanStar) => Math.max(star.scale, minScale);
 	const sizeOf = (star: PlanStar) =>
@@ -324,7 +333,24 @@ export function createLayout(
 		const e = extent(scale);
 		// Centre the padded figure in the safe area, whose middle is a little above the screen's.
 		const sx = pinned ? 0 : (e.minX + e.maxX) / 2 / scale;
-		const sy = pinned ? 0 : ((e.minY + e.maxY) / 2 - (up - down) / 2) / scale;
+		let sy = pinned ? 0 : ((e.minY + e.maxY) / 2 - (up - down) / 2) / scale;
+		if (!pinned) {
+			// A figure held at its furthest stand is taller than a short screen's safe area
+			// (five of the twelve on a phone on its side) and, centred, would hang out of it
+			// at both ends: at the foot, into the exit button. Its foot wins: the figure is
+			// moved up until its lowest disc stands on the line, as long as its topmost disc
+			// stays inside the screen. Nothing fitted inside the safe area is ever moved.
+			let low = -Infinity;
+			let high = Infinity;
+			for (const star of plan.stars) {
+				const y = height / 2 - (star.y - sy) * scale;
+				const r = starPx * natural(star);
+				low = Math.max(low, y + r);
+				high = Math.min(high, y - r);
+			}
+			const lift = Math.min(low - footLine, high - B11.head);
+			if (lift > 0) sy -= lift / scale;
+		}
 		return { scale, dist: focal / scale, sx, sy, starR: starPx / scale };
 	};
 
@@ -354,38 +380,37 @@ export function createLayout(
 
 	// Knots. Where two stars of a figure would cover each other by more than a third of the
 	// smaller one's width, both are drawn smaller, so that they read as two stars and not
-	// as a lump. Only what is drawn changes: a star's tap target is as large as ever.
-	if (portrait) {
-		for (const [i, plan] of plans.entries()) {
-			const scale = (fits[i] as FigureFit).scale;
-			for (let pass = 0; pass < 4; pass++) {
-				let changed = false;
-				for (let a = 0; a < plan.stars.length; a++) {
-					for (let b = a + 1; b < plan.stars.length; b++) {
-						if (a === plan.epicentre || b === plan.epicentre) continue;
-						const p = plan.stars[a] as PlanStar;
-						const q = plan.stars[b] as PlanStar;
-						const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
-						const rp = discPx(p);
-						const rq = discPx(q);
-						if (rp + rq - d <= KNOT.over * 2 * Math.min(rp, rq) + 1e-9) continue;
-						const r = Math.max(
-							KNOT.leastPx,
-							Math.min(Math.max(KNOT.floorPx, KNOT.radius * d), KNOT.tight * d),
-						);
-						for (const [star, now] of [
-							[p, rp],
-							[q, rq],
-						] as const) {
-							if (r < now - 1e-9) {
-								sizes.set(star, r / starPx);
-								changed = true;
-							}
+	// as a lump. Only what is drawn changes: a star's tap target is as large as ever. On
+	// every screen: the closest pair of the Hyades is a knot on a desktop too.
+	for (const [i, plan] of plans.entries()) {
+		const scale = (fits[i] as FigureFit).scale;
+		for (let pass = 0; pass < 4; pass++) {
+			let changed = false;
+			for (let a = 0; a < plan.stars.length; a++) {
+				for (let b = a + 1; b < plan.stars.length; b++) {
+					if (a === plan.epicentre || b === plan.epicentre) continue;
+					const p = plan.stars[a] as PlanStar;
+					const q = plan.stars[b] as PlanStar;
+					const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
+					const rp = discPx(p);
+					const rq = discPx(q);
+					if (rp + rq - d <= KNOT.over * 2 * Math.min(rp, rq) + 1e-9) continue;
+					const r = Math.max(
+						KNOT.leastPx,
+						Math.min(Math.max(KNOT.floorPx, KNOT.radius * d), KNOT.tight * d),
+					);
+					for (const [star, now] of [
+						[p, rp],
+						[q, rq],
+					] as const) {
+						if (r < now - 1e-9) {
+							sizes.set(star, r / starPx);
+							changed = true;
 						}
 					}
 				}
-				if (!changed) break;
 			}
+			if (!changed) break;
 		}
 	}
 
@@ -418,6 +443,26 @@ export function createLayout(
 			const room = Math.min(...others.map(free)) - PORTRAIT.b3Clear;
 			b3 = Math.max(0.5, Math.min(want, room) / world);
 		}
+	} else if (virgoPlan && virgoFit) {
+		// Every other screen: the star is its world size, and its rings end short of every
+		// star of Virgo there too. Where Virgo is fitted small (a phone on its side, a short
+		// window, a tablet upright) the disc of its brightest star would reach into the
+		// rings' sweep by a pixel or three: that star is drawn just small enough to stand
+		// clear, never smaller than the faintest star is drawn; if it then still would
+		// touch, the rings give way. On a large screen nothing is near and nothing changes.
+		const world = B3.ring * virgoFit.scale;
+		const centre = virgoPlan.stars[virgoPlan.epicentre] as PlanStar;
+		const others = virgoPlan.stars.filter((star) => star !== centre);
+		const away = (star: PlanStar) =>
+			Math.hypot(star.x - centre.x, star.y - centre.y) * virgoFit.scale;
+		for (const star of others) {
+			const room = away(star) - world - PORTRAIT.b3Clear;
+			if (discPx(star) > room) {
+				sizes.set(star, Math.min(sizeOf(star), Math.max(MAG.faintScale, room / starPx)));
+			}
+		}
+		const room = Math.min(...others.map((star) => away(star) - discPx(star))) - PORTRAIT.b3Clear;
+		if (room < world - 1e-6) b3 = Math.max(0.5, room / world);
 	}
 
 	const fitOf = (k: number) => fits[mod(k, FIGURES)] as FigureFit;

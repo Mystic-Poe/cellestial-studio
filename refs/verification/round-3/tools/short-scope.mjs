@@ -11,7 +11,7 @@ const dir = outDir('phone-sky');
 const log = [];
 const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });
-const list = [[844, 390, true], [932, 430, true], [667, 375, true], [740, 360, true], [1024, 500, false], [1280, 560, false], [1280, 600, false], [1366, 650, false], [1280, 720, false], [1920, 1080, false], [768, 1024, true]];
+const list = [[844, 390, true], [932, 430, true], [667, 375, true], [740, 360, true], [1024, 500, false], [1280, 560, false], [1280, 600, false], [1366, 650, false], [1280, 720, false], [1920, 1080, false], [768, 1024, true], [1024, 768, true]];
 say('HOW SHORT BEFORE A STAR REACHES THE EXIT BUTTON (the sky empty, the exit button shown, all twelve stations)');
 for (const [w, h, touch] of list) {
 	const key = `v${w}x${h}`;

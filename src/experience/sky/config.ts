@@ -28,6 +28,17 @@ export const SAFE = {
 } as const;
 
 /**
+ * The exit button (B11) as the stylesheet makes it, pixels: `height` high, its foot `above`
+ * the screen's bottom (components/scenes/Sky.astro, `.sky-exit`; ui/BrassButton.astro,
+ * `--bb-h`). It is the same button on every screen, so the room it needs is NOT a share of
+ * the screen's height: no star's disc comes within `clear` of its top, shown or not. On a
+ * screen under 480 px high (a phone on its side) `SAFE.bottom`'s share is less than this,
+ * and this is what the layout keeps. `head`: a figure too tall for such a screen is moved
+ * up off the button, as long as its topmost disc stays this far inside the screen's top.
+ */
+export const B11 = { height: 52, above: 32, clear: 12, head: 12 } as const;
+
+/**
  * Radius of a star's disc on screen at its station: `base + slope * min(w, h)`,
  * clamped (19.5 px at 1440x900: a star of middling brightness is then about
  * 21 px, large enough for B4's traces to be seen). On a portrait screen the
@@ -75,7 +86,10 @@ export const PORTRAIT = {
 	turnGain: 1.2,
 	/** Cellestial's star is its world size on the turned Virgo, and never less than this across, pixels. */
 	b3MinPx: 84,
-	/** Its rings end at least this far short of the disc of every star of Virgo, pixels. */
+	/**
+	 * Its rings end at least this far short of the disc of every star of Virgo, pixels.
+	 * This one holds on every screen, not only on a portrait one: see `createLayout`.
+	 */
 	b3Clear: 2,
 } as const;
 
@@ -87,12 +101,14 @@ export const PORTRAIT = {
 export const B3_PORTRAIT_PX = 130;
 
 /**
- * Knots, on a portrait screen. Two stars of a figure that would cover each other by more
+ * Knots, on every screen. Two stars of a figure that would cover each other by more
  * than `over` of the smaller one's width at their station are both drawn at a radius of
  * `radius` times their distance, and not under `floorPx`. Where even `floorPx` would leave
  * them more than `over` into each other (Taurus's closest pair stands 9 px apart on a
  * phone), they are drawn at `tight` times their distance, which is just under a third,
- * and never under `leastPx`.
+ * and never under `leastPx`: where two stars stand nearer than 8 px (Taurus's closest pair
+ * on a phone held on its side, 6 to 7 px apart) they are drawn at `leastPx` and still
+ * stand more than a third into each other. A star is only ever drawn smaller by this.
  */
 export const KNOT = { over: 1 / 3, radius: 0.6, floorPx: 9, tight: 0.72, leastPx: 6 } as const;
 

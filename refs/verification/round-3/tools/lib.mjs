@@ -10,6 +10,10 @@ SIZES.short = { viewport: { width: 375, height: 667 }, deviceScaleFactor: 2, isM
 
 // The third look: a phone on its side.
 SIZES.side = { viewport: { width: 844, height: 390 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+// Round 3, piece 1: the other phones on their side that the third look's short-scope.mjs found at fault.
+SIZES.side667 = { viewport: { width: 667, height: 375 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+SIZES.side740 = { viewport: { width: 740, height: 360 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+SIZES.side932 = { viewport: { width: 932, height: 430 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
 
 export { ROOT, SIZES, launch, sheet, sharp };
 export const OUT = join(ROOT, 'refs/verification/round-3');

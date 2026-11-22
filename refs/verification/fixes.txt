@@ -1389,3 +1389,59 @@ PIECE 5 — THE CLOSE-OUT
   - Every number here is headless Chromium on this machine's GPU. No real phone.
   BEFORE THE LAST COMMIT (11:19): pnpm build (4 pages), pnpm test (138 of 138; 15, 16, 14), pnpm lint
   (103 files), pnpm typecheck: all pass. Both servers stopped; git status clean but for claude-vault/.
+
+
+ROUND 3 (after the third look)
+==============================
+One fixer per piece, one after another. Evidence and scripts: refs/verification/round-3/.
+
+PIECE 1 — THE SKY ON A PHONE HELD ON ITS SIDE (third look: closing list 1, the major, and 6; part 1c)
+
+  REPRODUCED first, on the production build as it stood at 05c768d (refs/verification/round-3/before/):
+  all-taps.mjs --size side: 145 of 146, Libra's lowest star (slot-70 at 359,306) "took nothing; under
+  the finger: button.brass-btn[the exit button]; scene now fall" (before/phone-sky/all-taps-side.txt,
+  taps-side.jpg). short-scope.mjs (before/phone-sky/short-scope.txt): 844x390 eleven stars reach the
+  button (nearest -11 px), 932x430 three (-3), 667x375 eleven (-7), 740x360 twelve (-11); 1024x500 +19,
+  1280x560 +13, taller windows +33 to +41, a tablet upright +69, on its side (added to the script) +41.
+  phone-sky.mjs --size side --only stations (before/phone-sky/844/): Taurus's closest pair 63% into
+  each other, Sagittarius's 47%; Cellestial's star 72.7 px.
+
+  THE CAUSE: two facts in src/experience/sky/layout.ts, both read from createLayout's own numbers
+  (tools not kept: the table is below) and both now failing tests in node.
+  1. The room kept under the figures was min(120, a fifth of the screen's height): 78 px at 390 high,
+     75 at 375, 72 at 360. The exit button is the same button on every screen: 52 px high with its foot
+     32 px above the bottom, its top 84 px up (measured in the page at eight sizes: tools/
+     chrome-rects.mjs). From 480 px of height down, a fifth of the height is less than the button and
+     12 px of air (96 px). At 667x375 this alone is the fault: no figure is held anywhere, and all
+     eleven are laid out down to y 297 with the button's top at 291.
+  2. A station never stands further than 0.8 of the layers' spacing from its plane (MAX_DIST: the
+     layer before it must stay behind the lens, and from 5 units a figure begins to fade). At 844x390
+     that holds five figures (Libra, Scorpius, Sagittarius, Gemini, Cancer; two at 740x360, five at
+     932x430) at 117.8 px to the world unit, where their 2 units of height and their discs are 254 to
+     259 px: taller than the safe area (250 px). The layout centred what did not fit, so it hung out at
+     both ends: y 57.6 to 316.6 for Scorpius, 10.6 px into the button. A larger room under the figures
+     alone would not have cured these: they cannot be drawn smaller.
+  The knots: the rule was inside "if (portrait)". Cellestial's rings: the clear space was kept in the
+  portrait branch only; everywhere else the star was its world size whatever stood beside it.
+
+  WHAT WAS CHANGED (src/experience/sky/layout.ts, config.ts; no other file of the site)
+  - config.ts, B11 = { height 52, above 32, clear 12, head 12 }: the exit button as the stylesheet
+    makes it (a node test reads Sky.astro and BrassButton.astro and fails if either number moves).
+  - The safe area's bottom is min(120, max(a fifth of the height, 96)). From 480 px of height up it is
+    what it was, to the number. Under 480 it is 96 px: at 390 high the figures are fitted into y 62.4
+    to 294 and not 62.4 to 312, and a star's glow pad (0.3 of its radius) keeps its disc 3 to 4 px
+    further from the button still.
+  - A figure that is held at its furthest stand and is taller than the safe area is no longer centred
+    across it: it is moved up until its lowest disc stands 12 px above the button, as long as its
+    topmost disc stays 12 px inside the screen's top. The rule moves a figure only when a disc is
+    lower than (height - 96): nothing that was clear is moved (1280x560, where five figures are held
+    too, 13.3 px clear: not moved, tested).
+  - The knots' rule on every screen (the same numbers: KNOT in config.ts).
+  - Cellestial's rings on every screen that is not a portrait phone: the star stays its world size; a
+    star of Virgo whose disc would stand nearer than 2 px (PORTRAIT.b3Clear) to the rings' full reach
+    is drawn just small enough to stand 2 px clear, never smaller than the faintest star is drawn
+    (MAG.faintScale); if it then still would touch, the rings give way (b3 under 1; at no size tried).
+    The portrait branch is untouched.
+
+  (This entry is being written as the work goes: the layout and its tests are in; the browser's
+  checks, the pictures and the suites follow in the next commits.)
