@@ -1065,3 +1065,47 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
     chrome-compare-after-d.log). Its sheets are rebuilt and committed (refs/chrome/compare/: closed,
     logo, bars, menu), since every one of them shows the logo.
   Run again with: node scripts/build-assets.mjs chrome.
+
+  a. B7 OVER THE FAR FIGURES' POINTS ON THE DESKTOP (finding 2's minor a; closing list 7). DONE.
+  REPRODUCED (round-2/tools/b7.mjs --only all --sizes desk, extended to count them; kept as
+  round-2/b7/desk-before/: all-desk-1.jpg, all-desk-2.jpg, b7-desk.txt): the stars of the next four
+  figures, where the sky shows them, whose disc lies in or on a line's box: Pisces 24, Aries 6,
+  Cancer 1; the other nine 0. 31 in all.
+  THE CAUSE, in the code: the search that places the words (src/experience/sky/meaning.ts) knows the
+  figure's own stars and lines, the chrome and the exit button. On the phone it also knows the stars
+  of the three figures further on (TALL.far = 3); on the desktop it did not (WIDE.far = 0, "they are
+  small behind large type"). Those stars gather about the middle of the screen, and at Pisces, Aries
+  and Cancer the middle is where the figure's free room with the most air is.
+  CHANGED: src/experience/sky/meaning.ts. On the desktop the points of the four figures further on
+  are counted (WIDE.far = 4), by the brief's own rule, "where another free room is as good":
+  - a point BARS a place (no point within 24 px of the words' box plus its own size: WIDE.farClear),
+    but it is not counted in the air by which a place is chosen, so a figure whose words were clear
+    of the points already is not moved by them;
+  - at each type size the search is made clear of the points first and, if no place is free, again
+    without them BEFORE the type is made smaller (WIDE.farYields): the points give way, not the type.
+    (At 1440x900 this second search is not needed by any of the twelve.)
+  The phone's search is untouched in what it does (TALL: farYields false, the points counted as air,
+  as piece 3 left it). A first version counted the points as air on the desktop too: it cleared the
+  three figures but also took Taurus's words down to 96 px above the exit button for points that were
+  21 px away and touching nothing; that is why a point only bars.
+  CHECKED AGAIN, production build, real GPU:
+  - round-2/tools/b7.mjs --only all --sizes desk (it now gives the desktop a verdict too: 54 px type,
+    nothing touched, no far point on the words): 12 of 12 PASS; far points on the words 0 at every
+    figure (was 31), the nearest 36 px from the words' box at the least (Scorpius), 38 at Cancer, 39
+    at Aries, 41 at Pisces. All twelve still in 54 px type, nothing touched, 93 px or more from the
+    nearest star's edge, 96 to 670 px above the exit button (unchanged range). Moved: Pisces (626,410
+    -> 656,270), Aries (576,493 -> 516,563), Cancer (806,402 -> 806,282); nudged: Scorpius and Taurus
+    (10 and 20 px to the left, a point was 21 to 26 px off); the other seven where they were.
+    round-2/b7/all-desk-1.jpg, all-desk-2.jpg, b7-desk.txt. Looked at: at Pisces, Aries and Cancer
+    the words stand beside the cluster of far points, none at a letter.
+  - The writing, recorded in real time (--only write --sizes desk): round-2/b7/write-aries-desk.jpg
+    ("the Lamb" written by the bolt, cooled to brass, the far points above and to the right of it,
+    none at the "b"), write-leo-desk.jpg; no console errors.
+  - The phone is where piece 3 put it: --sizes phone,small: 24 of 24 PASS, and the size, place and
+    type of all twelve at 390x844 and at 360x740 are the same, figure for figure, as in piece 3's
+    b7.txt and b7-small.txt (compared line by line). round-2/b7/all-phone.jpg, all-small.jpg,
+    b7-phone-small.txt.
+  - tools/sky/meaning.mjs 38 of 38; tools/sky/meaning-all.mjs 24 of 24 (round-2/logs-piece-4/). Their
+    sheets are rebuilt and committed (refs/sky/compare/b7-all-desk.jpg and the meaning-*.jpg).
+  NOT DONE: no test in node. The search measures the words in the page (offsetWidth), so it cannot
+  run without a browser; its check is b7.mjs's verdict above.

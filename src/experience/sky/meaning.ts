@@ -53,8 +53,19 @@ const WIDE = {
 	reach: -12,
 	/** The line is never broken. */
 	rows: [1],
-	/** The stars of the figures further on are not counted (they are small behind large type). */
-	far: 0,
+	/**
+	 * The stars of this many figures further on show through as points in the middle of the
+	 * screen, which is where a figure's free room often is: the words keep clear of them…
+	 */
+	far: 4,
+	/**
+	 * …where there is other free room for type of the same size. Where there is none the
+	 * points give way, not the type: the words stand as if the points were not there. And a
+	 * point only bars a place (within `farClear` pixels of it): it is not counted in the air
+	 * a place is chosen by, so a figure whose words were clear of them already stays put.
+	 */
+	farYields: true,
+	farClear: 24,
 };
 const TALL = {
 	sizes: [24, 22, 21, 20, 18],
@@ -74,6 +85,9 @@ const TALL = {
 	 * the free room often is: the words keep clear of those points too.
 	 */
 	far: 3,
+	/** Here the type gives way to them (a size smaller), and they count as air, as any star does. */
+	farYields: false,
+	farClear: 0,
 };
 /** The writing, seconds. */
 const WRITE = {
@@ -312,6 +326,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			}
 		}
 		// And, where it is asked for, the stars of the figures further on, as small as they are there.
+		const farBlocks: typeof blocks = [];
 		for (let n = 1; n <= (by?.far ?? 0); n++) {
 			const further = mod(figure + n, FIGURES);
 			const planN = layout.plans[further];
@@ -324,7 +339,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 					i === planN.epicentre
 						? B3.ring * layout.b3 * p.scale
 						: Math.max(fitN.starR * layout.sizeOf(star) * p.scale, 1.25);
-				blocks.push({ x: p.x, y: p.y, r: r + 5 });
+				farBlocks.push({ x: p.x, y: p.y, r: r + 5 });
 			}
 		}
 		const xs = stars.map((s) => s.x);
@@ -342,21 +357,39 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		const lines = linesOf(figure).length;
 		/**
 		 * What a box of the words at (cx, y) would lie on, and how much air it
-		 * has: the distance from its edge to the nearest star or line.
+		 * has: the distance from its edge to the nearest star or line. With `far`
+		 * the points of the figures further on count like any star.
 		 */
-		const lie = (cx: number, y: number, w: number, h: number): { hits: number; air: number } => {
+		const lie = (
+			cx: number,
+			y: number,
+			w: number,
+			h: number,
+			far = true,
+		): { hits: number; air: number } => {
 			const x0 = cx - w / 2 - 4;
 			const x1 = cx + w / 2 + 4;
 			const y0 = y - 4;
 			const y1 = y + h + 4;
 			let hits = 0;
 			let air = Number.POSITIVE_INFINITY;
+			const gap = (s: { x: number; y: number; r: number }) =>
+				Math.hypot(Math.max(x0 - s.x, 0, s.x - x1), Math.max(y0 - s.y, 0, s.y - y1)) - s.r;
 			for (const s of blocks) {
-				const dx = Math.max(x0 - s.x, 0, s.x - x1);
-				const dy = Math.max(y0 - s.y, 0, s.y - y1);
-				const d = Math.hypot(dx, dy) - s.r;
+				const d = gap(s);
 				if (d < 0) hits++;
 				if (d < air) air = d;
+			}
+			if (far) {
+				for (const s of farBlocks) {
+					const d = gap(s);
+					if (by?.farYields) {
+						if (d < by.farClear) hits++;
+						continue;
+					}
+					if (d < 0) hits++;
+					if (d < air) air = d;
+				}
 			}
 			// Standing on the chrome or on the exit button is worse than crossing any star or line.
 			if (x0 < CHROME.w && y0 < CHROME.h) hits += 100;
@@ -399,24 +432,28 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 					const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h - by.reach);
 					// Well above the exit button wherever it stands across the screen.
 					const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 + by.reach);
-					let top = Number.NEGATIVE_INFINITY;
-					let found: { cx: number; y: number } | null = null;
-					for (let y = fromY; y <= toY; y += by.step) {
-						for (let cx = fromX; cx <= toX; cx += by.step) {
-							const at = lie(cx, y, w, h);
-							if (at.hits > 0 || at.air < by.least) continue;
-							// Air first, up to a point; then the middle of the figure.
-							const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
-							const score = Math.min(at.air, by.air) * 3 - off * 0.35;
-							if (score > top) {
-								top = score;
-								found = { cx, y };
+					// Clear of the far figures' points first; and, where they yield, without them
+					// before the type is made any smaller.
+					for (const far of by.farYields && farBlocks.length > 0 ? [true, false] : [true]) {
+						let top = Number.NEGATIVE_INFINITY;
+						let found: { cx: number; y: number } | null = null;
+						for (let y = fromY; y <= toY; y += by.step) {
+							for (let cx = fromX; cx <= toX; cx += by.step) {
+								const at = lie(cx, y, w, h, far);
+								if (at.hits > 0 || at.air < by.least) continue;
+								// Air first, up to a point; then the middle of the figure.
+								const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
+								const score = Math.min(at.air, by.air) * 3 - off * 0.35;
+								if (score > top) {
+									top = score;
+									found = { cx, y };
+								}
 							}
 						}
-					}
-					if (found) {
-						best = { ...found, w, h };
-						break search;
+						if (found) {
+							best = { ...found, w, h };
+							break search;
+						}
 					}
 				}
 			}

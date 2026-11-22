@@ -19,6 +19,7 @@ const say = (s) => { console.log(s); log.push(s); };
 const browser = await launch({ gpu: true });
 let fails = 0;
 const tally = [];
+const farTotal = {};
 const all = CONSTELLATIONS.flatMap((c) => c.stars.map((s) => s.slot).filter(Boolean)).map((slot) => ({ slot, ask: 'A site for my bakery' }));
 const seed = { fn: (list) => { sessionStorage.setItem('cellestial:round', '1'); localStorage.setItem('cellestial:claims', JSON.stringify(list)); }, arg: all };
 const ready = async (o) => {
@@ -58,7 +59,7 @@ if (only.has('all')) for (const size of sizes) {
 		await o.page.evaluate((i) => window.__cellestial.sky.debug.setCoord(i), k);
 		await sleep(k === 11 ? 7000 : 4500);
 		const png = await o.page.screenshot({ type: 'png' });
-		const m = await o.page.evaluate(([name, slots]) => {
+		const m = await o.page.evaluate(([name, slots, further]) => {
 			const el = document.querySelector(`.sky-meaning[data-meaning="${name}"]`);
 			if (!el || el.hidden) return null;
 			const lines = [...el.querySelectorAll('.sky-meaning__line')].map((l) => { const q = l.getBoundingClientRect(); return { x: q.x, y: q.y, w: q.width, h: q.height, text: l.textContent.trim().replace(/\s+/g, ' ') }; });
@@ -68,8 +69,10 @@ if (only.has('all')) for (const size of sizes) {
 			const circles = slots.map((s) => (s ? hooks.starCircle(s) : core));
 			const rect = (sel) => { const e = document.querySelector(sel); if (!e) return null; const q = e.getBoundingClientRect(); return { x: q.x, y: q.y, w: q.width, h: q.height }; };
 			const cs = getComputedStyle(el);
-			return { text: el.textContent.trim().replace(/\s+/g, ' '), x: r.x, y: r.y, w: r.width, h: r.height, font: cs.fontSize, color: cs.color, lines, circles, b11: rect('[data-descend]'), logo: rect('.chrome-logo'), menu: rect('#chrome button[popovertarget]'), W: innerWidth, H: innerHeight };
-		}, [c.name, c.stars.map((s) => s.slot)]);
+			// Round 2, piece 4: the stars of the figures further on, where the sky shows them now.
+			const far = further.flatMap((list, n) => list.map((s) => (s ? hooks.starCircle(s) : null)).filter(Boolean).map((q) => ({ ...q, n: n + 1 })));
+			return { text: el.textContent.trim().replace(/\s+/g, ' '), x: r.x, y: r.y, w: r.width, h: r.height, font: cs.fontSize, color: cs.color, lines, circles, far, b11: rect('[data-descend]'), logo: rect('.chrome-logo'), menu: rect('#chrome button[popovertarget]'), W: innerWidth, H: innerHeight };
+		}, [c.name, c.stars.map((s) => s.slot), [1, 2, 3, 4].map((n) => CONSTELLATIONS[(k + n) % CONSTELLATIONS.length].stars.map((s) => s.slot))]);
 		if (!m) { say(`${size} ${c.name}: NO MEANING SHOWN`); cells.push({ img: png, label: `${k + 1} ${c.name}: none` }); continue; }
 		const boxes = m.lines.length ? m.lines : [m];
 		const cs = m.circles.filter(Boolean);
@@ -79,6 +82,10 @@ if (only.has('all')) for (const size of sizes) {
 			for (const q of cs) { const d = Math.hypot(Math.max(b.x - q.x, 0, q.x - (b.x + b.w)), Math.max(b.y - q.y, 0, q.y - (b.y + b.h))) - q.r; if (d < starGap) starGap = d; if (d < 0) hitsStar++; }
 			for (const [i, j] of c.lines) { const A = m.circles[i], B = m.circles[j]; if (A && B && segHitsRect(A, B, b)) hitsLine++; }
 		}
+		// Far points on the words: a point of one of the next four figures whose disc lies in or on a line's box.
+		const gapTo = (b, q) => Math.hypot(Math.max(b.x - q.x, 0, q.x - (b.x + b.w)), Math.max(b.y - q.y, 0, q.y - (b.y + b.h))) - q.r;
+		const farOn = m.far.filter((q) => boxes.some((b) => gapTo(b, q) < 0));
+		const farGap = m.far.length ? Math.min(...m.far.map((q) => Math.min(...boxes.map((b) => gapTo(b, q))))) : Infinity;
 		const over = (a, b) => a && b && a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 		const touch = [];
 		if (hitsStar) touch.push(`${hitsStar} STAR(S)`);
@@ -90,10 +97,17 @@ if (only.has('all')) for (const size of sizes) {
 		const col = await colour(png, m, dpr);
 		const toB11 = m.b11 ? Math.round(m.b11.y - (m.y + m.h)) : null;
 		const edge = Math.round(Math.min(m.x, m.y, m.W - m.x - m.w));
-		say(`${size} ${String(k + 1).padStart(2)} ${c.name.padEnd(12)} "${m.text}" ${Math.round(m.w)}x${Math.round(m.h)} at ${Math.round(m.x)},${Math.round(m.y)}; type ${m.font}; ${where} (figure x ${Math.round(figLeft)}..${Math.round(figRight)}, y ${Math.round(figTop)}..${Math.round(figBottom)}); nearest star's edge ${Math.round(starGap)} px; ${toB11} px above B11; ${edge} px from the nearest side/top; touches: ${touch.length ? touch.join(', ') : 'nothing'}; letters' mean colour ${col.mean} (${col.n} px, ${col.blue.toFixed(0)}% bluish); css colour ${m.color}`);
+		say(`${size} ${String(k + 1).padStart(2)} ${c.name.padEnd(12)} "${m.text}" ${Math.round(m.w)}x${Math.round(m.h)} at ${Math.round(m.x)},${Math.round(m.y)}; type ${m.font}; ${where} (figure x ${Math.round(figLeft)}..${Math.round(figRight)}, y ${Math.round(figTop)}..${Math.round(figBottom)}); nearest star's edge ${Math.round(starGap)} px; ${toB11} px above B11; ${edge} px from the nearest side/top; touches: ${touch.length ? touch.join(', ') : 'nothing'}; letters' mean colour ${col.mean} (${col.n} px, ${col.blue.toFixed(0)}% bluish); css colour ${m.color}; points of the next four figures shown ${m.far.length}, ON THE WORDS ${farOn.length}${farOn.length ? ` (${farOn.map((q) => `+${q.n} at ${Math.round(q.x)},${Math.round(q.y)} r ${q.r.toFixed(1)}`).join('; ')})` : ''}, the nearest ${Number.isFinite(farGap) ? `${Math.round(farGap)} px from the words' box` : 'none'}`);
+		farTotal[size] = (farTotal[size] ?? 0) + farOn.length;
 		cells.push({ img: png, label: `${k + 1} ${c.name}: "${m.text}"` });
 		// Round 2, piece 3: the phone's verdict. Nothing touched; and 40 px above the exit button
 		// unless the words stand in the figure's own room (inside its bounds).
+		// Round 2, piece 4: the desktop's verdict. Large type, nothing touched, and no point of a figure further on on the words.
+		if (size === 'desk') {
+			const ok = touch.length === 0 && farOn.length === 0 && m.font === '54px';
+			if (!ok) fails++;
+			tally.push(`${ok ? 'PASS' : 'FAIL'}  ${size} ${c.name}: touches ${touch.length ? touch.join(', ') : 'nothing'}; type ${m.font}; far points on the words ${farOn.length}, the nearest ${Number.isFinite(farGap) ? `${Math.round(farGap)} px away` : 'none shown'}; ${Math.round(starGap)} px from the nearest star's edge; ${toB11} px above the exit button`);
+		}
 		if (size !== 'desk') {
 			const ok = touch.length === 0 && (toB11 === null || toB11 >= 40 || where === 'within the figure\'s bounds');
 			if (!ok) fails++;
@@ -101,6 +115,7 @@ if (only.has('all')) for (const size of sizes) {
 		}
 	}
 	for (const t of tally.splice(0)) say(t);
+	say(`${size}: points of the figures further on that lie on the words, all twelve figures together: ${farTotal[size] ?? 0}`);
 	const studio = await o.page.evaluate(() => { const e = document.querySelector('.chrome-studio'); const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height, color: getComputedStyle(e).color }; });
 	const sc = await colour(await o.page.screenshot({ type: 'png' }), studio, dpr);
 	say(`${size} for comparison, the logo's "studio": letters' mean ${sc.mean}; css ${studio.color}`);
