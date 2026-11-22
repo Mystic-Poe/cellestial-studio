@@ -1332,3 +1332,60 @@ PIECE 5 — THE CLOSE-OUT
        --net slow4g         full 6.46        7.61        short 3.53  skip 4.38 / 4.29  Tab 6.38 (7.52)
        both                 full 6.65        7.79        short 3.83  skip 4.44 / 4.41  Tab 6.57 (7.71)
      11 of 11 in each: the owner's 6 to 8 s holds on the visitor's clock in all four.
+
+  4. THE SHEETS. Every scene's sheets in refs/<scene>/compare/ are the second full run's (2b).
+     LOOKED AT, after that run (ten sheets): refs/sky/compare/stations-phone.jpg (the six wide figures
+     stand tall, turned a quarter, each beside its real pattern; Cellestial's star clear of Virgo's
+     stars; Sagittarius and Taurus still dense at their middles, their stars drawn smaller),
+     b7-all-phone.jpg (all twelve meanings by their figures in brass, none on a star, the logo or the
+     exit button; "Jesus is King." under Leo's), handoff.jpg (the star there at every moment; t 1 and
+     reset() the same picture); refs/transitions/compare/fall-desk.jpg and fall-phone.jpg (every star
+     strikes with its own burst, the bursts fade into the roots' light over 0.8 to 1.2 s, no frame
+     where the light is gone at once, no white mass on the ground), teleport-desk.jpg and
+     teleport-phone.jpg (lines on black before, at and after the peak in all sixteen, each landing
+     right, the contact box open where it should be); refs/loading/compare/desk-1.jpg and phone-1.jpg
+     (seven moments beside the reference's, as before); refs/chrome/compare/logo.jpg (brass with its
+     blue lines at both sizes, beside the pack's two emblems).
+     Not opened by me after this run: the other rebuilt sheets (the Roots' sheets, which no piece of
+     this round changed the look of; the sky's desktop sheets; a5-desk.jpg, a5-phone.jpg, desk-2.jpg,
+     phone-2.jpg, short.jpg; handoff-phone.jpg; the warp strips; the chrome's other three).
+     THE EFFECTS' OWN SHEETS (refs/fx/compare/). Piece 1 had rebuilt the impact's two sheets and
+     measure.txt; piece 2 then changed the flash's clock and did not rebuild. Rebuilt now from the head
+     as THE EFFECTS' OWN SHEETS says (a clone of the repo outside it, the test page of 8385356 put
+     back, its soil picture's name brought up to date, its own dev server on another port; nothing
+     added to the site): the impact's, the warp's, flash-peak.jpg and rm.jpg came out byte for byte as
+     committed; the six flash-<dir>-<size>.jpg differ by 1.7 of 255 a channel on average and are
+     replaced; measure.txt is replaced. flash-down-desk.jpg looked at: thin blue lines with ring nodes
+     on black, white only at the hub, the test page's figures hidden from 0.45 to 0.55 and faint at
+     0.3 and 0.85, as before. measure.txt now: the flash without swap time 404 to 432 ms on the desktop
+     and 414 to 432 on the phone (it was 421 to 434; the rule is 300 to 500), the canvas at alpha 255
+     at the swap in 18 of 18; with a 400 ms swap 822 / 835 ms; with a 2 s swap 1433 / 1450; the warp
+     opaque from 803 to 944 ms of 1200 and 1191 to 1402 of 1800 (the swap at 840 and 1260); at rest 0
+     frames asked for. flash-real-page.jpg is not that tool's and is as it was.
+
+  5. THE PROTECTED SYSTEMS, at the head: "git diff a31d2ee HEAD -- workers src/onboard
+     src/scripts/contact-submit.ts src/scripts/start-flow.ts src/scripts/start-builder.ts public/admin
+     src/content/home.json src/config.ts" prints nothing (0 bytes). src/components/ContactForm.astro
+     against a31d2ee: one hunk (from line 47), all of it inside its <style> block (lines 39 to 127).
+     src/pages/contact.astro and src/pages/start/new.astro: five changed lines, each the value of a
+     class (one of them the string of classes the fields share). src/pages/start/index.astro: no
+     change. No markup, attribute, script or handler of the form, /admin or /start differs.
+
+  6. PROGRESS.md brought up to date: "Exact next step" (round 2 done, the third look next), "Final
+     verification" (a part "Round 2"), the rows of "Where things stand" this round changed, the calls
+     made where the spec is silent (the quarter-turn, the fall, B7 on the phone, the empty star's
+     picture, the tab icon), what is in refs/ and tools/, the Log.
+
+  CHANGED BY THE CLOSE-OUT: tools/transitions/measure.mjs (how the warp's cover is read; see THE
+  WARP'S COVER), refs/verification/round-2/tools/warp-cover.mjs (new), the sheets and logs named
+  above, PROGRESS.md, this file. No file under src/, public/, scripts/ or workers/.
+  LEFT, AND FOR THE THIRD LOOK TO KNOW:
+  - The effects layer's 120 ms beat draws the warp once more between two frames when a frame takes
+    longer than that (software drawing with the CPU at a quarter). Nothing wrong is shown; it is one
+    more drawing on a device already slow. Not changed: the close-out changes no behaviour.
+  - tools/loader/measure.mjs on the production build must be given --only full,short,skip,key,
+    quiet-keys,broken,resize,no-storage: its other two cases cannot be made there and "sky 30 s late"
+    then fails by construction.
+  - Every number here is headless Chromium on this machine's GPU. No real phone.
+  BEFORE THE LAST COMMIT (11:19): pnpm build (4 pages), pnpm test (138 of 138; 15, 16, 14), pnpm lint
+  (103 files), pnpm typecheck: all pass. Both servers stopped; git status clean but for claude-vault/.
