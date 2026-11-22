@@ -198,7 +198,8 @@ export const mount: MountSky = (ctx) => {
 	}
 
 	const comb = createHoneycomb(LATTICE);
-	const plans = planFigures(comb.cells);
+	/** Every figure both ways. Which way each stands is the layout's to say: `layout.plans`. */
+	const planSet = planFigures(comb.cells);
 	const measure = () => {
 		const box = canvas.getBoundingClientRect();
 		return {
@@ -207,7 +208,7 @@ export const mount: MountSky = (ctx) => {
 		};
 	};
 	const first = measure();
-	let layout = createLayout(first.w, first.h, plans);
+	let layout = createLayout(first.w, first.h, planSet);
 
 	let world: World;
 	try {
@@ -359,7 +360,7 @@ export const mount: MountSky = (ctx) => {
 	/** How far in front of its plane the camera stands to show one star large. */
 	const closeDepth = (figure: number, star: number) => {
 		const fit = layout.fits[figure];
-		const s = plans[figure]?.stars[star];
+		const s = layout.plans[figure]?.stars[star];
 		if (!fit || !s) return 1;
 		const px = Math.min(FOCUS.size * Math.min(layout.w, layout.h), FOCUS.maxPx);
 		// Never so close that the star begins to fade against the lens.
@@ -371,7 +372,7 @@ export const mount: MountSky = (ctx) => {
 	 * safe area. Given as an offset from the flight path at `pos`.
 	 */
 	const closeUp = (layer: number, figure: number, star: number, pos: number) => {
-		const s = plans[figure]?.stars[star];
+		const s = layout.plans[figure]?.stars[star];
 		if (!s) return { x: 0, y: 0, z: 0 };
 		const depth = closeDepth(figure, star);
 		const scale = layout.focal / depth;
@@ -524,7 +525,7 @@ export const mount: MountSky = (ctx) => {
 		const at = slotToStar(slot);
 		if (!at || (fallen && !fall)) return null;
 		computeCamera();
-		const plan = plans[at.constellation];
+		const plan = layout.plans[at.constellation];
 		const fit = layout.fits[at.constellation];
 		const star = plan?.stars[at.star];
 		if (!fit || !star) return null;
@@ -573,7 +574,7 @@ export const mount: MountSky = (ctx) => {
 		if (!on) return;
 		const near = nearLayer();
 		const figure = mod(near, FIGURES);
-		const plan = plans[figure];
+		const plan = layout.plans[figure];
 		const fit = layout.fits[figure];
 		if (!plan || !fit) return;
 		const z = -near * SPACING;
@@ -769,7 +770,7 @@ export const mount: MountSky = (ctx) => {
 			const depth = depthOf(k);
 			if (depth > FADE.far[2]) break;
 			const figure = mod(k, FIGURES);
-			const plan = plans[figure];
+			const plan = layout.plans[figure];
 			const fit = layout.fits[figure];
 			if (!plan || !fit) continue;
 			const scale = layout.focal / depth;
@@ -1046,7 +1047,7 @@ export const mount: MountSky = (ctx) => {
 		const device = window.devicePixelRatio || 1;
 		if (next.w === layout.w && next.h === layout.h && device === deviceDpr) return;
 		const coord = layout.coordOf(flight.pos);
-		layout = createLayout(next.w, next.h, plans);
+		layout = createLayout(next.w, next.h, planSet);
 		flight.rebase(layout, layout.posOf(coord));
 		if (device !== deviceDpr) {
 			deviceDpr = device;
@@ -1145,7 +1146,7 @@ export const mount: MountSky = (ctx) => {
 			},
 			nearestVertexToStar(slot) {
 				const at = slotToStar(slot);
-				const star = at ? plans[at.constellation]?.stars[at.star] : undefined;
+				const star = at ? layout.plans[at.constellation]?.stars[at.star] : undefined;
 				if (!at || !star) return null;
 				computeCamera();
 				return {
@@ -1173,7 +1174,7 @@ export const mount: MountSky = (ctx) => {
 		nearestEmptyStar(x, y) {
 			computeCamera();
 			const near = nearLayer();
-			const plan = plans[mod(near, FIGURES)];
+			const plan = layout.plans[mod(near, FIGURES)];
 			if (!plan) return null;
 			let best: SlotId | null = null;
 			let bestD = Number.POSITIVE_INFINITY;
@@ -1291,13 +1292,14 @@ export const mount: MountSky = (ctx) => {
 				safe: { ...layout.safe, x: layout.safeX, y: layout.safeY },
 				starPx: layout.starPx,
 				stations: layout.fits.map((fit, i) => ({
-					figure: plans[i]?.name,
+					figure: layout.plans[i]?.name,
+					turned: layout.plans[i]?.turned ?? false,
 					dist: fit.dist,
 					pxPerUnit: fit.scale,
 					x: fit.sx,
 					y: fit.sy,
-					pass: plans[i]?.pass,
-					clearance: plans[i]?.clearance,
+					pass: layout.plans[i]?.pass,
+					clearance: layout.plans[i]?.clearance,
 				})),
 				b3: {
 					ringPx: B3.ring * layout.b3 * (layout.fits[0]?.scale ?? 0),

@@ -767,3 +767,85 @@ PIECE 2 — THREE CLOCKS (second look: the blink at the end of the hand-off, the
   src/components/scenes/Loader.astro, tools/loader/measure.mjs; tests src/experience/sky-intro.test.ts,
   loader-lightning.test.ts, fx-flash-time.test.ts, loader-clock.test.ts; round-2/tools/a5-pose.mjs,
   flash-dip.mjs, flash-level.mjs, clock-credit.mjs (new), a5-probe.mjs (options).
+
+PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 of the second look)
+
+  REPRODUCED first, on the production build as it stood (round-2/phone-sky/before/: phone-sky.txt,
+  cellestial-star.jpg, stations-empty.jpg, dense-figures.jpg): Cellestial's star 130 px across with
+  four of Virgo's stars 43, 50, 51 and 60 px from its centre, sitting on its rings; Virgo 20% of the
+  screen's height, Leo 22, Aquarius 23, Pisces and Aries 26, Capricornus 27; stars overlapping by 59%
+  (Aquarius), 64% (Taurus), 43% (Pisces); seven taps in an overlap taking the neighbour.
+
+  THE CAUSE. One fact, in src/experience/sky/layout.ts: a figure is fitted, north up, into the safe
+  area of the screen, and Virgo is fitted about Cellestial's star, which stays in the very middle. A
+  wide figure on a screen 390 px wide is therefore seen from far off (Virgo: 150 px to a world unit),
+  and its stars stand 43 to 60 px from Cellestial's; the star was then forced up to 130 px for the
+  hand (B3_PORTRAIT_PX), 65 px of ring over stars 43 px away, and the stars were drawn over the rings
+  so that none was hidden. Known from the layout's own numbers (the orchestrator's, and mine again
+  from createLayout), and seen in the before sheet.
+
+  THE RULING carried out: on a portrait screen a wide figure is turned a quarter counter-clockwise
+  ((x, y) -> (-y, x): north to the left, the figure as it stands when it rises in the east). The star
+  pattern is not changed. This reverses "north stays up".
+
+  WHAT WAS CHANGED (first part: the turn, the star, the knots; B7 and the rest follow below)
+  - src/experience/sky/layout.ts. planFigures() now makes every figure both ways (PlanSet: upright
+    and turned; a turned figure's way through its plane is found again for its turned stars, because
+    the honeycomb is not the same after a quarter-turn). createLayout() chooses: on a portrait screen
+    (its own test, height > width and width <= 720) a figure is turned when its turned fit is at least
+    PORTRAIT.turnGain (1.2) times its upright fit; nowhere else is anything turned. The choice is
+    layout.plans, and that is the ONE place a star's x and y come from: the fits, the camera's path
+    (cameraAt reads plans[k].pass), the world's geometry, the sky's hit-testing, buttons, close-up,
+    fall and beads' targets, answer.ts and meaning.ts all read layout.plans.
+      The brief's rule said 1.25. At 390x844 and 360x740 the six gain 1.52 to 1.88 and the next best
+      1.10 (Taurus), so 1.2 picks the same six; it is 1.2 because on the shortest phone (320x568)
+      Virgo gains 1.249, and left upright there its star could be no more than 37 px across.
+  - src/experience/sky/gl/world.ts. The stars' and lines' buffers were filled once, from the plans
+    the world was made with. They are filled by place(layout) now, when the world is made and at every
+    resize with a new layout, so a phone turned on its side redraws the figures the other way. A
+    star's size goes to the GPU as the layout's sizeOf(star) (it was the star's own scale and a
+    uniform floor, uMinScale, which is gone from the shader): one fact for size too.
+  - src/experience/sky/index.ts. Its own copy of the plans is gone; every use is layout.plans.
+    debug.stats().stations[i].turned says which way a figure stands.
+  - Cellestial's star (layout.ts, config.ts PORTRAIT). On a portrait screen it is drawn at its world
+    size on the turned Virgo (b3 = 1: 96.9 px across at 390x844, 87.7 at 360x740), never under
+    PORTRAIT.b3MinPx (84) where there is room; a star of Virgo whose disc would come within
+    PORTRAIT.b3Clear (2 px) of the rings' full reach is drawn at the floor size (13 px: Virgo's bright
+    star, 16 px, 65 px from the centre); and if one still would, the rings give way (375x667: 77 px;
+    360x640: 70; 320x568: 54). The stars are drawn under the rings again, as on the desktop
+    (layout.b3Clear). The forced 130 px is used only with the switch off.
+  - Knots (layout.ts, config.ts KNOT). On a portrait screen two stars of a figure that would cover
+    each other by more than a third of the smaller one's width are both drawn at 0.6 of their distance,
+    not under 9 px. One pair needs more than the brief's rule gives: Taurus's closest two stand 9.4 px
+    apart at 390 wide (8.5 at 360), and at 9 px each they would still be 48% (53%) into each other.
+    Where 9 px leaves more than a third, the two are drawn at 0.72 of their distance (30.6%), never
+    under 6 px: 6.8 px each at 390, 6.1 at 360. Only the picture changes: the button stays 44 px.
+  - THE SWITCH: PORTRAIT.turn in src/experience/sky/config.ts. false, and every figure stands north up
+    on every screen and the phone's Cellestial star is the forced 130 px with Virgo's stars over its
+    rings, as it was (the knots stay drawn smaller). createLayout(w, h, set, { turn: false }) is the
+    same thing for one layout, which is how the test reaches it.
+
+  THE TEST: src/experience/sky-layout.test.ts, 11 tests (node --test). They fail on the old layout:
+  exactly the six are turned at 390x844 and 360x740; nothing on a desktop, on a phone on its side, or
+  with the switch off; an unturned layout is the upright figures number for number; a turned figure
+  is the same stars a quarter-turn round with the same slots, seeds and lines; the camera's way
+  through a turned plane is clear of its stars and of Cellestial's; the six stand at least half the
+  screen high; the rings end 2 px short of every star of Virgo at six phone sizes; the star is its
+  world size and at least 84 px at the two judged; no two stars more than a third into each other;
+  a phone turned on its side and back has the layout it had.
+
+  THE DESKTOP IS UNTOUCHED: round-2/tools/desk-same.mjs (new) captures stations 1, 6, 9 and 12 at
+  1440x900 on the production build with the sky's clock held at 2 s and the quality level held at 0,
+  the sky empty and with eight stars lit, the logo hidden (its light runs on the page's clock). The
+  build as it stood, twice: 0 pixels differ between the two runs. Then this build against it: 0 pixels
+  differ in all eight (round-2/phone-sky/desk-after/desk-same.txt; the before pictures are
+  desk-before/). (A first attempt differed in the lit captures by a faint honeycomb: the seeded claims
+  light themselves 2.5 s after the page is up, and the capture had not waited for them; the old build
+  showed exactly the same difference against itself. The script waits 4 s now.)
+
+  CHECKED AGAIN, 390x844, production (round-2/phone-sky/phone-sky-stations.txt, cellestial-star.jpg,
+  stations-empty.jpg, dense-figures.jpg): Virgo 56% of the height, Capricornus 61, Aquarius 73,
+  Pisces 63, Aries 64, Leo 73; every star on screen, 23.9 px or more from the sides, clear of the
+  logo, the menu and the exit button; deepest overlap 30.6% (Taurus), Aquarius 23%, Pisces 9%;
+  Cellestial's star 96.9 px across, the four nearest discs 3.9, 13.7, 16.5 and 30.2 px beyond the
+  rings' full reach, and the rings as drawn 7.7 and 4.3 px from the nearest disc at two moments.

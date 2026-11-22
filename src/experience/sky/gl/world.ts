@@ -374,42 +374,76 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 	const starState: InstancedBufferAttribute[] = [];
 	/** For each figure, the instance index of each star (-1 for B3, which is not a star sprite). */
 	const starIndex: Int32Array[] = [];
+	const lineEnds: { a: InstancedBufferAttribute; b: InstancedBufferAttribute }[] = [];
+	const starPlace: InstancedBufferAttribute[] = [];
 	for (const plan of layout.plans) {
-		const a = new Float32Array(plan.lines.length * 3);
-		const b = new Float32Array(plan.lines.length * 3);
-		for (const [i, [p, q]] of plan.lines.entries()) {
-			const from = plan.stars[p];
-			const to = plan.stars[q];
-			if (!from || !to) continue;
-			a[i * 3] = from.x;
-			a[i * 3 + 1] = from.y;
-			b[i * 3] = to.x;
-			b[i * 3 + 1] = to.y;
-		}
+		const ends = {
+			a: new InstancedBufferAttribute(new Float32Array(plan.lines.length * 3), 3),
+			b: new InstancedBufferAttribute(new Float32Array(plan.lines.length * 3), 3),
+		};
 		const lg = instanced(lineQuad, plan.lines.length);
-		lg.setAttribute('aA', new InstancedBufferAttribute(a, 3));
-		lg.setAttribute('aB', new InstancedBufferAttribute(b, 3));
+		lg.setAttribute('aA', ends.a);
+		lg.setAttribute('aB', ends.b);
 		lineGeo.push(lg);
+		lineEnds.push(ends);
 
 		const index = new Int32Array(plan.stars.length).fill(-1);
-		const data: number[] = [];
 		let n = 0;
-		for (const [i, star] of plan.stars.entries()) {
-			if (i === plan.epicentre) continue;
-			index[i] = n++;
-			data.push(star.x, star.y, star.scale, star.seed);
+		for (let i = 0; i < plan.stars.length; i++) {
+			if (i !== plan.epicentre) index[i] = n++;
 		}
 		const state = new Float32Array(n * 4);
 		for (let i = 0; i < n; i++) state[i * 4 + 1] = NEVER;
 		const stateAttr = new InstancedBufferAttribute(state, 4);
 		stateAttr.setUsage(DynamicDrawUsage);
+		const where = new InstancedBufferAttribute(new Float32Array(n * 4), 4);
 		const sg = instanced(spriteQuad, n);
-		sg.setAttribute('aStar', new InstancedBufferAttribute(new Float32Array(data), 4));
+		sg.setAttribute('aStar', where);
 		sg.setAttribute('aState', stateAttr);
 		starGeo.push(sg);
 		starState.push(stateAttr);
+		starPlace.push(where);
 		starIndex.push(index);
 	}
+
+	/**
+	 * Where the stars and lines of each figure are, and how large each star is
+	 * drawn: read from the layout's plans, and read again whenever the layout
+	 * changes, because a figure can stand another way in another viewport (a
+	 * portrait screen turns the wide ones) and a star can have another size.
+	 * A figure always has the same stars and lines, so only numbers change.
+	 */
+	let placed: Layout | null = null;
+	const place = (from: Layout) => {
+		if (placed === from) return;
+		placed = from;
+		for (const [f, plan] of from.plans.entries()) {
+			const ends = lineEnds[f];
+			const stars = starPlace[f];
+			const index = starIndex[f];
+			if (!ends || !stars || !index) continue;
+			for (const [i, [p, q]] of plan.lines.entries()) {
+				const a = plan.stars[p];
+				const b = plan.stars[q];
+				if (!a || !b) continue;
+				ends.a.array[i * 3] = a.x;
+				ends.a.array[i * 3 + 1] = a.y;
+				ends.b.array[i * 3] = b.x;
+				ends.b.array[i * 3 + 1] = b.y;
+			}
+			ends.a.needsUpdate = ends.b.needsUpdate = true;
+			for (const [i, star] of plan.stars.entries()) {
+				const n = index[i] ?? -1;
+				if (n < 0) continue;
+				stars.array[n * 4] = star.x;
+				stars.array[n * 4 + 1] = star.y;
+				stars.array[n * 4 + 2] = from.sizeOf(star);
+				stars.array[n * 4 + 3] = star.seed;
+			}
+			stars.needsUpdate = true;
+		}
+	};
+	place(layout);
 
 	const b4 = ASSETS.sky.b4Empty;
 	const b5 = ASSETS.sky.b5LitAdd;
@@ -421,7 +455,6 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		uTime,
 		uIdle,
 		uBaseR: { value: 0.03 },
-		uMinScale: { value: 0 },
 		uAlpha: { value: 0 },
 		uNear: { value: new Vector2(FADE.near[0], FADE.near[1]) },
 		uFar: { value: new Vector3(FADE.far[0], FADE.far[1], FADE.far[2]) },
@@ -606,6 +639,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 
 	const resize = (next: Layout, ratio: number) => {
 		layout = next;
+		place(next);
 		dpr = ratio;
 		renderer.setPixelRatio(ratio);
 		renderer.setSize(next.w, next.h, false);
@@ -718,13 +752,11 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 				const u = slot.stars.material.uniforms;
 				u.uOffset?.value.set(0, 0, z);
 				if (u.uBaseR) u.uBaseR.value = fit.starR;
-				if (u.uMinScale) u.uMinScale.value = layout.minScale;
 				if (u.uAlpha) u.uAlpha.value = f.stars;
 				u.uFall?.value.set(f.fallT, f.gravity, FALL.stagger, FALL.trail * f.trail);
-				// Where Cellestial's star is drawn larger than its world size (a portrait screen) its
-				// rings reach over Virgo's nearest stars: there the stars are drawn over the rings, so
-				// that none is hidden.
-				slot.stars.renderOrder = order + (layout.b3 > 1 ? 12 : 2);
+				// Cellestial's rings end short of Virgo's stars and are drawn over the figure. Only
+				// where they do not (`b3Clear`) are the stars drawn over the rings, so that none is hidden.
+				slot.stars.renderOrder = order + (layout.b3Clear ? 2 : 12);
 				slot.stars.visible = true;
 			}
 		}

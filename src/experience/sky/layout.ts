@@ -8,7 +8,18 @@
 
 import { CONSTELLATIONS } from '../../content/constellations.ts';
 import type { SlotId } from '../contracts.ts';
-import { B3, B3_PORTRAIT_PX, FIGURES, FOCAL, MAG, SAFE, SPACING, STAR_PX } from './config.ts';
+import {
+	B3,
+	B3_PORTRAIT_PX,
+	FIGURES,
+	FOCAL,
+	KNOT,
+	MAG,
+	PORTRAIT,
+	SAFE,
+	SPACING,
+	STAR_PX,
+} from './config.ts';
 
 export const mod = (n: number, m: number) => ((n % m) + m) % m;
 export const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
@@ -36,10 +47,17 @@ export interface PlanStar {
 	readonly seed: number;
 }
 
-/** A figure, laid out about the flight axis. The same for every viewport. */
+/**
+ * A figure, laid out about the flight axis: as the data has it (north up), or
+ * turned a quarter counter-clockwise. A layout chooses one of the two for each
+ * figure, and everything that needs a star's place reads it from the layout's
+ * `plans`: nothing else knows that a figure can be turned.
+ */
 export interface FigurePlan {
 	readonly index: number;
 	readonly name: string;
+	/** Turned a quarter counter-clockwise: north to the left, as the figure stands when it rises. */
+	readonly turned: boolean;
 	readonly stars: readonly PlanStar[];
 	readonly lines: readonly (readonly [number, number])[];
 	/** Index of the star that is B3, or -1. It sits on the axis. */
@@ -76,20 +94,34 @@ function distanceToSegment(
 	return Math.hypot(px - ax - dx * t, py - ay - dy * t);
 }
 
+/** The twelve figures, each both ways. A layout takes one of the two for each figure. */
+export interface PlanSet {
+	/** North up: the figures as the data has them. */
+	readonly upright: readonly FigurePlan[];
+	/** The same stars a quarter-turn counter-clockwise: (x, y) -> (-y, x). */
+	readonly turned: readonly FigurePlan[];
+}
+
 /**
- * The twelve figures about the flight axis. `cells` are the centres of the
- * honeycomb's cells: the path goes through the middle of one, so that no
- * lattice line ever meets the lens either.
+ * The twelve figures about the flight axis, upright and turned. `cells` are
+ * the centres of the honeycomb's cells: the path goes through the middle of
+ * one, so that no lattice line ever meets the lens either. The honeycomb is
+ * not the same after a quarter-turn, so a turned figure's way through is
+ * found again for its turned stars.
  */
-export function planFigures(cells: Float32Array): FigurePlan[] {
+export function planFigures(cells: Float32Array): PlanSet {
+	return { upright: planAll(cells, false), turned: planAll(cells, true) };
+}
+
+function planAll(cells: Float32Array, turned: boolean): FigurePlan[] {
 	return CONSTELLATIONS.map((figure, index) => {
 		const epicentre = figure.epicentre ?? -1;
 		const origin = epicentre >= 0 ? figure.stars[epicentre] : undefined;
 		const ox = origin?.x ?? 0;
 		const oy = origin?.y ?? 0;
 		const stars: PlanStar[] = figure.stars.map((s, i) => ({
-			x: s.x - ox,
-			y: s.y - oy,
+			x: turned ? -(s.y - oy) : s.x - ox,
+			y: turned ? s.x - ox : s.y - oy,
 			scale: magScale(s.mag),
 			slot: s.slot,
 			seed: hash2(index, i),
@@ -124,6 +156,7 @@ export function planFigures(cells: Float32Array): FigurePlan[] {
 		return {
 			index,
 			name: figure.name,
+			turned,
 			stars,
 			lines: figure.lines,
 			epicentre,
@@ -179,10 +212,26 @@ export interface Layout {
 	 * large enough to be seen and touched. Use `sizeOf` and never `star.scale`.
 	 */
 	readonly minScale: number;
-	/** How much larger than its world size Cellestial's star is drawn here (1 or more). */
+	/**
+	 * Cellestial's star here, as a multiple of its world size: 1 everywhere but
+	 * on a portrait screen, where it is never drawn too small for the hand and
+	 * never so large that its rings would reach one of Virgo's stars.
+	 */
 	readonly b3: number;
+	/**
+	 * Its rings end short of every star of Virgo at Virgo's station, so nothing
+	 * needs to be drawn over them. False only on a portrait screen with
+	 * `PORTRAIT.turn` off: there the star is the size it was before the turn
+	 * (`B3_PORTRAIT_PX`), its rings reach over Virgo's nearest stars, and those
+	 * are drawn over the rings so that none is hidden.
+	 */
+	readonly b3Clear: boolean;
 	/** A star's size in this viewport, as a multiple of the figure's base star radius. */
 	sizeOf(star: PlanStar): number;
+	/**
+	 * The twelve figures as they stand in this viewport: each upright, or (on a
+	 * portrait screen, a wide figure) turned. The one place a star's x and y come from.
+	 */
 	readonly plans: readonly FigurePlan[];
 	readonly fits: readonly FigureFit[];
 	/** `pos` of layer k's station. */
@@ -202,7 +251,17 @@ const GLOW_PAD = 1.3;
 /** The furthest a station may stand from its plane. */
 const MAX_DIST = 0.8 * SPACING;
 
-export function createLayout(w: number, h: number, plans: readonly FigurePlan[]): Layout {
+export interface LayoutOptions {
+	/** Whether a portrait screen turns its wide figures. `PORTRAIT.turn` when left out. */
+	readonly turn?: boolean;
+}
+
+export function createLayout(
+	w: number,
+	h: number,
+	set: PlanSet,
+	options: LayoutOptions = {},
+): Layout {
 	const width = Math.max(1, w);
 	const height = Math.max(1, h);
 	const focal = FOCAL * Math.max(width, height);
@@ -219,14 +278,18 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		? STAR_PX.portrait
 		: clamp(STAR_PX.base + STAR_PX.slope * Math.min(width, height), STAR_PX.min, STAR_PX.max);
 	const minScale = portrait ? STAR_PX.floor / starPx : 0;
-	const sizeOf = (star: PlanStar) => Math.max(star.scale, minScale);
+	/** The stars this viewport draws at a size of its own (a portrait screen only): see below. */
+	const sizes = new Map<PlanStar, number>();
+	const natural = (star: PlanStar) => Math.max(star.scale, minScale);
+	const sizeOf = (star: PlanStar) =>
+		(sizes.size > 0 ? sizes.get(star) : undefined) ?? natural(star);
 
 	// Room about the middle of the viewport, to each side.
 	const right = Math.max(40, width / 2 - side);
 	const up = Math.max(40, height / 2 - safe.top);
 	const down = Math.max(40, height / 2 - safe.bottom);
 
-	const fits: FigureFit[] = plans.map((plan) => {
+	const fit = (plan: FigurePlan): FigureFit => {
 		const pinned = plan.epicentre >= 0;
 		// The figure's padded extent in pixels at scale s, about the axis.
 		const extent = (s: number) => {
@@ -235,7 +298,7 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 			let minY = Infinity;
 			let maxY = -Infinity;
 			for (const star of plan.stars) {
-				const pad = starPx * sizeOf(star) * GLOW_PAD;
+				const pad = starPx * natural(star) * GLOW_PAD;
 				minX = Math.min(minX, star.x * s - pad);
 				maxX = Math.max(maxX, star.x * s + pad);
 				minY = Math.min(minY, star.y * s - pad);
@@ -263,11 +326,99 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		const sx = pinned ? 0 : (e.minX + e.maxX) / 2 / scale;
 		const sy = pinned ? 0 : ((e.minY + e.maxY) / 2 - (up - down) / 2) / scale;
 		return { scale, dist: focal / scale, sx, sy, starR: starPx / scale };
-	});
+	};
 
-	// Cellestial's star, too, is sized for the hand on a portrait screen, whatever Virgo's fit.
-	const ringPx = 2 * B3.ring * (fits[0]?.scale ?? 0);
-	const b3 = portrait && ringPx > 0 ? Math.max(1, B3_PORTRAIT_PX / ringPx) : 1;
+	// On a portrait screen a wide figure fitted to the width is a band across a tall dark
+	// screen. Turned a quarter, it stands tall and is seen from much nearer: a figure is
+	// turned where that gains enough to be worth it. Nowhere else is anything turned.
+	const turning = portrait && (options.turn ?? PORTRAIT.turn);
+	const plans: FigurePlan[] = [];
+	const fits: FigureFit[] = [];
+	for (const [i, upright] of set.upright.entries()) {
+		let plan = upright;
+		let framed = fit(upright);
+		const turned = turning ? set.turned[i] : undefined;
+		if (turned) {
+			const other = fit(turned);
+			if (other.scale >= PORTRAIT.turnGain * framed.scale) {
+				plan = turned;
+				framed = other;
+			}
+		}
+		plans.push(plan);
+		fits.push(framed);
+	}
+
+	/** A star's disc radius at its figure's station, pixels. */
+	const discPx = (star: PlanStar) => starPx * sizeOf(star);
+
+	// Knots. Where two stars of a figure would cover each other by more than a third of the
+	// smaller one's width, both are drawn smaller, so that they read as two stars and not
+	// as a lump. Only what is drawn changes: a star's tap target is as large as ever.
+	if (portrait) {
+		for (const [i, plan] of plans.entries()) {
+			const scale = (fits[i] as FigureFit).scale;
+			for (let pass = 0; pass < 4; pass++) {
+				let changed = false;
+				for (let a = 0; a < plan.stars.length; a++) {
+					for (let b = a + 1; b < plan.stars.length; b++) {
+						if (a === plan.epicentre || b === plan.epicentre) continue;
+						const p = plan.stars[a] as PlanStar;
+						const q = plan.stars[b] as PlanStar;
+						const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
+						const rp = discPx(p);
+						const rq = discPx(q);
+						if (rp + rq - d <= KNOT.over * 2 * Math.min(rp, rq) + 1e-9) continue;
+						const r = Math.max(
+							KNOT.leastPx,
+							Math.min(Math.max(KNOT.floorPx, KNOT.radius * d), KNOT.tight * d),
+						);
+						for (const [star, now] of [
+							[p, rp],
+							[q, rq],
+						] as const) {
+							if (r < now - 1e-9) {
+								sizes.set(star, r / starPx);
+								changed = true;
+							}
+						}
+					}
+				}
+				if (!changed) break;
+			}
+		}
+	}
+
+	// Cellestial's star. On a portrait screen it is the first thing a visitor is handed, and
+	// it must stand clear: its rings end short of every star of Virgo. It is drawn at its
+	// world size on the turned Virgo, never too small for the hand; a neighbour that would
+	// touch the rings is drawn at the floor size; and if one still would, the rings give way.
+	let b3 = 1;
+	let b3Clear = true;
+	const virgo = plans.findIndex((plan) => plan.epicentre >= 0);
+	const virgoFit = fits[virgo];
+	const virgoPlan = plans[virgo];
+	if (portrait && virgoPlan && virgoFit) {
+		const world = B3.ring * virgoFit.scale;
+		if (!turning) {
+			// The sky as it was before the turn: sized for the hand whatever Virgo's fit.
+			b3 = Math.max(1, B3_PORTRAIT_PX / (2 * world));
+			b3Clear = false;
+		} else {
+			const want = Math.max(world, PORTRAIT.b3MinPx / 2);
+			const centre = virgoPlan.stars[virgoPlan.epicentre] as PlanStar;
+			const others = virgoPlan.stars.filter((star) => star !== centre);
+			const free = (star: PlanStar) =>
+				Math.hypot(star.x - centre.x, star.y - centre.y) * virgoFit.scale - discPx(star);
+			for (const star of others) {
+				if (free(star) < want + PORTRAIT.b3Clear && sizeOf(star) > minScale) {
+					sizes.set(star, minScale);
+				}
+			}
+			const room = Math.min(...others.map(free)) - PORTRAIT.b3Clear;
+			b3 = Math.max(0.5, Math.min(want, room) / world);
+		}
+	}
 
 	const fitOf = (k: number) => fits[mod(k, FIGURES)] as FigureFit;
 	const planOf = (k: number) => plans[mod(k, FIGURES)] as FigurePlan;
@@ -354,6 +505,7 @@ export function createLayout(w: number, h: number, plans: readonly FigurePlan[])
 		starPx,
 		minScale,
 		b3,
+		b3Clear,
 		sizeOf,
 		plans,
 		fits,

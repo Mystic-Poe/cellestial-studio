@@ -16,12 +16,13 @@
 // flown through with it. Under reduced motion nothing is written: the words
 // are there.
 //
-// Where it stands is chosen from the picture at the station. On a wide
-// screen the line is large and stands by its figure: in the largest free area
-// inside or beside the figure's own bounds, clear of every star, every star's
-// button and every line of the figure, of the logo and of the exit button;
-// if the figure leaves no such room at any size, in the band under it. On a
-// narrow screen it stands in the free band nearest the figure's foot.
+// Where it stands is chosen from the picture at the station. The line stands
+// by its figure: in the largest free area inside or beside the figure's own
+// bounds, clear of every star, every star's button and every line of the
+// figure, of the logo and menu and of the exit button; large on a wide
+// screen, at a size for the hand on a narrow one. Only if the figure leaves
+// no such room at any size does it stand in the free band nearest the
+// figure's foot (and between the two widths, where neither is tuned).
 
 import { CONSTELLATIONS, FINAL_LINE } from '../../content/constellations.ts';
 import { bolt, flickerFrame, mix, seeded, strokeBolt } from '../loader/lightning.ts';
@@ -34,8 +35,22 @@ const LAST = CONSTELLATIONS.findIndex((figure) => figure.name === 'Leo');
 
 /** Type size at the station, CSS pixels, at or under `narrow` pixels of width and above it. */
 const TYPE = { phone: 21, desktop: 34, min: 12, narrow: 720, margin: 16 } as const;
-/** From this width up the line is set large and placed by its figure: the sizes tried, largest first. */
-const WIDE = { from: 1024, sizes: [54, 50, 46, 42, 38, 34], step: 10, air: 90 } as const;
+/**
+ * Placed by its figure: the sizes tried, largest first; the grid the places are tried on;
+ * the least air the words keep from a star or line, and the air beyond which more is not
+ * better; and how far above the exit button's room their foot stays. From `from` pixels
+ * of width up the line is set large (`WIDE`); on a narrow screen (`TALL`), where most
+ * figures stand tall, at a size that suits the hand.
+ */
+const WIDE = {
+	from: 1024,
+	sizes: [54, 50, 46, 42, 38, 34],
+	step: 10,
+	least: 14,
+	air: 90,
+	exit: 48,
+};
+const TALL = { sizes: [24, 22, 21, 20, 18], step: 6, least: 10, air: 44, exit: 24 };
 /** The writing, seconds. */
 const WRITE = {
 	/** One line is written in about this long, however many letters it has… */
@@ -297,7 +312,13 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 				if (d < air) air = d;
 			}
 			if (x0 < CHROME.w && y0 < CHROME.h) hits++;
-			const keep = EXIT.h + (lines > 1 || layout.w >= WIDE.from ? h / lines : 0);
+			// On a narrow screen the band keeps its distance from the button too.
+			const keep =
+				EXIT.h +
+				Math.max(
+					lines > 1 || layout.w >= WIDE.from ? h / lines : 0,
+					layout.w <= TYPE.narrow ? TALL.exit : 0,
+				);
 			if (
 				y1 > layout.h - keep &&
 				x1 > layout.w / 2 - EXIT.w / 2 &&
@@ -309,10 +330,11 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		};
 
 		let best: { cx: number; y: number; w: number; h: number } | null = null;
-		if (layout.w >= WIDE.from) {
+		const by = layout.w >= WIDE.from ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
+		if (by) {
 			// By the figure: the largest type that finds free room inside or beside
 			// the figure's bounds, and of that room the place with the most air.
-			for (const px of WIDE.sizes) {
+			for (const px of by.sizes) {
 				const { w, h } = set(px);
 				const left = w / 2 + TYPE.margin;
 				const right = layout.w - w / 2 - TYPE.margin;
@@ -322,16 +344,16 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 				const toX = Math.min(right, bounds.x1 + w / 2 - 24);
 				const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h + 12);
 				// Well above the exit button wherever it stands across the screen.
-				const toY = Math.min(layout.h - EXIT.h - h - 48, bounds.y1 - 12);
+				const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 - 12);
 				let top = Number.NEGATIVE_INFINITY;
 				let found: { cx: number; y: number } | null = null;
-				for (let y = fromY; y <= toY; y += WIDE.step) {
-					for (let cx = fromX; cx <= toX; cx += WIDE.step) {
+				for (let y = fromY; y <= toY; y += by.step) {
+					for (let cx = fromX; cx <= toX; cx += by.step) {
 						const at = lie(cx, y, w, h);
-						if (at.hits > 0 || at.air < 14) continue;
+						if (at.hits > 0 || at.air < by.least) continue;
 						// Air first, up to a point; then the middle of the figure.
 						const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
-						const score = Math.min(at.air, WIDE.air) * 3 - off * 0.35;
+						const score = Math.min(at.air, by.air) * 3 - off * 0.35;
 						if (score > top) {
 							top = score;
 							found = { cx, y };

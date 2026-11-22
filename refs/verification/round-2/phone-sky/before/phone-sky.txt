@@ -1,0 +1,26 @@
+ 1 Virgo        12 claimable stars on screen of 12; figure 323x169 px (y 305..474, 20% of the height); star radius 13.0..16.0 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+   Cellestial's star: core circle r 17.6 px at 195,422; Virgo's stars whose centre is within 70 px of it: 51 px, 43 px, 60 px, 50 px
+ 2 Libra        6 claimable stars on screen of 6; figure 341x620 px (y 100..720, 73% of the height); star radius 13.0..13.4 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 3 Scorpius     14 claimable stars on screen of 14; figure 342x356 px (y 232..588, 42% of the height); star radius 13.0..16.0 px; overlapping pairs 2 (4 stars in an overlap), deepest overlap 20% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 4 Sagittarius  25 claimable stars on screen of 25; figure 342x402 px (y 209..611, 48% of the height); star radius 13.0..14.6 px; overlapping pairs 5 (7 stars in an overlap), deepest overlap 30% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 5 Capricornus  10 claimable stars on screen of 10; figure 342x231 px (y 294..526, 27% of the height); star radius 13.0..13.0 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 6 Aquarius     15 claimable stars on screen of 15; figure 342x193 px (y 313..507, 23% of the height); star radius 13.0..13.0 px; overlapping pairs 7 (8 stars in an overlap), deepest overlap 59% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 7 Pisces       22 claimable stars on screen of 22; figure 342x222 px (y 299..521, 26% of the height); star radius 13.0..13.0 px; overlapping pairs 14 (19 stars in an overlap), deepest overlap 43% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 8 Aries        4 claimable stars on screen of 4; figure 342x222 px (y 299..521, 26% of the height); star radius 13.0..14.4 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+ 9 Taurus       12 claimable stars on screen of 12; figure 342x313 px (y 254..567, 37% of the height); star radius 13.0..16.2 px; overlapping pairs 6 (7 stars in an overlap), deepest overlap 64% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+10 Gemini       12 claimable stars on screen of 12; figure 341x322 px (y 249..572, 38% of the height); star radius 13.0..15.7 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+11 Cancer       5 claimable stars on screen of 5; figure 341x620 px (y 100..720, 73% of the height); star radius 13.0..13.0 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+12 Leo          9 claimable stars on screen of 9; figure 342x184 px (y 318..501, 22% of the height); star radius 13.0..15.4 px; overlapping pairs 0 (0 stars in an overlap), deepest overlap 0% of the smaller star's width; pairs where one centre is inside the other's inner 60%: 0
+
+TAPS: a real touch on every star of the three figures with most overlaps. At the centre, and at the point of the star farthest from its nearest neighbour (0.55 of its radius out).
+Pisces (22 stars, 14 overlapping pairs): 63 taps: the star under the finger 63, ANOTHER STAR 0, nothing 0
+Aquarius (15 stars, 7 overlapping pairs): 38 taps: the star under the finger 33, ANOTHER STAR 5, nothing 0
+      crowded side of slot-81 at 347,407: took slot-134
+      crowded side of slot-134 at 350,409: took slot-81
+      crowded side of slot-78 at 160,337: took slot-96
+      crowded side of slot-96 at 163,337: took slot-78
+      crowded side of slot-130 at 170,333: took slot-78
+Taurus (12 stars, 6 overlapping pairs): 31 taps: the star under the finger 29, ANOTHER STAR 2, nothing 0
+      crowded side of slot-77 at 352,463: took slot-64
+      crowded side of slot-64 at 348,459: took slot-77
+console errors: none

@@ -3,6 +3,9 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, SIZES, launch, sheet, sharp } from '../../../../tools/roots/lib.mjs';
 
+// Round 2, piece 3: the smaller of the two phones the phone's sky is judged at.
+SIZES.small = { viewport: { width: 360, height: 740 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+
 export { ROOT, SIZES, launch, sheet, sharp };
 export const OUT = join(ROOT, 'refs/verification/round-2');
 export const PROD = 'http://localhost:4615';
@@ -33,7 +36,7 @@ export async function open(browser, size, { init, throttle = 1, reducedMotion = 
 	}
 	const cdp = await context.newCDPSession(page);
 	if (throttle > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: throttle });
-	const phone = size === 'phone';
+	const phone = SIZES[size].hasTouch === true;
 	const { width: W, height: H } = SIZES[size].viewport;
 	const pressAt = (x, y) => (phone ? page.touchscreen.tap(x, y) : page.mouse.click(x, y));
 	const centre = async (sel) => {

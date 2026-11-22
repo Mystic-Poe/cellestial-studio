@@ -55,8 +55,46 @@ export const B4_STATION_URL = '/cellestial/sky/b4-station.webp';
 /** A star's radius on screen, pixels: below `from` it is the station picture, above `to` the pack's own. */
 export const B4_CLOSE = { from: 34, to: 86 } as const;
 
-/** Cellestial's star on a portrait screen: at least this many pixels across at Virgo's station. */
+/**
+ * A portrait screen (a phone held upright).
+ *
+ * `turn` is the one switch: set it to false and every figure stands north up
+ * on every screen, as it did before. With it on, a wide figure, which fitted
+ * to a phone's width is a band a fifth of the screen high, is turned a
+ * quarter counter-clockwise so that it stands tall: north to the left, the
+ * figure as it stands when it rises in the east. The star pattern is not
+ * changed. Nothing is ever turned on a landscape or desktop screen.
+ */
+export const PORTRAIT = {
+	turn: true,
+	/**
+	 * A figure is turned when its turned fit is at least this many times its upright fit.
+	 * (On a 390x844 and a 360x740 screen the six wide figures gain 1.5 to 1.9 and the next
+	 * best, Taurus, 1.1. On the shortest phones, 320x568, the six gain 1.25 to 1.34.)
+	 */
+	turnGain: 1.2,
+	/** Cellestial's star is its world size on the turned Virgo, and never less than this across, pixels. */
+	b3MinPx: 84,
+	/** Its rings end at least this far short of the disc of every star of Virgo, pixels. */
+	b3Clear: 2,
+} as const;
+
+/**
+ * Cellestial's star on a portrait screen with `PORTRAIT.turn` off: at least this many
+ * pixels across at Virgo's station, whatever Virgo's fit (its rings then reach over
+ * Virgo's nearest stars, which are drawn over them).
+ */
 export const B3_PORTRAIT_PX = 130;
+
+/**
+ * Knots, on a portrait screen. Two stars of a figure that would cover each other by more
+ * than `over` of the smaller one's width at their station are both drawn at a radius of
+ * `radius` times their distance, and not under `floorPx`. Where even `floorPx` would leave
+ * them more than `over` into each other (Taurus's closest pair stands 9 px apart on a
+ * phone), they are drawn at `tight` times their distance, which is just under a third,
+ * and never under `leastPx`.
+ */
+export const KNOT = { over: 1 / 3, radius: 0.6, floorPx: 9, tight: 0.72, leastPx: 6 } as const;
 
 /** Size follows magnitude gently: the brightest and the faintest star, as multiples of the base. */
 export const MAG = { bright: 0.85, faint: 5, brightScale: 1.35, faintScale: 0.8 } as const;

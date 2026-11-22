@@ -162,7 +162,6 @@ uniform vec3 uOffset;
 uniform vec2 uHalfRes;
 uniform float uFocal;
 uniform float uBaseR;
-uniform float uMinScale;
 uniform float uAlpha;
 uniform vec2 uNear;
 uniform vec3 uFar;
@@ -199,7 +198,7 @@ void main() {
 	}
 	float scale = uFocal / depth;
 	float boost = aState.z;
-	float rpx = max(aStar.z, uMinScale) * uBaseR * scale * (1.0 + 0.08 * boost);
+	float rpx = aStar.z * uBaseR * scale * (1.0 + 0.08 * boost);
 	float reff = max(rpx, uMinPx);
 	float trailPx = min(speed * uFall.w * scale * max(1.0, reff / uTrailStar), uTrailMax * reff);
 
