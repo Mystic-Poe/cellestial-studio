@@ -46,22 +46,8 @@ ok   phone: Tab walks the items: What we build, Claim your star, Contact me
 ok   phone: Escape closes it and focus is back on the button
 ok   phone: a tap outside closes it
 ok   phone: while the scene is "loading" the chrome is hidden and cannot take focus
-node:internal/modules/run_main:107
-    triggerUncaughtException(
-    ^
-
-page.evaluate: Target page, context or browser has been closed
-Browser logs:
-
-<launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,HttpsUpgrades,HttpsFirstBalancedModeAutoEnable,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,AvoidCorsURLLoaderRestartOnRedirect,TcpPortRandomizationWin,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,PreconnectToSearch,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface,SkipListAccountsWithoutGaiaCookies --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --enable-unsafe-swiftshader --edge-skip-compat-layer-relaunch --disable-stack-profiler --disable-infobars --disable-sync --do-not-de-elevate --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-gl=angle --use-angle=gl --ignore-gpu-blocklist --enable-gpu --user-data-dir=/tmp/playwright_chromiumdev_profile-ORTGcO --remote-debugging-pipe --no-startup-window
-<launched> pid=3815639
-[pid=3815639][err] [3815639:3815656:1122/021510.784048:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
-[pid=3815639][err] [3815639:3815656:1122/021510.785586:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
-[pid=3815639][err] [3815639:3815656:1122/021510.785918:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: PHONE_REGISTRATION_ERROR
-[pid=3815639][err] [3815639:3815656:1122/021531.794225:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
-[pid=3815639] <gracefully close start>
-    at /home/poe/cellestial-studio/tools/chrome/compare.mjs:324:29 {
-  log: []
-}
-
-Node.js v26.8.1
+ok   phone: when the loader ends the chrome fades in: fully there 413 ms after the scene changes (21 frames in between)
+ok   phone: reduced motion: no breathing (none), no fade (0s), no drop (0s)
+ok   phone: with script off the button opens the menu (164x206 px) and its links go to /, #roots, /contact, /contact
+ok   phone: with script off "Claim your star" goes to /contact; the chrome heads the page (position absolute)
+48 checks, 0 failed, 0 page error(s)

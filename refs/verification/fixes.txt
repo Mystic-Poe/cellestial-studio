@@ -1177,3 +1177,36 @@ PIECE 5 — THE CLOSE-OUT
   - The sheets looked at; PROGRESS.md brought up to date; the box ticked: not done.
   The logs of that run are in round-2/logs/ as it left them; the next run of run-all.sh writes over
   them.
+
+  TAKEN UP AGAIN (22 Nov, 09:20), by a new fixer, from the head bfb1431 (no file of the site differs
+  from 2172fad). What follows is this run's; it changes no file of the site.
+
+  1. THE FOUR GATES, again: pnpm build (Turnstile test key; 4 pages) passes; pnpm test 138 of 138 in
+     node and the three Workers' own (15, 16, 14); pnpm lint (103 files, 1 info, no error); pnpm
+     typecheck clean.
+
+  2. EVERY SUITE AND EVERY SHEET TOOL (tools/run-all.sh refs/verification/round-2/logs; dev server on
+     4500 with the key; 09:22 to 09:48; a log each and status.txt there):
+       loader-measure            exit 0   13 of 13; the full loader 7.45 s (7.43 on the visitor's clock),
+                                          short 3.70, skipped at 1 s 2.75 / 2.71, Tab and modifiers
+                                          7.26, two resizes 7.24, storage blocked 7.12, no sky 6.06,
+                                          sky 30 s late 11.98
+       loader-measure-phone-4x   exit 0   13 of 13; full 7.50 s (7.52), short 3.76, skipped 3.09 / 2.97,
+                                          Tab 7.45, resizes 7.37, storage blocked 7.45, no sky 6.06,
+                                          sky 30 s late 12.06
+       sky-measure               exit 0   201 of 201
+       sky-meaning               exit 0   38 of 38
+       sky-meaning-all           exit 0   24 of 24
+       roots-words               exit 0   197 of 197
+       roots-measure             exit 0   245 of 245
+       transitions-measure       EXIT 1   147 of 148. The one: "warp, desk, from scrollY 1800,
+                                          software, CPU slowed 4x: when the page became the sky the warp
+                                          covered every pixel (lowest alpha 247)". The other three
+                                          software runs of that check gave 255, the four on the real GPU
+                                          255. Looked into below (THE WARP'S COVER).
+       chrome-compare            exit 0   48 of 48
+       sky-compare               exit 0   no figure outside the safe area; introProgress(1) against
+                                          reset(): 0 pixels differ at both sizes
+       roots-compare, transitions-strip, loader-compare   exit 0
+     The sheets these rewrote (refs/loading, sky, roots, transitions, chrome /compare, and the three
+     measure.txt) are committed as this run left them: they show the site as it is after round 2.
