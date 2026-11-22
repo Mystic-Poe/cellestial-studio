@@ -125,7 +125,15 @@ has looked since: that is the third look. `git status` is clean but for the untr
    the sky to the ground, the loader's clock on a slow line, the four minors), by an
    inspector who built none of it, on the production build at both sizes, with the second
    look's scripts. Anything it still calls a major is fixed before the build is called
-   finished. Round 2's five boxes are ticked: this is the next thing to do. For that inspector
+   finished. Round 2's five boxes are ticked: this is the next thing to do. LAUNCHED 22 Nov by
+   the orchestrator: the brief is `refs/briefs/third-look.js` (one inspector, one workflow); it
+   writes `refs/verification/third-look.txt` and its evidence under
+   `refs/verification/third-look/`, with its own copy of the measuring scripts in
+   `refs/verification/third-look/tools/` (round 2's, writing only under `third-look/`; a short
+   phone, 375x667, added as `SIZES.short`). It changes no file of the site. If it is cut off,
+   launch the same brief again: it reads its own report and goes on from where it stopped. When
+   it reports: read its closing list; a BLOCKER or MAJOR gets one more bounded fix and a
+   re-check; otherwise the final report to the owner. For that inspector
    to know: `tools/loader/measure.mjs` on the production build takes `--only
    full,short,skip,key,quiet-keys,broken,resize,no-storage` (its other two cases can only be
    made on the dev server and fail by construction elsewhere); and one check's way of reading
