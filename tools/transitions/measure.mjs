@@ -52,9 +52,15 @@ function probe() {
 		rec.scenes.push({ to: e.detail.to, at: performance.now() });
 		if (e.detail.to === 'sky' && e.detail.from === 'warp') {
 			// What is on the effects canvas once this frame's drawing is done: a task
-			// posted now runs after every animation-frame callback of this frame.
-			const ch = new MessageChannel();
-			ch.port1.onmessage = () => {
+			// posted now runs after every animation-frame callback of this frame. It
+			// must also run BEFORE any timer that is already due: the effects layer
+			// keeps a 120 ms beat that moves its clock on when frames are slow, and
+			// when the swap's frame is a long one (software, CPU slowed 4x) that beat
+			// draws the cover lifting, as it should, straight after the frame. A
+			// posted message waited its turn behind it and read that later picture
+			// (alpha 208 to 234 in 5 of 40 runs, where this read 255 in 40 of 40:
+			// refs/verification/round-2/warp/). A "user-blocking" task goes first.
+			const read = () => {
 				const c = document.getElementById('fx-canvas');
 				const g = c.getContext('2d');
 				let min = 255;
@@ -64,7 +70,7 @@ function probe() {
 				} else min = 0;
 				rec.coverAtSky = min;
 			};
-			ch.port2.postMessage(0);
+			scheduler.postTask(read, { priority: 'user-blocking' });
 		}
 	});
 	let last = 0;

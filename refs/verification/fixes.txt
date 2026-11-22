@@ -1210,3 +1210,38 @@ PIECE 5 — THE CLOSE-OUT
        roots-compare, transitions-strip, loader-compare   exit 0
      The sheets these rewrote (refs/loading, sky, roots, transitions, chrome /compare, and the three
      measure.txt) are committed as this run left them: they show the site as it is after round 2.
+
+  THE WARP'S COVER — the one failed check: the check's own reading was late; the site is not at fault.
+  THE CHECK'S PROBE IS CHANGED (tools/transitions/measure.mjs); no file of the site is.
+    Finding: transitions-measure 147 of 148 (above). The same check passed in every earlier run that is
+    kept (23 of 23 software runs in the logs of round 1 and of pieces 2 to 4).
+    Reproduced first: round-2/tools/warp-cover.mjs (new) plays the check's own scenario (software, CPU
+    slowed 4x, desktop, from scrollY 1800) many times and keeps the page's clocks for the swap's frame.
+    The cover read less than 255 in 3 of 16 and 4 of 16 runs (dev server), so it is not a one-off.
+    What it is NOT (the first guess, wrong): the director deciding on performance.now() while the
+    effects layer draws at the frame's own time. The director's callback does run 25 to 42 ms after
+    its frame's time, but the warp is then at 0.643 to 0.716 of its length in every run, failed or not,
+    and the cover is whole from 0.640 to 0.760.
+    Cause, seen in the trace (--trace: every black fill on the effects canvas with its alpha, every
+    frame, every change of the canvas's size, in order): in the frame the page becomes the sky the
+    cover IS drawn whole (black at alpha 1, after the scene has changed, inside that frame). The
+    effects layer keeps a 120 ms beat that moves its clock on when frames are slow (layer.ts, BEAT_MS,
+    there since round 1). With software drawing and the CPU at a quarter the swap's frame takes 120 ms
+    or more, the beat falls due inside it, and it runs straight after the frame: it draws the warp at
+    the true time, 0.79 of its length, where the cover has begun to lift over the sky (black at alpha
+    0.82 to 0.98), which is what the warp is meant to do. The check read the canvas from a posted
+    message, and the browser ran the due timer before that message: the check read the NEXT picture,
+    80 ms later, not the swap's frame.
+    Proof, both readings in the same runs: a task the browser runs before timers
+    (scheduler.postTask, "user-blocking") read 255 in 24 of 24 runs on the dev server and 16 of 16 on
+    the production build; the posted message read 208 to 234 in 3 of those 24 and 2 of those 16, each
+    time with the beat's fill between the two readings (round-2/warp/warp-cover-dev.txt,
+    warp-cover-prod.txt: the traces of the failed runs are printed there).
+    Changed: the check reads the canvas with that task, and its comment says why. What it demands is
+    what it demanded: alpha 255 on every sampled pixel of the effects canvas in the frame the page
+    becomes the sky. Not changed: the beat. It costs one extra drawing of the warp between two slow
+    frames on a device that slow, and shows nothing wrong.
+    Checked again: tools/transitions/measure.mjs --only warp three times: 34 of 34 each, the four
+    software runs at 255 each time (12 of 12). The first run's status.txt and failing log are kept:
+    round-2/warp/first-run-status.txt, first-run-transitions-measure.log. run-all.sh is then run
+    again from the top, so that round-2/logs/ is one run of the tools as they now stand (2b below).

@@ -1,0 +1,66 @@
+http://localhost:4615, desk, from scrollY 1800, software, CPU slowed 4x, 16 runs
+run  cover  u at the swap  director late in its frame  fx started after the scene  frame before the swap
+  1    255          0.701                     30.6 ms                      8.8 ms                  83 ms   read before any timer: 255
+         737.0 ms  {"black":0.8360622188608452}
+         771.4 ms  {"frame":2964.3}
+         771.5 ms  {"black":0.8480224797538103}
+         813.8 ms  {"frame":2997.6}
+         814.7 ms  {"black":0.8617036095168727}
+         890.1 ms  {"frame":3080.9}
+         890.3 ms  {"black":0.9483225162215764}
+         971.3 ms  {"frame":3164.3}
+         971.7 ms  {"black":1}
+        1060.5 ms  {"frame":3247.6}
+        1081.5 ms  {"sky":"in a frame"}
+        1083.9 ms  {"black":1}
+        1194.2 ms  {"readFirst":255}
+        1205.7 ms  {"read":255}
+  2    255          0.661                     28.7 ms                      8.6 ms                  83 ms   read before any timer: 255
+  3    255          0.712                     28.6 ms                      8.3 ms                 100 ms   read before any timer: 255
+  4    255          0.699                     25.1 ms                      8.7 ms                 100 ms   read before any timer: 255
+  5    255          0.700                     38.2 ms                      9.3 ms                  83 ms   read before any timer: 255
+  6    234          0.681                     36.0 ms                      8.5 ms                  83 ms   read before any timer: 255   <-- not whole
+         748.1 ms  {"frame":3281.7}
+         748.8 ms  {"black":0.8382324491865514}
+         792.5 ms  {"frame":3331.7}
+         793.5 ms  {"black":0.8548546421051025}
+         867.2 ms  {"frame":3398.4}
+         867.7 ms  {"black":0.9149488345676}
+         951.7 ms  {"frame":3481.6}
+         952.5 ms  {"black":0.994825060696072}
+        1035.7 ms  {"frame":3565}
+        1058.0 ms  {"sky":"in a frame"}
+        1060.1 ms  {"black":1}
+        1176.0 ms  {"readFirst":255}
+        1177.0 ms  {"black":0.9182240056829083}
+        1260.6 ms  {"read":234}
+  7    255          0.656                     40.0 ms                      8.7 ms                  83 ms   read before any timer: 255
+  8    217          0.684                     36.9 ms                      9.3 ms                  83 ms   read before any timer: 255   <-- not whole
+         761.8 ms  {"frame":2809.4}
+         762.2 ms  {"black":0.8459122523737995}
+         799.5 ms  {"frame":2842.8}
+         799.8 ms  {"black":0.8565999439239503}
+         867.5 ms  {"frame":2909.5}
+         867.9 ms  {"black":0.9191459231906468}
+         953.3 ms  {"frame":2992.8}
+         953.7 ms  {"black":0.9964106967926026}
+        1039.7 ms  {"frame":3076.1}
+        1062.5 ms  {"sky":"in a frame"}
+        1064.0 ms  {"black":1}
+        1191.5 ms  {"readFirst":255}
+        1192.2 ms  {"black":0.8490729132923012}
+        1270.8 ms  {"read":217}
+  9    255          0.667                     27.2 ms                      8.8 ms                 100 ms   read before any timer: 255
+ 10    255          0.643                     40.9 ms                      8.9 ms                  67 ms   read before any timer: 255
+ 11    255          0.662                     27.9 ms                      8.7 ms                  83 ms   read before any timer: 255
+ 12    255          0.689                     41.8 ms                      8.6 ms                  83 ms   read before any timer: 255
+ 13    255          0.699                     35.7 ms                      9.3 ms                  83 ms   read before any timer: 255
+ 14    255          0.655                     30.0 ms                      8.4 ms                  83 ms   read before any timer: 255
+ 15    255          0.702                     35.1 ms                      9.4 ms                  83 ms   read before any timer: 255
+ 16    255          0.650                     39.4 ms                      8.8 ms                  83 ms   read before any timer: 255
+
+cover not whole in 2 of 16 runs, read by a posted message (the suite's way until 22 Nov)
+cover not whole in 0 of 16 runs, read by a task that runs before any timer (the canvas as the swap's frame left it)
+u at the swap where the cover was whole: 0.643 to 0.712; where it was not: 0.681 to 0.684 (the cover is whole from 0.640)
+the director's callback ran this long after its frame's own time: whole 25.100 to 41.800 ms; not whole 36.000 to 36.900 ms
+the scene became the sky this long after it became the warp: 1013.900 to 1104.300 ms (the director swaps from 990 ms on its own clock)

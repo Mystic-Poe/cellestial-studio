@@ -1,0 +1,167 @@
+fall, desk, real GPU: scenes fall at 5, roots at 2132; over (focus on the ground) at 2134 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (128 frames), the worst one ending 374 ms in
+ok   fall, desk, real GPU: B11 was on screen before
+ok   fall, desk, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, desk, real GPU: the ground reached the top of the screen 2132 ms after the press (2000 to 3000)
+ok   fall, desk, real GPU: every star of the figure in front struck the ground, each where it landed: 12 bursts of 12 at 12 places (and 45 smaller ones for the figures behind); one growth (1)
+ok   fall, desk, real GPU: every burst was on the ground line (0.00 px off at most) and on the screen (0 off it)
+ok   fall, desk, real GPU: the figure in front landed over 369 ms, not all at once
+ok   fall, desk, real GPU: the first star struck on screen, at x 645, y 805 of 900, 458 ms after the press
+ok   fall, desk, real GPU: the ground never moved back down (0.0 px)
+ok   fall, desk, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 12 px)
+ok   fall, desk, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, desk, real GPU: focus is on the ground ("roots")
+ok   fall, desk, real GPU: the Roots are active and growing
+ok   fall, desk, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, desk, real GPU: the effects canvas is where it belongs
+fall, phone, real GPU: scenes fall at 4, roots at 2154; over (focus on the ground) at 2155 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (130 frames), the worst one ending 1 ms in
+ok   fall, phone, real GPU: B11 was on screen before
+ok   fall, phone, real GPU: the scene went fall, then roots, and nothing else (a second press, the menu and E6 pressed meanwhile did nothing)
+ok   fall, phone, real GPU: the ground reached the top of the screen 2154 ms after the press (2000 to 3000)
+ok   fall, phone, real GPU: every star of the figure in front struck the ground, each where it landed: 12 bursts of 12 at 12 places (and 45 smaller ones for the figures behind); one growth (1)
+ok   fall, phone, real GPU: every burst was on the ground line (0.00 px off at most) and on the screen (0 off it)
+ok   fall, phone, real GPU: the figure in front landed over 468 ms, not all at once
+ok   fall, phone, real GPU: the first star struck on screen, at x 123, y 786 of 844, 368 ms after the press
+ok   fall, phone, real GPU: the ground never moved back down (0.0 px)
+ok   fall, phone, real GPU: the ground moved 0.00 px in the frame the spacer collapsed (the biggest step in any frame was 11 px)
+ok   fall, phone, real GPU: ends on the Roots at the top (scene roots, scrollY 0, spacer 0)
+ok   fall, phone, real GPU: focus is on the ground ("roots")
+ok   fall, phone, real GPU: the Roots are active and growing
+ok   fall, phone, real GPU: the sky's stars are back, unseen (12 of Virgo's have a place on screen again)
+ok   fall, phone, real GPU: the effects canvas is where it belongs
+ok   fall, desk: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   fall, desk: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, desk: reduced motion: a fade straight to the Roots in 584 ms (scenes roots at 273; no impact; the network whole)
+ok   fall, phone: reloaded 700 ms in: the page opens on the sky again (scene sky, scrollY 0)
+  [console phone] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   fall, phone: back 700 ms in (to /contact) and forward again: the page is whole (scene sky, scrollY 0)
+ok   fall, phone: reduced motion: a fade straight to the Roots in 548 ms (scenes roots at 271; no impact; the network whole)
+fall, desk, software, CPU slowed 4x: scenes fall at 20, roots at 4568; over (focus on the ground) at 5141 ms; frames avg 166.1 ms, p95 383.3 ms, worst 399.9 ms (30 frames), the worst one ending 1464 ms in
+fall, phone, software, CPU slowed 4x: scenes fall at 20, roots at 4029; over (focus on the ground) at 4753 ms; frames avg 186.1 ms, p95 383.3 ms, worst 416.7 ms (24 frames), the worst one ending 4346 ms in
+warp, desk, from scrollY 0, real GPU: scenes warp at 2, sky at 998; over (focus on the sky) at 1521 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (91 frames), the worst one ending 593 ms in
+ok   warp, desk, from scrollY 0, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, desk, from scrollY 0, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, desk, from scrollY 0, real GPU: it took 1521 ms
+ok   warp, desk, from scrollY 0, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, desk, from scrollY 0, real GPU: B11 is still there
+ok   warp, desk, from scrollY 0, real GPU: focus is on the sky ("sky-ui")
+ok   warp, desk, from scrollY 0, real GPU: the effects canvas is put away and the Roots are at rest
+warp, desk, from scrollY 1800, real GPU: scenes warp at 2, sky at 1011; over (focus on the sky) at 1519 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (91 frames), the worst one ending 589 ms in
+ok   warp, desk, from scrollY 1800, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, desk, from scrollY 1800, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, desk, from scrollY 1800, real GPU: it took 1519 ms
+ok   warp, desk, from scrollY 1800, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, desk, from scrollY 1800, real GPU: B11 is still there
+ok   warp, desk, from scrollY 1800, real GPU: focus is on the sky ("sky-ui")
+ok   warp, desk, from scrollY 1800, real GPU: the effects canvas is put away and the Roots are at rest
+ok   warp, desk: reduced motion: a fade straight to the still sky in 534 ms, B11 there
+warp, phone, from scrollY 0, real GPU: scenes warp at 2, sky at 998; over (focus on the sky) at 1523 ms; frames avg 16.7 ms, p95 16.8 ms, worst 16.8 ms (91 frames), the worst one ending 209 ms in
+ok   warp, phone, from scrollY 0, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, phone, from scrollY 0, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, phone, from scrollY 0, real GPU: it took 1523 ms
+ok   warp, phone, from scrollY 0, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, phone, from scrollY 0, real GPU: B11 is still there
+ok   warp, phone, from scrollY 0, real GPU: focus is on the sky ("sky-ui")
+ok   warp, phone, from scrollY 0, real GPU: the effects canvas is put away and the Roots are at rest
+warp, phone, from scrollY 1800, real GPU: scenes warp at 2, sky at 1005; over (focus on the sky) at 1527 ms; frames avg 16.7 ms, p95 16.7 ms, worst 16.8 ms (91 frames), the worst one ending 364 ms in
+ok   warp, phone, from scrollY 1800, real GPU: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   warp, phone, from scrollY 1800, real GPU: the scene went warp, then sky, and nothing else (a second press, the menu and B11 pressed meanwhile did nothing)
+ok   warp, phone, from scrollY 1800, real GPU: it took 1527 ms
+ok   warp, phone, from scrollY 1800, real GPU: ends on the sky with its stars back (scene sky, scrollY 0)
+ok   warp, phone, from scrollY 1800, real GPU: B11 is still there
+ok   warp, phone, from scrollY 1800, real GPU: focus is on the sky ("sky-ui")
+ok   warp, phone, from scrollY 1800, real GPU: the effects canvas is put away and the Roots are at rest
+ok   warp, phone: reduced motion: a fade straight to the still sky in 532 ms, B11 there
+warp, desk, from scrollY 0, software, CPU slowed 4x: scenes warp at 7, sky at 1053; over (focus on the sky) at 1716 ms; frames avg 47.5 ms, p95 216.6 ms, worst 216.6 ms (34 frames), the worst one ending 222 ms in
+ok   warp, desk, from scrollY 0, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+warp, desk, from scrollY 1800, software, CPU slowed 4x: scenes warp at 7, sky at 1076; over (focus on the sky) at 1704 ms; frames avg 45.7 ms, p95 233.4 ms, worst 300.1 ms (35 frames), the worst one ending 1470 ms in
+FAIL warp, desk, from scrollY 1800, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 247)
+warp, phone, from scrollY 0, software, CPU slowed 4x: scenes warp at 18, sky at 1034; over (focus on the sky) at 1715 ms; frames avg 49.0 ms, p95 166.6 ms, worst 250.0 ms (33 frames), the worst one ending 267 ms in
+ok   warp, phone, from scrollY 0, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+warp, phone, from scrollY 1800, software, CPU slowed 4x: scenes warp at 7, sky at 1042; over (focus on the sky) at 1653 ms; frames avg 39.7 ms, p95 183.4 ms, worst 233.3 ms (39 frames), the worst one ending 236 ms in
+ok   warp, phone, from scrollY 1800, software, CPU slowed 4x: when the page became the sky the warp covered every pixel (lowest alpha 255)
+ok   teleport, desk, sky → "The Sky": the item reads "The Sky"
+ok   teleport, desk, sky → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
+ok   teleport, desk, sky → "The Sky": the flash went "none" (wanted "none")
+ok   teleport, desk, sky → "The Sky": the flash took 430 ms with the swap in it
+ok   teleport, desk, sky → "The Sky": the menu closed
+ok   teleport, desk, sky → "What we build": the item reads "What we build"
+ok   teleport, desk, sky → "What we build": landed: scene roots, scrollY 0, focus "roots"
+ok   teleport, desk, sky → "What we build": the flash went "down" (wanted "down")
+ok   teleport, desk, sky → "What we build": the flash took 423 ms with the swap in it
+ok   teleport, desk, sky → "What we build": the menu closed
+ok   teleport, desk, sky → "Claim your star": the item reads "Claim your star"
+ok   teleport, desk, sky → "Claim your star": landed: scene roots, scrollY 3304, focus "Claim your star", F1 on screen true, F2 on screen true
+ok   teleport, desk, sky → "Claim your star": the flash went "down" (wanted "down")
+ok   teleport, desk, sky → "Claim your star": the flash took 413 ms with the swap in it
+ok   teleport, desk, sky → "Claim your star": the menu closed
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   teleport, desk, sky → "Contact me": the item reads "Contact me"
+ok   teleport, desk, sky → "Contact me": landed: scene roots, scrollY 3304, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
+ok   teleport, desk, sky → "Contact me": the flash went "down" (wanted "down")
+ok   teleport, desk, sky → "Contact me": the flash took 413 ms with the swap in it
+ok   teleport, desk, sky → "Contact me": the menu closed
+ok   teleport, desk, roots → "The Sky": the item reads "The Sky"
+ok   teleport, desk, roots → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
+ok   teleport, desk, roots → "The Sky": the flash went "up" (wanted "up")
+ok   teleport, desk, roots → "The Sky": the flash took 431 ms with the swap in it
+ok   teleport, desk, roots → "The Sky": the menu closed
+ok   teleport, desk, roots → "What we build": the item reads "What we build"
+ok   teleport, desk, roots → "What we build": landed: scene roots, scrollY 0, focus "roots"
+ok   teleport, desk, roots → "What we build": the flash went "up" (wanted "up")
+ok   teleport, desk, roots → "What we build": the flash took 413 ms with the swap in it
+ok   teleport, desk, roots → "What we build": the menu closed
+ok   teleport, desk, roots → "Claim your star": the item reads "Claim your star"
+ok   teleport, desk, roots → "Claim your star": landed: scene roots, scrollY 3304, focus "Claim your star", F1 on screen true, F2 on screen true
+ok   teleport, desk, roots → "Claim your star": the flash went "down" (wanted "down")
+ok   teleport, desk, roots → "Claim your star": the flash took 430 ms with the swap in it
+ok   teleport, desk, roots → "Claim your star": the menu closed
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   teleport, desk, roots → "Contact me": the item reads "Contact me"
+ok   teleport, desk, roots → "Contact me": landed: scene roots, scrollY 3304, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
+ok   teleport, desk, roots → "Contact me": the flash went "down" (wanted "down")
+ok   teleport, desk, roots → "Contact me": the flash took 413 ms with the swap in it
+ok   teleport, desk, roots → "Contact me": the menu closed
+ok   teleport, phone, sky → "The Sky": the item reads "The Sky"
+ok   teleport, phone, sky → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
+ok   teleport, phone, sky → "The Sky": the flash went "none" (wanted "none")
+ok   teleport, phone, sky → "The Sky": the flash took 413 ms with the swap in it
+ok   teleport, phone, sky → "The Sky": the menu closed
+ok   teleport, phone, sky → "What we build": the item reads "What we build"
+ok   teleport, phone, sky → "What we build": landed: scene roots, scrollY 0, focus "roots"
+ok   teleport, phone, sky → "What we build": the flash went "down" (wanted "down")
+ok   teleport, phone, sky → "What we build": the flash took 413 ms with the swap in it
+ok   teleport, phone, sky → "What we build": the menu closed
+ok   teleport, phone, sky → "Claim your star": the item reads "Claim your star"
+ok   teleport, phone, sky → "Claim your star": landed: scene roots, scrollY 3125, focus "Claim your star", F1 on screen true, F2 on screen true
+ok   teleport, phone, sky → "Claim your star": the flash went "down" (wanted "down")
+ok   teleport, phone, sky → "Claim your star": the flash took 413 ms with the swap in it
+ok   teleport, phone, sky → "Claim your star": the menu closed
+  [console phone] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   teleport, phone, sky → "Contact me": the item reads "Contact me"
+ok   teleport, phone, sky → "Contact me": landed: scene roots, scrollY 3125, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
+ok   teleport, phone, sky → "Contact me": the flash went "down" (wanted "down")
+ok   teleport, phone, sky → "Contact me": the flash took 413 ms with the swap in it
+ok   teleport, phone, sky → "Contact me": the menu closed
+ok   teleport, phone, roots → "The Sky": the item reads "The Sky"
+ok   teleport, phone, roots → "The Sky": landed: scene sky, scrollY 0, focus "sky-ui"
+ok   teleport, phone, roots → "The Sky": the flash went "up" (wanted "up")
+ok   teleport, phone, roots → "The Sky": the flash took 414 ms with the swap in it
+ok   teleport, phone, roots → "The Sky": the menu closed
+ok   teleport, phone, roots → "What we build": the item reads "What we build"
+ok   teleport, phone, roots → "What we build": landed: scene roots, scrollY 0, focus "roots"
+ok   teleport, phone, roots → "What we build": the flash went "up" (wanted "up")
+ok   teleport, phone, roots → "What we build": the flash took 413 ms with the swap in it
+ok   teleport, phone, roots → "What we build": the menu closed
+ok   teleport, phone, roots → "Claim your star": the item reads "Claim your star"
+ok   teleport, phone, roots → "Claim your star": landed: scene roots, scrollY 3125, focus "Claim your star", F1 on screen true, F2 on screen true
+ok   teleport, phone, roots → "Claim your star": the flash went "down" (wanted "down")
+ok   teleport, phone, roots → "Claim your star": the flash took 413 ms with the swap in it
+ok   teleport, phone, roots → "Claim your star": the menu closed
+  [console phone] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+ok   teleport, phone, roots → "Contact me": the item reads "Contact me"
+ok   teleport, phone, roots → "Contact me": landed: scene roots, scrollY 3125, focus "contact-box-form-name", contact-dialog open, F1 on screen true, F2 on screen true
+ok   teleport, phone, roots → "Contact me": the flash went "down" (wanted "down")
+ok   teleport, phone, roots → "Contact me": the flash took 413 ms with the swap in it
+ok   teleport, phone, roots → "Contact me": the menu closed
+148 checks, 1 failed, 0 page error(s)
