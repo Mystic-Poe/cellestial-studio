@@ -880,3 +880,31 @@ PIECE 3 — THE PHONE'S SKY (a major, and three minors: findings 3, 6, 7 and 8 o
   (0 pixels differ), no console error. Reduced motion, a first visit: the still sky is the turned
   Virgo, the exit button there, Cellestial's star 96.9 px with the nearest disc 3.9 px beyond its
   rings, 0 pixels changing in 1.5 s.
+
+  THE REST OF WHAT MUST HOLD, all on the production build
+  - 390x844 (round-2/phone-sky/phone-sky.txt) and 360x740 (round-2/phone-sky/360/phone-sky.txt), by
+    round-2/tools/phone-sky.mjs, which now takes --size phone|small, prints a verdict for each
+    requirement and taps every star: every claimable star on screen at every station, at least 23.9 px
+    from the sides, clear of the logo, the menu and the exit button; the six wide figures 56 to 73% of
+    the height (360x740: 57 to 70%); deepest overlap 30.6% (31.5%); Cellestial's star 96.9 px (87.7),
+    the nearest disc 3.9 px (2.3) beyond the rings' full reach, and the rings as drawn 7.7 and 4.3 px
+    (5.7 and 2.7) from the nearest disc at two moments 2.4 s apart; a real touch at the centre and on
+    the free side of all 146 stars: 292 of 292 took the star under the finger, at each size; no
+    console error. Looked at: cellestial-star.jpg at device pixels at both sizes (the rings whole and
+    clean, the neighbours small beads beyond them, the figure's own lines to the star running under
+    the rings as they do on the desktop), stations-empty.jpg, dense-figures.jpg (Taurus's Hyades and
+    Sagittarius's and Aquarius's knots read as separate stars).
+  - B7 at 360x740 (round-2/b7/b7-small.txt, all-small.jpg): all twelve pass; eleven at 24 or 22 px,
+    Leo at 20. The first run there put Aquarius's line in four rows of a word each (a break asked
+    into three); a line is broken into two rows at most now, and a break that comes out as more is
+    not taken. The writing in rows was recorded (b7/write-leo-phone.jpg): the bolt writes the first
+    row, then the second, then "Jesus is King." after its pause, each letter cooling to brass.
+  - The hand-off (round-2/tools/a5.mjs --only phone --out phone-sky/a5; phone-pieces.jpg,
+    phone-swap.jpg, a5.txt): the pieces fly to the rings where the sky draws them, on the turned
+    Virgo; across the scene change the picture's mean light is 4.7 in every frame from -29 to +56 ms,
+    no jump of place or size; no console error.
+  - The fall from the turned Virgo and from the turned Aquarius (fall.mjs --only phone --figs 0,5
+    --throttle 1 --out phone-sky/fall; phone-virgo-whole.jpg looked at): the stars fall from where
+    they stand, strike across the ground's width (57 and 65 bursts), and the Roots grow; no error.
+  - The desktop again after the B7 change: 0 pixels differ in the eight captures; b7.txt, desk: the
+    twelve places and sizes are the second look's (54 px; 93 to 145 px from the nearest star).

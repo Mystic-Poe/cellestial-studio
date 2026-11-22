@@ -65,10 +65,10 @@ const TALL = {
 	/** A figure that is not tall has its free room just above or under it. */
 	reach: 40,
 	/**
-	 * A long line may stand in two rows or three: at each size the whole line is tried first.
-	 * (Leo's two lines are as wide as the screen in one row, and Leo stands 73% of its height.)
+	 * A long line may stand in two rows: at each size the whole line is tried first.
+	 * (Leo's meaning is as wide as the screen in one row, and Leo stands 73% of its height.)
 	 */
-	rows: [1, 2, 3],
+	rows: [1, 2],
 	/**
 	 * The stars of this many figures further on gather in the middle of a narrow screen, where
 	 * the free room often is: the words keep clear of those points too.
@@ -388,6 +388,8 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 					if (rows === 1) whole = w;
 					// Breaking a line that is short already gains nothing.
 					else if (whole < 0.45 * room) break;
+					// Nor does a break into more rows than were asked for (a word a row).
+					else if (h > (rows + lines - 0.5) * px * 1.3 + (lines - 1) * 0.42 * px) continue;
 					const left = w / 2 + TYPE.margin;
 					const right = layout.w - w / 2 - TYPE.margin;
 					if (right < left) continue;
