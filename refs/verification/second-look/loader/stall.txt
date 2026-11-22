@@ -1,0 +1,25 @@
+desk cpu x1: the sky 7653 ms after navigation (7650 ms after the page's time origin). 415 frames while the loader played: average 18.0 ms, over 34 ms 3, over 50 ms 3, over 100 ms 2. Long tasks: 112 ms at 66, 228 ms at 1951, 259 ms at 2197
+   a frame of 100 ms from 300 ms: the picture changed by -1.00 over the 150 ms before it, 0.29 across it, 0.57 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 217 ms from 1950 ms: the picture changed by 1.15 over the 150 ms before it, 0.05 across it, 0.20 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 250 ms from 2199 ms: the picture changed by 0.15 over the 150 ms before it, 0.18 across it, 0.64 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   console errors: none
+desk cpu x4: the sky 7759 ms after navigation (7756 ms after the page's time origin). 408 frames while the loader played: average 18.8 ms, over 34 ms 6, over 50 ms 6, over 100 ms 5. Long tasks: 91 ms at 91, 145 ms at 241, 140 ms at 409, 106 ms at 591, 232 ms at 2158, 183 ms at 2408
+   a frame of 100 ms from 75 ms: the picture changed by -1.00 over the 150 ms before it, 255.00 across it, 8.66 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 150 ms from 242 ms: the picture changed by 246.34 over the 150 ms before it, 0.29 across it, 0.00 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 183 ms from 392 ms: the picture changed by 0.00 over the 150 ms before it, 0.29 across it, 0.00 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 117 ms from 575 ms: the picture changed by 0.00 over the 150 ms before it, 0.29 across it, 1.57 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 217 ms from 2158 ms: the picture changed by 1.03 over the 150 ms before it, 0.02 across it, 0.23 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 183 ms from 2408 ms: the picture changed by 0.16 over the 150 ms before it, 0.27 across it, 0.50 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   console errors: none
+phone cpu x1: the sky 7208 ms after navigation (7205 ms after the page's time origin). 422 frames while the loader played: average 17.0 ms, over 34 ms 1, over 50 ms 1, over 100 ms 1. Long tasks: 129 ms at 1789
+   a frame of 117 ms from 1788 ms: the picture changed by 0.86 over the 150 ms before it, 0.09 across it, 0.36 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   console errors: none
+phone cpu x4: the sky 7684 ms after navigation (7682 ms after the page's time origin). 410 frames while the loader played: average 18.5 ms, over 34 ms 7, over 50 ms 7, over 100 ms 3. Long tasks: 67 ms at 89, 91 ms at 221, 141 ms at 322, 51 ms at 577, 236 ms at 2025, 179 ms at 2277
+   a frame of 67 ms from 74 ms: the picture changed by -1.00 over the 150 ms before it, 255.00 across it, 5.03 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 83 ms from 224 ms: the picture changed by 249.97 over the 150 ms before it, 0.00 across it, 0.45 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 200 ms from 308 ms: the picture changed by 5.03 over the 150 ms before it, 0.45 across it, 0.82 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 67 ms from 507 ms: the picture changed by 0.00 over the 150 ms before it, 0.45 across it, 0.95 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 50 ms from 574 ms: the picture changed by 0.45 over the 150 ms before it, 0.38 across it, 0.65 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 233 ms from 2024 ms: the picture changed by 0.84 over the 150 ms before it, 0.13 across it, 0.14 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   a frame of 167 ms from 2291 ms: the picture changed by 0.16 over the 150 ms before it, 0.23 across it, 0.39 over the 150 ms after (mean grey levels of 255; under 0.3 is a still picture)
+   console errors: none

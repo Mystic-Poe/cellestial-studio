@@ -1,0 +1,37 @@
+phone first visit: scene became "sky" 7532 ms after navigation
+phone loader: 546 frames, avg 17.7 ms, >34 ms 3, >50 ms 3, >100 ms 3, worst 250 ms at +2329 ms  [phone-01-loader.jpg]
+phone handoff: 556 frames, avg 17.7 ms, >34 ms 3, >50 ms 3, >100 ms 3, worst 250 ms at +2329 ms  [phone-02-handoff.jpg]
+phone flight-a: 618 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +9181 ms  [phone-03-flight-a.jpg]
+phone flight-b: 891 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +3350 ms  [phone-04-flight-b.jpg]
+phone after flight: {"pos":38.4234167307747,"level":0}
+phone tap-beads: 163 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1849 ms  [phone-05-tap-beads.jpg]
+phone empty-panel: 97 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +565 ms  [phone-06-empty-panel.jpg]
+phone round: 494 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1597 ms  [phone-07-round.jpg]
+phone exit button: {"hidden":false,"x":59.296875,"y":760,"w":271.390625,"h":52,"text":"See what holds up the sky"}
+phone fall: 211 frames, avg 16.8 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +498 ms  [phone-08-fall.jpg]
+phone after the fall: scene roots, scrollY 0
+phone tiles-and-light: 1818 frames, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms, 30330 ms in all
+phone warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +230 ms  [phone-11-warp.jpg]
+phone after the warp: scene sky
+phone teleport-build: 111 frames, avg 17.0 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +795 ms  [phone-12-teleport-build.jpg]
+phone teleport "What we build": scene roots, scrollY 0, dialog open false
+phone teleport-claim: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +125 ms  [phone-13-teleport-claim.jpg]
+phone teleport "Claim your star": scene roots, scrollY 3125, dialog open false
+phone teleport-contact: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +111 ms  [phone-14-teleport-contact.jpg]
+phone teleport "Contact me": scene roots, scrollY 3125, dialog open true
+phone teleport-sky: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +374 ms  [phone-15-teleport-sky.jpg]
+phone teleport "The Sky": scene sky, scrollY 0, dialog open false
+phone build request: star field slot-85, spam-check token present true
+phone claim-send: 545 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +18 ms  [phone-16-claim-send.jpg]
+phone after sending: star slot-85 lit in the store true, lit in the sky true; the lit star's panel says: "A site for my bakery, with the week's bread on the first page."; whole panel text: "A site for my bakery, with the week's bread on the first page."
+phone return visit: scene became "sky" 3626 ms after the reload; exit button hidden: false
+phone return-loader: 310 frames, avg 17.4 ms, >34 ms 2, >50 ms 2, >100 ms 1, worst 183 ms at +256 ms  [phone-17-return-loader.jpg]
+phone after the reload: star slot-85 lit in the store true, lit in the sky true; localStorage claims [{"slot":"slot-85","ask":"A site for my bakery, with the week's bread on the first page."}]
+phone return-lit-star: 199 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +3296 ms  [phone-18-return-lit-star.jpg]
+phone the lit star clicked on the return: "A site for my bakery, with the week's bread on the first page."
+phone return-flight: 594 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6162 ms  [phone-19-return-flight.jpg]
+phone return-fall: 189 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +524 ms  [phone-20-return-fall.jpg]
+phone return-warp: 146 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +399 ms  [phone-21-return-warp.jpg]
+phone at the end: scene sky
+phone console errors: Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set. | Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+phone screencast frames recorded: 4143

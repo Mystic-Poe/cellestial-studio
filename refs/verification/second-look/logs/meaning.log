@@ -1,0 +1,41 @@
+ok   desk: with no star lit there is no meaning anywhere, at launch or at Aries
+ok   desk: at launch (Virgo) two figures are complete (Aries, Leo) and nothing is written or shown
+ok   desk: Aries: on arriving the meaning is being written (writing)
+ok   desk: Aries: the words are exactly "the Lamb"
+ok   desk: Aries: a screen reader gets each line once (the letters seen are hidden from it)
+ok   desk: Aries: the words are whole on screen: 262x70 px at 576, 493, type 54px Quicksand-2467c83bd1e4413d
+ok   desk: Aries: they cover none of the 4 star buttons
+ok   desk: Aries: clear of the exit button and the chrome, and they take no pointer
+ok   desk: Aries: written: every letter there, the lightning's canvas gone
+ok   desk: Leo: on arriving the meaning is being written (writing)
+ok   desk: Leo: the words are exactly "the Lion of the tribe of Judah" then "Jesus is King."
+ok   desk: Leo: a screen reader gets each line once (the letters seen are hidden from it)
+ok   desk: Leo: the words are whole on screen: 816x163 px at 106, 105, type 54px Quicksand-2467c83bd1e4413d
+ok   desk: Leo: they cover none of the 9 star buttons
+ok   desk: Leo: clear of the exit button and the chrome, and they take no pointer
+ok   desk: Leo: written: every letter there, the lightning's canvas gone
+ok   desk: Aries again after flying on: the words are simply there, nothing is written twice
+ok   desk: three of Aries' four stars lit: nothing; the fourth lit while there: the meaning is written
+ok   desk: reduced motion, Virgo complete: "the virgin birth" is simply there, never written
+  wrote /home/poe/cellestial-studio/refs/sky/compare/meaning-still.jpg
+ok   phone: with no star lit there is no meaning anywhere, at launch or at Aries
+ok   phone: at launch (Virgo) two figures are complete (Aries, Leo) and nothing is written or shown
+ok   phone: Aries: on arriving the meaning is being written (writing)
+ok   phone: Aries: the words are exactly "the Lamb"
+ok   phone: Aries: a screen reader gets each line once (the letters seen are hidden from it)
+ok   phone: Aries: the words are whole on screen: 102x27 px at 144, 542, type 21px Quicksand-2467c83bd1e4413d
+ok   phone: Aries: they cover none of the 4 star buttons
+ok   phone: Aries: clear of the exit button and the chrome, and they take no pointer
+ok   phone: Aries: written: every letter there, the lightning's canvas gone
+ok   phone: Leo: on arriving the meaning is being written (writing)
+ok   phone: Leo: the words are exactly "the Lion of the tribe of Judah" then "Jesus is King."
+ok   phone: Leo: a screen reader gets each line once (the letters seen are hidden from it)
+ok   phone: Leo: the words are whole on screen: 318x63 px at 37, 524, type 21px Quicksand-2467c83bd1e4413d
+ok   phone: Leo: they cover none of the 9 star buttons
+ok   phone: Leo: clear of the exit button and the chrome, and they take no pointer
+ok   phone: Leo: written: every letter there, the lightning's canvas gone
+ok   phone: Aries again after flying on: the words are simply there, nothing is written twice
+ok   phone: three of Aries' four stars lit: nothing; the fourth lit while there: the meaning is written
+ok   phone: reduced motion, Virgo complete: "the virgin birth" is simply there, never written
+38 checks, 0 failed, 0 page error(s)
+exit 0

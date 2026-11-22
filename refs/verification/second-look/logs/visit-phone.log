@@ -1,0 +1,41 @@
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-01-loader.jpg
+phone loader: 546 frames, avg 17.7 ms, >34 ms 3, >50 ms 3, >100 ms 3, worst 250 ms at +2329 ms  [phone-01-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-02-handoff.jpg
+phone handoff: 556 frames, avg 17.7 ms, >34 ms 3, >50 ms 3, >100 ms 3, worst 250 ms at +2329 ms  [phone-02-handoff.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-03-flight-a.jpg
+phone flight-a: 618 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +9181 ms  [phone-03-flight-a.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-04-flight-b.jpg
+phone flight-b: 891 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +3350 ms  [phone-04-flight-b.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-05-tap-beads.jpg
+phone tap-beads: 163 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1849 ms  [phone-05-tap-beads.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-06-empty-panel.jpg
+phone empty-panel: 97 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +565 ms  [phone-06-empty-panel.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-07-round.jpg
+phone round: 494 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1597 ms  [phone-07-round.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-08-fall.jpg
+phone fall: 211 frames, avg 16.8 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +498 ms  [phone-08-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-09-tiles-and-light.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-10-close.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-11-warp.jpg
+phone warp: 157 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +230 ms  [phone-11-warp.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-12-teleport-build.jpg
+phone teleport-build: 111 frames, avg 17.0 ms, >34 ms 1, >50 ms 0, >100 ms 0, worst 50 ms at +795 ms  [phone-12-teleport-build.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-13-teleport-claim.jpg
+phone teleport-claim: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +125 ms  [phone-13-teleport-claim.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-14-teleport-contact.jpg
+phone teleport-contact: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +111 ms  [phone-14-teleport-contact.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-15-teleport-sky.jpg
+phone teleport-sky: 110 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +374 ms  [phone-15-teleport-sky.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-16-claim-send.jpg
+phone claim-send: 545 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +18 ms  [phone-16-claim-send.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-17-return-loader.jpg
+phone return-loader: 310 frames, avg 17.4 ms, >34 ms 2, >50 ms 2, >100 ms 1, worst 183 ms at +256 ms  [phone-17-return-loader.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-18-return-lit-star.jpg
+phone return-lit-star: 199 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +3296 ms  [phone-18-return-lit-star.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-19-return-flight.jpg
+phone return-flight: 594 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +6162 ms  [phone-19-return-flight.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-20-return-fall.jpg
+phone return-fall: 189 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +524 ms  [phone-20-return-fall.jpg]
+  wrote /home/poe/cellestial-studio/refs/verification/second-look/walk/phone-21-return-warp.jpg
+phone return-warp: 146 frames, avg 16.7 ms, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +399 ms  [phone-21-return-warp.jpg]
+exit 0

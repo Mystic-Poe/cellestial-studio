@@ -1,0 +1,6 @@
+phone, unslowed: first paint 204, 64, 72, 72, 76 ms; loader live 37, 35, 35, 35, 38 ms; sky 7587, 7252, 7177, 7175, 7177 ms
+   the loader's picture on screen (first paint to the sky): 7.38, 7.19, 7.11, 7.10, 7.10 s; from the loader going live: 7.55, 7.22, 7.14, 7.14, 7.14 s
+phone, slow 4G: first paint 692, 688, 692, 692, 692 ms; loader live 1612, 1613, 1591, 1612, 1612 ms; sky 8709, 8856, 8709, 8709, 8694 ms
+   the loader's picture on screen (first paint to the sky): 8.02, 8.17, 8.02, 8.02, 8.00 s; from the loader going live: 7.10, 7.24, 7.12, 7.10, 7.08 s
+phone, CPU 4x and slow 4G: first paint 740, 744, 744, 732, 744 ms; loader live 1621, 1635, 1619, 1620, 1636 ms; sky 8900, 8940, 8938, 8909, 8923 ms
+   the loader's picture on screen (first paint to the sky): 8.16, 8.20, 8.19, 8.18, 8.18 s; from the loader going live: 7.28, 7.31, 7.32, 7.29, 7.29 s
