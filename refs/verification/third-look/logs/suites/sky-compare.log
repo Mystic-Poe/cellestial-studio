@@ -1,0 +1,129 @@
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote /home/poe/cellestial-studio/refs/sky/compare/open.jpg (1436x720)
+wrote /home/poe/cellestial-studio/refs/sky/compare/between.jpg (1436x1434)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] figure        stars  clear at top  at bottom  at the sides
+[desk] Virgo           13           102        311           206
+[desk] Libra            6           103        126           532
+[desk] Scorpius        14           103        127           398
+[desk] Sagittarius     25           101        125           432
+[desk] Capricornus     10           101        125           209
+[desk] Aquarius        15           101        126            99
+[desk] Pisces          22           101        125           186
+[desk] Aries            4           102        125           187
+[desk] Taurus          12           103        125           350
+[desk] Gemini          12           103        126           364
+[desk] Cancer           5           101        126           533
+[desk] Leo              9           106        132            70
+wrote /home/poe/cellestial-studio/refs/sky/compare/stations-desk-1.jpg (1594x1014)
+wrote /home/poe/cellestial-studio/refs/sky/compare/stations-desk-2.jpg (1594x1014)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] figure        stars  clear at top  at bottom  at the sides
+[phone] Virgo           13           198        169            24   turned a quarter
+[phone] Libra            6           100        124            24
+[phone] Scorpius        14           232        256            24
+[phone] Sagittarius     25           209        233            24
+[phone] Capricornus     10           153        177            24   turned a quarter
+[phone] Aquarius        15           100        124            25   turned a quarter
+[phone] Pisces          22           142        166            24   turned a quarter
+[phone] Aries            4           141        165            24   turned a quarter
+[phone] Taurus          12           254        277            24
+[phone] Gemini          12           249        272            24
+[phone] Cancer           5           100        124            25
+[phone] Leo              9           100        124            34   turned a quarter
+wrote /home/poe/cellestial-studio/refs/sky/compare/stations-phone.jpg (1534x1284)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote /home/poe/cellestial-studio/refs/sky/compare/b3.jpg (1230x658)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+wrote /home/poe/cellestial-studio/refs/sky/compare/stars.jpg (1560x518)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] hand-off 0     core at 1108.0, 318.0 r 6.00
+[desk] hand-off 0.3   core at 1027.8, 330.5 r 9.11
+[desk] hand-off 0.5   core at 877.6, 371.6 r 14.26
+[desk] hand-off 0.7   core at 756.7, 422.7 r 21.42
+[desk] hand-off 0.85  core at 723.5, 445.5 r 26.01
+[desk] hand-off 1     core at 720.0, 450.0 r 27.03
+[desk] hand-off reset core at 720.0, 450.0 r 27.03
+[desk] introProgress(1) against reset(): 0 pixels differ
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] hand-off 0     core at 300.0, 398.0 r 2.40
+[phone] hand-off 0.3   core at 278.3, 400.3 r 3.80
+[phone] hand-off 0.5   core at 237.6, 407.7 r 6.28
+[phone] hand-off 0.7   core at 204.9, 417.0 r 9.95
+[phone] hand-off 0.85  core at 195.9, 421.2 r 12.45
+[phone] hand-off 1     core at 195.0, 422.0 r 13.08
+[phone] hand-off reset core at 195.0, 422.0 r 13.08
+[phone] introProgress(1) against reset(): 0 pixels differ
+wrote /home/poe/cellestial-studio/refs/sky/compare/handoff.jpg (1566x538)
+wrote /home/poe/cellestial-studio/refs/sky/compare/handoff-phone.jpg (825x272)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo          touch at 173, 720: 2 edges to slot-85, head arrives 0.70 s, last bead 0.93 s; no bead is more than 0.00 px off the route
+[desk] Sagittarius    touch at 1224, 180: 3 edges to slot-84, head arrives 0.85 s, last bead 1.17 s; no bead is more than 0.00 px off the route
+[desk] Aries          touch at 864, 558: 1 edges to slot-12, head arrives 0.50 s, last bead 0.71 s; no bead is more than 0.00 px off the route
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo, all lit touch at 432, 648: 3 edges, a strut, 1 to slot-70, head arrives 1.40 s, last bead 1.81 s; no bead is more than 0.00 px off the route
+wrote /home/poe/cellestial-studio/refs/sky/compare/beads-desk.jpg (1590x910)
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo          touch at 47, 675: 2 edges to slot-74, head arrives 0.58 s, last bead 1.03 s; no bead is more than 0.00 px off the route
+[phone] Sagittarius    touch at 332, 169: 2 edges to slot-84, head arrives 0.68 s, last bead 1.22 s; no bead is more than 0.00 px off the route
+[phone] Aries          touch at 234, 523: 4 edges to slot-12, head arrives 1.01 s, last bead 1.42 s; no bead is more than 0.00 px off the route
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo, all lit touch at 117, 608: 1 edges, a strut, 1 to slot-70, head arrives 1.30 s, last bead 1.79 s; no bead is more than 0.00 px off the route
+wrote /home/poe/cellestial-studio/refs/sky/compare/beads-phone.jpg (1182x1110)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] pulse +0 s: star r 17.97 px; words "claim yours" 13px, opacity 1, centred 0.04 px off the star, 8.8 px under its disc
+[desk] pulse +1 s: star r 17.97 px; words "claim yours" 13px, opacity 1, centred 0.04 px off the star, 8.8 px under its disc
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] still sky: a touch marks slot-102 at once; beads running: false
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] pulse +0 s: star r 13.00 px; words "claim yours" 13px, opacity 1, centred -0.05 px off the star, 8.3 px under its disc
+[phone] pulse +1 s: star r 13.00 px; words "claim yours" 13px, opacity 1, centred -0.05 px off the star, 8.3 px under its disc
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] still sky: a touch marks slot-110 at once; beads running: false
+wrote /home/poe/cellestial-studio/refs/sky/compare/pulse.jpg (1338x490)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] Virgo, the leftmost star (slot-74) at 225, 301: panel 336x338 at 255, 132; 12 px from the star's disc, at least 132 px inside the screen
+[desk] the panel's words:
+        Site A custom site built for your business.
+        Site + Systems Everything in Site, plus the work behind it wired in.
+        Site + App Everything in Site, plus a real app your customers actually use.
+        Add-ons Upgrades that take work off your plate.
+        Care What keeps your site alive after launch.
+        Claim your star
+[desk] Virgo, the lowmost star (slot-3) at 645, 563: panel 336x338 at 683, 394; 12 px from the star's disc, at least 168 px inside the screen
+[desk] Scorpius, the rightmost star (slot-17) at 1019, 204: panel 336x338 at 1054, 35; 12 px from the star's disc, at least 35 px inside the screen
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] Virgo, the leftmost star (slot-28) at 37, 403: panel 336x338 at 12, 429; 12 px from the star's disc, at least 12 px inside the screen
+[phone] the panel's words:
+        Site A custom site built for your business.
+        Site + Systems Everything in Site, plus the work behind it wired in.
+        Site + App Everything in Site, plus a real app your customers actually use.
+        Add-ons Upgrades that take work off your plate.
+        Care What keeps your site alive after launch.
+        Claim your star
+[phone] Virgo, the lowmost star (slot-74) at 123, 662: panel 336x338 at 12, 299; 12 px from the star's disc, at least 12 px inside the screen
+[phone] Scorpius, the rightmost star (slot-17) at 352, 287: panel 336x338 at 42, 313; 12 px from the star's disc, at least 12 px inside the screen
+wrote /home/poe/cellestial-studio/refs/sky/compare/panel.jpg (1560x708)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] slot-3, an ask of 62 characters: the star at 720, 438 r 108; panel 304x97 at 840, 390, 12 px from the star; its text is exactly the ask
+[desk] slot-53, an ask of 709 characters: the star at 720, 438 r 108; panel 304x294 at 840, 291, 12 px from the star; its text is exactly the ask
+[desk] slot-110, an ask of 88 characters: the star at 720, 438 r 108; panel 304x141 at 840, 368, 12 px from the star; its text is exactly the ask
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] slot-3, an ask of 62 characters: the star at 195, 410 r 62; panel 304x97 at 43, 484, 12 px from the star; its text is exactly the ask
+[phone] slot-53, an ask of 709 characters: the star at 195, 410 r 62; panel 304x294 at 43, 484, 12 px from the star; its text is exactly the ask
+[phone] slot-110, an ask of 88 characters: the star at 195, 410 r 62; panel 304x141 at 43, 484, 12 px from the star; its text is exactly the ask
+wrote /home/poe/cellestial-studio/refs/sky/compare/lit.jpg (1560x708)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] the camera reached the star and the claim began 1.16 s after focusStar
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] the camera reached the star and the claim began 1.16 s after focusStar
+wrote /home/poe/cellestial-studio/refs/sky/compare/ignite.jpg (1574x494)
+[desk] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[desk] fall: onImpact fired 1 time(s) at x 645 of 1440, 0.42 s in; resolved 1.50 s in; after restore() 0 of 12 stars are out of place
+[phone] ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3060 Ti/PCIe/SSE2, OpenGL ES 3.2)
+[phone] fall: onImpact fired 1 time(s) at x 123 of 390, 0.32 s in; resolved 1.42 s in; after restore() 0 of 12 stars are out of place
+wrote /home/poe/cellestial-studio/refs/sky/compare/fall.jpg (1566x538)
+wrote /home/poe/cellestial-studio/refs/sky/compare/fall-phone.jpg (942x272)

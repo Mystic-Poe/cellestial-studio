@@ -5,3 +5,23 @@ exit 0 (loader-measure-phone-4x)
 === sky-measure: node tools/sky/measure.mjs
 exit 0 (sky-measure)
 === sky-meaning: node tools/sky/meaning.mjs
+exit 0 (sky-meaning)
+=== sky-meaning-all: node tools/sky/meaning-all.mjs
+exit 0 (sky-meaning-all)
+=== roots-words: node tools/roots/words.mjs
+exit 0 (roots-words)
+=== roots-measure: node tools/roots/measure.mjs
+exit 0 (roots-measure)
+=== transitions-measure: node tools/transitions/measure.mjs
+exit 0 (transitions-measure)
+=== chrome-compare: node tools/chrome/compare.mjs
+exit 0 (chrome-compare)
+=== sky-compare: node tools/sky/compare.mjs
+exit 0 (sky-compare)
+=== roots-compare: node tools/roots/compare.mjs --gpu
+exit 0 (roots-compare)
+=== transitions-strip: node tools/transitions/strip.mjs
+exit 0 (transitions-strip)
+=== loader-compare: node tools/loader/compare.mjs --only desk,phone,a5,short
+exit 0 (loader-compare)
+ALL DONE
