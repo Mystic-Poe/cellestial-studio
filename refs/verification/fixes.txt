@@ -1148,3 +1148,32 @@ PIECE 4 — FOUR MINORS (second look: finding 2 a, finding 4, finding 9's nit, p
   b7.mjs (far points counted, a desktop verdict), star-side.mjs and logo-side.mjs (new). Evidence:
   round-2/owner-list/ (before/), round-2/stars/ (before/, side-by-side-*.png), round-2/logo/
   (before/, side-by-side-*.png), round-2/b7/ (desk-before/), round-2/logs-piece-4/.
+
+PIECE 5 — THE CLOSE-OUT
+
+  CUT OFF (22 Nov, 02:16), noted by the orchestrator. The close-out's fixer was stopped by the
+  account's usage limit in the middle of tools/run-all.sh. It had changed no file of the site and
+  committed nothing. What it had established, on the last commit of piece 4 (2172fad), which is still
+  the head:
+  - pnpm build passes (with the Turnstile test key); pnpm test 138 of 138 in node and the three
+    workers' own tests (15, 16, 14); pnpm lint and pnpm typecheck clean.
+  - The protected-systems diff against a31d2ee prints nothing (0 bytes).
+  - tools/run-all.sh refs/verification/round-2/logs, as far as it got (dev server on 4500 with the
+    key; status.txt): exit 0 for loader-measure (13 of 13, the full loader 7.45 s on the visitor's
+    clock), loader-measure-phone-4x (13 of 13, 7.48 s), sky-measure (201 of 201), sky-meaning (38 of
+    38), sky-meaning-all (24 of 24), roots-words (197 of 197), roots-measure (245 of 245) and
+    transitions-measure (148 of 148). chrome-compare was killed with the fixer after 44 of its checks
+    (its log ends in the runner's own crash, not in a failed check).
+  WHERE IT STOPPED, AND WHAT IS STILL TO DO (all of the close-out's list but its first step):
+  - run-all.sh again from the top: chrome-compare did not finish, and the four sheet tools
+    (sky-compare, roots-compare, transitions-strip, loader-compare) were never started, so NO scene's
+    sheets are rebuilt yet. The sheets the killed run had half rewritten were restored to the
+    committed ones (git checkout); the two servers it left on 4500 and 4615 were stopped.
+  - The round-2 scripts on the production build, and tools/loader/measure.mjs there in the four
+    conditions: not run.
+  - The effects' own sheets (refs/fx/compare/): the fixer had begun on them (a clone of the repo in
+    the session's scratchpad with the effects' dev page of 8385356 put back, the soil picture's name
+    brought up to date); nothing came of it yet and nothing of it is in the repo.
+  - The sheets looked at; PROGRESS.md brought up to date; the box ticked: not done.
+  The logs of that run are in round-2/logs/ as it left them; the next run of run-all.sh writes over
+  them.
