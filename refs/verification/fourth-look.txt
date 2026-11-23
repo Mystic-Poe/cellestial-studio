@@ -174,3 +174,76 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   of 40 skipped visits, the lowest frame round the scene change 99% of the usual: no frame without
   Cellestial's star. Console: nothing, in every one of these visits. When nothing is pressed the run
   is what it was (item 1d).
+
+1d. THE UNLIT C ON A SLOW LINE (third look: MINOR, slow lines) — RESOLVED; one thing for the owner to
+    be told (the sky comes 0.7 to 0.8 s later on slow 4G than it did)
+  Never partly drawn. Recorded frame by frame (tools/mine-loader.mjs; a frame is "partly drawn" when its
+  light is under 90% of the still C's or the share of its light in the lower half is off the still
+  C's: a C that comes down the line top first has its light in the upper half): on slow 4G 20 first
+  visits (10 unslowed, 10 with the CPU slowed 4x) and at 1 Mbit/s 6: the first frame in which anything
+  of the C shows is the whole C, the lower half's share of the light 0.48 on the desktop and 0.44 on
+  the phone from that frame on. The same script on the build the third look judged, same line, same
+  server (4618): the first frame at 1.93 s holds half the light, 11% of it in the lower half, and the C
+  is whole at 2.4 s: the fault as it was, and gone.
+  When (ms after the navigation; production build on the preview, both sizes alike):
+                      black    loader live   C first SEEN (whole)   canvas takes over   the sky
+    slow 4G           0.67-0.70  1.58-1.63      1.78-1.80              3.17-3.27          9.11-9.15
+    1 Mbit/s          0.90-0.93  2.42-2.45      2.87-2.89              4.97-5.13          10.02-10.33
+    a fast line       0.05-0.18  0.04-0.06      0.09-0.22              0.14-0.23          7.16-7.48
+  The page's own word for "seen" is 3 to 15 ms before the frame reaches my recording on a slow line:
+  I agree with it. The canvas takes the picture over with no frame without the C: 0 such frames in 46
+  recorded first visits (a frame under 60% of the still C's light, from first sight to a second after
+  the take-over).
+  THE OWNER'S CLOCK, from the first recorded frame that shows the C to the sky, five first visits at
+  each size (logs/mine-*-nothing.log, loader/mine-*-nothing.txt):
+                           1440x900                         390x844
+    a fast line            7.05 to 7.26 s                   7.01 to 7.21 s
+    the CPU slowed 4x      7.31 to 7.51                     7.36 to 7.51
+    slow 4G                7.31 to 7.36                     7.35 to 7.36
+    both                   7.27 to 7.34                     7.34 to 7.36
+    1 Mbit/s (3 each)      7.29 to 7.44                     7.14 to 7.28
+  46 of 46 between 6 and 8, the least 7.01. (At the third look slow 4G was 7.5 by the page's clock and
+  6.5 by the eye, and 1 Mbit/s 8.7 to 8.9; the clock is now the eye's and both are inside the rule.)
+  IS THE VISITOR ON A SLOW LINE BETTER OR WORSE SERVED? Both builds on slow 4G in the same minutes from
+  the same server (tools/static-gz.mjs, text gzipped as the preview sends it; logs/mine-gz-*.log), and
+  my strip beside the third look's (loader/mine-slow4g-nothing-desk.jpg, third-look/loader/slow-
+  desk.jpg, both looked at). Second by second from the navigation:
+    before  white (the page he came from) to 0.7 s; black to 1.8; the upper half of the C at 1.9;
+            the whole C from 2.4; the first spark at 3.0; the arc 5.1; the wordmark 5.7 to 7.2; the
+            sky at 8.40 to 8.45 s. The C on screen 6.5 s.
+    now     the same to 0.7 s; black to 1.78; the WHOLE C from 1.78, standing still to 3.3 (the other
+            three pictures are asked for only when the C is in); the first spark at 3.5; the arc 6.0;
+            the wordmark 6.5 to 8.0; the sky at 9.08 to 9.15 s. The C on screen 7.3 s.
+  Better in what he looks at: nothing half-drawn, and the loader's own show is the same length (the
+  spark to the sky 5.6 s, it was 5.4). Worse in one number: the sky comes 0.65 to 0.8 s later than it
+  did (9.1 s after the tap on the link; it was 8.3 to 8.4). That is the price of counting the 6 to 8 s
+  from the C and not from a black screen, and the owner's rule is about the loader, which now keeps it
+  to the eye. Not a finding; the owner should be told the number. (The fixers say the same: piece 3,
+  "LEFT". If he would sooner have 8.3 s there: LATE in src/experience/loader/timeline.ts.) At
+  1 Mbit/s the run is hurried to end 7.5 s after the C was seen: the still C stands 2.2 s and the
+  spark-to-sky is 4.3 s, not 5.6 (loader/mine-1mbit-nothing-desk.jpg): every beat is there, quicker.
+  DOES THE SKY EVER COME LATER BECAUSE ITS SCRIPT IS NOW ASKED FOR ONLY WHEN THE LOADER HAS ITS
+  PICTURES? The two builds side by side, the sky's time in s after the navigation:
+                                               the build at 8724ef5     this build
+    a fast line, nothing pressed               7.18 to 7.51             7.17 to 7.52
+    a fast line, a skip at the mount           1.75 to 2.18             1.77 to 1.87
+    a fast line, a skip at 1.0 s               2.69 to 2.73             2.69 to 2.73
+    a fast line, a skip at 3.0 s               4.69 to 4.74             4.69 to 4.74
+    slow 4G, nothing pressed                   8.40 to 8.45             9.08 to 9.11  (the clock, above)
+    slow 4G, a skip at the mount               5.94 to 6.21             5.92 to 6.05
+    slow 4G, a skip at 2.5 s                   5.93 to 6.04             5.92 to 6.05
+    slow 4G, a skip at 4.5 s, the desktop      6.27 to 6.36             6.23 to 6.35
+    slow 4G, a skip at 4.5 s, the phone        6.22 to 6.25             6.44, 6.44
+    c-lit.webp never arrives, nothing pressed  8.37 to 8.45             8.09 to 8.14
+    the same, a press at 6.0 s                 8.27 to 8.47             8.15 to 8.17
+    wordmark.webp never arrives (desktop)      not run                  8.21
+    c-lit.webp answered 404                    0.07 (the loader ends    0.07 (the same; the same two
+                                               at once; console error)  console lines)
+  On a fast line: never later. After a skip: the same, but for one case of 0.2 s (the phone, slow 4G,
+  a skip 4.5 s in, 2 of 2): the sky's script set out a second later than it used to and a skip made
+  just then waits that much for it. Not worth a change. When one of the loader's four pictures never
+  arrives the visitor still gets the sky, at 8.1 to 8.2 s, a little sooner than on the old build: he
+  looks at the still C until then (loader/mine-block-never-desk.jpg). The loader does not wait for a
+  picture for ever, and neither build's sky hangs on it.
+  A RETURN (the same tab, loaded again): the short version, the sky at 3.50 to 3.58 s on a fast line
+  (4 of 4) and 4.18 to 4.35 s on slow 4G; never the unlit C's picture first (mode "short").

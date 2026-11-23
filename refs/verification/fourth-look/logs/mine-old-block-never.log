@@ -1,0 +1,6 @@
+desk fast [c-lit.webp:never] nothing run 1: RECORDING: black 217, C first seen 245, whole 245 (still light 8.36), partly drawn frames 0, frames without the C after it was seen 0. PAGE: first paint 216, the page's own "seen" ?, has-poster ?, canvas drew ?, live 46, mode full; nothing pressed; THE SKY AT 8453 ms, 8.41 s after live; CLOCK first seen (recording) to the sky 8.21 s; first paint to the sky 8.24 s; console: nothing
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/loader/mine-old-block-never-desk.jpg
+phone fast [c-lit.webp:never] nothing run 1: RECORDING: black 61, C first seen 82, whole 82 (still light 4.87), partly drawn frames 0, frames without the C after it was seen 0. PAGE: first paint 60, the page's own "seen" ?, has-poster ?, canvas drew ?, live 58, mode full; nothing pressed; THE SKY AT 8372 ms, 8.31 s after live; CLOCK first seen (recording) to the sky 8.29 s; first paint to the sky 8.31 s; console: nothing
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/loader/mine-old-block-never-phone.jpg
+SUMMARY old-block-never: desk clock 8.21 to 8.21 (1); desk sky 8.45 to 8.45 (1); desk sky-after-live 8.41 to 8.41 (1); desk seen 0.25 to 0.25 (1); phone clock 8.29 to 8.29 (1); phone sky 8.37 to 8.37 (1); phone sky-after-live 8.31 to 8.31 (1); phone seen 0.08 to 0.08 (1)
+exit 0
