@@ -1103,6 +1103,10 @@ than two tries. All four were reached.
 - Debug: `?scene=sky|roots|loading`, `?t=3.2` freezes the loader (past 6.2 it runs on into
   the hand-off: `t=6.975` is halfway through A5), `?rm=1` forces reduced
   motion, `?debug` puts the live stage on `window.__cellestial`.
+  (After round 2 `?scene=sky`, `?scene=roots` and `?rm=1` each raised three console warnings,
+  the loader's pictures "preloaded but not used": never a visitor's path, and gone since round
+  3, piece 3, which asks for those pictures only where the loader plays. Nothing to chase:
+  `refs/verification/round-3/tools/preload-console.mjs` gives 0 messages in 18 cases.)
 - Screenshots and smoke test: `node scripts/shot.mjs` (read its header).
 - Checks: `pnpm build`, `pnpm test`, `pnpm lint`.
 - Protected, must end unchanged: `workers/**`, `src/onboard/**`,

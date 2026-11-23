@@ -58,8 +58,10 @@ for (const size of values.sizes.split(',')) for (const line of values.lines.spli
 	const k = site.findIndex((r) => r.L > 0.4);
 	const seen = site[k];
 	// the still C: the last frame before the canvas's first drawing
-	const before = site.filter((r) => r.t <= t.drawn);
-	const still = before[before.length - 1] ?? seen;
+	// (on a fast line the recording may hold no frame of it before the canvas drew: then the first
+	// frames the canvas drew, which are the same picture, a few frames on)
+	const before = site.filter((r) => r.t <= t.drawn && r.L > 0.4);
+	const still = before[before.length - 1] ?? site[Math.min(site.length - 1, k + 3)] ?? seen;
 	const after = site.slice(k + 1);
 	const lowest = after.reduce((a, r) => (r.L < a.L ? r : a), after[0] ?? seen);
 	const gone = after.filter((r) => r.L < 0.6 * still.L);

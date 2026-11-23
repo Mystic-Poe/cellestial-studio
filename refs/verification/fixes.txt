@@ -1965,72 +1965,240 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
 
 PIECE 3 — THE LOADER'S FIRST TWO SECONDS ON A SLOW LINE (third look: closing list 3, 4 and 7; part 1e)
 
-  (CHECKPOINT 1: the code is in and the two faults are gone in the first runs; the full proofs, the
-  suites and the fast line's sameness are still to run. Whoever continues: go on from "STILL TO RUN".)
+  DONE: 3a, 3b (all of it, the clock too) and 3c. One thing to be told plainly, because it is the price
+  of the clock the brief asked for: ON SLOW 4G THE SKY NOW COMES 9.1 S AFTER NAVIGATION, WHERE IT CAME AT
+  8.3 S. The visitor has the loader in front of him 7.3 s there (it was 6.5 s from the first sight of the
+  C, 6.0 s from the whole C). See "THE CLOCK" below. On a fast line nothing has changed.
 
-  REPRODUCED first, on the production build as it stood at 25696e9 (refs/verification/round-3/piece-3/
-  before/loader/, the third look's own scripts with R3_OUT=piece-3/before):
+  Everything here is under refs/verification/round-3/piece-3/: before/loader/ is the production build as
+  it stood at 25696e9, loader/, a5/, nojs/, same/ this build, logs/ every run's own output. The scripts
+  are refs/verification/round-3/tools/ (R3_OUT=piece-3 puts their output here; R3_BASE points one at
+  another build). Slow 4G is 1.6 Mbit/s down, 750 kbit/s up, 150 ms, as the third look had it. "Phone" is
+  390x844 at scale 2, "desktop" 1440x900. The real GPU throughout.
+
+  REPRODUCED first (the third look's own scripts, R3_OUT=piece-3/before)
     3a  loader-slow.txt: slow 4G, a key (desktop) or a tap (phone) 0.3 s after the first paint, the
         loader live at 1.91 to 1.93 s: the sky 7.19, 7.20, 7.19, 7.19 s after it, at 8.29 to 8.32 s, as
-        if nothing had been pressed (4 of 4). The same 0.3 s after the loader is live: 3.72 to 3.87 s.
-        clock-all.txt: all four slow-4G skips lost (6.49 to 6.53 s after the press).
-    3b  loader-seen.txt: slow 4G, the browser's first paint at 0.79 to 0.80 s, anything of the C first
-        seen at 1.82 s, the C whole at 2.25 to 2.30 s. waterfall.txt (a new script, loader-waterfall.mjs:
+        if nothing had been pressed (4 of 4). The same press 0.3 s after the loader is live: the sky 3.72
+        to 3.87 s after it. clock-all.txt: all four slow-4G skips lost (the sky 6.49 to 6.53 s after).
+    3b  loader-seen.txt, six visits on slow 4G: the browser's first paint at 0.78 to 0.80 s; anything of
+        the C first seen at 1.82 to 1.83 s; the C whole at 2.25 to 2.31 s (half-drawn 430 to 490 ms);
+        first seen to the sky 6.48 to 6.56 s. waterfall.txt (a new script, loader-waterfall.mjs:
         DevTools' own network events): the unlit C's file complete at 2272 ms (desktop) and 2344 ms
-        (phone), AFTER wordmark.webp (1721, 1994) and wordmark-matte.webp (1213, 1379); c-lit at 2916.
-        clock-all.txt: first paint to the sky 7.08 to 7.55 s in 40 first visits; navigation to the sky
-        on slow 4G 8.29 to 8.34 s.
+        (phone), AFTER wordmark.webp (1721, 1994) and wordmark-matte.webp (1213, 1379); c-lit at 2916;
+        the canvas first drawn at 2966. clock-all.txt: first paint to the sky 7.08 to 7.55 s in 40
+        first visits; navigation to the sky on slow 4G 8.29 to 8.34 s.
 
   THE CAUSES
     3a  The loader's only listeners for a skip are added by its own script when it mounts
         (src/experience/loader/index.ts). Until that script has come down the line nothing on the page
-        listens: the press at 1.1 s falls on a page whose script is live at 1.9 s.
+        listens: a press at 1.1 s falls on a page whose script is live at 1.9 s.
     3b  Three things, each seen in the waterfall and the recording:
         1. The browser paints a picture as its rows arrive: a 61 KB file that takes a second and a half
-           to come is seen top first. (The frames at +1800 and +2100 of the third look's slow-desk.jpg.)
+           to come is seen top first.
         2. Round 2's three preloads (183 KB) were asked for with it and at the same priority, and on one
-           slow line everything in flight shares it: the C's last byte came after two of theirs.
+           slow line everything in flight shares it: the C's last byte came after two of theirs. (So do
+           five pictures of other scenes that are in the page's markup: the logo, a node, the two brass
+           plates and the Roots' ground, 250 KB. They are not this piece's and were left; a host that
+           honours priorities, as the live one does, sends them last, the preview server cannot.)
         3. The browser's first-contentful-paint was reported when the C's first rows were painted, and
-           they are black: the loader's clock started a second before there was anything to see.
+           those rows are black: the loader's clock started a second before there was anything to see.
 
-  WHAT WAS CHANGED (so far)
-    src/components/scenes/Loader.astro   the three <link rel=preload> are gone from the markup; the
-        inline script (explained in the file's head, run as written by a new test) now does four things:
-        the return visit's class, as before; and, only where the loader will play: (2) the unlit C is
-        visibility:hidden until its file is in AND decoded, then shown whole, and the frame it is shown
-        in is noted; (3) the three pictures are asked for (link rel=preload, made by the script) the
-        moment the unlit C is in; (4) a pointerdown or a keydown is written down (the key's name, null
-        for a pointer) until the loader takes the list, or until DOMContentLoaded whatever happened.
-        It leaves window.__loaderEarly = { seenAt, take() }.
-    src/experience/loader/skip.ts        new: the ONE rule for what is a skip (the quiet keys moved here
-        out of index.ts), used for a key while the loader plays and for the presses written down before.
-    src/experience/loader/index.ts       takes the early presses first thing in mount() and, if any is
-        a skip, calls skip() once its own listeners are on: a skip at its first moment. The clock reads
-        firstSeen() and no longer the first paint alone. Notes when its canvas first drew.
-    src/experience/loader/clock.ts       firstSeen(paint, poster, canvas): the earlier of the page
-        showing the C and the canvas drawing it, and never before the browser's first paint.
-    src/experience/main.ts, contracts.ts the sky's script is asked for when the loader has its pictures
-        (LoaderScene.loaded), not at boot. WHY, measured: once the three pictures wait for the C they are
-        asked for at 1.6 s, the moment the page's script asks for the sky's 158 KB; sharing the line with
-        it the loader could not begin until 3.65 to 3.75 s after navigation (it began at 2.97 before this
-        piece). With the line to themselves: 3.17 to 3.27 s; the sky's script is in at 4.1 to 4.2 s (it
-        was 3.9 to 4.0). A skip lets the sky's script go at once.
-    Tests (pnpm test: 174 of 174 in node, it was 156): src/experience/loader-skip.test.ts (4),
-        loader-markup.test.ts (12: the inline script read out of the component and run against a
-        stand-in page), loader-clock.test.ts (2 more: firstSeen).
+  WHAT WAS CHANGED
+    src/components/scenes/Loader.astro
+        The three <link rel="preload"> are gone from the markup. The inline script (explained in the
+        file's head; a new test runs it as written) does four things: (1) the return visit's class, as
+        before; and, only where the loader is going to play (html[data-scene=loading], chosen by the
+        script in the head): (2) the unlit C is visibility:hidden (#loader:not(.has-poster)) until its
+        file is in AND decoded, then shown in one piece, and the frame it is shown in is noted; (3) the
+        other three pictures are asked for the moment the unlit C is in (link rel=preload, made by the
+        script: still preloads, after the C); (4) every pointerdown and keydown on the window is written
+        down (the key's name, null for a pointer) until the loader takes the list, or until
+        DOMContentLoaded whatever happened (the page's script has run by then if it ever will). It
+        leaves window.__loaderEarly = { seenAt, take() }. It judges nothing: the rule is not copied.
+    src/experience/loader/skip.ts (new)
+        THE ONE RULE for what is a skip: isSkip(press), anySkip(presses). The quiet keys (Tab, the
+        modifiers) moved here out of index.ts. Used for a key while the loader plays and for the presses
+        written down before it was there.
+    src/experience/loader/index.ts
+        mount() takes the early presses first thing (which is also what stops the markup's listening,
+        whatever becomes of the mount) and, if any is a skip, calls skip() the moment its own listeners
+        are on: exactly a skip at its first moment. The clock reads firstSeen() where it read the first
+        paint. It notes when its canvas first drew, and says when its pictures are in (loaded).
+    src/experience/loader/clock.ts
+        firstSeen(paint, poster, canvas): the earlier of the page showing the C and the canvas drawing
+        it, and never before the browser's first-contentful-paint: the later of the two. Until the
+        browser has reported a paint nothing counts as seen, as before (so the usual case at the mount
+        on a fast line is untouched).
+    src/experience/main.ts, src/experience/contracts.ts
+        The sky's script is asked for when the loader has its pictures (LoaderScene.loaded), not at
+        boot. This was not in the brief and is here because the first bullet cannot be had without it,
+        measured: once the three pictures wait for the C they are asked for at 1.6 s, the very moment
+        the page's script asks for the sky's 158 KB, and sharing the line with it the loader could not
+        begin until 3.65 to 3.75 s after navigation (three runs; it began at 2.97 before this piece:
+        round 2's gain undone). With the line theirs first it begins at 3.17 to 3.27 s, and the sky's
+        script is in at 4.1 to 4.2 s (it was 3.9 to 4.0). A skip lets the sky's script go at once. On a
+        fast line the pictures are in 89 to 113 ms after the mount (259 to 330 with the CPU slowed 4x)
+        and the sky is not mounted until the loader's still moment, three seconds on: loader/canvas.txt,
+        five first visits each, both builds, both sizes, unslowed and slowed 4x: the canvas's width and
+        the frames of its first 2.4 s are the same before and after (phone slowed 4x: 585 px in four of
+        five and 390 in one, in both builds; average frame 19.4 to 19.9 ms before, 19.4 to 19.7 after).
+    tools/loader/measure.mjs  A CHECK CHANGED ON PURPOSE. It judged the owner's "6 to 8 s, never under
+        6" from the browser's first-contentful-paint. It now judges from the moment the picture is first
+        SEEN, by the loader's own definition (the page's mark or the canvas's first drawing, whichever
+        is first, and not before the first paint), and prints the old number beside it. Why: the third
+        look found that the first paint can come a second before anything of the C is on screen, so the
+        tool and the loader both counted a second the visitor had not had; a check that kept the old
+        start would now disagree with the loader it checks. On a fast line the two starts are the same
+        frame, and in every run below the two numbers it prints are the same to the hundredth.
+    Tests: pnpm test is 174 of 174 in node (it was 156) and the Workers' 15, 16, 14.
+        src/experience/loader-skip.test.ts (4): the rule. loader-markup.test.ts (12): the inline script
+        read out of the component's source and run against a stand-in page; on the component as it
+        stood 11 of the 12 fail. loader-clock.test.ts (2 more): firstSeen, and a slow line on it.
 
-  FIRST RUNS ON THE NEW BUILD (to be run again on the final one)
-    waterfall, slow 4G: the unlit C's file complete at 1757 to 1763 ms; none of the three before it
-        (asked for at 1561 to 1611, first bytes from 1736); the canvas first drawn at 3175 to 3273.
-    loader-seen.mjs, slow 4G, 3 visits at each size: anything of the C first seen and the C whole IN THE
-        SAME RECORDED FRAME, at 1777 to 1794 ms (it was 1.82 s and 2.25 to 2.30 s); the browser's first
-        paint 1776 to 1796 ms (it no longer comes a second early: nothing is painted until the C is);
-        first seen to the sky 7.31 to 7.36 s; NAVIGATION TO THE SKY 9.11 to 9.14 s (it was 8.3 s).
-    a fast line (loader-waterfall.mjs --line fast, 3 visits at each size, both builds): first paint 72
-        to 84 ms in both; the page's own mark of showing the C 40 to 56 ms (the frame's start; the
-        browser reports the same frame 25 to 35 ms later, when it reached the glass), so the clock's
-        start, the later of the two, is the first paint, as it was.
+  3a, CHECKED AGAIN (loader/early-skip.txt, a new script, early-skip.mjs; four visits a case)
+    The sky, ms after navigation, slow 4G:               phone (a tap)      desktop (the "a" key)
+      nothing pressed                                    9129 to 9137       9141 to 9143
+      a press the moment the loader is live (reference)  5919 to 5943       6021 to 6056
+      A PRESS 1.0 S AFTER NAVIGATION, 0.6 s BEFORE THE
+        LOADER IS LIVE (the cover standing, black)       5928 to 5953       6040 to 6054     4 of 4, 4 of 4
+      a press 0.3 s after the C is first seen            5924 to 5957       6039 to 6043     4 of 4, 4 of 4
+      the same with the page's script held back 1.5 s
+        (the press 0.8 s BEFORE the loader is live)      6093 to 6111       6189 to 6194     4 of 4, 4 of 4
+        a press at THAT mount (its reference)            6088 to 6109       6185 to 6192
+      Tab, Shift, Control, Alt, Meta at 1.0 s            9138 to 9142       9141 to 9143     not a skip
+    (On this build and line "0.3 s after the C is first seen" is 0.5 s AFTER the loader is live: the C
+    is shown at 1.78 s and the script is live at 1.61 s. So the brief's case no longer meets the early
+    path here; the two cases round it do, one on the black cover and one with the script held back.)
+    Whose the window's listeners are, by DevTools' own list, in one early skip at each size: before the
+    loader is live, keydown and pointerdown each the markup's script's; just after, each the loader's
+    (the page's script); with the sky on, the sky's; window.__loaderEarly.take() then returns []. Under
+    reduced motion and on ?scene=sky: none, and window.__loaderEarly is undefined. With the page's
+    script failing to load and a key pressed while the cover stood: after the load event none, nothing
+    left to take, the page is the page without script, the cover's display none.
+    The end of the hand-off after an early skip on slow 4G (a5-probe-return.mjs 4 slow4g; the press at
+    1.16 s, the loader live at 1.60 to 1.61 s): no frame without Cellestial's star in 4 of 4 at each
+    size, and none in the return that follows (a5/blink-probe-return-slow4g.txt).
 
-  STILL TO RUN: the early skip (loader-slow.mjs, a5-probe-return with the early skip), clock-all.mjs on
-  the new definition, 1 Mbit/s, the strips of the first three seconds, tools/loader/measure.mjs on the
-  same clock, tools/loader/compare.mjs byte for byte, preload-console.mjs, the suites, PROGRESS.md.
+  3b, CHECKED AGAIN
+    The C first down the line (loader/waterfall.txt, two visits at each size): its file complete at
+      1757 to 1758 ms (it was 2272, 2344); NONE of the other three complete before it (first bytes
+      from 1779, last bytes 2688 to 3224); the canvas first drawn at 3174 to 3274. On this line the
+      page's script is live 0.15 s before the C's last byte and it is the loader itself that asks for
+      the three, at 1611 to 1612 ms; where the C is in before the script (the held-back case of 3a) the
+      markup's script has asked for them by then.
+    Never half-drawn (loader/loader-seen.txt, six visits on slow 4G): anything of the C first seen and
+      the C whole IN THE SAME RECORDED FRAME, at 1784 to 1790 ms, half-drawn for 0 ms (it was 1.82 s and
+      2.25 to 2.31 s). On slower lines (loader-seen-slower.txt): at 1.0 Mbit/s the same frame, at 2883
+      to 2984 ms (it was first seen at 2.19 s and whole at 2.19 to 3.20); at 0.7 Mbit/s 4148 to 4186; on
+      slow 3G 7463 to 7470; half-drawn 0 ms in 10 of 10.
+    No jump, no flicker (loader/first3.txt and first3-<line>-<size>.jpg, a new script, loader-first3.mjs:
+      every frame the browser presented from navigation until half a second after the canvas has taken
+      over; three visits on each of a fast line and slow 4G at each size, 12 in all): the C is whole in
+      its first frame in 12 of 12 (47.6% of the frame's light in its lower half in that frame and in
+      the still picture, desktop; 44.2% phone) and after it there is NO frame without it in 12 of 12
+      (the darkest later frame has 99.8% or more of the still C's light, across the hand-over to the canvas).
+      Looked at: first3-slow4g-desk.jpg, first3-fast-phone.jpg, loader/slow-desk.jpg (the whole run on
+      slow 4G: black to +1500, the whole C from +1800, the sky at +8700 to +9000).
+    THE CLOCK. On a fast line the two starts are one frame: loader/waterfall-fast.txt, three visits at
+      each size on each build: the browser's first paint 72 to 84 ms in this build and 72 to 76 before
+      (a browser's first visit: 192, 184); the page's own mark of showing the C 40 to 56 ms (162), which
+      is the start of the frame the browser then reports 25 to 36 ms later when it reached the glass. So
+      the later of the two is the first paint, as it was, and the run is what it was (below). On slow
+      4G the first paint no longer comes a second early: nothing is painted until the C is (1784 to
+      1792 ms). It does come early when Tab is pressed first (the skip link is painted: 1.03 s against
+      1.77 s, early-skip.txt), and then the clock takes the later, as asked.
+      FIRST SEEN TO THE SKY (loader/clock-all.txt, clock-all.mjs adapted to the loader's definition,
+      five first visits each; "before" is the same build of 25696e9 counted from its first paint):
+                                phone, now                    phone, before
+          a fast line           7.34 7.12 7.11 7.10 7.10      7.29 7.14 7.10 7.10 7.10
+          CPU slowed 4x         7.38 7.40 7.40 7.41 7.37      7.41 7.43 7.43 7.38 7.41
+          slow 4G               7.34 7.34 7.36 7.31 7.36      7.52 7.53 7.53 7.51 7.53
+          CPU 4x and slow 4G    7.34 7.36 7.36 7.36 7.36      7.52 7.53 7.55 7.53 7.53
+                                desktop, now                  desktop, before
+          a fast line           7.19 7.19 7.09 7.11 7.09      7.19 7.18 7.08 7.10 7.10
+          CPU slowed 4x         7.39 7.39 7.43 7.39 7.41      7.41 7.43 7.44 7.41 7.43
+          slow 4G               7.34 7.31 7.36 7.36 7.34      7.51 7.52 7.52 7.53 7.52
+          CPU 4x and slow 4G    7.30 7.29 7.27 7.29 7.30      7.53 7.51 7.53 7.53 7.52
+      40 of 40 between 6 and 8, the least 7.09, the most 7.43. Counted from what was SEEN, "before" on
+      slow 4G was 6.48 to 6.56 s (and 6.0 from the whole C): that is the second the old clock gave away.
+      NAVIGATION TO THE SKY ON SLOW 4G: 9.10 to 9.16 s now; it was 8.29 to 8.34 s. Why, and it is the
+      clock and nothing else: a run that is behind its plan ends 7.5 s after its clock started (the
+      loader's own rule, untouched: the plan's 7.1 s and LATE). The old clock started at 0.8 s, on a
+      black screen, and the run ended at 8.3 s, hurried by up to 35% to get there; the new one starts when the C
+      is there to see (the script is live at 1.61 s, the C seen at 1.78 s) and the run ends at 9.1 s,
+      played over 5.9 s where it had 5.4. On a fast line: 7.16 to 7.26 s after navigation (7.54 the
+      browser's first), as before (7.16 to 7.26; 7.50).
+      The short version of a return: 3.37 to 3.51 s on screen, the server's unlit C shown: never (the
+      mark stays null in 8 of 8; it was 3.36 to 3.79). A skip one second after the first paint on a fast
+      line: the sky 1.68 to 1.72 s after it, as before.
+    A return, scripts off, a script that never arrives (nojs/nojs-same.txt, a new script,
+      nojs-same.mjs: the whole page as PNG from both builds and the build as it stood a second time as
+      the control; CSS animations held): scripts off, 0 pixels differ in 3 of 3 rounds at each size, and
+      the three pictures (183 KB) are no longer fetched there (the third look's note); the page's script
+      answering 404, 0 in 3 of 3 at each size, and 13 s on 0 in 2 of 2 (phone) and in 1 of 2 (desktop:
+      the other round differs by at most 3 of 255 over the whole page, and the control, the SAME build
+      captured twice, differs from it by the same 2,547,916 pixels: one odd capture, not the build).
+      Looked at: nojs/scripts-off-desk-after.jpg: the logo, the five offers with their prices, the two
+      links; no cover, nothing black that stays.
+
+  3c  preload-console.txt, with an early skip added to its cases: 0 console messages of any kind in 18
+      cases (both sizes: a first visit played through, a return, a skip, an early skip on slow 4G,
+      ?scene=sky, ?scene=roots, reduced motion by the device, ?rm=1, /contact). The debug hooks' three
+      warnings are GONE, not merely noted: the three pictures are asked for only where the loader plays
+      ("the three pictures asked for: none" on all four). The line in PROGRESS.md says so.
+
+  ON A FAST LINE NOTHING CHANGED
+    node tools/loader/compare.mjs --only desk,phone (dev server): the four sheets were written again
+      (00:10) and git sees no change in refs/loading/compare/: byte for byte as committed.
+    tools/loader/measure.mjs on the dev server: 13 of 13 at the desktop (full 7.59 s from the mount,
+      7.45 on the visitor's clock), at the phone (7.45, 7.31) and at the phone with the CPU slowed 4x
+      (7.60, 7.25).
+    tools/loader/measure.mjs on the production build (--only full,short,skip,key,quiet-keys,broken,
+      resize,no-storage), 11 of 11 in each of six runs:
+                                  full: from the mount / the visitor's clock   short   skip (tap / key)   Tab
+        phone, unslowed           7.48 / 7.31                                  3.45    2.84 / 2.79        7.29
+        phone, CPU 4x             7.68 / 7.45                                  3.58    3.05 / 3.03        7.45
+        phone, slow 4G            7.53 / 7.36                                  3.49    4.54 / 4.53        7.53 (7.36)
+        phone, CPU 4x, slow 4G    7.52 / 7.37                                  3.65    4.72 / 4.71        7.51 (7.37)
+        desktop, unslowed         7.47 / 7.31                                  3.43    2.80 / 2.79        7.27
+        desktop, slow 4G          7.52 / 7.36                                  3.59    4.62 / 4.62        7.52 (7.34)
+      (The third look's table had, on slow 4G, 6.41 from the mount and 7.56 on the old clock, and a
+      skip 4.33 s after the mount: the mount is 0.3 s earlier now, 1.61 s against 1.92, so a skip made
+      one second after it reaches the sky at 6.15 s after navigation where it reached it at 6.25.)
+    a5-probe.mjs --runs 12: no frame without the star in 12 of 12 first visits at each size.
+      a5-probe-return.mjs 6: 0 of 6 skipped and 0 of 6 short at each size.
+    The sky itself (sky-same.mjs, the build as it stood against this one, twelve stations empty and
+      seeded, the clock held): 0 pixels differ in 24 captures at 1440x900 and in 24 at 390x844
+      (same/desk-after/sky-same.txt, same/phone-after/sky-same.txt).
+    The built files: the page, its stylesheet and its script changed; the sky's, the Roots' and the
+      effects' scripts are the same but for the name of the page's script that they import.
+
+  THE SUITES AT THE END (logs/)
+    pnpm build, pnpm test (174 of 174; 15, 16, 14), pnpm lint, pnpm typecheck: pass.
+    tools/loader/measure.mjs 13 of 13 three times on the dev server and 11 of 11 six times on the
+    production build (above); tools/transitions/measure.mjs 148 of 148; tools/sky/measure.mjs 201 of
+    201 (run because main.ts changed). refs/transitions/ and refs/sky/, which those two rewrite, were
+    restored to the committed ones. Nothing under workers/, src/onboard/, the three protected scripts,
+    public/admin/, src/content/home.json or src/config.ts is touched (git diff 8724ef5: empty). The
+    servers on 4615, 4616 and 4500 are stopped.
+
+  New scripts in refs/verification/round-3/tools/: loader-waterfall.mjs, early-skip.mjs,
+  loader-first3.mjs, loader-canvas.mjs, nojs-same.mjs, static.mjs (a second build served beside the
+  preview's, for a before taken in the same minutes; fast lines only: it does not compress). Adapted:
+  clock-all.mjs (the loader's definition of first seen), a5-probe-return.mjs (a second argument,
+  slow4g), preload-console.mjs (the early skip).
+
+  LEFT, AND TO BE TOLD
+    - Navigation to the sky on slow 4G is 9.1 s, 0.8 s more than it was. It follows from starting the
+      clock when the C is seen and from the loader's own rule that a late run ends 7.5 s after its
+      clock started; the brief asked for that clock. If the owner would sooner have the sky at 8.3 s
+      there, the place is LATE and the plan in src/experience/loader/timeline.ts, not this piece.
+    - On slow 4G the screen is black from 0.7 s to 1.78 s (it was black to 1.82 s, then half a C).
+      The C cannot be whole sooner on that line while the font, the page's script and five pictures of
+      other scenes share it; on a host that honours priorities it will be.
+    - loader-slow.mjs's label "0.3 s after the first paint (the script not yet there)" is no longer
+      true of this build (the first paint is now the C, at 1.78 s, after the script): early-skip.mjs
+      is the script for 3a. Its strips (fast-*.jpg, slow-*.jpg) are as good as before.
+    - A key held down from before the page, repeating, is a skip here as it is while the loader
+      plays (the one rule). Nothing else is carried from the page before.
