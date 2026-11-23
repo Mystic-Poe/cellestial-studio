@@ -1,0 +1,4 @@
+exit 0 (sky-meaning)
+exit 0 (sky-meaning-all)
+exit 0 (sky-measure)
+SUITES-DONE

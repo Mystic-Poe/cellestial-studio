@@ -1927,3 +1927,38 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
       667x375  the same: first seen at 0.60, whole at 0.87, none of 91 readings with both.
       In the strip "the virgin birth" grows and passes with its figure, "the price paid" comes
       up faint beside Libra as it nears and is whole when the visitor stops.
+
+  THE SUITES, AT THE END (22 Nov, 22:05; the last build is the committed source)
+    pnpm build: 4 pages. pnpm test: 156 of 156 in node (it was 148: 8 new, all in
+      src/experience/sky-meaning-place.test.ts), and the Workers' own 15, 16 and 14.
+      pnpm lint: clean (its one "info" is biome.json's own, there before). pnpm typecheck: clean.
+    On the dev server (logs: refs/verification/round-3/logs/piece-2/, status.txt: three exit 0):
+      tools/sky/meaning.mjs      38 of 38
+      tools/sky/meaning-all.mjs  24 of 24
+      tools/sky/measure.mjs      201 of 201 (run to its end this time)
+    The sheets in refs/sky/compare/ and refs/sky/measure.txt, which those three rewrite, were
+    restored to the committed ones and NOT rebuilt: meaning.txt and b7-all.txt came out of the
+    run byte for byte as committed (no place at 1440x900 or 390x844 moved), and the pictures
+    differed only as two recordings of the same writing do.
+    No check was changed. Nothing under workers/, src/onboard/, the three protected scripts,
+    public/admin/, src/content/home.json or src/config.ts is touched (git diff 8724ef5: empty).
+    The servers on 4615 and 4500 are stopped.
+
+  WHAT THIS PIECE CHANGED, IN ALL (four files under src/, nothing else of the site)
+    src/experience/sky/meaning.ts     2a: placingFor(), SIDE (a screen under 450 px high);
+                                      2b: three rows, "tight", the band's own smaller type;
+                                      and seenAt() with SEEN_SIDE (the next figure's words)
+    src/experience/sky/claim-label.ts new: where "claim yours" stands by its star (2c)
+    src/experience/sky/answer.ts      2c: measures the page and asks claim-label.ts
+    src/experience/sky-meaning-place.test.ts  new: 8 tests
+  New tools in refs/verification/round-3/tools/: f8-all.mjs, rm-words.mjs, far-words.mjs; lib.mjs
+  knows short640, short568 and R3_OUT / R3_BASE; sky-same.mjs has --all.
+
+  LEFT FOR THE FOURTH LOOK OR THE OWNER (none at 1440x900 or 390x844)
+    - 360x740, Aries, both Aries and Taurus complete, reduced motion or a second time round:
+      Taurus's words further on at 0.19 of their strength, 13 px high, 31 px from "the Lamb".
+      As before this piece; the upright phone's rule would have to change to end it.
+    - 320x568, Leo: its three rows begin 8 px under the top of the screen (the band's margin).
+    - 932x430, Libra complete: "claim yours" over slot-19 lies across one of Libra's lines.
+    - With a figure AND the next both complete, a tap on the sky offers no star at all (the
+      answer looks two layers deep). Not this piece's; older than round 2.
