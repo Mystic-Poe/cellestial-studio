@@ -2251,4 +2251,84 @@ PIECE 4 — THE CLOSE-OUT (round 3)
                                       against aed4b96; no file of the site differs between them), to
                                       know which sheets differ from one run to the next by themselves
        sheets-same-first-rebuild.txt  now against 8e519d2, round 2's other rebuild
-     (More of this part, and parts 3, 5, 6 and 7, are written below as they are done.)
+     Its crops are there too (before above, now below), and what-differs.jpg sets them side by side.
+
+     WHAT THE CONTROL SAYS FIRST. Of the 36 files, 18 came out of round 2's two rebuilds byte for byte
+     the same and 18 did not, with no file of the site changed between them. Those 18 are the sheets
+     that are RECORDED or caught at a moment of a moving thing: the four writings of B7 (thousands of
+     pixels: two recordings of the same lightning), a5-desk and a5-phone (the star's rings turn on the
+     wall clock under the frozen hand-off), lit.jpg (the same rings beside the lit star, 78 pixels),
+     between.jpg and open.jpg (a faint difference spread over the frame, at most 28 and 16 of 255,
+     in one of two forms from run to run: 90 or 128 KB, 76 or 84 KB), and nine more with no pixel over the noise (at most 5 to 24 of 255:
+     stations-desk-1 and -2, stations-phone, b7-all-desk, b7-all-phone, fall-phone, stars, panel,
+     meaning-settled). So "the same to the byte" cannot be asked of those 18 from any rebuild;
+     what can be asked is that they differ from before the round no more than they differ from
+     themselves, and that is what the reports show, sheet by sheet:
+
+     THE SKY (refs/sky/compare/, 28 files), now against 8724ef5:
+       the same to the byte (10): b3.jpg, b7-all.txt, beads-phone.jpg, claim-walk.jpg, handoff.jpg,
+         handoff-phone.jpg, ignite.jpg, meaning-still.jpg, meaning.txt, pulse.jpg.
+         b7-all.txt and meaning.txt are every meaning's box, place and type at both sizes: not one
+         number moved. claim-walk.jpg and pulse.jpg show "claim yours" under its star: piece 2
+         moved nothing there.
+       the same to the byte as round 2's OTHER rebuild, 8e519d2 (2): stations-phone.jpg, stars.jpg
+         (these two come out in one of two forms from run to run; against 8724ef5: 144 and 136
+         pixels, at most 5 and 6 of 255).
+       not the same to the byte, and no pixel over the noise (7): stations-desk-1.jpg (1,322 pixels
+         not identical, at most 8 of 255; the control 1,269, at most 7), b7-all-phone.jpg (at most
+         13; the control 24), fall.jpg (3), fall-phone.jpg (4; the control 5), panel.jpg (11),
+         meaning-settled.jpg (21; the control 16), open.jpg (16; the control 16).
+       between.jpg: three single pixels at 28 of 255, the same three as in the control; this run
+         came out in the form of round 2's other rebuild (against 8e519d2: 1,274 pixels, at most 8
+         of 255), and so did open.jpg (293 pixels, at most 7).
+       lit.jpg: 459 pixels in one box, x 216 to 364, y 26 to 161: Cellestial's rings beside the lit
+         star, at another moment of their turn (the control: 78 pixels in the same box, x 216 to
+         358, y 26 to 116). Looked at in what-differs.jpg: the rings, nothing else.
+       the four writings (meaning-aries-desk, -phone, meaning-leo-desk, -phone): 658 to 5,105
+         pixels in 16 to 30 boxes; the control 618 to 6,274 in 12 to 30. Recordings.
+       THE THREE THAT DIFFER BY THE ROUND, all three the desktop, all three the two thinned stars of
+       Taurus (slot-77 and slot-64, 18.8 and 19.2 px across before, 12.5 and 12.5 now; piece 1):
+         stations-desk-2.jpg  181 pixels in two boxes (the control: 0). One of 19x19 px in Taurus's
+                              cell at the figure's right-hand end: the pair, one lump before, two
+                              small stars now. One of 5x3 px in Aries's cell at screen 839, 479: the
+                              same pair as two of the points of the figure further on.
+         b7-all-desk.jpg      193 pixels in two boxes (the control: 0): 16x17 px in Taurus's cell
+                              (the pair, lit), 5x6 px in Aries's cell (the pair, far).
+         beads-desk.jpg       199 pixels in six boxes of 10 to 11 px, one in each of the six cells
+                              of the third row and at the same place in each (the control: the same
+                              to the byte). That row is Aries's station (a touch at 864, 558, the
+                              beads to slot-12), and the box is the pair again, standing behind
+                              Aries 80 px from the touch. The other three rows: nothing.
+       Every difference over the noise that is not a recording is thus the two stars of Taurus, in
+       the three desktop sheets where Taurus is to be seen. Nothing on the phone. Nothing that piece
+       2 moved for "claim yours" shows in any sheet (it moves the label only when a meaning is
+       within 40 px of it, which no sheet's taps bring about at the two sizes).
+     THE LOADER (refs/loading/compare/, 8 files), now against 8724ef5:
+       the same to the byte (6): desk-1.jpg, desk-2.jpg, phone-1.jpg, phone-2.jpg, short.jpg,
+         light.txt. Every frozen moment of the loader, both sizes, the short version: untouched.
+       a5-desk.jpg: 21 pixels in two boxes at the rings of two cells, at most 37 of 255: the very
+         numbers of the control (21 pixels, 37).
+       a5-phone.jpg: 1,365 pixels in six boxes (the control: 761 in four): the cell at 0.5 (the
+         letters fading, x 1178 to 1292, the same box as the control's) and the rings in the five
+         cells from 0.6 to 1. The rings' turn and the fade's moment, as in the control.
+
+     LOOKED AT by me after the rebuild (every sheet the brief names; each opened once):
+       refs/sky/compare/stations-desk-1.jpg and stations-desk-2.jpg: all twelve figures beside their
+         real patterns inside the dashed safe lines, Cellestial's star among Virgo's; Taurus's
+         right-hand pair is two small stars side by side.
+       refs/sky/compare/stations-phone.jpg: the six wide figures turned a quarter and tall, the
+         other six upright, Cellestial's star clear of Virgo's stars; as round 2 left it.
+       refs/sky/compare/b7-all-desk.jpg and b7-all-phone.jpg: all twelve meanings in brass by their
+         figures, none on a star, the logo or the exit button; Leo's with "Jesus is King." under it.
+       refs/loading/compare/desk-1.jpg, desk-2.jpg, phone-1.jpg, phone-2.jpg (the phone's two set
+         one over the other): the fourteen moments beside the reference's at each size, as before.
+       refs/loading/compare/a5-desk.jpg, a5-phone.jpg: the star breaks, its pieces swing to the
+         rings, the letters sink, the sky's Virgo comes up round the star; the star there at every
+         tenth from 0.5 on.
+       refs/sky/compare/handoff.jpg, handoff-phone.jpg (one over the other): the point of light
+         grows into the star with its rings; t 1 and reset() the same picture at both sizes
+         (sky-compare prints 0 pixels differing at each).
+       And piece-4/sheets/what-differs.jpg (the crops of the three desktop sheets and of lit.jpg).
+     Not opened by me after this run: the Roots', the transitions' and the chrome's sheets (no piece
+     of this round changed their look; their tools exit 0), and the sky's other sheets.
+     (Parts 3, 5, 6 and 7 are written below as they are done.)
