@@ -1,6 +1,6 @@
 THE FIFTH LOOK — "claim yours" after round 4, and whether anything else moved
 23 Nov 2026. Branch redesign-build, HEAD 63c8886 (round 4's last commit). An inspector independent of
-the builders, the fixers and the four looks before. IN PROGRESS: this file is written as the work goes.
+the builders, the fixers and the four looks before. FINISHED 23 Nov, 15:55 (in two runs; see the note).
 SECOND RUN (23 Nov, from 14:15): the first run was cut off in part 1 (the orchestrator's note below). This run
 kept what it had measured, checked it, and went on. Everything below the note is this run's unless it says so.
 
@@ -194,3 +194,96 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
    Of the builders' sheets: refs/sky/compare/beads-desk.jpg and beads-phone.jpg (they show the words) and
      refs/sky/measure.txt (the changed check's line; the rest of its diff is one run's timings against another's).
    Nothing in the loader, the Roots, the chrome, the layout of the stars, or which star a tap chooses.
+
+6. THE GATES (HEAD 63c8886 for every file of the site; this look's commits add only its own folder and this file)
+   pnpm build      exit 0, 4 pages (logs/pnpm-build.log)
+   pnpm test       185 of 185 in node, 0 failed (174 before round 4 + the 11 label tests); the Workers' own 15, 16, 14
+   pnpm lint       exit 0 (1 info: biome's own note about its config). pnpm typecheck exit 0.
+   tools/run-all.sh (dev server on 4500 with the Turnstile test key; logs/run-all/status.txt): thirteen tools,
+     thirteen exit 0. The counts, each what it was: loader 13 and 13 (unslowed; phone slowed 4x); sky 201;
+     meaning 38; meaning-all 24; roots words 197; roots measure 245; transitions 148; chrome 48. None differs.
+     The sky's sheets that show the words (beads-desk.jpg, beads-phone.jpg) came out byte for byte as round 4
+     committed them (builders/beads-phone.jpg, looked at). The other sheets the tools rewrote were restored.
+   The protected-systems diff (git diff a31d2ee HEAD -- workers src/onboard src/scripts/contact-submit.ts
+     src/scripts/start-flow.ts src/scripts/start-builder.ts public/admin src/content/home.json src/config.ts):
+     prints nothing.
+   Production build: /, /contact, /start, /start/new, /admin/ answer 200.
+   The servers I started (4615, 4616, 4500) are stopped; nothing else was touched (a dev server of another
+   checkout, cellestial-studio-work, was running and was left alone).
+
+THE FIXER'S OWN RECORD (fixes.txt, "ROUND 4"), read only after parts 1 to 4 were ruled
+   Its numbers and mine agree wherever both measured: the grid's counts; every star (its 146 labels: mine 146
+   and 143); 0 pixels; 146 of 146; the figure complete 19 and 22; the frame times. Its "what is left" is honest
+   and I looked at each item myself before repeating it (they are in findings 1 to 3 below). Three things it
+   does not say: that Virgo slot-53's words on the phone read as slot-34's (it speaks of the knots only); that
+   with a figure complete the words read as a LIT star's in about ten places on the phone (it reports the discs
+   touched, not whose label it looks like); and that in the Home glide every change of place it counted lasts one
+   frame before the words are hidden, and that going ON the change is the star swelling off the screen, not
+   Cellestial's rings (it calls all of them "giving way to Cellestial's star"). Its claim that 18 touches on
+   the phone had been opening the panel by themselves on the build as it stood: confirmed (part 1).
+
+A MISTAKE OF MINE, FOR THE RECORD. This look's two runs committed the per-tap records (JSON, 4 to 9 MB each)
+   and, once, the 96 PNG captures of sky-same.mjs: about 50 MB that the brief did not ask for. They are out of
+   the tree since checkpoint 5 (a .gitignore in this look's folder; the scripts make them again in five
+   minutes each) but they stay in the branch's history, because history is not to be rewritten.
+
+EVERYTHING STILL STANDING, WORST FIRST
+No blocker. Nothing major. Three minors, all three about where "claim yours" stands; none of them was better
+before round 4, and all three are what is left of a fault that was ten times as common.
+
+1. MINOR, 390x844 mostly, the empty sky as every visitor finds it: in the knots a dozen labels of 143 are
+   not right to the eye. (a) One is still written across a star: Pisces slot-141, its "yours" over slot-105;
+   nine more touch a disc with the box's edge and stand wedged (Pisces 123 and 139, Gemini 4, Aquarius 130,
+   Scorpius 41, and four by a pixel or two). (b) Five or six touch nothing and read as a NEIGHBOUR'S label:
+   Virgo slot-53 (the first station: its words stand where slot-34's own label stands, to a pixel), Taurus
+   slot-77, Sagittarius slot-138 and slot-140, Pisces 139 and 122. At 1440x900 only Sagittarius slot-140 (and,
+   less, Taurus slot-54) reads so, and nothing is across a star of its figure.
+   Evidence: labels/zoom-phone-1.jpg, zoom-every-phone-1.jpg and -2.jpg, zoom-every-desk-1.jpg,
+   labels/phone-every-analysis.txt, desk-every-analysis.txt.
+   Fix (src/experience/sky/claim-label.ts, taken()/placeLabel(), with tests beside the others): count as a cost
+   a neighbour's star (r > 3 px) that stands LEVEL with the words (its centre between the box's top and
+   bottom) nearer than 16 px to the box's end, when the words' own star is not level with them, so that a free
+   place without one is taken first: Virgo slot-53 then takes "above, slid 48" (free, 33 px from slot-34). And
+   where every tight place is on a star (Pisces slot-141), try the same places once more 12 px further out
+   before taking the least bad. Check: my-labels.mjs --every, my-near.mjs, the zoom sheets; then
+   sky-same.mjs. Or leave it: it is what real star patterns cost on a 390 px screen, and it is one visitor's
+   tap in ten in three figures.
+
+2. MINOR, both sizes, only with every star of a figure claimed in the visitor's own browser: the star then
+   offered is one of the NEXT figure, a speck among the near figure's lit stars, and "claim yours" reads as a lit
+   star's label in about ten of the 91 distinct places on the phone and two or three on the desktop (centred
+   under Virgo's lit slot-3; level with Scorpius's lit slot-15; desktop Virgo slot-62 level with lit slot-3);
+   at Virgo complete on the phone slot-88's words have their "y" ON a lit star of Virgo (it was across
+   Cellestial's star before round 4). Evidence: b7/label-on-stars.jpg, labels/zoom-complete-1.jpg,
+   phone-complete-touching-1.jpg, desk-complete-touching-1.jpg, builders/beads-phone.jpg (its last row),
+   labels/phone-complete-analysis.txt. Fix (src/experience/sky/answer.ts, nearestIn()): do not offer a far star
+   (disc under 8 px across) whose best place takes anything of a LIT star's disc with its 4 px of air: offer the
+   next nearest, as is done already for a meaning and for Cellestial's rings. Round 4 was told not to change
+   which star is offered; this needs that changed for these few. Check: my-labels.mjs --complete, f8-all.mjs.
+
+3. MINOR, a keyboard only (the Home key's glide, the one flight that keeps the words): just before the words are
+   hidden they jump to another place for ONE frame (1440x900: under -> right, 17 ms; at 390 wide three places in
+   three frames), as Cellestial's rings reach their star on the way back, or as the star swells off the screen
+   on the way on. Never A, B, A; never a slow frame. Evidence: flight/words-desk.txt, words-phone.txt,
+   old/flight/words-desk.txt (the build as it stood: no change of place). Fix (claim-label.ts, placeLabel()):
+   while the sky moves, if the place the words have is no longer allowed, return null (they wait, hidden) and
+   do not look for another until the sky rests: `if (moving && held) return allowed(stay) ? stay : null`, and
+   a line in the test "steady in flight". Check: my-flight.mjs --mode words: changes of place 0.
+
+NOT MINE TO COUNT, AND UNCHANGED: the fourth look's second minor (two stars of Taurus on a phone on its side)
+and its notes for the owner; at 375x667 and 360x740 a few labels in Pisces and Aquarius still lie 11 to 13 px
+into a disc (it was 47 and 55 labels; it is 3 and 9).
+
+VERDICT
+"Claim yours" is right at 1440x900: every one of the 146 stars' labels stands under its star where that place
+is free and tight beside it where it is not, none across a star of its figure, none in Cellestial's rings, and
+the call to give way to a star is carried out well; one label in a knot of Sagittarius could be read as its
+neighbours'. At 390x844 it is right for about nine stars in ten and for everything a first tap at each station
+is likely to meet; a dozen labels in the knots of Sagittarius, Pisces and Taurus, and one at Virgo, are wedged,
+read as a neighbour's, or (once) still cross a star: minor, and far from the 38 of 113 it was. With a figure
+complete it is better than it was and not yet right; in the Home glide there is a one-frame flick. Nothing else
+moved: the standing sky is the same to the pixel at both sizes, every star takes its tap, the same tap offers
+the same star, the only change outside the placing is a guard on the words' click that mended a fault nobody
+had listed (a touch just under a star opening its panel by itself in a still sky), the checks and tests ask
+real questions and fail on the old code, and every gate passes with every count where it was. No blocker,
+nothing major. The site is ready for the owner; the three minors above are his to take or leave.
