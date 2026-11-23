@@ -20,7 +20,7 @@ const browser = await launch({ gpu: true });
 // [station, slot]: beside their star on this build (labels/desk.txt, phone.txt), and two under it.
 const CASES = {
 	desk: [[0, 'slot-34'], [0, 'slot-52'], [2, 'slot-7'], [3, 'slot-143'], [3, 'slot-140'], [6, 'slot-115'], [8, 'slot-69'], [8, 'slot-54'], [1, 'slot-70'], [10, 'slot-91']],
-	phone: [[0, 'slot-34'], [0, 'slot-98'], [2, 'slot-2'], [3, 'slot-140'], [3, 'slot-13'], [6, 'slot-141'], [9, 'slot-4'], [5, 'slot-130'], [1, 'slot-70'], [1, 'slot-88']],
+	phone: [[0, 'slot-34'], [0, 'slot-98'], [2, 'slot-2'], [3, 'slot-140'], [3, 'slot-39'], [6, 'slot-141'], [9, 'slot-4'], [5, 'slot-130'], [1, 'slot-70'], [1, 'slot-88']],
 };
 let fails = 0;
 for (const size of values.sizes.split(',')) {

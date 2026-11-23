@@ -2629,3 +2629,53 @@ this round's). "Before" is the build at f7d5ea4, served beside the new one on po
     Hyades of Taurus) the words now stand outside the knot, beside the star on its open side.
     The 34 labels that began at or within 8 px of the screen's side stand 16 px in. Nine
     labels are still on a star of their own figure (phone-on-stars.jpg; named below).
+
+  (CHECKPOINT 6, 23 Nov.) THE WORDS WHILE THE SKY MOVES (the brief's 8), and what it changed.
+  WHAT A VISITOR CAN DO, read in the code and then shown in the page on both builds
+  (tools/r4-flight.mjs --case hands; flight/hands-desk.txt, hands-phone.txt, and -before): the
+  first push of a wheel, a swipe or an arrow key puts the words out (index.ts, thrust(): it
+  emits 'dismiss' whenever the flight was not already in thrust; 6 of 6 at each size on each
+  build), and a press while the sky moves stops it dead before the tap is answered (down():
+  flight.halt(); the words then come into a sky that has not moved since the press). So in a
+  flight made with the hands "claim yours" is never showing, on this build or the last. The
+  ONE flight a visitor can make with the words showing is the Home key (home(): a glide to the
+  nearest Virgo, 1.1 to 3.2 s, through up to six stations, forward or back; it puts nothing
+  out). That is the flight this was proved in (--case home: at Capricornus, Aquarius, Pisces,
+  Aries, Taurus and Gemini a real tap, the words, Home; back four and five stations, forward
+  six, five, four and three; every frame recorded: the words' place and box, their star, and
+  what the box touches of everything drawn).
+  WHAT IT FOUND on the build of checkpoint 5: the words FLICKED. Flying back, the star they
+  belong to shrinks into its figure while the four or five figures in between sweep across the
+  screen, and the words dodged every star that passed: 7 to 13 changes of place in ONE glide of
+  2.5 to 2.9 s; 51 changes in the 17 glides at 1440x900 and 62 at 390x844; there and back
+  within a second 5 and 6 times. The rule's slack (a place left only when more than a point's
+  worth of a star is covered) was no help: a near star passing covers far more than that.
+  WHAT WAS CHANGED: WHILE THE SKY MOVES THE WORDS KEEP THEIR PLACE, whatever star passes
+  through it. In flight they leave it only for what they must never cross (Cellestial's star
+  to the reach of its rings, a meaning within 40 px, the screen's side, the logo, the menu, the
+  exit button); when the sky comes to rest they are placed again by the whole rule.
+  claim-label.ts: placeLabel() takes "moving"; answer.ts hands it the flight's mode (thrust
+  or glide: the test it already used for the beads that go by themselves). In a sky at rest,
+  and so in every still picture and every number above, nothing is different: the rule is
+  asked exactly as before. A test in node that failed first (a star swept through the words
+  in flight: one place throughout; the same star at rest: they leave; in flight too never
+  across the rings, by a meaning or at the screen's side). pnpm test 185 of 185.
+  AFTER (flight/home-desk.txt, home-phone.txt; the strips home-desk-1 to 3.jpg and
+  home-phone-1 to 3.jpg, twelve moments of each glide cut out of a recording round the words):
+    1440x900: 17 glides, 2,750 frames, the words showing in 1,018: 9 changes of place in all
+      (none in 11 of the glides, at most 3 in one), there and back within a second 0; never
+      inside the rings' reach, never nearer a side than 16 px, never off the screen.
+    390x844: 17 glides, 2,774 frames, the words showing in 1,176: 17 changes in all (none in
+      10 of the glides, at most 3 in one), there and back within a second 0; the same nevers.
+    The changes that are left are the words giving way to Cellestial's star as the flight
+    comes home to it (its rings grow in the middle of the screen, where the star they belong
+    to has shrunk to), and the one placing when the sky comes to rest.
+    The cost, and it is the build as it stood's own behaviour in flight: while the sky moves
+    the words are crossed by the stars that pass (406 of the 1,018 frames on the desktop, 394
+    of 1,176 on the phone, each star for a few frames). Looked at, home-desk-1.jpg: flying
+    back from Capricornus the words stay under their star as it shrinks to a point and the
+    teapot and the scorpion go by; flying on from Pisces they stay under it as it grows and
+    passes. They read as one thing moving with its star, not as a thing that jumps.
+    The frame times with the words showing, unslowed: 16.7 ms a frame, none over 17.5 ms, in
+    all 2,733 and 2,757 frames. (Without the words, the build as it stood, and both with the
+    CPU slowed 4x: being measured; added below.)

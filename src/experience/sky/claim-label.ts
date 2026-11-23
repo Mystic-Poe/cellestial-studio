@@ -34,11 +34,18 @@
 // jammed against a star count for something; under the star is forgiven one
 // point there too.
 //
-// Once in a place the words stay there while it will still do, so that a
-// flight does not flick them from side to side: a place is TAKEN with 4 px of
-// air round every star and LEFT only when the words there cover more of the
-// stars than one far point, or a rule above is broken; and where no place is
-// free, only for a place that covers less than half as much.
+// Once in a place the words stay there while it will still do: a place is
+// TAKEN with 4 px of air round every star and LEFT only when the words there
+// cover more of the stars than one far point, or a rule above is broken; and
+// where no place is free, only for a place that covers less than half as much.
+//
+// WHILE THE SKY MOVES (the Home key's glide is the one flight a visitor can
+// make with the words showing: up to six stations in three seconds, the
+// figures in between sweeping across the screen) the words keep the place
+// they have, whatever star passes through it: to dodge each would flick them
+// from side to side four times a second. They leave it in flight only for
+// what they must never cross (the list above), and when the sky comes to rest
+// they are placed again by the whole rule.
 //
 // Pure geometry in viewport pixels, so that it can be tested without a page:
 // answer.ts measures the page and asks here.
@@ -312,20 +319,21 @@ export function hadPlace(star: Disc, scene: LabelScene): boolean {
 
 /**
  * Where the words stand by this star, or null if they can stand nowhere. `now` is the
- * place they have already: they stay in it while it will still do.
+ * place they have already: they stay in it while it will still do. `moving` is true while
+ * the sky is in flight: the words then keep their place whatever star passes through it,
+ * and leave it only for what they must never cross.
  */
 export function placeLabel(
 	star: Disc,
 	scene: LabelScene,
 	now: LabelSpot | LabelSide | null = null,
+	moving = false,
 ): LabelPlace | null {
 	const held: LabelSpot | null = typeof now === 'string' ? { side: now, slide: 0 } : now;
-	let heldCover = Number.NaN;
 	if (held) {
 		const stay = labelAt(star, held.side, scene.w, held.slide);
 		if (allowed(stay.box, star, scene)) {
-			heldCover = covered(stay.box, star, scene);
-			if (heldCover <= LABEL.point) return stay;
+			if (moving || covered(stay.box, star, scene) <= LABEL.point) return stay;
 		}
 	}
 	// The first place that is free.

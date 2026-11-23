@@ -119,13 +119,22 @@ for (const size of values.sizes.split(',')) {
 	if (values.case === 'hands') {
 		for (const [what, act] of [['a wheel notch or a swipe', () => (o.phone ? swipe(1) : o.page.mouse.wheel(0, 100))], ['ArrowDown', () => o.page.keyboard.press('ArrowDown')], ['a wheel notch or a swipe back', () => (o.phone ? swipe(-1) : o.page.mouse.wheel(0, -100))]]) {
 			await station(5);
-			await o.pressAt(...POINTS[0]);
-			const before = await untilWords(o.page);
+			// A point of empty sky whose tap is answered with the words (a tap on a star opens its panel instead).
+			let before = null, at = POINTS[0];
+			for (const pt of POINTS) {
+				at = pt;
+				await o.pressAt(...pt);
+				before = await untilWords(o.page, 2500);
+				if (before) break;
+				await o.page.keyboard.press('Escape');
+				await sleep(300);
+			}
+			await sleep(300);
 			await act();
 			await sleep(120);
 			const after = await words(o.page);
 			const f = await flight(o.page);
-			say(`  Aquarius, a real tap at ${POINTS[0]}: the words ${before ? `by ${before.slot} (${before.side})` : 'NOT shown'}; then ${what}: the flight is in "${f.mode}", the words are ${after ? 'STILL SHOWING' : 'put out'}`);
+			say(`  Aquarius, a real tap at ${at}: the words ${before ? `by ${before.slot} (${before.side})` : 'NOT shown'}; then ${what}: the flight is in "${f.mode}", the words are ${after ? 'STILL SHOWING' : 'put out'}`);
 			await untilRest(o.page);
 		}
 		// A press during a flight.

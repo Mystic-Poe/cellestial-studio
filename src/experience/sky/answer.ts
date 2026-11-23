@@ -212,9 +212,11 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		}
 		// Under the star where that place is free; beside it where another star, Cellestial's
 		// rings, a meaning's words or the screen's edge is in the way; and they keep the place
-		// they have while it will do. Never by a meaning or across Cellestial's star: if the
-		// flight has carried them there and no place is clear, they wait.
-		const place = placeLabel(c, scene(), pulse.spot);
+		// they have while it will do, and through a flight (the Home key's glide) whatever star
+		// passes. Never by a meaning or across Cellestial's star: if the flight has carried
+		// them there and no place is clear, they wait.
+		const { mode } = hooks.flight();
+		const place = placeLabel(c, scene(), pulse.spot, mode === 'thrust' || mode === 'glide');
 		if (!place) {
 			words.style.visibility = 'hidden';
 			return;

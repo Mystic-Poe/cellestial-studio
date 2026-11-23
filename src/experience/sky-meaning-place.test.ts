@@ -560,3 +560,42 @@ test('steady: a place is taken with 4 px of air and left only when a star is cov
 	}
 	assert.ok(kept > 0 && left > 0, `${kept} places kept beside the best, ${left} left`);
 });
+
+test('steady in flight: while the sky moves the words keep their place; they give way only to what they must never cross', () => {
+	// The Home key glides through up to six stations with the words showing: near stars sweep
+	// across them one after another. Dodging each would flick the words from side to side
+	// (r4-flight.mjs --case home counted 7 to 13 changes of place in one glide of 2.5 s).
+	const box = labelAt(STAR, 'right', 1440).box;
+	const sweep = (x: number): Disc => ({ x, y: 400, r: 14 });
+	const places = new Set<string>();
+	let now: { side: LabelSide; slide: number } = { side: 'right', slide: 0 };
+	for (let x = box.x0 - 30; x <= box.x1 + 30; x += 4) {
+		const place = placeLabel(STAR, scene([], [STAR, sweep(x)]), now, true);
+		assert.ok(place);
+		now = { side: place.side, slide: place.slide };
+		places.add(`${now.side} ${now.slide}`);
+	}
+	assert.deepEqual(
+		[...places],
+		['right 0'],
+		'a star sweeping through the words in flight does not move them',
+	);
+	// The same sweep with the sky at rest: they leave once the star is well into them.
+	const deep = sweep(box.x0 + 40);
+	assert.notEqual(placeLabel(STAR, scene([], [STAR, deep]), 'right', false)?.side, 'right');
+	// So when the flight comes to rest on a star, the words then take the first free place.
+	assert.equal(placeLabel(STAR, scene([], [STAR, deep]), 'right')?.side, 'under');
+	// In flight too they are never left across Cellestial's star, within 40 px of a meaning,
+	// or with their letters nearer the screen's side than 16 px.
+	const rings = { x: box.x0 + 60, y: 400, r: 30, rings: true };
+	const offRings = placeLabel(STAR, scene([], [STAR, rings]), 'right', true);
+	assert.ok(offRings && offRings.side !== 'right' && discGap(offRings.box, rings) >= 0);
+	const meaning: Box = { x0: box.x1 + 10, y0: 380, x1: box.x1 + 300, y1: 450 };
+	const offMeaning = placeLabel(STAR, scene([meaning]), 'right', true);
+	assert.ok(offMeaning && boxGap(offMeaning.box, meaning) >= LABEL.clear);
+	const edge = { x: 1400, y: 400, r: 10 };
+	const inside = placeLabel(edge, scene([], [edge]), 'right', true);
+	assert.ok(inside && inside.box.x1 <= 1440 - 8 && inside.side !== 'right');
+	// Words that have no place yet take the first free one, moving or not.
+	assert.equal(placeLabel(STAR, scene([], [STAR, deep]), null, true)?.side, 'under');
+});
