@@ -1899,3 +1899,31 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
     It is as the build was before this piece (nothing at 360x740 moved), it is faint, and to
     change it the upright phone's rule would have to change, which 390x844 shares: not touched.
     rm-words.mjs counts it, so that tool says FAIL at that one size. For the fourth look.
+
+  AFTER THAT CHANGE, RUN AGAIN ON THE BUILD WITH IT IN (production build, 22 Nov 21:15 on)
+    The owner's two sizes: sky-same.mjs after --all, against the same before pictures: 0 pixels
+      differ in 36 captures at 1440x900 and 0 in 36 at 390x844 (piece-2/same/*-after/sky-same.txt).
+    b7.mjs --only all, 844x390, 667x375, 740x360, 932x430: 48 of 48 touch nothing, far points on
+      the words 0 at each; every box, place and type as in the run above (the search is untouched).
+    b7.mjs --only write --sizes desk,side: recorded again, 371 to 522 frames, console errors none.
+    rm-words.mjs, the eight sizes (rm-words.txt, the committed one): 12 of 12 simply there at
+      844x390, 667x375, 740x360, 932x430, 1440x900, 390x844 and 375x667, 0 pixels of any box
+      differing 2 s later; 360x740 11 of 12 (Taurus's faint words by Aries's, left, above).
+      A note on that tool's verdict: it asks that 2 s later the words are in the same place, at
+      the same size and as bright, and only counts the pixels that differ. In three of its first
+      230 arrivals some thousands of pixels of a box differed with every number in the page the
+      same. Caught once more with the CPU slowed 6x and enlarged: the same letters drawn a
+      fraction of a device pixel higher in one picture (upper edges a shade darker, lower a
+      shade lighter, the box's mean unchanged, the largest difference 40 levels of 255): the
+      browser's own drawing of text that has just been moved by the tool's jump, which a visitor
+      under reduced motion never makes. Not the site's, not chased further.
+    WITH MOTION ON, A SECOND TIME ROUND (round-3/tools/far-words.mjs, new: every star lit; the
+      visitor is stood at Libra until its words are written, then at Virgo, then flies on to
+      Libra by real swipes; far-words.txt, far-words-side.jpg looked at, far-words-side667.jpg)
+      844x390  standing at Virgo: Virgo's words whole, Libra's not shown. Flying on: Libra's
+               first seen at 0.60 of their station size (+0.9 s), whole at 0.87 (+1.9 s); Virgo's
+               words have passed by then: no reading of 92 with both at a tenth or more; at rest
+               at Libra its words are whole.
+      667x375  the same: first seen at 0.60, whole at 0.87, none of 91 readings with both.
+      In the strip "the virgin birth" grows and passes with its figure, "the price paid" comes
+      up faint beside Libra as it nears and is whole when the visitor stops.

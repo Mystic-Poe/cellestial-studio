@@ -1,0 +1,4 @@
+side (844x390) standing at Virgo, both written (Virgo written, Libra written): Virgo's words at 1; Libra's not shown
+side flying on to Libra (92 readings in 4.6 s): Libra's words first seen at +919 ms at 0.60 of their station size (opacity 0.01); whole at +1890 ms at 0.87; readings with both figures' words at a tenth of their strength or more: 0; at the end the visitor is at station 2, Libra's words at 1 and 1.00 of their size, Virgo's gone; console errors none
+side667 (667x375) standing at Virgo, both written (Virgo written, Libra written): Virgo's words at 1; Libra's not shown
+side667 flying on to Libra (91 readings in 4.6 s): Libra's words first seen at +817 ms at 0.60 of their station size (opacity 0.01); whole at +1784 ms at 0.87; readings with both figures' words at a tenth of their strength or more: 0; at the end the visitor is at station 2, Libra's words at 1 and 1.00 of their size, Virgo's gone; console errors none
