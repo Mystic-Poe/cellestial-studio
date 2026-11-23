@@ -32,22 +32,36 @@ const heightOf = (layout: Layout, i: number) => {
 	return (Math.max(...ys) - Math.min(...ys)) / layout.h;
 };
 
-/** The deepest overlap of two stars of a figure, as a share of the smaller one's width. */
-const deepest = (layout: Layout, i: number) => {
+/** The least room between two stars' discs in a figure at its station, pixels. */
+const leastGap = (layout: Layout, i: number) => {
 	const plan = layout.plans[i];
 	const scale = layout.fits[i]?.scale ?? 0;
-	let worst = 0;
-	if (!plan) return worst;
+	let least = Infinity;
+	if (!plan) return least;
 	for (const [a, p] of plan.stars.entries()) {
 		for (const [b, q] of plan.stars.entries()) {
 			if (b <= a || a === plan.epicentre || b === plan.epicentre) continue;
 			const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
-			const rp = layout.starPx * layout.sizeOf(p);
-			const rq = layout.starPx * layout.sizeOf(q);
-			worst = Math.max(worst, (rp + rq - d) / (2 * Math.min(rp, rq)));
+			least = Math.min(least, d - layout.starPx * (layout.sizeOf(p) + layout.sizeOf(q)));
 		}
 	}
-	return worst;
+	return least;
+};
+
+/** Every star the layout moved from its true place: how far, in pixels at its station. */
+const movedIn = (layout: Layout) => {
+	const out: { name: string; slot: string; px: number }[] = [];
+	for (const [i, plan] of layout.plans.entries()) {
+		const truth = (plan.turned ? set.turned : set.upright)[i];
+		const scale = layout.fits[i]?.scale ?? 0;
+		for (const [k, star] of plan.stars.entries()) {
+			const was = truth?.stars[k];
+			assert.ok(was);
+			const px = Math.hypot(star.x - was.x, star.y - was.y) * scale;
+			if (px > 1e-6) out.push({ name: plan.name, slot: star.slot ?? 'Cellestial', px });
+		}
+	}
+	return out;
 };
 
 test('a portrait phone turns exactly the six wide figures', () => {
@@ -63,32 +77,30 @@ test('nothing is turned on a desktop, on a phone on its side, or with the switch
 });
 
 test('a layout that turns nothing is the layout of the upright figures, number for number', () => {
-	// Round 3 changed this check. It said that off the portrait phone every star is drawn
-	// at its own size; the knots' rule and the rings' clear space now hold on every screen,
-	// so it says instead WHICH stars are drawn smaller there, and that no other is.
-	const SMALLER: Record<string, string[]> = {
-		'1440x900': ['slot-64', 'slot-77'],
-		'1024x768': ['slot-64', 'slot-77'],
-		'844x390': ['slot-1', 'slot-3', 'slot-33', 'slot-54', 'slot-64', 'slot-77', 'slot-80'],
-	};
+	// Round 3 changed this check, and the owner's spacing rule (23 Nov) changed it again:
+	// off the portrait phone every figure is the upright one, star for star, but for the
+	// few stars the spacing rule moves apart (none on a desktop), and a star is only ever
+	// drawn smaller than its own size, never larger.
 	for (const [w, h] of [
 		[1440, 900],
 		[844, 390],
 		[1024, 768],
 	] as const) {
 		const layout = createLayout(w, h, set);
-		for (const [i, plan] of layout.plans.entries()) assert.equal(plan, set.upright[i]);
+		const moved = movedIn(layout);
+		for (const [i, plan] of layout.plans.entries()) {
+			assert.equal(plan.turned, false);
+			if (!moved.some((m) => m.name === plan.name)) assert.equal(plan, set.upright[i]);
+		}
+		if (w > 1000) assert.deepEqual(moved, [], `${w}x${h}: nothing is moved`);
 		assert.equal(layout.b3, 1);
 		assert.equal(layout.b3Clear, true);
-		const smaller: string[] = [];
-		for (const plan of layout.plans) {
-			for (const star of plan.stars) {
-				if (layout.sizeOf(star) === star.scale) continue;
-				assert.ok(layout.sizeOf(star) < star.scale, 'a star is only ever drawn smaller');
-				smaller.push(star.slot ?? 'Cellestial');
+		for (const [i, plan] of layout.plans.entries()) {
+			for (const [k, star] of plan.stars.entries()) {
+				const own = set.upright[i]?.stars[k]?.scale ?? 0;
+				assert.ok(layout.sizeOf(star) <= own + 1e-12, 'a star is only ever drawn smaller');
 			}
 		}
-		assert.deepEqual(smaller.sort(), SMALLER[`${w}x${h}`], `${w}x${h}`);
 	}
 });
 
@@ -173,12 +185,12 @@ test('with the switch off the phone has the sky it had: upright, the star forced
 	assert.ok(Math.abs(across - 130) < 1e-6);
 });
 
-test('no two stars of a figure overlap by more than a third on a portrait phone', () => {
+test('on a portrait phone no two stars of a figure touch: a clean gap between every pair', () => {
 	for (const [w, h] of PHONES) {
 		const layout = createLayout(w, h, set);
 		for (const [i, plan] of layout.plans.entries()) {
-			const worst = deepest(layout, i);
-			assert.ok(worst <= KNOT.over, `${plan.name} at ${w}x${h}: ${(100 * worst).toFixed(0)}%`);
+			const gap = leastGap(layout, i);
+			assert.ok(gap >= KNOT.gap - 0.01, `${plan.name} at ${w}x${h}: ${gap.toFixed(2)} px`);
 			for (const star of plan.stars) {
 				if (!star.slot) continue;
 				assert.ok(layout.starPx * layout.sizeOf(star) >= KNOT.leastPx - 1e-9);
@@ -186,6 +198,17 @@ test('no two stars of a figure overlap by more than a third on a portrait phone'
 			}
 		}
 	}
+});
+
+test("on the owner's phone the pattern is the true one but for Taurus's closest pair, moved a few pixels", () => {
+	const moved = movedIn(createLayout(390, 844, set));
+	assert.deepEqual(moved.map((m) => `${m.name} ${m.slot}`).sort(), [
+		'Taurus slot-64',
+		'Taurus slot-77',
+	]);
+	for (const m of moved) assert.ok(m.px < 3.5, `${m.slot} moved ${m.px.toFixed(2)} px`);
+	// The two moved by the same, apart: the middle of the pair is where it was.
+	assert.ok(Math.abs((moved[0]?.px ?? 0) - (moved[1]?.px ?? 1)) < 1e-6);
 });
 
 test('a phone turned on its side and back has the layout it had', () => {
@@ -197,8 +220,10 @@ test('a phone turned on its side and back has the layout it had', () => {
 	assert.deepEqual(b.fits, a.fits);
 	assert.equal(b.b3, a.b3);
 	for (const [i, plan] of a.plans.entries()) {
-		assert.equal(b.plans[i], plan);
-		for (const star of plan.stars) assert.equal(b.sizeOf(star), a.sizeOf(star));
+		assert.deepEqual(b.plans[i], plan);
+		for (const [k, star] of plan.stars.entries()) {
+			assert.equal(b.sizeOf(b.plans[i]?.stars[k] as typeof star), a.sizeOf(star));
+		}
 	}
 });
 
@@ -410,32 +435,30 @@ test('the sizes that are done stand where they stood: every figure, at 1440x900 
 	}
 });
 
-test("at 1440x900 Taurus's closest pair is drawn smaller, and nothing else is", () => {
+test('at 1440x900 only the crowded stars of Scorpius, Sagittarius and Taurus are drawn smaller, and none is moved', () => {
 	const layout = createLayout(1440, 900, set);
 	const smaller = layout.plans.flatMap((plan) =>
-		plan.stars
-			.filter((star) => layout.sizeOf(star) !== star.scale)
-			.map((star) => `${plan.name} ${star.slot}`),
+		plan.stars.filter((star) => layout.sizeOf(star) !== star.scale).map(() => plan.name),
 	);
-	assert.deepEqual(smaller.sort(), ['Taurus slot-64', 'Taurus slot-77']);
+	assert.deepEqual([...new Set(smaller)].sort(), ['Sagittarius', 'Scorpius', 'Taurus']);
+	assert.equal(smaller.length, 10);
+	assert.deepEqual(movedIn(layout), []);
 	for (const [i, plan] of layout.plans.entries()) {
-		const worst = deepest(layout, i);
-		assert.ok(worst <= KNOT.over + 1e-9, `${plan.name}: ${(100 * worst).toFixed(0)}%`);
-	}
-	const taurus = layout.plans[8];
-	for (const star of taurus?.stars ?? []) {
-		if (star.slot !== 'slot-64' && star.slot !== 'slot-77') continue;
-		const r = layout.starPx * layout.sizeOf(star);
-		assert.ok(Math.abs(r - 12.5) < 0.1, `${star.slot}: ${r} px`);
+		assert.ok(leastGap(layout, i) >= KNOT.gap - 0.01, plan.name);
+		for (const star of plan.stars) {
+			if (star.slot) assert.ok(layout.starPx * layout.sizeOf(star) >= 8, `${star.slot}`);
+		}
 	}
 });
 
-test('on every screen: no two stars more than a third into each other unless both are at the least size', () => {
+test('on every screen: every pair of stars keeps its gap, none under the least size, none moved far', () => {
 	for (const [w, h] of [
 		...SIDES,
 		...PHONES,
 		[375, 667],
 		[320, 568],
+		[430, 932],
+		[412, 915],
 		[1440, 900],
 		[1920, 1080],
 		[1280, 720],
@@ -447,25 +470,32 @@ test('on every screen: no two stars more than a third into each other unless bot
 	] as const) {
 		const layout = createLayout(w, h, set);
 		for (const [i, plan] of layout.plans.entries()) {
-			const scale = layout.fits[i]?.scale ?? 0;
-			for (const [a, p] of plan.stars.entries()) {
-				for (const [b, q] of plan.stars.entries()) {
-					if (b <= a || a === plan.epicentre || b === plan.epicentre) continue;
-					const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
-					const rp = layout.starPx * layout.sizeOf(p);
-					const rq = layout.starPx * layout.sizeOf(q);
-					const over = (rp + rq - d) / (2 * Math.min(rp, rq));
-					assert.ok(
-						rp >= KNOT.leastPx - 1e-9 && rq >= KNOT.leastPx - 1e-9,
-						`${w}x${h}: under the least size`,
-					);
-					if (over <= KNOT.over + 1e-9) continue;
-					// Only where the two stand under 8 px apart: both are at the rule's own floor.
-					const what = `${plan.name} ${p.slot}/${q.slot} at ${w}x${h}: ${(100 * over).toFixed(0)}%, ${d.toFixed(1)} px apart`;
-					assert.ok(d < 8, what);
-					assert.ok(Math.abs(rp - KNOT.leastPx) < 1e-9 && Math.abs(rq - KNOT.leastPx) < 1e-9, what);
-				}
+			const gap = leastGap(layout, i);
+			// The smallest screen there is, a 320 px phone on its side: Sagittarius's teapot is
+			// packed so tight there that the full gap would move a star further than the rule
+			// allows. It keeps what the limit leaves: its stars stand apart, by 3 px or more.
+			const least = Math.min(w, h) < 360 ? 3 : KNOT.gap - 0.01;
+			assert.ok(gap >= least, `${plan.name} at ${w}x${h}: ${gap.toFixed(2)} px`);
+			for (const star of plan.stars) {
+				if (!star.slot) continue;
+				assert.ok(
+					layout.starPx * layout.sizeOf(star) >= KNOT.leastPx - 1e-9,
+					`${w}x${h}: ${star.slot} under the least size`,
+				);
 			}
+			// The camera still passes through the plane clear of every star.
+			const near = Math.min(
+				...plan.stars.map((s) => Math.hypot(s.x - plan.pass.x, s.y - plan.pass.y)),
+			);
+			assert.ok(Math.abs(near - plan.clearance) < 1e-9, `${plan.name} at ${w}x${h}: clearance`);
+			const truth = (plan.turned ? set.turned : set.upright)[i];
+			assert.ok(plan.clearance >= 0.9 * (truth?.clearance ?? 0), `${plan.name} at ${w}x${h}`);
+		}
+		for (const m of movedIn(layout)) {
+			assert.ok(
+				m.px <= KNOT.movePx + 1e-6,
+				`${w}x${h}: ${m.name} ${m.slot} moved ${m.px.toFixed(1)} px`,
+			);
 		}
 	}
 });

@@ -101,16 +101,17 @@ export const PORTRAIT = {
 export const B3_PORTRAIT_PX = 130;
 
 /**
- * Knots, on every screen. Two stars of a figure that would cover each other by more
- * than `over` of the smaller one's width at their station are both drawn at a radius of
- * `radius` times their distance, and not under `floorPx`. Where even `floorPx` would leave
- * them more than `over` into each other (Taurus's closest pair stands 9 px apart on a
- * phone), they are drawn at `tight` times their distance, which is just under a third,
- * and never under `leastPx`: where two stars stand nearer than 8 px (Taurus's closest pair
- * on a phone held on its side, 6 to 7 px apart) they are drawn at `leastPx` and still
- * stand more than a third into each other. A star is only ever drawn smaller by this.
+ * Clean spacing, on every screen (the owner, 23 Nov: stars may stand close, as the true
+ * pattern has them, but never touch or overlap). At its station no two stars of a figure
+ * stand nearer than `gap` pixels, disc edge to disc edge. Where two would, they are drawn
+ * smaller, the larger first, never under `leastPx` in radius. Only where the least size
+ * still leaves them too near (Taurus's closest pair stands 9 px apart on a phone) are
+ * the two moved apart along the line between them, each by the same few pixels, just far
+ * enough: never further than `movePx` (which only the smallest screen there is reaches, a
+ * 320 px phone on its side: Sagittarius keeps 3 px there). A star is only ever drawn
+ * smaller by this, and a star's tap target is as large as ever.
  */
-export const KNOT = { over: 1 / 3, radius: 0.6, floorPx: 9, tight: 0.72, leastPx: 6 } as const;
+export const KNOT = { gap: 4, leastPx: 6, movePx: 8 } as const;
 
 /** Size follows magnitude gently: the brightest and the faintest star, as multiples of the base. */
 export const MAG = { bright: 0.85, faint: 5, brightScale: 1.35, faintScale: 0.8 } as const;
