@@ -565,8 +565,8 @@ Already on the owner's list or left on purpose, and not reported again: as the b
 
 VERDICT
 Round 3 put right what it set out to. Of the seven things the third look left, six are resolved as
-found: B7 on the short phones, the skip made before the script has arrived (28 of 28 early presses
-taken, none carried, none mistaken), the unlit C on a slow line (never half-drawn in 26 slow visits,
+found: B7 on the short phones, the skip made before the script has arrived (22 of 22 presses made
+before the loader was live taken, none carried, none mistaken), the unlit C on a slow line (never half-drawn in 26 slow visits,
 the loader 7.0 to 7.5 s from the moment the C is seen in 46 of 46 first visits on every line and
 device tried, never under 6), "claim yours" beside the words, the knot on the desktop, and the
 console (nothing, on every path). The seventh, the phone held on its side, the one major, is
@@ -577,7 +577,7 @@ minor. And the owner's two sizes are what the third look ruled done: the loader'
 same to the byte; the standing sky at 390x844 is the same to the pixel in 36 captures, and at
 1440x900 differs only in the two stars of Taurus that round 3 was told to thin; every suite passes
 with the third look's counts, the 36 new tests test what was built; the hand-off never loses the
-star (24 first visits, 40 skips, 24 returns), the fall has no cut, every star on the phone and the
+star (24 first visits, 60 skips, 20 returns), the fall has no cut, every star on the phone and the
 desktop takes its touch; the whole visit runs as it ran, frame for frame; the build, the tests, the
 lint and the type-check pass, the protected-systems diff prints nothing, the contact form, /admin
 and the /start links work. No rule on assets, copy, sound, social icons or sections is touched by
@@ -585,7 +585,7 @@ round 3. So, by the owner's definition, at his two sizes: LOADING, THE SKY, THE 
 CLOSE, THE CHROME, THE WARP, REDUCED MOTION and the page without script are done, as the third look
 ruled, and nothing in round 3 undid any of it. NOTHING MAJOR IS LEFT. What this look adds is one
 thing older than all three rounds that no look had measured: "claim yours" is often written across
-a neighbouring star (a quarter of the labels on the desktop, a third on the phone), and at Virgo on
+a neighbouring star (a fifth of the labels on the desktop, a third on the phone), and at Virgo on
 the phone into the rings of Cellestial's star. It is polish, it is where the spec puts the label,
 and it does not unmake a scene; it is also on every visitor's path, so I would give it the half day
 it needs before the owner looks, or name it to him. The site is ready for him.
