@@ -1,0 +1,25 @@
+B7, every figure complete (146 claims seeded)
+desk  1 Virgo        "the virgin birth" 415x70 at 206,96 font 54px; inside the figure; nearest star centre 135 px; 650 px above B11; letters #a18674; ok
+desk  2 Libra        "the price paid" 385x70 at 860,76 font 54px; beside the figure; nearest star centre 167 px; 670 px above B11; letters #a08673; ok
+desk  3 Scorpius     "the conflict" 320x70 at 322,297 font 54px; inside the figure; nearest star centre 150 px; 449 px above B11; letters #a08574; ok
+desk  4 Sagittarius  "the victor" 270x70 at 203,140 font 54px; beside the figure; nearest star centre 134 px; 606 px above B11; letters #a08674; ok
+desk  5 Capricornus  "sacrifice and life" 469x70 at 366,81 font 54px; beside the figure; nearest star centre 155 px; 665 px above B11; letters #a18674; ok
+desk  6 Aquarius     "living water poured out" 654x70 at 466,649 font 54px; inside the figure; nearest star centre 113 px; 96 px above B11; letters #a08674; ok
+desk  7 Pisces       "His people" 291x70 at 656,270 font 54px; inside the figure; nearest star centre 130 px; 476 px above B11; letters #a08674; ok
+desk  8 Aries        "the Lamb" 262x70 at 516,563 font 54px; inside the figure; nearest star centre 231 px; 183 px above B11; letters #a18674; ok
+desk  9 Taurus       "He comes to judge" 515x70 at 196,560 font 54px; inside the figure; nearest star centre 139 px; 186 px above B11; letters #a08674; ok
+desk 10 Gemini       "His twofold nature" 521x70 at 766,90 font 54px; beside the figure; nearest star centre 130 px; 656 px above B11; letters #a18674; ok
+desk 11 Cancer       "His people held safe" 565x70 at 806,282 font 54px; beside the figure; nearest star centre 132 px; 464 px above B11; letters #a08674; ok
+desk 12 Leo          "the Lion of the tribe of Judah / Jesus is King." 816x163 at 106,105 font 54px; inside the figure; nearest star centre 115 px; 548 px above B11; letters #a18674; ok
+phone  1 Virgo        "the virgin birth" 185x31 at 184,140 font 24px; above the figure; nearest star centre 80 px; 589 px above B11; letters #a08573; ok
+phone  2 Libra        "the price paid" 171x31 at 124,649 font 24px; inside the figure; nearest star centre 77 px; 80 px above B11; letters #a08573; ok
+phone  3 Scorpius     "the conflict" 142x31 at 40,265 font 24px; inside the figure; nearest star centre 82 px; 464 px above B11; letters #9f8573; ok
+phone  4 Sagittarius  "the victor" 120x31 at 226,577 font 24px; inside the figure; nearest star centre 76 px; 152 px above B11; letters #a08574; ok
+phone  5 Capricornus  "sacrifice and life" 208x31 at 160,125 font 24px; above the figure; nearest star centre 79 px; 603 px above B11; letters #a08573; ok
+phone  6 Aquarius     "living water poured out" 168x62 at 202,211 font 24px; inside the figure; nearest star centre 68 px; 486 px above B11; letters #9f8573; ok
+phone  7 Pisces       "His people" 130x31 at 40,294 font 24px; inside the figure; nearest star centre 121 px; 434 px above B11; letters #9f8573; ok
+phone  8 Aries        "the Lamb" 117x31 at 256,335 font 24px; inside the figure; nearest star centre 81 px; 394 px above B11; letters #a08674; ok
+phone  9 Taurus       "He comes to judge" 229x31 at 22,576 font 24px; under the figure (22 px below its lowest star); nearest star centre 79 px; 153 px above B11; letters #9f8573; ok
+phone 10 Gemini       "His twofold nature" 232x31 at 142,193 font 24px; above the figure; nearest star centre 69 px; 536 px above B11; letters #a08674; ok
+phone 11 Cancer       "His people held safe" 251x31 at 34,679 font 24px; inside the figure; nearest star centre 55 px; 50 px above B11; letters #a08573; ok
+phone 12 Leo          "the Lion of the tribe of Judah / Jesus is King." 209x104 at 154,55 font 24px; beside the figure; nearest star centre 47 px; 601 px above B11; letters #a08573; ok

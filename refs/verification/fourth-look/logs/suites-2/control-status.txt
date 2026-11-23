@@ -1,0 +1,7 @@
+exit 0 (control chrome-compare)
+exit 0 (control sky-compare)
+exit 0 (control roots-compare)
+exit 0 (control transitions-strip)
+exit 0 (control loader-compare)
+exit 0 (control sky-meaning)
+exit 0 (control sky-meaning-all)

@@ -1,0 +1,82 @@
+THE CONTROL, loading: the same build, the tools run twice: builders-tools/run-a/loading  beside  builders-tools/run-b/loading
+  DIFFERS     a5-desk.jpg: 1 px over the noise (0.000% of 1604x819), largest difference 25 of 255, in the box x 1037..1037, y 423..423
+  DIFFERS     a5-phone.jpg: 1287 px over the noise (0.093% of 1364x1018), largest difference 189 of 255, in the box x 323..1295, y 163..796
+  SAME BYTES  desk-1.jpg
+  SAME BYTES  desk-2.jpg
+  SAME BYTES  light.txt
+  SAME BYTES  phone-1.jpg
+  SAME BYTES  phone-2.jpg
+  SAME BYTES  short.jpg
+  6 the same to the byte, 2 differ, 0 only in A
+THE CONTROL, sky: the same build, the tools run twice: builders-tools/run-a/sky  beside  builders-tools/run-b/sky
+  SAME BYTES  b3.jpg
+  DIFFERS     b7-all-desk.jpg: 0 px over the noise (0.000% of 1600x842), largest difference 22 of 255
+  DIFFERS     b7-all-phone.jpg: 0 px over the noise (0.000% of 1600x1189), largest difference 11 of 255
+  SAME BYTES  b7-all.txt
+  SAME BYTES  beads-desk.jpg
+  SAME BYTES  beads-phone.jpg
+  DIFFERS     between.jpg: 0 px over the noise (0.000% of 1436x1434), largest difference 8 of 255
+  SAME BYTES  claim-walk.jpg
+  DIFFERS     fall-phone.jpg: 0 px over the noise (0.000% of 942x272), largest difference 4 of 255
+  SAME BYTES  fall.jpg
+  SAME BYTES  handoff-phone.jpg
+  SAME BYTES  handoff.jpg
+  SAME BYTES  ignite.jpg
+  DIFFERS     lit.jpg: 0 px over the noise (0.000% of 1560x708), largest difference 18 of 255
+  DIFFERS     meaning-aries-desk.jpg: 5435 px over the noise (0.403% of 1600x842), largest difference 254 of 255, in the box x 54..1466, y 16..584
+  DIFFERS     meaning-aries-phone.jpg: 1900 px over the noise (0.100% of 1600x1189), largest difference 248 of 255, in the box x 54..1411, y 16..616
+  DIFFERS     meaning-leo-desk.jpg: 6456 px over the noise (0.479% of 1600x842), largest difference 255 of 255, in the box x 32..1511, y 16..789
+  DIFFERS     meaning-leo-phone.jpg: 3963 px over the noise (0.208% of 1600x1189), largest difference 254 of 255, in the box x 49..1564, y 16..1088
+  DIFFERS     meaning-settled.jpg: 0 px over the noise (0.000% of 1600x736), largest difference 12 of 255
+  SAME BYTES  meaning-still.jpg
+  SAME BYTES  meaning.txt
+  SAME BYTES  measure.txt
+  DIFFERS     open.jpg: 0 px over the noise (0.000% of 1436x720), largest difference 5 of 255
+  DIFFERS     panel.jpg: 0 px over the noise (0.000% of 1560x708), largest difference 6 of 255
+  SAME BYTES  pulse.jpg
+  SAME BYTES  stars.jpg
+  SAME BYTES  stations-desk-1.jpg
+  SAME BYTES  stations-desk-2.jpg
+  DIFFERS     stations-phone.jpg: 0 px over the noise (0.000% of 1534x1284), largest difference 6 of 255
+  16 the same to the byte, 13 differ, 0 only in A
+THE CONTROL, roots: the same build, the tools run twice: builders-tools/run-a/roots  beside  builders-tools/run-b/roots
+  DIFFERS     descent-desk-1.jpg: 0 px over the noise (0.000% of 1242x1600), largest difference 4 of 255
+  DIFFERS     descent-desk-2.jpg: 0 px over the noise (0.000% of 1242x1600), largest difference 5 of 255
+  SAME BYTES  descent-desk-3.jpg
+  DIFFERS     descent-phone.jpg: 0 px over the noise (0.000% of 1600x713), largest difference 11 of 255
+  DIFFERS     grow-close.jpg: 0 px over the noise (0.000% of 1584x1116), largest difference 2 of 255
+  DIFFERS     grow-desk.jpg: 0 px over the noise (0.000% of 1600x841), largest difference 7 of 255
+  DIFFERS     grow-phone.jpg: 0 px over the noise (0.000% of 1205x1600), largest difference 7 of 255
+  SAME BYTES  measure.txt
+  DIFFERS     node.jpg: 0 px over the noise (0.000% of 1600x834), largest difference 14 of 255
+  SAME BYTES  nojs-desk.jpg
+  SAME BYTES  nojs-phone.jpg
+  SAME BYTES  pulse-close.jpg
+  DIFFERS     pulse-desk.jpg: 0 px over the noise (0.000% of 1600x692), largest difference 17 of 255
+  DIFFERS     pulse-phone.jpg: 0 px over the noise (0.000% of 1205x1600), largest difference 18 of 255
+  SAME BYTES  step1-desk.jpg
+  SAME BYTES  step1-phone.jpg
+  SAME BYTES  still.jpg
+  SAME BYTES  tile-close.jpg
+  DIFFERS     tiles-desk.jpg: 0 px over the noise (0.000% of 1600x1588), largest difference 8 of 255
+  DIFFERS     tiles-phone.jpg: 0 px over the noise (0.000% of 1598x713), largest difference 8 of 255
+  SAME BYTES  words.txt
+  10 the same to the byte, 11 differ, 0 only in A
+THE CONTROL, transitions: the same build, the tools run twice: builders-tools/run-a/transitions  beside  builders-tools/run-b/transitions
+  DIFFERS     fall-desk.jpg: 80509 px over the noise (4.493% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1111
+  DIFFERS     fall-phone.jpg: 68837 px over the noise (4.764% of 1600x903), largest difference 251 of 255, in the box x 8..1551, y 15..895
+  SAME BYTES  measure.txt
+  DIFFERS     teleport-desk.jpg: 173510 px over the noise (17.463% of 1600x621), largest difference 243 of 255, in the box x 8..1486, y 16..613
+  DIFFERS     teleport-phone.jpg: 525020 px over the noise (23.060% of 1423x1600), largest difference 255 of 255, in the box x 5..1369, y 14..1597
+  DIFFERS     warp-deep-desk.jpg: 212026 px over the noise (11.832% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1092
+  DIFFERS     warp-deep-phone.jpg: 142695 px over the noise (9.876% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  DIFFERS     warp-desk.jpg: 179187 px over the noise (9.999% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1111
+  DIFFERS     warp-phone.jpg: 152623 px over the noise (10.564% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  1 the same to the byte, 8 differ, 0 only in A
+THE CONTROL, chrome: the same build, the tools run twice: builders-tools/run-a/chrome  beside  builders-tools/run-b/chrome
+  DIFFERS     bars.jpg: 0 px over the noise (0.000% of 1548x676), largest difference 5 of 255
+  DIFFERS     closed.jpg: 0 px over the noise (0.000% of 1584x1052), largest difference 13 of 255
+  SAME BYTES  logo.jpg
+  SAME BYTES  measure.txt
+  DIFFERS     menu.jpg: 0 px over the noise (0.000% of 1592x876), largest difference 15 of 255
+  2 the same to the byte, 3 differ, 0 only in A

@@ -358,3 +358,90 @@ ONE WHOLE VISIT IN REAL TIME AT EACH SIZE (visit.mjs, production build, real inp
   dialogs, the warp. It holds together as one made thing. Console: nothing of the site's; the only
   lines are Cloudflare's own ("Blocked script execution in 'about:blank'", its widget's sandboxed
   frame under the test key), which the third look's walk had too.
+
+THE BUILDERS' SHEETS, MADE FRESH (tools/run-all.sh on the dev server, 4500; logs/suites-2/)
+  Three sets beside the fresh one (builders-tools/run-a/), compared file by file by my cmp-sheets.mjs
+  (the same to the byte, or the number of pixels differing by more than a JPEG's own noise, 24 of
+  255, and the box they lie in): the 30 sheets the third look kept (third-look/builders-tools/), all
+  72 files as committed at 8724ef5, and THE CONTROL: the same build, the sheet tools run a second time
+  an hour later (builders-tools/run-b/). Reports: sheets/third-look-vs-run-a.txt, 8724ef5-vs-run-
+  a.txt, control-run-a-vs-run-b.txt. The control says what a difference means: of the 72, 31 come
+  out the same to the byte twice running, 26 differ only inside the JPEG's noise (0 pixels over it),
+  and 15 differ visibly BY THEMSELVES, all recordings of moving things: the 8 strips of the fall, the
+  teleports and the warps (4 to 23% of their pixels), the 4 sheets of a meaning being written (0.1 to
+  0.5%), the phone's hand-off sheet (0.09%), and by one pixel the desktop's. So:
+    THE LOADER'S 14 MOMENTS at both sizes and its short version (desk-1, desk-2, phone-1, phone-2,
+      short, and light.txt): THE SAME TO THE BYTE as the third look's and as committed at 8724ef5,
+      and the same again in the control. Still byte-identical.
+    The hand-off sheets: a5-phone differs from the old one by 0.08% of its pixels, less than it
+      differs from itself in the control (0.09%); a5-desk by 83 pixels of 1.4 million (the control:
+      1), looked at enlarged (sheets/diff-a5-desk.jpg): the same frames, the star's rings a shade
+      differently lit in one cell. Nothing.
+    The sky's desktop stations: stations-desk-1 inside the noise; stations-desk-2 differs by 181
+      pixels (the control: byte-identical), all of them Taurus's two thinned stars, at Taurus's own
+      station and where Taurus is seen small from Aries (sheets/diff-stations-desk-2.jpg looked at).
+      That is the one change round 3 was allowed there. The phone's stations: inside the noise.
+    Both B7 sheets: b7-all.txt and meaning.txt (where every meaning stands, its type and colour)
+      the same to the byte; b7-all-phone inside the noise; b7-all-desk differs by 195 pixels (the
+      control: none over the noise): again Taurus's two stars, in Taurus's cell and far off in
+      Aries's (sheets/diff-b7-all-desk.jpg looked at). No meaning has moved at either size.
+    The other sky sheets: beads-desk 199 pixels, the same two stars seen from the station the beads
+      are recorded at (enlarged: sheets/diff-beads-lit-close.jpg); lit.jpg 16 pixels on the edge of
+      Cellestial's turning ring; the rest the same to the byte or inside the noise.
+    The fall's and the teleports' strips and the warps: they differ from the old ones as much as they
+      differ from themselves in the control (fall-desk 5.0% against 4.5%, teleport-phone 23.0%
+      against 23.1%, warp-desk 10.8% against 10.0%): two recordings of the same motion.
+    The Roots' tiles, descent, growth, node and pulse, and the chrome: the same to the byte or inside
+      the noise (0 pixels over it), every one; words.txt and both measure.txt the same to the byte in
+      the control.
+  Nothing at 1440x900 or 390x844 differs from what the third look judged but Taurus's two stars on
+  the desktop. The builders' folders are restored (git status: only this look's own files).
+
+THE SUITES (run-all.sh: 13 of 13 exit 0, logs/suites-2/status.txt; the control's 7 runs also exit 0)
+  tools/loader/measure.mjs 13 of 13 at 1440x900 and 13 of 13 at 390x844 with the CPU slowed 4x;
+  sky/measure.mjs 201; sky/meaning.mjs 38; sky/meaning-all.mjs 24; roots/words.mjs 197;
+  roots/measure.mjs 245; transitions/measure.mjs 148; chrome/compare.mjs 48: every count the third
+  look's, none failed. pnpm test: 174 of 174 (it was 138), and the Workers' 15, 16 and 14.
+  THE 36 NEW TESTS (git diff 8724ef5 HEAD -- src/experience/*.test.ts; read): 2 in loader-clock (the
+  clock starts at the later of the first paint and the frame the page showed the C in; a slow line
+  runs 6 to 8 s from there); 12 in loader-markup, new (the markup's script: the C unseen until its
+  file is whole, the other three pictures asked for after it and in order, a cached or undecodable
+  picture, a return, the canvas drawing first, presses written down before the loader is live and
+  handed over once, Tab and modifiers not a skip, nothing kept when the script never arrives, nothing
+  done under reduced motion or the debug hooks, storage that throws); 4 in loader-skip, new (what is
+  a skip and what is not, now and before the script); 10 in sky-layout (the button's real size; on a
+  phone on its side no star within 12 px of the button and every star clear of the chrome and the
+  sides; the room under the figures; the done sizes standing where they stood, every figure at
+  1440x900 and on the upright phones; at 1440x900 Taurus's closest pair smaller and nothing else;
+  no two stars over a third into each other "unless both are at the least size"; the knots smaller
+  on a phone on its side; Cellestial's rings 2 px short of Virgo's stars on every screen); 8 in
+  sky-meaning-place, new (the phone on its side placed for the hand; the desktop and the upright
+  phone keeping their placing number for number; rows and the 18 px floor; the next figure's words
+  on a phone on its side; "claim yours" under its star unless a meaning is near, then on another
+  side, inside the screen and off the chrome and the stars, and staying there). They test what round
+  3 built and pin the two sizes; one of them writes the exception for Taurus's pair on a phone on its
+  side into the rule (item 1a, what is left).
+
+PART 3 — THE GATES
+  pnpm build (PUBLIC_TURNSTILE_SITE_KEY set): 4 pages, exit 0 (logs/gate-build-run3.log). pnpm test:
+  174 of 174 and the Workers' 45, exit 0. pnpm lint: 108 files, clean, exit 0 (its one note is
+  biome.json's own deprecated field). pnpm typecheck: exit 0. (logs/gate-*-run3.log; the second
+  run's, logs/gate-*.log, say the same.)
+  The protected systems: "git diff a31d2ee HEAD -- workers src/onboard src/scripts/contact-submit.ts
+  src/scripts/start-flow.ts src/scripts/start-builder.ts public/admin src/content/home.json
+  src/config.ts" prints nothing. src/components/ContactForm.astro, src/pages/contact.astro and
+  src/pages/start/new.astro against a31d2ee: 68 lines added, 18 removed, every one a style rule or a
+  class name (read line by line); src/pages/start/index.astro untouched; none of the four touched
+  by round 3.
+  On the production build (my tools/business.mjs; business/business.txt): /, /contact, /start,
+  /start/new and /admin/ answer 200. /contact: the form posts to /api/contact with name, email and
+  message (all required), the hidden cf-turnstile-response, Turnstile's slot with its site key, and
+  Send. /start with a deep link (the client's details in the fragment, made with the repo's own
+  encoder): a Google-lane, tier-1, test link opens "TEST MODE ... STEP 1 OF 2, Create your Cloudflare
+  account, Continue with Google" with the client's own email; a Microsoft-lane, tier-2 link opens
+  "STEP 1 OF 4, Create your GitHub account": each the flow it names. /start with no link: "This link
+  is incomplete". /start/new: its eight fields. /admin/: "Content Manager", Decap's script, "Login
+  with GitHub". No page error. And the walk's build request went through the real form with the spam
+  check's token present and lit its star (part 2).
+  (Kept: builders-tools/run-a/, the fresh sheets. Not kept, for their size: the control's set, run-b,
+  whose every number is in sheets/control-run-a-vs-run-b.txt, and nojs-same.mjs's full-page PNGs.)

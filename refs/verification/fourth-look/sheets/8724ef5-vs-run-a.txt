@@ -1,0 +1,78 @@
+COMMITTED AT 8724ef5, loading, beside the fresh run: /tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/fl-8724/refs/loading/compare  beside  builders-tools/run-a/loading
+  DIFFERS     a5-desk.jpg: 83 px over the noise (0.006% of 1604x819), largest difference 49 of 255, in the box x 186..1022, y 665..715
+  DIFFERS     a5-phone.jpg: 1075 px over the noise (0.077% of 1364x1018), largest difference 186 of 255, in the box x 323..1292, y 163..795
+  SAME BYTES  desk-1.jpg
+  SAME BYTES  desk-2.jpg
+  SAME BYTES  light.txt
+  SAME BYTES  phone-1.jpg
+  SAME BYTES  phone-2.jpg
+  SAME BYTES  short.jpg
+  6 the same to the byte, 2 differ, 0 only in A
+COMMITTED AT 8724ef5, sky, beside the fresh run: /tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/fl-8724/refs/sky/compare  beside  builders-tools/run-a/sky
+  SAME BYTES  b3.jpg
+  DIFFERS     b7-all-desk.jpg: 195 px over the noise (0.014% of 1600x842), largest difference 206 of 255, in the box x 288..1431, y 441..747
+  DIFFERS     b7-all-phone.jpg: 0 px over the noise (0.000% of 1600x1189), largest difference 13 of 255
+  SAME BYTES  b7-all.txt
+  DIFFERS     beads-desk.jpg: 199 px over the noise (0.014% of 1590x910), largest difference 50 of 255, in the box x 87..1417, y 588..598
+  SAME BYTES  beads-phone.jpg
+  DIFFERS     between.jpg: 3 px over the noise (0.000% of 1436x1434), largest difference 28 of 255, in the box x 31..801, y 935..1231
+  SAME BYTES  claim-walk.jpg
+  SAME BYTES  fall-phone.jpg
+  SAME BYTES  fall.jpg
+  SAME BYTES  handoff-phone.jpg
+  SAME BYTES  handoff.jpg
+  SAME BYTES  ignite.jpg
+  DIFFERS     lit.jpg: 16 px over the noise (0.001% of 1560x708), largest difference 49 of 255, in the box x 9..31, y 442..544
+  DIFFERS     meaning-aries-desk.jpg: 4937 px over the noise (0.366% of 1600x842), largest difference 253 of 255, in the box x 62..1465, y 16..722
+  DIFFERS     meaning-aries-phone.jpg: 4643 px over the noise (0.244% of 1600x1189), largest difference 251 of 255, in the box x 54..1582, y 16..1065
+  DIFFERS     meaning-leo-desk.jpg: 4389 px over the noise (0.326% of 1600x842), largest difference 243 of 255, in the box x 45..1571, y 16..753
+  DIFFERS     meaning-leo-phone.jpg: 6018 px over the noise (0.316% of 1600x1189), largest difference 255 of 255, in the box x 46..1562, y 16..1090
+  DIFFERS     meaning-settled.jpg: 0 px over the noise (0.000% of 1600x736), largest difference 21 of 255
+  SAME BYTES  meaning-still.jpg
+  SAME BYTES  meaning.txt
+  DIFFERS     open.jpg: 0 px over the noise (0.000% of 1436x720), largest difference 16 of 255
+  DIFFERS     panel.jpg: 0 px over the noise (0.000% of 1560x708), largest difference 11 of 255
+  SAME BYTES  pulse.jpg
+  DIFFERS     stars.jpg: 0 px over the noise (0.000% of 1560x518), largest difference 5 of 255
+  DIFFERS     stations-desk-1.jpg: 0 px over the noise (0.000% of 1594x1014), largest difference 7 of 255
+  DIFFERS     stations-desk-2.jpg: 181 px over the noise (0.011% of 1594x1014), largest difference 140 of 255, in the box x 655..1383, y 190..561
+  DIFFERS     stations-phone.jpg: 0 px over the noise (0.000% of 1534x1284), largest difference 5 of 255
+  12 the same to the byte, 16 differ, 0 only in A
+COMMITTED AT 8724ef5, roots, beside the fresh run: /tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/fl-8724/refs/roots/compare  beside  builders-tools/run-a/roots
+  DIFFERS     descent-desk-1.jpg: 0 px over the noise (0.000% of 1242x1600), largest difference 8 of 255
+  DIFFERS     descent-desk-2.jpg: 0 px over the noise (0.000% of 1242x1600), largest difference 9 of 255
+  DIFFERS     descent-desk-3.jpg: 0 px over the noise (0.000% of 1456x942), largest difference 7 of 255
+  DIFFERS     descent-phone.jpg: 0 px over the noise (0.000% of 1600x713), largest difference 11 of 255
+  DIFFERS     grow-close.jpg: 0 px over the noise (0.000% of 1584x1116), largest difference 2 of 255
+  DIFFERS     grow-desk.jpg: 0 px over the noise (0.000% of 1600x841), largest difference 7 of 255
+  DIFFERS     grow-phone.jpg: 0 px over the noise (0.000% of 1205x1600), largest difference 7 of 255
+  DIFFERS     node.jpg: 0 px over the noise (0.000% of 1600x834), largest difference 14 of 255
+  SAME BYTES  nojs-desk.jpg
+  SAME BYTES  nojs-phone.jpg
+  SAME BYTES  pulse-close.jpg
+  DIFFERS     pulse-desk.jpg: 0 px over the noise (0.000% of 1600x692), largest difference 18 of 255
+  DIFFERS     pulse-phone.jpg: 0 px over the noise (0.000% of 1205x1600), largest difference 18 of 255
+  SAME BYTES  step1-desk.jpg
+  SAME BYTES  step1-phone.jpg
+  DIFFERS     still.jpg: 0 px over the noise (0.000% of 1541x1600), largest difference 19 of 255
+  SAME BYTES  tile-close.jpg
+  DIFFERS     tiles-desk.jpg: 0 px over the noise (0.000% of 1600x1588), largest difference 9 of 255
+  DIFFERS     tiles-phone.jpg: 0 px over the noise (0.000% of 1598x713), largest difference 11 of 255
+  6 the same to the byte, 13 differ, 0 only in A
+COMMITTED AT 8724ef5, transitions, beside the fresh run: /tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/fl-8724/refs/transitions/compare  beside  builders-tools/run-a/transitions
+  DIFFERS     fall-desk.jpg: 89165 px over the noise (4.976% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1111
+  DIFFERS     fall-phone.jpg: 110567 px over the noise (7.653% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  DIFFERS     teleport-desk.jpg: 171512 px over the noise (17.262% of 1600x621), largest difference 227 of 255, in the box x 8..1487, y 16..613
+  DIFFERS     teleport-phone.jpg: 523910 px over the noise (23.011% of 1423x1600), largest difference 250 of 255, in the box x 5..1371, y 9..1594
+  DIFFERS     warp-deep-desk.jpg: 218529 px over the noise (12.195% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1081
+  DIFFERS     warp-deep-phone.jpg: 129200 px over the noise (8.942% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  DIFFERS     warp-desk.jpg: 192997 px over the noise (10.770% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1111
+  DIFFERS     warp-phone.jpg: 126874 px over the noise (8.781% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  0 the same to the byte, 8 differ, 0 only in A
+COMMITTED AT 8724ef5, chrome, beside the fresh run: /tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/fl-8724/refs/chrome/compare  beside  builders-tools/run-a/chrome
+  DIFFERS     bars.jpg: 0 px over the noise (0.000% of 1548x676), largest difference 9 of 255
+  DIFFERS     closed.jpg: 0 px over the noise (0.000% of 1584x1052), largest difference 17 of 255
+  SAME BYTES  logo.jpg
+  SAME BYTES  measure.txt
+  DIFFERS     menu.jpg: 0 px over the noise (0.000% of 1592x876), largest difference 14 of 255
+  2 the same to the byte, 3 differ, 0 only in A

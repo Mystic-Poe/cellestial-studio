@@ -1,0 +1,30 @@
+ M refs/verification/fourth-look/logs/run-all-2.out
+ M refs/verification/fourth-look/logs/suites-2/loader-measure-phone-4x.log
+ M refs/verification/fourth-look/logs/suites-2/status.txt
+ M refs/verification/fourth-look/tools/all-taps.mjs
+?? claude-vault/
+?? refs/verification/fourth-look/builders-tools/
+?? refs/verification/fourth-look/logs/suites-2/chrome-compare.log
+?? refs/verification/fourth-look/logs/suites-2/control-chrome-compare.log
+?? refs/verification/fourth-look/logs/suites-2/control-loader-compare.log
+?? refs/verification/fourth-look/logs/suites-2/control-roots-compare.log
+?? refs/verification/fourth-look/logs/suites-2/control-sky-compare.log
+?? refs/verification/fourth-look/logs/suites-2/control-sky-meaning-all.log
+?? refs/verification/fourth-look/logs/suites-2/control-sky-meaning.log
+?? refs/verification/fourth-look/logs/suites-2/control-status.txt
+?? refs/verification/fourth-look/logs/suites-2/control-transitions-strip.log
+?? refs/verification/fourth-look/logs/suites-2/loader-compare.log
+?? refs/verification/fourth-look/logs/suites-2/rewritten-a.txt
+?? refs/verification/fourth-look/logs/suites-2/roots-compare.log
+?? refs/verification/fourth-look/logs/suites-2/roots-measure.log
+?? refs/verification/fourth-look/logs/suites-2/roots-words.log
+?? refs/verification/fourth-look/logs/suites-2/sky-compare.log
+?? refs/verification/fourth-look/logs/suites-2/sky-meaning-all.log
+?? refs/verification/fourth-look/logs/suites-2/sky-meaning.log
+?? refs/verification/fourth-look/logs/suites-2/sky-measure.log
+?? refs/verification/fourth-look/logs/suites-2/status-after-restore.txt
+?? refs/verification/fourth-look/logs/suites-2/transitions-measure.log
+?? refs/verification/fourth-look/logs/suites-2/transitions-strip.log
+?? refs/verification/fourth-look/sheets/
+?? refs/verification/fourth-look/tools/chain-h.sh
+?? refs/verification/fourth-look/tools/chain-i.sh

@@ -1,0 +1,40 @@
+THIRD LOOK'S loading beside the fresh run: ../third-look/builders-tools/loading  beside  builders-tools/run-a/loading
+  SAME BYTES  desk-1.jpg
+  SAME BYTES  desk-2.jpg
+  SAME BYTES  phone-1.jpg
+  SAME BYTES  phone-2.jpg
+  SAME BYTES  short.jpg
+  5 the same to the byte, 0 differ, 0 only in A
+THIRD LOOK'S sky beside the fresh run: ../third-look/builders-tools/sky  beside  builders-tools/run-a/sky
+  SAME BYTES  b3.jpg
+  SAME BYTES  ignite.jpg
+  DIFFERS     lit.jpg: 95 px over the noise (0.009% of 1560x708), largest difference 46 of 255, in the box x 9..358, y 26..544
+  DIFFERS     open.jpg: 0 px over the noise (0.000% of 1436x720), largest difference 6 of 255
+  SAME BYTES  panel.jpg
+  DIFFERS     stars.jpg: 0 px over the noise (0.000% of 1560x518), largest difference 6 of 255
+  DIFFERS     stations-desk-1.jpg: 0 px over the noise (0.000% of 1594x1014), largest difference 7 of 255
+  DIFFERS     stations-desk-2.jpg: 181 px over the noise (0.011% of 1594x1014), largest difference 140 of 255, in the box x 655..1383, y 190..561
+  DIFFERS     stations-phone.jpg: 0 px over the noise (0.000% of 1534x1284), largest difference 4 of 255
+  3 the same to the byte, 6 differ, 0 only in A
+THIRD LOOK'S roots beside the fresh run: ../third-look/builders-tools/roots  beside  builders-tools/run-a/roots
+  DIFFERS     descent-desk-1.jpg: 0 px over the noise (0.000% of 1242x1600), largest difference 7 of 255
+  DIFFERS     descent-phone.jpg: 0 px over the noise (0.000% of 1600x713), largest difference 6 of 255
+  DIFFERS     grow-desk.jpg: 0 px over the noise (0.000% of 1600x841), largest difference 7 of 255
+  DIFFERS     measure.txt: 18 of 314 lines
+  DIFFERS     node.jpg: 0 px over the noise (0.000% of 1600x834), largest difference 12 of 255
+  DIFFERS     pulse-desk.jpg: 0 px over the noise (0.000% of 1600x692), largest difference 18 of 255
+  DIFFERS     still.jpg: 0 px over the noise (0.000% of 1541x1600), largest difference 19 of 255
+  DIFFERS     tiles-desk.jpg: 0 px over the noise (0.000% of 1600x1588), largest difference 10 of 255
+  DIFFERS     tiles-phone.jpg: 0 px over the noise (0.000% of 1598x713), largest difference 10 of 255
+  0 the same to the byte, 9 differ, 0 only in A
+THIRD LOOK'S transitions beside the fresh run: ../third-look/builders-tools/transitions  beside  builders-tools/run-a/transitions
+  DIFFERS     fall-desk.jpg: 52730 px over the noise (2.943% of 1600x1120), largest difference 255 of 255, in the box x 8..1591, y 16..1111
+  DIFFERS     teleport-desk.jpg: 176187 px over the noise (17.732% of 1600x621), largest difference 234 of 255, in the box x 8..1486, y 16..614
+  DIFFERS     warp-deep-phone.jpg: 135103 px over the noise (9.351% of 1600x903), largest difference 255 of 255, in the box x 8..1591, y 15..895
+  DIFFERS     warp-desk.jpg: 189395 px over the noise (10.569% of 1600x1120), largest difference 251 of 255, in the box x 8..1591, y 16..1111
+  0 the same to the byte, 4 differ, 0 only in A
+THIRD LOOK'S chrome beside the fresh run: ../third-look/builders-tools/chrome  beside  builders-tools/run-a/chrome
+  DIFFERS     closed.jpg: 0 px over the noise (0.000% of 1584x1052), largest difference 13 of 255
+  SAME BYTES  logo.jpg
+  DIFFERS     menu.jpg: 0 px over the noise (0.000% of 1592x876), largest difference 17 of 255
+  1 the same to the byte, 2 differ, 0 only in A

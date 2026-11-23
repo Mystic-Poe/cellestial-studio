@@ -26,6 +26,7 @@ const shots = new Set(values.shots.split(',').filter(Boolean).map(Number));
 const cells = [];
 let total = 0, taken = 0;
 const extra = [];
+const left = [];
 let edgeLeast = 1e9;
 for (let k = 0; k < 12; k++) {
 	const c = CONSTELLATIONS[k];
@@ -52,6 +53,7 @@ for (let k = 0; k < 12; k++) {
 		const scene = await o.page.evaluate(() => document.documentElement.dataset.scene);
 		if (got === q.slot) taken++;
 		else res.push(`${q.slot} at ${Math.round(q.x)},${Math.round(q.y)} r ${q.r.toFixed(1)}: ${got ? `took ${got}` : 'took nothing'}; under the finger: ${under}; its disc ${m.b11 ? Math.round(gap(q, m.b11)) : '-'} px from the exit button; scene now ${scene}`);
+		if (scene !== 'sky') left.push(`${q.slot} (scene ${scene})`);
 		if (scene !== 'sky') {
 			// the tap went to the exit button: the fall has begun. Come back.
 			await sleep(4500);
@@ -71,6 +73,7 @@ for (let k = 0; k < 12; k++) {
 	say(`${String(k + 1).padStart(2)} ${c.name.padEnd(11)} ${cs.length} stars, ${cs.length - res.length} took the star under the finger; nearest disc to the exit button ${least(m.b11)} px, to the logo ${least(m.logo)} px, to the menu ${least(m.menu)} px; nearest disc to a side of the screen ${edge.toFixed(1)} px; stars whose disc reaches the exit button: ${m.b11 ? cs.filter((q) => gap(q, m.b11) < 0).length : 0}${res.length ? `\n      NOT TAKEN: ${res.join('\n      NOT TAKEN: ')}` : ''}`);
 }
 say(`fourth look: taps that picked more than one star: ${extra.join(', ') || 'none'}; nearest any disc comes to a side of the screen: ${edgeLeast.toFixed(1)} px`);
+say(`fourth look: taps after which the scene was no longer the sky (the fall begun, or anything else): ${left.join(', ') || 'none'}`);
 say(`${taken} of ${total} taps took the star under the finger; console errors: ${o.errors.filter((e) => !/about:blank/.test(e)).join(' | ').slice(0, 300) || 'none'}`);
 if (cells.length) await sheet(join(dir, `taps-${size}.jpg`), cells, { cols: 2, cellW: 788, cellH: 500 });
 writeFileSync(join(dir, `all-taps-${size}.txt`), `${log.join('\n')}\n`);
