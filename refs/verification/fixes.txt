@@ -2331,4 +2331,34 @@ PIECE 4 — THE CLOSE-OUT (round 3)
        And piece-4/sheets/what-differs.jpg (the crops of the three desktop sheets and of lit.jpg).
      Not opened by me after this run: the Roots', the transitions' and the chrome's sheets (no piece
      of this round changed their look; their tools exit 0), and the sky's other sheets.
-     (Parts 3, 5, 6 and 7 are written below as they are done.)
+
+  5. THE PROTECTED SYSTEMS, at the head: "git diff a31d2ee HEAD -- workers src/onboard
+     src/scripts/contact-submit.ts src/scripts/start-flow.ts src/scripts/start-builder.ts public/admin
+     src/content/home.json src/config.ts" prints nothing (0 bytes). src/components/ContactForm.astro
+     against a31d2ee: one hunk (from line 47), all of it inside its <style> block (lines 39 to 127).
+     src/pages/contact.astro and src/pages/start/new.astro: five changed lines, each the value of a
+     class (one of them the string of classes the fields share). src/pages/start/index.astro: no
+     change. None of the four differs from 8724ef5: round 3 did not touch them. On the production
+     build (astro preview, 4615) /, /contact, /start, /start/new and /admin/ each answer 200, and
+     /contact carries the Turnstile test key.
+
+  3. ON THE PRODUCTION BUILD (pnpm build with the test key at 00:38, astro preview on 4615; no file of
+     the site has changed since piece 3), the round-3 copies of the third look's scripts, one after
+     another with nothing else on the GPU: refs/verification/round-3/tools/close-out.sh (new: the
+     commands, in order). Everything it writes is under refs/verification/round-3/piece-4/: the
+     scripts' own output in the folders they name, a log each in logs/, and logs/status.txt. The
+     earlier pieces' evidence in round-3/ is not written over.
+     (Written here run by run as they finish; begun 01:06.)
+     EVERY STAR TOUCHED (all-taps.mjs; desk-sky/all-taps-desk.txt, phone-sky/all-taps-phone.txt,
+     all-taps-side.txt), the round done so that the exit button is there:
+       1440x900  146 of 146 took the star under the pointer; console errors none
+       390x844   146 of 146
+       844x390   146 of 146 (the third look: 145, Libra's lowest star under the exit button); the
+                 nearest disc to the button 12 px or more at every station (it was 11 px INTO it)
+     THE PHONE'S SKY (phone-sky.mjs; phone-sky/phone-sky.txt, 360/, 375/, 844/):
+       390x844   ALL PASS: Cellestial's star 96.9 px, its rings 3.9 px short of the nearest star at
+                 their full reach; the six wide figures all at least half the height; deepest
+                 overlap 30.6%; 292 of 292 touches; no star within 20 px of a side or under the
+                 chrome. The third look's numbers, each one.
+       360x740   ALL PASS: 87.7 px, 2.3 px, 31.5%, 292 of 292. The third look's numbers.
+     (Parts 3 (the rest), 6 and 7 are written below as they are done.)

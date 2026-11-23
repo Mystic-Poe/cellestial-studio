@@ -1,3 +1,11 @@
 === all-taps-desk: node refs/verification/round-3/tools/all-taps.mjs --size desk
 exit 0 (all-taps-desk)
 === all-taps-phone: node refs/verification/round-3/tools/all-taps.mjs --size phone
+exit 0 (all-taps-phone)
+=== all-taps-side: node refs/verification/round-3/tools/all-taps.mjs --size side
+exit 0 (all-taps-side)
+=== phone-sky-phone: node refs/verification/round-3/tools/phone-sky.mjs --size phone
+exit 0 (phone-sky-phone)
+=== phone-sky-small: node refs/verification/round-3/tools/phone-sky.mjs --size small
+exit 0 (phone-sky-small)
+=== phone-sky-short: node refs/verification/round-3/tools/phone-sky.mjs --size short

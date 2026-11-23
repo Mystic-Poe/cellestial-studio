@@ -1,0 +1,43 @@
+THE PHONE'S SKY at 360x740 (device pixels x2), production build, the sky empty
+turned a quarter: Virgo, Capricornus, Aquarius, Pisces, Aries, Leo
+ 1 Virgo       TURNED  12 claimable stars on screen of 12; figure 218x434 px (y 166..600: 59% of the height; centre to centre 55%); nearest side 23.9 px; star radius 13.0..13.1 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 56 px, the logo 91 px, the menu button 110 px
+   Cellestial's star: 87.7 px across (the full reach of its rings, 43.9 px from its centre at 180,370); core r 11.8 px. Virgo's four nearest stars: centre 59.1 px away, radius 13.0, its disc 2.3 px beyond the rings' full reach; centre 68.0 px away, radius 13.0, its disc 11.1 px beyond the rings' full reach; centre 70.5 px away, radius 13.0, its disc 13.7 px beyond the rings' full reach; centre 83.0 px away, radius 13.0, its disc 26.1 px beyond the rings' full reach
+   the rings as drawn, nearest approach of any ring's outer edge to any star's disc: 5.9 px (first moment), 2.7 px (2.4 s later)
+PASS  Cellestial's rings end at least 2 px short of every star of Virgo, at their full reach (least 2.3 px) and as drawn at two moments (5.9 and 2.7 px)
+PASS  Cellestial's star is at least 84 px across (87.7)
+ 2 Libra       upright 6 claimable stars on screen of 6; figure 286x516 px (y 100..616: 70% of the height; centre to centre 66%); nearest side 36.9 px; star radius 13.0..13.4 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 40 px, the logo 94 px, the menu button 63 px
+ 3 Scorpius    upright 14 claimable stars on screen of 14; figure 312x324 px (y 196..520: 44% of the height; centre to centre 40%); nearest side 23.9 px; star radius 13.0..16.0 px; overlapping pairs 3, deepest 28% of the smaller star's width; clear of the exit button 136 px, the logo 260 px, the menu button 239 px
+ 4 Sagittarius upright 25 claimable stars on screen of 25; figure 312x367 px (y 175..541: 50% of the height; centre to centre 46%); nearest side 23.9 px; star radius 9.9..14.6 px; overlapping pairs 6, deepest 31% of the smaller star's width; clear of the exit button 115 px, the logo 115 px, the menu button 119 px
+ 5 Capricornus TURNED  10 claimable stars on screen of 10; figure 312x467 px (y 125..591: 63% of the height; centre to centre 60%); nearest side 23.9 px; star radius 13.0..13.0 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 65 px, the logo 49 px, the menu button 74 px
+ 6 Aquarius    TURNED  15 claimable stars on screen of 15; figure 285x513 px (y 103..616: 69% of the height; centre to centre 66%); nearest side 37.4 px; star radius 9.9..13.0 px; overlapping pairs 4, deepest 29% of the smaller star's width; clear of the exit button 40 px, the logo 114 px, the menu button 80 px
+ 7 Pisces      TURNED  22 claimable stars on screen of 22; figure 312x487 px (y 115..601: 66% of the height; centre to centre 62%); nearest side 23.9 px; star radius 13.0..13.0 px; overlapping pairs 4, deepest 17% of the smaller star's width; clear of the exit button 55 px, the logo 227 px, the menu button 185 px
+ 8 Aries       TURNED  4 claimable stars on screen of 4; figure 312x489 px (y 114..602: 66% of the height; centre to centre 63%); nearest side 23.9 px; star radius 13.0..14.4 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 54 px, the logo 192 px, the menu button 166 px
+ 9 Taurus      upright 12 claimable stars on screen of 12; figure 305x286 px (y 216..501: 39% of the height; centre to centre 35%); nearest side 23.9 px; star radius 6.1..14.9 px; overlapping pairs 6, deepest 31% of the smaller star's width; clear of the exit button 155 px, the logo 140 px, the menu button 160 px
+10 Gemini      upright 12 claimable stars on screen of 12; figure 311x294 px (y 211..505: 40% of the height; centre to centre 36%); nearest side 23.9 px; star radius 13.0..15.7 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 151 px, the logo 136 px, the menu button 155 px
+11 Cancer      upright 5 claimable stars on screen of 5; figure 286x516 px (y 100..616: 70% of the height; centre to centre 66%); nearest side 37.2 px; star radius 13.0..13.0 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 40 px, the logo 65 px, the menu button 47 px
+12 Leo         TURNED  9 claimable stars on screen of 9; figure 269x516 px (y 100..616: 70% of the height; centre to centre 66%); nearest side 45.0 px; star radius 13.0..15.4 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 40 px, the logo 37 px, the menu button 44 px
+PASS  every claimable star is on screen at every station (0 missing)
+PASS  every star is at least 20 px clear of the sides at every station (0 stations fail)
+PASS  every star is clear of the logo, the menu button and the exit button (0 touches)
+PASS  the six wide figures are at least 50% of the screen's height (0 are not)
+PASS  no two stars overlap by more than a third (deepest 31.5%)
+  wrote /home/poe/cellestial-studio/refs/verification/round-3/piece-4/phone-sky/360/stations-empty.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/round-3/piece-4/phone-sky/360/cellestial-star.jpg
+  wrote /home/poe/cellestial-studio/refs/verification/round-3/piece-4/phone-sky/360/dense-figures.jpg
+
+TAPS: a real touch on every star of every figure. At its centre, and on its free side (0.55 of its radius out, away from its nearest neighbour).
+Virgo        12 stars, 24 taps: the star under the finger 24, ANOTHER STAR 0, nothing 0
+Libra        6 stars, 12 taps: the star under the finger 12, ANOTHER STAR 0, nothing 0
+Scorpius     14 stars, 28 taps: the star under the finger 28, ANOTHER STAR 0, nothing 0
+Sagittarius  25 stars, 50 taps: the star under the finger 50, ANOTHER STAR 0, nothing 0
+Capricornus  10 stars, 20 taps: the star under the finger 20, ANOTHER STAR 0, nothing 0
+Aquarius     15 stars, 30 taps: the star under the finger 30, ANOTHER STAR 0, nothing 0
+Pisces       22 stars, 44 taps: the star under the finger 44, ANOTHER STAR 0, nothing 0
+Aries        4 stars, 8 taps: the star under the finger 8, ANOTHER STAR 0, nothing 0
+Taurus       12 stars, 24 taps: the star under the finger 24, ANOTHER STAR 0, nothing 0
+Gemini       12 stars, 24 taps: the star under the finger 24, ANOTHER STAR 0, nothing 0
+Cancer       5 stars, 10 taps: the star under the finger 10, ANOTHER STAR 0, nothing 0
+Leo          9 stars, 18 taps: the star under the finger 18, ANOTHER STAR 0, nothing 0
+PASS  a touch at the centre and one on the free side of every star of every figure takes that star (292 of 292; 146 stars)
+PASS  no console error (none)
+ALL PASS
