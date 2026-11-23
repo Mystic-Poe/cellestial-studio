@@ -1,0 +1,42 @@
+THE FOURTH LOOK (23 Nov 2026): a narrow, independent look at what round 3 changed
+Brief: refs/briefs/fourth-look.js. Evidence: refs/verification/fourth-look/. This report is written
+as the look goes.
+
+ORCHESTRATOR'S NOTE (not the inspector's; 23 Nov, 03:15). THE FIRST RUN WAS CUT OFF about seventeen
+minutes in, by a server error (API 529, overloaded), in the middle of item 1a. It had written no
+ruling and no part of this report: everything below this note is still to be written. The site has
+not changed since (head a039350; no file under src/, public/, workers/, scripts/ or tools/ differs),
+so what the first run captured is evidence of this same build, made by this same brief, and need
+not be made again. Read it, look at its pictures, and rule from it; make again only what you do not
+trust or what is missing.
+
+What the first run left (all under refs/verification/fourth-look/, production build on port 4615):
+  - Every star tapped on a phone on its side, with the exit button shown: phone-sky/all-taps-side.txt,
+    all-taps-side667.txt, all-taps-side740.txt, all-taps-side932.txt, with taps-side.jpg,
+    taps-side667.jpg, taps-side740.jpg (logs/all-taps-*.log). It added two lines to its copy of
+    tools/all-taps.mjs: a count of taps that picked more than one star, and the nearest any disc
+    comes to a side of the screen.
+  - The stations on a phone on its side and on the desktop (tools/phone-sky.mjs --only stations):
+    phone-sky/844/, 667/, 740/, 932/, 1440/ (phone-sky-stations.txt, stations-empty.jpg,
+    dense-figures.jpg, cellestial-star.jpg in each); logs/phone-sky-*.log.
+  - What hangs on the layout on a phone on its side (tools/side-scenes.mjs, four sizes): the button
+    shown or not, the phone turned, the fall, reduced motion: side/side-scenes*.txt, fall-*.jpg,
+    reduced-motion-*.jpg; logs/side-scenes-*.log.
+  - B7 with every star lit (tools/b7.mjs --only all) at side, side667, side740, side932 and at short,
+    short640, short568: b7/b7-side-side667-side740-side932.txt, b7/b7-short-short640-short568.txt,
+    all-*.jpg, words-*.jpg; and one being written at 844x390 (b7/b7-side.txt, write-aries-side.jpg,
+    write-leo-side.jpg). It changed its copy of tools/b7.mjs so that the sheet of a screen wider
+    than tall is laid out to be read.
+  - The knots, every pair of stars, at the four sizes on their side (its own new script,
+    tools/pairs.mjs): knots/pairs-sides.txt, pairs-sides.jpg.
+  It had opened phone-sky/taps-side.jpg and b7/words-side.jpg and nothing else.
+Not yet done of item 1a: the hand-off's end on that screen; Cellestial's star judged; the pictures
+looked at and the ruling. Not begun: items 1b (the captures exist, see above) to 1g, part 2, part 3.
+
+The build the third look judged (commit 8724ef5) was made by the first run outside the checkout, at
+/tmp/claude-1000/-home-poe-Work/997ecee9-30a3-4fc9-8f3c-6efca36572a4/scratchpad/old (its dist/ is
+built; node_modules is a link to the checkout's). If that folder is still there, serve its dist on
+port 4616 with tools/static.mjs and do not build it again; if it is gone, make it again as the brief
+says. No server was left running: start the production build on 4615 again.
+
+(The inspector's report begins here.)

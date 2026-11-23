@@ -1,0 +1,15 @@
+EVERY STAR TAPPED at 740x360 (side740), the sky empty, the exit button shown
+ 1 Virgo       12 stars, 12 took the star under the finger; nearest disc to the exit button 49 px, to the logo 145 px, to the menu 111 px; nearest disc to a side of the screen 60.7 px; stars whose disc reaches the exit button: 0
+ 2 Libra       6 stars, 6 took the star under the finger; nearest disc to the exit button 12 px, to the logo 249 px, to the menu 203 px; nearest disc to a side of the screen 37.7 px; stars whose disc reaches the exit button: 0
+ 3 Scorpius    14 stars, 14 took the star under the finger; nearest disc to the exit button 12 px, to the logo 250 px, to the menu 219 px; nearest disc to a side of the screen 35.4 px; stars whose disc reaches the exit button: 0
+ 4 Sagittarius 25 stars, 25 took the star under the finger; nearest disc to the exit button 12 px, to the logo 220 px, to the menu 178 px; nearest disc to a side of the screen 40.7 px; stars whose disc reaches the exit button: 0
+ 5 Capricornus 10 stars, 10 took the star under the finger; nearest disc to the exit button 15 px, to the logo 164 px, to the menu 124 px; nearest disc to a side of the screen 60.1 px; stars whose disc reaches the exit button: 0
+ 6 Aquarius    15 stars, 15 took the star under the finger; nearest disc to the exit button 15 px, to the logo 189 px, to the menu 156 px; nearest disc to a side of the screen 60.0 px; stars whose disc reaches the exit button: 0
+ 7 Pisces      22 stars, 22 took the star under the finger; nearest disc to the exit button 14 px, to the logo 222 px, to the menu 188 px; nearest disc to a side of the screen 60.0 px; stars whose disc reaches the exit button: 0
+ 8 Aries       4 stars, 4 took the star under the finger; nearest disc to the exit button 18 px, to the logo 153 px, to the menu 104 px; nearest disc to a side of the screen 60.4 px; stars whose disc reaches the exit button: 0
+ 9 Taurus      12 stars, 12 took the star under the finger; nearest disc to the exit button 12 px, to the logo 201 px, to the menu 159 px; nearest disc to a side of the screen 58.0 px; stars whose disc reaches the exit button: 0
+10 Gemini      12 stars, 12 took the star under the finger; nearest disc to the exit button 12 px, to the logo 197 px, to the menu 151 px; nearest disc to a side of the screen 48.1 px; stars whose disc reaches the exit button: 0
+11 Cancer      5 stars, 5 took the star under the finger; nearest disc to the exit button 12 px, to the logo 279 px, to the menu 229 px; nearest disc to a side of the screen 39.3 px; stars whose disc reaches the exit button: 0
+12 Leo         9 stars, 9 took the star under the finger; nearest disc to the exit button 16 px, to the logo 177 px, to the menu 164 px; nearest disc to a side of the screen 60.3 px; stars whose disc reaches the exit button: 0
+fourth look: taps that picked more than one star: none; nearest any disc comes to a side of the screen: 35.4 px
+146 of 146 taps took the star under the finger; console errors: none

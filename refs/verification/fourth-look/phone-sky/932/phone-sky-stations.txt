@@ -1,0 +1,25 @@
+THE PHONE'S SKY at 932x430 (device pixels x2), production build, the sky empty
+turned a quarter: none
+ 1 Virgo       upright 12 claimable stars on screen of 12; figure 394x200 px (y 72..272: 46% of the height; centre to centre 41%); nearest side 256.7 px; star radius 9.6..12.0 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 74 px, the logo 199 px, the menu button 169 px
+   Cellestial's star: 80.4 px across (the full reach of its rings, 40.2 px from its centre at 466,215); core r 10.9 px. Virgo's four nearest stars: centre 54.2 px away, radius 12.0, its disc 2.0 px beyond the rings' full reach; centre 62.3 px away, radius 10.9, its disc 11.3 px beyond the rings' full reach; centre 64.6 px away, radius 11.5, its disc 12.9 px beyond the rings' full reach; centre 76.0 px away, radius 10.9, its disc 25.0 px beyond the rings' full reach
+   the rings as drawn, nearest approach of any ring's outer edge to any star's disc: 13.2 px (first moment), 9.3 px (2.4 s later)
+PASS  Cellestial's rings end at least 2 px short of every star of Virgo, at their full reach (least 2.0 px) and as drawn at two moments (13.2 and 9.3 px)
+FAIL  Cellestial's star is at least 84 px across (80.4)
+ 2 Libra       upright 6 claimable stars on screen of 6; figure 160x283 px (y 51..334: 66% of the height; centre to centre 61%); nearest side 385.6 px; star radius 10.1..12.0 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 12 px, the logo 323 px, the menu button 281 px
+ 3 Scorpius    upright 14 claimable stars on screen of 14; figure 274x285 px (y 49..334: 66% of the height; centre to centre 61%); nearest side 328.8 px; star radius 10.5..14.3 px; overlapping pairs 3, deepest 29% of the smaller star's width; clear of the exit button 12 px, the logo 326 px, the menu button 304 px
+ 4 Sagittarius upright 25 claimable stars on screen of 25; figure 239x279 px (y 55..334: 65% of the height; centre to centre 61%); nearest side 346.1 px; star radius 8.6..13.0 px; overlapping pairs 7, deepest 30% of the smaller star's width; clear of the exit button 12 px, the logo 287 px, the menu button 251 px
+ 5 Capricornus upright 10 claimable stars on screen of 10; figure 391x259 px (y 72..331: 60% of the height; centre to centre 56%); nearest side 270.3 px; star radius 8.9..11.6 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 15 px, the logo 209 px, the menu button 175 px
+ 6 Aquarius    upright 15 claimable stars on screen of 15; figure 473x259 px (y 72..331: 60% of the height; centre to centre 56%); nearest side 229.3 px; star radius 8.8..11.5 px; overlapping pairs 3, deepest 22% of the smaller star's width; clear of the exit button 15 px, the logo 243 px, the menu button 218 px
+ 7 Pisces      upright 22 claimable stars on screen of 22; figure 408x260 px (y 72..331: 60% of the height; centre to centre 56%); nearest side 261.8 px; star radius 8.6..10.5 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 16 px, the logo 287 px, the menu button 257 px
+ 8 Aries       upright 4 claimable stars on screen of 4; figure 406x259 px (y 72..331: 60% of the height; centre to centre 55%); nearest side 262.7 px; star radius 9.9..12.8 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 53 px, the logo 195 px, the menu button 147 px
+ 9 Taurus      upright 12 claimable stars on screen of 12; figure 279x258 px (y 73..331: 60% of the height; centre to centre 55%); nearest side 324.4 px; star radius 6.0..13.3 px; overlapping pairs 6, deepest 35% of the smaller star's width; clear of the exit button 15 px, the logo 262 px, the menu button 224 px
+10 Gemini      upright 12 claimable stars on screen of 12; figure 285x269 px (y 65..334: 63% of the height; centre to centre 57%); nearest side 322.9 px; star radius 9.4..14.0 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 12 px, the logo 258 px, the menu button 216 px
+11 Cancer      upright 5 claimable stars on screen of 5; figure 158x281 px (y 53..334: 65% of the height; centre to centre 61%); nearest side 386.8 px; star radius 9.0..10.7 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 12 px, the logo 360 px, the menu button 310 px
+12 Leo         upright 9 claimable stars on screen of 9; figure 499x258 px (y 72..330: 60% of the height; centre to centre 54%); nearest side 216.3 px; star radius 10.1..13.7 px; overlapping pairs 0, deepest 0% of the smaller star's width; clear of the exit button 27 px, the logo 228 px, the menu button 228 px
+PASS  every claimable star is on screen at every station (0 missing)
+PASS  every star is at least 20 px clear of the sides at every station (0 stations fail)
+PASS  every star is clear of the logo, the menu button and the exit button (0 touches)
+FAIL  the six wide figures are at least 50% of the screen's height (1 are not)
+FAIL  no two stars overlap by more than a third (deepest 35.0%)
+PASS  no console error (none)
+3 FAILED

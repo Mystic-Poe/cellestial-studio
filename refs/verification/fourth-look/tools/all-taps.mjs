@@ -25,6 +25,8 @@ say(`EVERY STAR TAPPED at ${o.W}x${o.H} (${size}), the sky empty, the exit butto
 const shots = new Set(values.shots.split(',').filter(Boolean).map(Number));
 const cells = [];
 let total = 0, taken = 0;
+const extra = [];
+let edgeLeast = 1e9;
 for (let k = 0; k < 12; k++) {
 	const c = CONSTELLATIONS[k];
 	await o.page.evaluate((i) => window.__cellestial.sky.debug.setCoord(i), k);
@@ -45,6 +47,8 @@ for (let k = 0; k < 12; k++) {
 		await o.pressAt(q.x, q.y);
 		await sleep(450);
 		const got = await o.page.evaluate(() => window.__picked[0] ?? null);
+		const nPicked = await o.page.evaluate(() => window.__picked.length);
+		if (nPicked > 1) extra.push(`${q.slot}: ${nPicked} picks`);
 		const scene = await o.page.evaluate(() => document.documentElement.dataset.scene);
 		if (got === q.slot) taken++;
 		else res.push(`${q.slot} at ${Math.round(q.x)},${Math.round(q.y)} r ${q.r.toFixed(1)}: ${got ? `took ${got}` : 'took nothing'}; under the finger: ${under}; its disc ${m.b11 ? Math.round(gap(q, m.b11)) : '-'} px from the exit button; scene now ${scene}`);
@@ -61,9 +65,12 @@ for (let k = 0; k < 12; k++) {
 			await sleep(250);
 		}
 	}
+	const edge = cs.length ? Math.min(...cs.map((q) => Math.min(q.x - q.r, o.W - q.x - q.r, q.y - q.r, o.H - q.y - q.r))) : 0;
+	edgeLeast = Math.min(edgeLeast, edge);
 	const least = (r) => (r && cs.length ? Math.round(Math.min(...cs.map((q) => gap(q, r)))) : null);
-	say(`${String(k + 1).padStart(2)} ${c.name.padEnd(11)} ${cs.length} stars, ${cs.length - res.length} took the star under the finger; nearest disc to the exit button ${least(m.b11)} px, to the logo ${least(m.logo)} px, to the menu ${least(m.menu)} px; stars whose disc reaches the exit button: ${m.b11 ? cs.filter((q) => gap(q, m.b11) < 0).length : 0}${res.length ? `\n      NOT TAKEN: ${res.join('\n      NOT TAKEN: ')}` : ''}`);
+	say(`${String(k + 1).padStart(2)} ${c.name.padEnd(11)} ${cs.length} stars, ${cs.length - res.length} took the star under the finger; nearest disc to the exit button ${least(m.b11)} px, to the logo ${least(m.logo)} px, to the menu ${least(m.menu)} px; nearest disc to a side of the screen ${edge.toFixed(1)} px; stars whose disc reaches the exit button: ${m.b11 ? cs.filter((q) => gap(q, m.b11) < 0).length : 0}${res.length ? `\n      NOT TAKEN: ${res.join('\n      NOT TAKEN: ')}` : ''}`);
 }
+say(`fourth look: taps that picked more than one star: ${extra.join(', ') || 'none'}; nearest any disc comes to a side of the screen: ${edgeLeast.toFixed(1)} px`);
 say(`${taken} of ${total} taps took the star under the finger; console errors: ${o.errors.filter((e) => !/about:blank/.test(e)).join(' | ').slice(0, 300) || 'none'}`);
 if (cells.length) await sheet(join(dir, `taps-${size}.jpg`), cells, { cols: 2, cellW: 788, cellH: 500 });
 writeFileSync(join(dir, `all-taps-${size}.txt`), `${log.join('\n')}\n`);

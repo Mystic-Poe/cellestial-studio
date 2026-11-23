@@ -130,7 +130,8 @@ if (only.has('all')) for (const size of sizes) {
 	if (size === 'desk') {
 		await sheet(join(dir, 'all-desk-1.jpg'), cells.slice(0, 6), { cols: 3, cellW: 520, cellH: 325 });
 		await sheet(join(dir, 'all-desk-2.jpg'), cells.slice(6), { cols: 3, cellW: 520, cellH: 325 });
-	} else await sheet(join(dir, `all-${size}.jpg`), cells, { cols: 6, cellW: 258, cellH: Math.round((258 * SIZES[size].viewport.height) / SIZES[size].viewport.width) });
+	} else if (SIZES[size].viewport.width > SIZES[size].viewport.height) await sheet(join(dir, `all-${size}.jpg`), cells, { cols: 3, cellW: 525, cellH: Math.round((525 * SIZES[size].viewport.height) / SIZES[size].viewport.width) }); /* the fourth look: a phone on its side, large enough to judge */
+	else await sheet(join(dir, `all-${size}.jpg`), cells, { cols: 6, cellW: 258, cellH: Math.round((258 * SIZES[size].viewport.height) / SIZES[size].viewport.width) });
 	if (size === 'desk') for (let i = 0, n = 1; i < crops.length; i += 6, n++) await sheet(join(dir, `words-desk-${n}.jpg`), crops.slice(i, i + 6), { cols: 2, cellW: 780, cellH: 240 });
 	else await sheet(join(dir, `words-${size}.jpg`), crops, { cols: 4, cellW: 390, cellH: 300 });
 	await o.context.close();

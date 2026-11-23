@@ -1,0 +1,25 @@
+WHAT HANGS ON THE SKY'S LAYOUT, ON A PHONE ON ITS SIDE: 844x390 (side), production build
+a fresh load, the round flown: the exit button shown (true) at 286,306 271x52
+PASS  every star's disc is 12 px or more from the exit button at every station (147 stars and Cellestial's core; nearest 12.00 px)
+PASS  a first visit, no round flown: the exit button is not shown (hidden true)
+PASS  THE BUTTON OR NOT: 147 stars at twelve stations stand in the same place with the button not shown and shown (largest difference 0.0000 px; 0 missing in one of the two)
+PASS  Libra's stars when the button is put on the page: moved 0.0000 px
+PASS  TURNED: loaded at 390x844 and turned to 844x390: 147 stars at twelve stations stand where a fresh load at 844x390 puts them (largest difference 0.0000 px; 0 missing)
+PASS     Virgo turned on its side: 0 of 1316640 pixels differ from the fresh load's picture
+PASS     Scorpius turned on its side: 0 of 1316640 pixels differ from the fresh load's picture
+PASS     Taurus turned on its side: 0 of 1316640 pixels differ from the fresh load's picture
+PASS     Leo turned on its side: 0 of 1316640 pixels differ from the fresh load's picture
+PASS     Virgo upright again: 0 of 1316640 pixels differ from the first picture
+PASS     Scorpius upright again: 0 of 1316640 pixels differ from the first picture
+PASS     Taurus upright again: 0 of 1316640 pixels differ from the first picture
+PASS     Leo upright again: 0 of 1316640 pixels differ from the first picture
+THE FALL from Libra at 844x390: 6 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
+PASS     every star leaves from where it stood: 6 of 6 fall; the first step off its place is at most 0.3 px; steps upward 0; sideways at most 0.00 px
+THE FALL from Sagittarius at 844x390: 25 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
+PASS     every star leaves from where it stood: 25 of 25 fall; the first step off its place is at most 0.4 px; steps upward 0; sideways at most 0.00 px
+REDUCED MOTION at 844x390: scene sky, data-motion off; the exit button shown at 286,306 271x52
+PASS     the still sky with the exit button there
+PASS     nothing moves: 0 pixels change in 1.5 s
+PASS     Virgo's 13 stars are all on screen, the nearest 59.5 px from the exit button
+   console errors: none
+ALL PASS

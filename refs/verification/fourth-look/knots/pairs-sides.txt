@@ -1,0 +1,68 @@
+THE KNOTS at 844x390 (side): http://localhost:4615
+ 1 Virgo        radius 8.9..10.8 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 9.4..11.1 px; pairs that meet 0, deepest 0%
+ 3 Scorpius     radius 9.8..13.3 px; pairs that meet 3, deepest 31%
+ 4 Sagittarius  radius 8.0..12.1 px; pairs that meet 7, deepest 32%
+ 5 Capricornus  radius 8.3..10.8 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 8.2..10.7 px; pairs that meet 3, deepest 28%
+ 7 Pisces       radius 8.0..9.8 px; pairs that meet 1, deepest 5%
+ 8 Aries        radius 9.2..11.9 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 6.0..12.4 px; pairs that meet 6, deepest 41%
+      OVER A THIRD: slot-77 (r 6.0) and slot-64 (r 6.0), centres 7.0 px apart: 41% of the smaller star's width
+      a touch at the centre of slot-77: took slot-77
+      a touch at the centre of slot-64: took slot-64
+10 Gemini       radius 8.7..13.1 px; pairs that meet 0, deepest 0%
+11 Cancer       radius 8.4..9.9 px; pairs that meet 0, deepest 0%
+12 Leo          radius 9.4..12.8 px; pairs that meet 0, deepest 0%
+side: the deepest any two stars stand into each other 41%; the smallest star's radius 6.0 px (12 px across)
+THE KNOTS at 667x375 (side667): http://localhost:4615
+ 1 Virgo        radius 8.7..10.5 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 9.1..10.8 px; pairs that meet 1, deepest 15%
+ 3 Scorpius     radius 8.9..12.1 px; pairs that meet 3, deepest 31%
+ 4 Sagittarius  radius 6.8..11.8 px; pairs that meet 9, deepest 31%
+ 5 Capricornus  radius 8.0..10.5 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 8.0..10.4 px; pairs that meet 3, deepest 30%
+ 7 Pisces       radius 7.7..9.5 px; pairs that meet 3, deepest 8%
+ 8 Aries        radius 9.0..11.6 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 6.0..12.0 px; pairs that meet 6, deepest 47%
+      OVER A THIRD: slot-77 (r 6.0) and slot-64 (r 6.0), centres 6.4 px apart: 47% of the smaller star's width
+      a touch at the centre of slot-77: took slot-77
+      a touch at the centre of slot-64: took slot-64
+10 Gemini       radius 8.5..12.7 px; pairs that meet 1, deepest 8%
+11 Cancer       radius 8.2..9.6 px; pairs that meet 0, deepest 0%
+12 Leo          radius 9.2..12.4 px; pairs that meet 0, deepest 0%
+side667: the deepest any two stars stand into each other 47%; the smallest star's radius 6.0 px (12 px across)
+THE KNOTS at 740x360 (side740): http://localhost:4615
+ 1 Virgo        radius 8.4..10.2 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 8.9..10.5 px; pairs that meet 1, deepest 6%
+ 3 Scorpius     radius 9.0..12.5 px; pairs that meet 3, deepest 25%
+ 4 Sagittarius  radius 7.2..11.4 px; pairs that meet 8, deepest 31%
+ 5 Capricornus  radius 7.8..10.2 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 7.7..10.1 px; pairs that meet 3, deepest 33%
+ 7 Pisces       radius 7.5..9.2 px; pairs that meet 4, deepest 11%
+ 8 Aries        radius 8.7..11.2 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 6.0..11.7 px; pairs that meet 6, deepest 49%
+      OVER A THIRD: slot-77 (r 6.0) and slot-64 (r 6.0), centres 6.2 px apart: 49% of the smaller star's width
+      a touch at the centre of slot-77: took slot-77
+      a touch at the centre of slot-64: took slot-64
+10 Gemini       radius 8.2..12.3 px; pairs that meet 1, deepest 3%
+11 Cancer       radius 7.9..9.4 px; pairs that meet 0, deepest 0%
+12 Leo          radius 8.9..12.1 px; pairs that meet 0, deepest 0%
+side740: the deepest any two stars stand into each other 49%; the smallest star's radius 6.0 px (12 px across)
+THE KNOTS at 932x430 (side932): http://localhost:4615
+ 1 Virgo        radius 9.6..12.0 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 10.1..12.0 px; pairs that meet 0, deepest 0%
+ 3 Scorpius     radius 10.5..14.3 px; pairs that meet 3, deepest 29%
+ 4 Sagittarius  radius 8.6..13.0 px; pairs that meet 7, deepest 30%
+ 5 Capricornus  radius 8.9..11.6 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 8.8..11.5 px; pairs that meet 3, deepest 22%
+ 7 Pisces       radius 8.6..10.5 px; pairs that meet 0, deepest 0%
+ 8 Aries        radius 9.9..12.8 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 6.0..13.3 px; pairs that meet 6, deepest 35%
+      OVER A THIRD: slot-77 (r 6.0) and slot-64 (r 6.0), centres 7.8 px apart: 35% of the smaller star's width
+      a touch at the centre of slot-77: took slot-77
+      a touch at the centre of slot-64: took slot-64
+10 Gemini       radius 9.4..14.0 px; pairs that meet 0, deepest 0%
+11 Cancer       radius 9.0..10.7 px; pairs that meet 0, deepest 0%
+12 Leo          radius 10.1..13.7 px; pairs that meet 0, deepest 0%
+side932: the deepest any two stars stand into each other 35%; the smallest star's radius 6.0 px (12 px across)
