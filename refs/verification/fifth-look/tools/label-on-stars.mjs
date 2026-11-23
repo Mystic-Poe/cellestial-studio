@@ -9,7 +9,7 @@ import { CONSTELLATIONS } from '../../../../src/content/constellations.ts';
 import { SIZES, launch, open, outDir, sharp, sheet, sleep } from './lib.mjs';
 const dir = outDir('b7');
 const CASES = [['desk', 1, 'slot-27'], ['desk', 7, 'slot-60'], ['desk', 0, 'slot-25'], ['phone', 1, 'slot-27'], ['phone', 0, 'slot-88'], ['phone', 2, 'slot-13']];
-const BUILDS = [['this build', 'http://localhost:4615'], ['8724ef5', 'http://localhost:4616']];
+const BUILDS = [['this build', 'http://localhost:4615'], ['before round 4 (f7d5ea4)', 'http://localhost:4616']];
 const browser = await launch({ gpu: true });
 const cells = [];
 const log = [];

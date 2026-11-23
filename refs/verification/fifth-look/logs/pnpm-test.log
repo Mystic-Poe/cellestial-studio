@@ -1,0 +1,245 @@
+$ node --test 'src/experience/*.test.ts' 'src/content/*.test.ts' 'src/onboard/*.test.ts' && node workers/contact/test/contact.test.mjs && node workers/auth/test/broker.test.mjs && node workers/onboard/test/onboard.test.mjs
+✔ the twelve figures, in flight order (1.992329ms)
+✔ each is the full stick figure: 147 stars in all (0.290915ms)
+✔ meanings are verbatim, and so is the line after Leo (0.215547ms)
+✔ slots: slot-1 … slot-146, each once; the one star without is the epicentre in Virgo (0.783407ms)
+✔ slots are numbered brightest first; ties by figure order, then star index (0.65059ms)
+✔ the 99 slots the contact Worker can name are the 99 brightest (0.387924ms)
+✔ lines: valid indices, each line once, every star on a line (0.949644ms)
+✔ every figure is one connected piece (2.506221ms)
+✔ unit box: 4 decimals, centred on (0, 0), larger half-extent exactly 1, aspect kept (1.039513ms)
+✔ no two stars of a figure share a position (0.618221ms)
+✔ north is up and east is left: every line runs the way it does in the sky (0.733208ms)
+✔ positions are a true tangent-plane picture of the catalogue positions (5.062129ms)
+✔ the shapes read as they do in the night sky, not mirrored (0.368584ms)
+✔ the epicentre is Virgo's hub: the most lines, and of those the nearest the centre (0.212236ms)
+✔ provenance: catalogue positions and magnitudes, to 2 decimals (0.875356ms)
+✔ the brightest stars take the first slots; the four with no catalogue star, the last (0.345775ms)
+✔ isSlotId: exactly slot-1 … slot-146, no leading zeros, nothing around it (0.69017ms)
+✔ slotToStar and starToSlot are inverses over every star (3.723981ms)
+✔ five offers, in order, one for each tile of the addendum (2.026018ms)
+✔ titles are the bold lead-ins, without the list number or the colon (0.231957ms)
+✔ short names are the five the breakdown panel lists (0.303955ms)
+✔ offerText is the addendum tile, character for character (1.103322ms)
+✔ the builder notes are not copy (0.568701ms)
+✔ lead is the first sentence of the body, and the first line (0.258366ms)
+✔ brass is exactly what the addendum sets in bold, in order and in place (0.555031ms)
+✔ slashed prices: old price struck, "slashed" kept but hidden, arrow and new price shown (0.689649ms)
+✔ visibleText drops the hidden words and nothing else, leaving single spaces (0.296485ms)
+✔ no line is empty, and none starts or ends with a space (0.488922ms)
+✔ a segment is text plus flags that are only ever true (0.321205ms)
+✔ Add-ons has no ownership wording; the three builds do (0.456003ms)
+✔ "Their care goes up" lives only in Care (0.330075ms)
+✔ "Google" appears nowhere (0.244986ms)
+✔ the only dollar amounts anywhere are $990, $69/mo and $39/mo (0.721888ms)
+✔ the sky starts empty (2.431701ms)
+✔ the registry lights its stars (0.900906ms)
+✔ bad registry entries are ignored, good ones around them still count (0.972074ms)
+✔ a registry that is not a list is no registry (0.234776ms)
+✔ an entry keeps only its slot and its ask (0.192467ms)
+✔ this device lights the stars it stored (0.282726ms)
+✔ corrupt or malformed device storage is no claims, and nothing throws (0.294495ms)
+✔ corrupt storage is written clean by the next send (0.531272ms)
+✔ the registry wins on conflict (0.225216ms)
+✔ with storage blocked, everything still works for the visit (0.940265ms)
+✔ with no storage at all, everything still works for the visit (0.393024ms)
+✔ with storage full, a claim still stands for the visit (0.246976ms)
+✔ a sent request with an empty star lights it and emits claimed (0.285925ms)
+✔ the ask is kept exactly: nothing trimmed, nothing added (0.188137ms)
+✔ a claimed star stays lit on the next visit (0.155237ms)
+✔ a sent request with no star waits as unplaced (0.294715ms)
+✔ the waiting ask survives to the next visit (0.142238ms)
+✔ a sent request for a star the registry already lit waits as unplaced (0.163928ms)
+✔ a sent request for a star this device already lit waits as unplaced (0.186247ms)
+✔ a sent request naming something that is not a slot waits as unplaced (0.137497ms)
+✔ a second ask sent with no star takes the place of the one waiting (0.116188ms)
+✔ lighting a star leaves a waiting ask waiting (0.187767ms)
+✔ place moves the waiting ask onto an empty star (0.218506ms)
+✔ place refuses a lit star and the ask keeps waiting (0.209367ms)
+✔ place with nothing waiting does nothing (0.143668ms)
+✔ one waiting ask lights one star, not two (0.138078ms)
+✔ an empty waiting ask is still a waiting ask (0.132858ms)
+✔ pick chooses an empty star and remembers it for the session (0.263935ms)
+✔ pick refuses lit stars (0.153587ms)
+✔ pick refuses what is not a slot (0.145028ms)
+✔ pick(null) lets go of the star (0.297065ms)
+✔ picking the same star again, or nothing when nothing is picked, says nothing (0.156417ms)
+✔ claiming the picked star lets go of the pick (0.158817ms)
+✔ claiming another star leaves the pick alone (0.127238ms)
+✔ a remembered pick that is lit by now, or is not a slot, is dropped (0.154497ms)
+✔ no send, no claim: picking a star lights nothing and stores no claim (0.194977ms)
+✔ unsubscribe stops the events (0.152228ms)
+✔ a subscriber that throws neither undoes the claim nor silences the others (0.607441ms)
+✔ a subscriber sees the finished state (0.166577ms)
+✔ a map handed out by all() does not change under its reader (0.131478ms)
+✔ two tabs: a send in one never drops a star the other lit (0.526862ms)
+✔ two tabs: a star lit in the other tab is not lit twice (0.220707ms)
+✔ the core never changes the state it was given (0.239766ms)
+✔ a rule that changes nothing hands back the very same state (0.127968ms)
+✔ litStars puts the registry over the device (0.147428ms)
+✔ adopting a claim the registry already shows makes no noise (0.904546ms)
+✔ a swap that takes no time: the flash is its own length (1.723443ms)
+✔ a swap that blocks 100 ms: at the peak when it returns, never under it, never backwards (4.326541ms)
+✔ whenever the flash begins against the frames, the same holds (5.251486ms)
+✔ a swap that leaves a promise: held at the peak until it settles, then on from the peak (0.819898ms)
+✔ a promise that never settles is waited for only so long (0.253006ms)
+✔ a stall that jumps the solid stretch: the peak is shown first, the swap comes a tick later (0.179257ms)
+✔ sixty strikes inside 200 ms: every one is drawn until its own 760 ms are over (21.117655ms)
+✔ a strike is on the list from the moment it is added, at the start of its length (0.260106ms)
+✔ glints and bursts each run their own length on one list (0.458532ms)
+✔ a strike with no neighbour gives all its light; far apart, each gives all of it (0.387114ms)
+✔ a crowd shares its soft light: it never glows like more than the cap (4.629137ms)
+✔ forty glints at one place glow like one or two, and all forty are there (2.923724ms)
+✔ a fast line: the script is there before the first paint, and the run is the plan (4.712125ms)
+✔ slow 4G as measured (the script a second after the first paint, the pictures a second after that): 7.5 s on the visitor's clock (1.960858ms)
+✔ whatever came late before the script began, it is given back while the means last (19.067608ms)
+✔ the wait before the mount counts whole: a late script with its pictures already in is not played out from the mount (0.216267ms)
+✔ never under 6 s on the visitor's clock, whatever the line, the frames or the stall (14.716006ms)
+✔ the floor is the visitor's: where the script came first, the moment before the first paint is not counted (0.411463ms)
+✔ the clock starts when the unlit C is first SEEN: the later of the browser's first paint and the frame the page showed it in (0.311295ms)
+✔ a slow line on the new clock: the wait counted is the wait since the C was seen, and the run is 6 to 8 s from there (0.371275ms)
+✔ a bolt pinned at both ends has a place for every corner, whatever its length (360.404061ms)
+✔ the other pins too, and a path with a bend (16.844172ms)
+✔ the unlit C is unseen until its file is whole, then shown, and the frame is noted (11.744053ms)
+✔ the other three pictures are asked for when the unlit C is in, not before, and in their order (2.268394ms)
+✔ a picture that is already in (the cache) is shown and followed at once (0.857066ms)
+✔ a picture that will not decode is not waited for (1.353148ms)
+✔ a return visit: the picture is taken away, never shown, and no frame is noted (0.948585ms)
+✔ the canvas drew first: the picture is not shown after it (2.327383ms)
+✔ a tap and a key made before the loader is live are written down, in order, and handed over once (0.412493ms)
+✔ Tab and a modifier before the loader is live are written down and are not a skip (0.171497ms)
+✔ nothing pressed: nothing handed over (0.209467ms)
+✔ the page's script never arrives: at DOMContentLoaded the listening stops and what was pressed is forgotten (0.277386ms)
+✔ where no loader plays (reduced motion, the debug hooks) nothing is listened for, kept or asked for (5.499303ms)
+✔ storage that throws is a first visit (0.261166ms)
+✔ a pointer going down is a skip; so is any key that says something (1.025354ms)
+✔ moving focus and a modifier pressed alone are not a skip (0.275495ms)
+✔ the presses made before the script arrived: nothing pressed, nothing done (0.167057ms)
+✔ the presses made before the script arrived: the same keys that are not a skip now were not one then (0.159908ms)
+✔ levels go from full to lightest (1.726573ms)
+✔ no level is heavier than the one before it (0.258386ms)
+✔ a smooth device stays at full quality (0.466052ms)
+✔ a slow device steps down one level per bad second, stopping at 3 (0.193227ms)
+✔ steps back up once after 3 good seconds, and never again (1.035804ms)
+✔ a mid-range average (between upMs and budget) holds the level (0.188867ms)
+✔ the eases never leave 0 to 1: one ulp at a time up to 1 (243.929299ms)
+✔ the eases never leave 0 to 1: steps of 1e-9 over the last and the first 2 thousandths (409.493012ms)
+✔ the star has a place at every t up to 1: one ulp at a time (133.54534ms)
+✔ the star has a place at every t up to 1: steps of 1e-9 (1434.952962ms)
+✔ the star has a place at every moment the loader can name (1695.777228ms)
+✔ the pose begins at the loader's star and ends on the sky's, exactly (0.871026ms)
+✔ the star never goes back along its path (3.222098ms)
+✔ the cubic ease, which the warp, the flash and the loader raise to powers, never leaves 0 to 1 (1688.498099ms)
+✔ a portrait phone turns exactly the six wide figures (6.625966ms)
+✔ nothing is turned on a desktop, on a phone on its side, or with the switch off (1.476046ms)
+✔ a layout that turns nothing is the layout of the upright figures, number for number (2.674748ms)
+✔ a turned figure is the same stars a quarter-turn counter-clockwise, north to the left (0.426463ms)
+✔ the camera passes through a turned plane clear of its turned stars (0.291725ms)
+✔ turned, the six wide figures stand at least half the screen high (1.770432ms)
+✔ Cellestial's star stands clear of every star of Virgo on a portrait phone (3.810809ms)
+✔ Cellestial's star is its world size on the two phones, 84 px across or more (0.913466ms)
+✔ with the switch off the phone has the sky it had: upright, the star forced large (0.836297ms)
+✔ no two stars of a figure overlap by more than a third on a portrait phone (3.695491ms)
+✔ a phone turned on its side and back has the layout it had (2.211165ms)
+✔ the exit button is the button the stylesheet makes: 52 px high, 32 px above the bottom (0.532002ms)
+✔ on a phone on its side no star comes within 12 px of the exit button, at any station (2.553909ms)
+✔ on a phone on its side every star is on screen, clear of the logo, the menu button and the sides (1.88364ms)
+✔ the room under the figures is the button's own from 480 px of height down, and a fifth of the height above (2.305273ms)
+✔ a figure that fits its safe area is centred in it; only one too tall for a short screen is moved up (0.892526ms)
+✔ the sizes that are done stand where they stood: every figure, at 1440x900 and on the upright phones (1.047643ms)
+✔ at 1440x900 Taurus's closest pair is drawn smaller, and nothing else is (0.748958ms)
+✔ on every screen: no two stars more than a third into each other unless both are at the least size (9.200284ms)
+✔ on a phone on its side the knots of Taurus and Sagittarius are drawn smaller (1.156251ms)
+✔ Cellestial's rings end 2 px short of every star of Virgo on every screen (2.405182ms)
+✔ a phone held on its side is placed for the hand, whatever its width (1.621294ms)
+✔ the desktop and the upright phone keep their placing, number for number (0.978185ms)
+✔ one row or two at every size before three; then a place that touches nothing; 18 px the least (0.262036ms)
+✔ on a phone on its side the next figure's words wait until their figure is near (0.686689ms)
+✔ with nothing near, the words stand under their star, where they always stood (0.784337ms)
+✔ Aries and Taurus on the desktop, as the third look measured them: the words leave the line (0.519052ms)
+✔ a meaning under the star: the other places in order, each off every star (0.472922ms)
+✔ once in a place, the words stay there while it will do (0.299816ms)
+✔ which star a touch offers is asked as round 3 asked it (0.62458ms)
+✔ under its star is another star's disc: the words go to the first free place beside it (0.699189ms)
+✔ the places between the sides, when no side or corner is free (0.271426ms)
+✔ 4 px of air round a disc to take a place (0.736578ms)
+✔ Cellestial's star is never crossed, to the full reach of its rings (0.62881ms)
+✔ the letters 16 px inside the screen, on every side (1.823091ms)
+✔ never off the screen, on the logo, the menu or the exit button: under the star too (0.196077ms)
+✔ no place free of every star: the place that covers least (2.795296ms)
+✔ the far figures' points: one does not drive the words from under their star (1.059453ms)
+✔ steady: a place is taken with 4 px of air and left only when a star is covered (4.849573ms)
+✔ steady in flight: while the sky moves the words keep their place; they give way only to what they must never cross (0.361734ms)
+✔ an empty star 36 px across: its brass is strokes, not blotches (6.2917ms)
+✔ an empty star 46 px across: its brass is strokes, not blotches (3.409456ms)
+✔ an empty star 58 px across: its brass is strokes, not blotches (2.879074ms)
+✔ encode/decode round-trips, including non-ASCII names (2.295803ms)
+✔ encoded form is URL-fragment safe (base64url, no padding) (0.319305ms)
+✔ decode rejects garbage and out-of-range fields (1.563985ms)
+✔ tier 2/3 gets all four steps in order; tier 1 skips GitHub (0.555701ms)
+✔ GitHub signup pre-fills the email and chains to free org creation (0.244236ms)
+✔ lanes change the instructions, not the order (0.314744ms)
+✔ Cloudflare invite copies the studio email and names the exact role (0.326424ms)
+✔ Cloudflare signup copies the client email and chains to Members (0.229637ms)
+✔ GitHub org step suggests a slug and detects GitHub invites (0.283056ms)
+✔ newInvites returns only ids absent from the baseline (0.288575ms)
+✔ slugify (0.194397ms)
+ℹ tests 185
+ℹ suites 0
+ℹ pass 185
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5803.024164
+  ok  - happy path: verifies human, then sends, returns ok
+  ok  - spam check failure: never touches the mail quota
+  ok  - missing turnstile token: no outbound calls at all
+  ok  - unconfigured env: 503, and nothing is contacted
+  ok  - empty fields rejected before any network call
+  ok  - bad email rejected
+  ok  - over-long message rejected
+  ok  - resend failure is reported, not swallowed as success
+  ok  - reply_to is the sender so replies reach them
+  ok  - GET is 405, other paths 404
+  ok  - no-JS submit gets HTML, not JSON
+  ok  - error text is escaped into the HTML response
+  ok  - star: a valid slot id is named in the email
+  ok  - star: an invalid value is ignored, not reflected
+  ok  - star: absent field leaves the email unchanged
+
+15 checks passed
+  ok  - /api/auth 302s to github authorize
+  ok  - carries client_id, scope, callback uri, state
+  ok  - state cookie is HttpOnly + Secure + path-scoped
+  ok  - state is fresh per request
+  ok  - missing client_id -> 500, no redirect
+  ok  - unrelated paths are refused, not served
+  ok  - non-GET is 405 with Allow
+  ok  - success: posts authorization:github:success with the token
+  ok  - success: secret goes to github, never to the browser
+  ok  - success: clears the state cookie
+  ok  - state mismatch -> error page, github never contacted
+  ok  - missing cookie -> error page, github never contacted
+  ok  - missing code -> error page
+  ok  - no secret set yet -> honest error, no exchange attempt
+  ok  - github error -> reason surfaced, no token
+  ok  - token payload cannot break out of the script tag
+
+16 checks passed
+  ok  - other paths 404
+  ok  - invites: 503 when INVITE_SALT is missing
+  ok  - invites: hashed ids from both sources, never raw ids or names
+  ok  - invites: hashes are stable across calls
+  ok  - invites: one failing source still answers 200 with the other
+  ok  - invites: a missing token skips that source without calling it
+  ok  - ping: test mode sends a [TEST] email to Gabriel
+  ok  - ping: remote mode has no [TEST] prefix
+  ok  - ping: rejects bad shape without sending
+  ok  - ping: strips odd characters from the client name
+  ok  - ping: 503 when mail is not configured
+  ok  - ping: 429 when rate-limited, no email
+  ok  - ping: 502 when Resend fails
+  ok  - ping: GET is refused
+onboard worker: 14 passed
+exit 0

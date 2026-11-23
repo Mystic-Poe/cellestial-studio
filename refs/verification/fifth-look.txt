@@ -1,0 +1,23 @@
+THE FIFTH LOOK — "claim yours" after round 4, and whether anything else moved
+23 Nov 2026. Branch redesign-build, HEAD 63c8886 (round 4's last commit). An inspector independent of
+the builders, the fixers and the four looks before. IN PROGRESS: this file is written as the work goes.
+
+HOW IT WAS DONE
+Nothing of the site was changed. The production build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+pnpm build; astro preview on 4615) beside the build as it stood before round 4 (commit f7d5ea4, the
+ready-built folder, served by tools/static.mjs on 4616), the same script run against both. Real GPU,
+phones at deviceScaleFactor 2, mobile, touch. The fourth look's scripts as its inspector left them
+(refs/verification/fifth-look/tools/), and my own beside them:
+  tools/my-labels.mjs   the same grid of taps as label-near.mjs, but EVERY tap written down (which star,
+                        which side, the words' box, the letters' own extent, the star's disc, every other
+                        disc drawn, Cellestial's core and its rings' reach), so that the same tap can be
+                        set beside itself on the two builds; and a crop of every distinct label.
+I ruled from my own captures before reading the fixer's entry ("ROUND 4" in fixes.txt) or its pictures.
+
+(so far)
+- label-near.mjs, 1440x900, the new build: 137 distinct labels; on another star of the figure 0; on
+  Cellestial's core 0; on the chrome 0; outside 0; a tap that gave no label 0; the nearest any label
+  comes to another star's disc 4.4 px. Sides: under 100, right 20, left 9, above 5, under-right 1,
+  under-left 2. (logs/label-near-new.log)
+- pnpm test: 185 of 185 in node (174 before round 4, 11 added), Workers 15, 16, 14. pnpm lint exit 0
+  (1 info). pnpm typecheck exit 0. (logs/pnpm-*.log)

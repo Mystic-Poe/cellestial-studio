@@ -1,0 +1,2 @@
+$ tsc -p tsconfig.typecheck.json
+exit 0

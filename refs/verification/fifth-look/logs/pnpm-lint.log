@@ -1,0 +1,48 @@
+$ biome check .
+/home/poe/cellestial-studio/biome.json:28:13 deserialize  DEPRECATED  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i The use of the recommended field has been deprecated, and will removed in the next major version of Biome. Use preset instead.
+  
+    26 │     "lineWidth": 100
+    27 │   },
+  > 28 │   "linter": {
+       │             ^
+  > 29 │     "enabled": true,
+  > 30 │     "rules": {
+  > 31 │       "recommended": true
+  > 32 │     }
+  > 33 │   },
+       │   ^
+    34 │   "javascript": {
+    35 │     "formatter": {
+  
+  i Migrate the configuration with the proper command
+  
+  $ biome migrate
+  
+
+biome.json:28:13 deserialize  DEPRECATED  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i The use of the recommended field has been deprecated, and will removed in the next major version of Biome. Use preset instead.
+  
+    26 │     "lineWidth": 100
+    27 │   },
+  > 28 │   "linter": {
+       │             ^
+  > 29 │     "enabled": true,
+  > 30 │     "rules": {
+  > 31 │       "recommended": true
+  > 32 │     }
+  > 33 │   },
+       │   ^
+    34 │   "javascript": {
+    35 │     "formatter": {
+  
+  i Migrate the configuration with the proper command
+  
+  $ biome migrate
+  
+
+Checked 108 files in 63ms. No fixes applied.
+Found 1 info.
+exit 0
