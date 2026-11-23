@@ -193,5 +193,195 @@ await t('star: absent field leaves the email unchanged', async () => {
 	await post();
 	assert.equal(bodies[0].text, 'From: Ada <ada@example.com>\n\nNeed a site.');
 });
+
+// ── the shared sky: a claimed star is lit for every visitor ──
+const fakeKV = ({ failPut = false } = {}) => {
+	const items = new Map();
+	return {
+		items,
+		get: async (k) => items.get(k) ?? null,
+		put: async (k, v) => {
+			if (failPut) throw new Error('KV is down');
+			items.set(k, v);
+		},
+		delete: async (k) => {
+			items.delete(k);
+		},
+	};
+};
+const get = (path, env) =>
+	worker.fetch(
+		new Request(`https://cellestialstudio.com${path}`, { headers: { accept: 'application/json' } }),
+		env,
+	);
+const list = async (env) => (await (await get('/api/contact/stars.json', env)).json()).stars;
+const linkIn = (text) =>
+	text.match(/https:\/\/cellestialstudio\.com\/api\/contact\/star\?\S+/)?.[0];
+const KEY = 'k-0123456789abcdef0123456789';
+
+await t('shared sky: without the store nothing changes, and the list is empty', async () => {
+	stub();
+	const r = await get('/api/contact/stars.json', fullEnv);
+	assert.equal(r.status, 200);
+	assert.deepEqual(await r.json(), { stars: [] });
+	const p = await post(body({ star: 'slot-3', 'claim-key': KEY }), { path: '/api/contact/place' });
+	assert.equal(p.status, 503);
+});
+await t(
+	'shared sky: a sent request lights its star for everyone, the text hidden until approved',
+	async () => {
+		stub();
+		const env = { ...fullEnv, STARS: fakeKV() };
+		const r = await post(body({ star: 'slot-120', message: 'A site for my bakery.' }), { env });
+		assert.equal(r.status, 200);
+		assert.deepEqual(await list(env), [{ slot: 'slot-120', ask: null }]);
+		assert.ok(bodies[0].text.includes('Claimed: open star 120'));
+		assert.ok(linkIn(bodies[0].text), 'the owner is given a link');
+	},
+);
+await t('shared sky: nothing is lit by a request that was not sent', async () => {
+	const env = { ...fullEnv, STARS: fakeKV() };
+	stub({ turnstile: false });
+	await post(body({ star: 'slot-5' }), { env });
+	stub({ resend: false });
+	await post(body({ star: 'slot-5' }), { env });
+	await post(body({ star: null, 'claim-key': KEY }), { env });
+	assert.deepEqual(await list(env), []);
+	assert.equal(env.STARS.items.size, 0);
+});
+await t(
+	'shared sky: the first claim of a star stands, and the owner is told of the second',
+	async () => {
+		const env = { ...fullEnv, STARS: fakeKV() };
+		stub();
+		await post(body({ star: 'slot-7', message: 'first' }), { env });
+		stub();
+		const r = await post(body({ star: 'slot-7', message: 'second' }), { env });
+		assert.equal(r.status, 200, 'the second message is still delivered');
+		assert.ok(bodies[0].text.includes('Another request lit this star first'));
+		assert.ok(!linkIn(bodies[0].text));
+		assert.equal(JSON.parse(env.STARS.items.get('lit'))['slot-7'].ask, 'first');
+	},
+);
+await t(
+	'shared sky: the owner approves the text, hides it again, takes the star back',
+	async () => {
+		const env = { ...fullEnv, STARS: fakeKV() };
+		stub();
+		await post(body({ star: 'slot-9', message: 'A <b>shop</b> & more' }), { env });
+		const link = linkIn(bodies[0].text).replace('https://cellestialstudio.com', '');
+		const owner = (what) => {
+			const f = new FormData();
+			if (what) f.set('do', what);
+			return worker.fetch(
+				new Request(`https://cellestialstudio.com${link}`, what ? { method: 'POST', body: f } : {}),
+				env,
+			);
+		};
+		const seen = await owner();
+		assert.equal(seen.status, 200);
+		const html = await seen.text();
+		assert.ok(
+			html.includes('A &#60;b&#62;shop&#60;/b&#62; &#38; more'),
+			'the ask is shown as text, not markup',
+		);
+		assert.deepEqual(
+			await list(env),
+			[{ slot: 'slot-9', ask: null }],
+			'looking at the page approves nothing',
+		);
+		assert.equal((await owner('approve')).status, 200);
+		assert.deepEqual(await list(env), [{ slot: 'slot-9', ask: 'A <b>shop</b> & more' }]);
+		await owner('hide');
+		assert.deepEqual(await list(env), [{ slot: 'slot-9', ask: null }]);
+		await owner('remove');
+		assert.deepEqual(await list(env), []);
+		assert.equal((await owner()).status, 404, 'the link is spent with the star');
+	},
+);
+await t('shared sky: a link that was not signed by this Worker does nothing', async () => {
+	const env = { ...fullEnv, STARS: fakeKV() };
+	stub();
+	await post(body({ star: 'slot-9' }), { env });
+	const link = linkIn(bodies[0].text).replace('https://cellestialstudio.com', '');
+	for (const bad of [
+		link.replace(/sig=\w{4}/, 'sig=0000'),
+		link.replace('slot-9', 'slot-10'),
+		'/api/contact/star?slot=slot-9',
+	]) {
+		const f = new FormData();
+		f.set('do', 'approve');
+		const r = await worker.fetch(
+			new Request(`https://cellestialstudio.com${bad}`, { method: 'POST', body: f }),
+			env,
+		);
+		assert.equal(r.status, 403, bad);
+	}
+	assert.deepEqual(await list(env), [{ slot: 'slot-9', ask: null }]);
+});
+await t(
+	'shared sky: a request sent with no star takes the star its sender then chooses',
+	async () => {
+		const env = { ...fullEnv, STARS: fakeKV() };
+		stub();
+		await post(body({ star: null, 'claim-key': KEY, message: 'An app.' }), { env });
+		assert.deepEqual(await list(env), [], 'nothing is lit yet');
+		assert.ok(!bodies[0].text.includes('Claimed'));
+		assert.ok(
+			![...env.STARS.items.keys()].some((k) => k.includes(KEY)),
+			'only the hash of the key is kept',
+		);
+		const place = (star, key = KEY) => {
+			const f = new FormData();
+			f.set('star', star);
+			f.set('claim-key', key);
+			return worker.fetch(
+				new Request('https://cellestialstudio.com/api/contact/place', { method: 'POST', body: f }),
+				env,
+			);
+		};
+		stub();
+		assert.equal(
+			(await place('slot-40', 'another-key-0123456789abcdef')).status,
+			404,
+			'a key that sent nothing',
+		);
+		assert.equal((await place('slot-999')).status, 400);
+		assert.equal((await place('slot-40')).status, 200);
+		assert.deepEqual(await list(env), [{ slot: 'slot-40', ask: null }]);
+		assert.ok(
+			bodies[0].text.includes('Claimed: open star 40') && bodies[0].text.includes('An app.'),
+		);
+		assert.ok(linkIn(bodies[0].text));
+		assert.equal((await place('slot-41')).status, 404, 'one request, one star');
+	},
+);
+await t('shared sky: a star already lit cannot be taken by a waiting request', async () => {
+	const env = { ...fullEnv, STARS: fakeKV() };
+	stub();
+	await post(body({ star: 'slot-12' }), { env });
+	await post(body({ star: null, 'claim-key': KEY }), { env });
+	const f = new FormData();
+	f.set('star', 'slot-12');
+	f.set('claim-key', KEY);
+	const r = await worker.fetch(
+		new Request('https://cellestialstudio.com/api/contact/place', { method: 'POST', body: f }),
+		env,
+	);
+	assert.equal(r.status, 409);
+	f.set('star', 'slot-13');
+	const again = await worker.fetch(
+		new Request('https://cellestialstudio.com/api/contact/place', { method: 'POST', body: f }),
+		env,
+	);
+	assert.equal(again.status, 200, 'the request still waits, and takes another');
+});
+await t('shared sky: a store that fails never turns a sent message into a failure', async () => {
+	const env = { ...fullEnv, STARS: fakeKV({ failPut: true }) };
+	stub();
+	const r = await post(body({ star: 'slot-3' }), { env });
+	assert.equal(r.status, 200);
+	assert.deepEqual(await r.json(), { ok: true });
+});
 globalThis.fetch = realFetch;
 console.log(`\n${pass} checks passed`);
