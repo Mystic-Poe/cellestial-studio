@@ -1642,3 +1642,59 @@ PIECE 1 — THE SKY ON A PHONE HELD ON ITS SIDE (third look: closing list 1, the
   - At 1440x900 and on the upright phones the words stand where the third look saw them
     (before/b7/ and b7/). sky-same.mjs before/after --size <size> shows whether a size came out of
     a change as it went in; "before" must be run on the build as this piece leaves it.
+
+PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7), 2 and 5; parts 1c, 2)
+
+  (CHECKPOINT: 2a and 2b are in; 2c, the tests, the suites and the full record follow.)
+
+  REPRODUCED first, on the production build as piece 1 left it (db9112b; served beside the new one,
+  R3_BASE; refs/verification/round-3/before-2/b7/): b7.mjs --only all, every star lit.
+    844x390   Leo 34 px, 3 stars and 2 lines of the figure in its box (-11 px); seven of twelve
+              26 px above the exit button; far points on the words 30
+    740x360   Leo 34 px, 3 stars, 3 lines; 10 far points on the words; Cancer 5 px from a star
+    932x430   Leo 34 px, 2 stars, 2 lines; 32 far points on the words; eight 24 px above the button
+    667x375   (under 720 wide: the phone's search) 12 of 12 touch nothing; Leo 1 px from a star
+    375x667   Leo 318x63 at 27,98, 21 px, one row: 2 stars, 3 lines (-13 px). The other eleven clear.
+    360x640   Leo 21 px, one row: 4 stars, 3 lines (-13 px)
+    320x568   Leo 19 px, one row: 1 star, 4 lines; AQUARIUS 21 px, one row: 2 stars, 2 lines (-8 px)
+    1440x900, 390x844, 360x740: 36 of 36 touch nothing (the third look's numbers).
+
+  THE CAUSE (src/experience/sky/meaning.ts, place())
+  2a. The search by the figure was chosen by the screen's WIDTH alone: from 1024 px the desktop's,
+      to 720 px the phone's, and between the two no search at all: the band under the figure, set
+      in the desktop's 34 px. 844, 740 and 932 px are between the two. So on a phone on its side
+      nothing looked for free room: the words were laid in a band at 34 px, the far figures' points
+      were not asked about, and the band keeps 26 px from the button.
+  2b. Not the cause the third look guessed (that two rows were not tried at every size). They were:
+      the search's own trace at 375x667, Leo, in the page (a console line per size and rows, dev
+      server; not kept): one row and two rows at 24, 22, 21, 20 and 18 px, 10,921 places tried;
+      free of every star and line: 6 places at 20 px in two rows (0.5 px of air at most) and 17 at
+      18 px in two rows (8.5 px at most). The search asks for 10 px of air (TALL.least), so it took
+      none of the 23, and fell to the band: ONE size (21 px), ONE row, and the place nearest the
+      figure's foot with the FEWEST things under it, which at 375 px of width is across a star.
+      Three rows were never tried, and a place that touched nothing lost to one that touched five.
+
+  WHAT WAS CHANGED (src/experience/sky/meaning.ts)
+  - A screen under 450 px high (SHORT) is a phone on its side whatever its width, and has its own
+    placing, SIDE: the phone's sizes (24, 22, 21, 20, 18), the phone's scoring (10 px of air at
+    least, 44 px wanted, 24 px above the button's room: 44 px above the button), the points of the
+    next FOUR figures counted as stars (as that screen shows them), the words free to stand beside
+    the figure's outermost star (the room is beside a figure there, not over it), a line of 200 px
+    or more free to break.
+  - The rows: one or two at every size (as before, in the same order, so that whatever the search
+    found before it finds again); then three at every size (a line of five words or more: never a
+    word a row; the row is never narrower than "Jesus is King.", which is not broken).
+  - Then, before the band: the roomiest place that touches nothing, whatever its air ("tight").
+  - The band, where it is still reached on a phone: if its one size lies on anything, smaller sizes
+    and two and three rows are tried and the fewest things under it wins; 18 px is the least.
+  - state() says how each was placed (type, rows; "figure", "tight" or "band"): for the tools.
+
+  FIRST NUMBERS (production build, b7.mjs --only all; refs/verification/round-3/b7/)
+    844x390, 667x375, 740x360, 932x430: 48 of 48 touch nothing; far points on the words 0 at each;
+      44 px or more above the button; 24 px but Leo at 667x375 (18 px, three rows) and 740x360 (21).
+    375x667, 360x640: Leo 18 px in two rows, 30 and 26 px from the nearest star; 12 of 12 each.
+    320x568: Leo 20 px in three rows, 24 px clear; Aquarius 18 px in two rows, 33 px clear; 12 of 12.
+    1440x900, 390x844, 360x740: line for line the lines of before-2 (36 of 36 the same box, type
+      and place). 375x667: eleven lines the same; Leo's is the one that moved.
+    sky-same.mjs --all (every star lit, reduced motion, the words there): 0 pixels differ in 36
+      captures at 390x844 and 0 in 36 at 1440x900 (round-3/piece-2/same/).

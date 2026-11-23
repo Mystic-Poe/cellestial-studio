@@ -15,8 +15,13 @@ SIZES.side667 = { viewport: { width: 667, height: 375 }, deviceScaleFactor: 2, i
 SIZES.side740 = { viewport: { width: 740, height: 360 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
 SIZES.side932 = { viewport: { width: 932, height: 430 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
 
+// Round 3, piece 2: the two shorter phones B7 is to be clear on (320x568 is SIZES.narrow already).
+SIZES.short640 = { viewport: { width: 360, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+SIZES.short568 = SIZES.narrow;
+
 export { ROOT, SIZES, launch, sheet, sharp };
-export const OUT = join(ROOT, 'refs/verification/round-3');
+// R3_OUT: a folder under refs/verification/round-3/ to write to instead (round 3, piece 2: its before pictures).
+export const OUT = join(ROOT, 'refs/verification/round-3', process.env.R3_OUT ?? '');
 // R3_BASE: another build served somewhere else (the build as it stood, for a before picture).
 export const PROD = process.env.R3_BASE ?? 'http://localhost:4615';
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

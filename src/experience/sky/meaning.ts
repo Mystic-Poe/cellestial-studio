@@ -20,9 +20,12 @@
 // by its figure: in the largest free area inside or beside the figure's own
 // bounds, clear of every star, every star's button and every line of the
 // figure, of the logo and menu and of the exit button; large on a wide
-// screen, at a size for the hand on a narrow one. Only if the figure leaves
-// no such room at any size does it stand in the free band nearest the
-// figure's foot (and between the two widths, where neither is tuned).
+// screen, at a size for the hand on a narrow one and on a phone held on its
+// side. Where the whole line finds no room it is broken into two even rows,
+// then three, at every size; then it takes the roomiest place that touches
+// nothing, however little air it has. Only if the figure leaves no such place
+// at any size does it stand in the free band nearest the figure's foot (and
+// between the two widths, where neither is tuned).
 
 import { CONSTELLATIONS, FINAL_LINE } from '../../content/constellations.ts';
 import { bolt, flickerFrame, mix, seeded, strokeBolt } from '../loader/lightning.ts';
@@ -36,13 +39,43 @@ const LAST = CONSTELLATIONS.findIndex((figure) => figure.name === 'Leo');
 /** Type size at the station, CSS pixels, at or under `narrow` pixels of width and above it. */
 const TYPE = { phone: 21, desktop: 34, min: 12, narrow: 720, margin: 16 } as const;
 /**
+ * A screen under this many pixels high is a phone held on its side, however wide it is
+ * (430 is the tallest of them; a desktop window is seldom under 500): the words are set and
+ * placed for the hand there (`SIDE`), not for a desktop.
+ */
+const SHORT = 450;
+/** How the words are placed by their figure on one kind of screen. */
+interface Placing {
+	/** The sizes tried, largest first. */
+	sizes: readonly number[];
+	step: number;
+	least: number;
+	air: number;
+	exit: number;
+	reach: number;
+	/** Sideways the words' box reaches at least this far into the figure's bounds (under 0: it may stand off them). */
+	into: number;
+	/** The rows a line may stand in: each list is tried at every size before the next list is. */
+	passes: readonly (readonly number[])[];
+	/** A line is broken only if it is at least this wide whole: a share of the screen's room, or pixels. */
+	breakShare: number;
+	breakPx: number;
+	/** With no place that has `least` of air: the roomiest place that touches nothing, before the band. */
+	tight: boolean;
+	far: number;
+	farYields: boolean;
+	farClear: number;
+}
+/** Three rows only for a line of this many words: never a word a row. */
+const THREE_ROWS_WORDS = 5;
+/**
  * Placed by its figure: the sizes tried, largest first; the grid the places are tried on;
  * the least air the words keep from a star or line, and the air beyond which more is not
  * better; and how far above the exit button's room their foot stays. From `from` pixels
  * of width up the line is set large (`WIDE`); on a narrow screen (`TALL`), where most
  * figures stand tall, at a size that suits the hand.
  */
-const WIDE = {
+const WIDE: Placing & { from: number } = {
 	from: 1024,
 	sizes: [54, 50, 46, 42, 38, 34],
 	step: 10,
@@ -51,8 +84,12 @@ const WIDE = {
 	exit: 48,
 	/** How far outside the figure's bounds the words' box may begin or end: here it must reach into them. */
 	reach: -12,
+	into: 24,
 	/** The line is never broken. */
-	rows: [1],
+	passes: [[1]],
+	breakShare: 0.45,
+	breakPx: Number.POSITIVE_INFINITY,
+	tight: false,
 	/**
 	 * The stars of this many figures further on show through as points in the middle of the
 	 * screen, which is where a figure's free room often is: the words keep clear of them…
@@ -67,7 +104,7 @@ const WIDE = {
 	farYields: true,
 	farClear: 24,
 };
-const TALL = {
+const TALL: Placing = {
 	sizes: [24, 22, 21, 20, 18],
 	step: 6,
 	least: 10,
@@ -75,11 +112,21 @@ const TALL = {
 	exit: 24,
 	/** A figure that is not tall has its free room just above or under it. */
 	reach: 40,
+	into: 24,
 	/**
 	 * A long line may stand in two rows: at each size the whole line is tried first.
 	 * (Leo's meaning is as wide as the screen in one row, and Leo stands 73% of its height.)
+	 * Only when no size has room for one row or two is it tried in three, again at every
+	 * size (on a 375x667 phone Leo leaves two rows no place with air, at any size).
 	 */
-	rows: [1, 2],
+	passes: [[1, 2], [3]],
+	breakShare: 0.45,
+	breakPx: Number.POSITIVE_INFINITY,
+	/**
+	 * And if three rows find no air either: a place that touches nothing, in smaller type,
+	 * before the band, whose one size may lie across a star.
+	 */
+	tight: true,
 	/**
 	 * The stars of this many figures further on gather in the middle of a narrow screen, where
 	 * the free room often is: the words keep clear of those points too.
@@ -88,6 +135,20 @@ const TALL = {
 	/** Here the type gives way to them (a size smaller), and they count as air, as any star does. */
 	farYields: false,
 	farClear: 0,
+};
+/**
+ * A phone held on its side: the figures stand upright as on a desktop and fill the height, so
+ * the free room is beside them. The type is the hand's, the places are scored as on the phone,
+ * the points of the figures further on count as stars (the next four, as a wide screen shows
+ * them), and the words may stand beside the figure's outermost star: up to `-into` pixels off
+ * its bounds. A line 200 px wide or more may be broken: the room beside a figure is narrow.
+ */
+const SIDE: Placing = {
+	...TALL,
+	into: -80,
+	breakShare: 1,
+	breakPx: 200,
+	far: 4,
 };
 /** The writing, seconds. */
 const WRITE = {
@@ -142,6 +203,8 @@ interface Entry {
 	anchor: { x: number; y: number } | null;
 	/** The layout the anchor was chosen for. */
 	key: string;
+	/** How the place was come by. */
+	placed: Placed | null;
 	/** Where the lightning comes from, in the element's own pixels. */
 	source: { x: number; y: number };
 	t0: number;
@@ -152,12 +215,25 @@ interface Entry {
 	shown: boolean;
 }
 
+/**
+ * How a meaning's place was come by: the type, the rows its line stands in, and whether the
+ * search found it by the figure with air round it (`figure`), took the roomiest place that
+ * touches nothing (`tight`), or fell back to the band (`band`).
+ */
+export interface Placed {
+	px: number;
+	rows: number;
+	how: 'figure' | 'tight' | 'band';
+}
+
 export interface MeaningState {
 	figure: number;
 	name: string;
 	lines: string[];
 	state: State;
 	shown: boolean;
+	/** For the tools: how its place was come by on this screen. */
+	placed: Placed | null;
 }
 
 export interface Meaning {
@@ -241,6 +317,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			state: 'fresh',
 			anchor: null,
 			key: '',
+			placed: null,
 			source: { x: 0, y: 0 },
 			t0: 0,
 			canvas: null,
@@ -272,6 +349,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		const plan = layout.plans[figure];
 		const fit = layout.fits[figure];
 		entry.key = `${layout.w}x${layout.h}`;
+		entry.placed = null;
 		if (!plan || !fit) {
 			entry.anchor = null;
 			return;
@@ -282,14 +360,20 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 		el.style.transform = 'none';
 		el.style.visibility = 'hidden';
 		const room = layout.w - 2 * TYPE.margin;
+		const finalInk = el.querySelector<HTMLElement>(
+			'.sky-meaning__line + .sky-meaning__line .sky-meaning__ink',
+		);
 		/** Set the type, in one row or broken evenly into `rows`, and say how large the words then are. */
 		const set = (px: number, rows = 1): { w: number; h: number } => {
 			el.style.whiteSpace = '';
 			el.style.maxWidth = '';
 			el.style.fontSize = `${px}px`;
 			if (rows > 1) {
-				// A little over an even share of the whole line, so that it breaks into that many rows.
-				el.style.maxWidth = `${Math.ceil((el.offsetWidth / rows) * 1.14) + 2}px`;
+				// A little over an even share of the whole line, so that it breaks into that many
+				// rows; and never narrower than the final line, which is not broken.
+				const share = Math.ceil((el.offsetWidth / rows) * 1.14) + 2;
+				const tail = finalInk ? Math.ceil(finalInk.getBoundingClientRect().width) + 1 : 0;
+				el.style.maxWidth = `${Math.max(share, tail)}px`;
 				el.style.whiteSpace = 'normal';
 			} else if (el.offsetWidth > room) {
 				const size = Math.max(TYPE.min, Math.floor(((px * room) / el.offsetWidth) * 2) / 2);
@@ -297,7 +381,12 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			}
 			return { w: el.offsetWidth, h: el.offsetHeight };
 		};
-		const by = layout.w >= WIDE.from ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
+		// A phone on its side first: it is as wide as a small desktop and is not one.
+		const short = layout.h < SHORT;
+		const wide = !short && layout.w >= WIDE.from;
+		/** Set and scored for the hand. */
+		const hand = short || layout.w <= TYPE.narrow;
+		const by = short ? SIDE : wide ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
 
 		// The figure as it stands at its station.
 		const cam = layout.cameraAt(layout.station(figure));
@@ -394,12 +483,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			// Standing on the chrome or on the exit button is worse than crossing any star or line.
 			if (x0 < CHROME.w && y0 < CHROME.h) hits += 100;
 			// On a narrow screen the band keeps its distance from the button too.
-			const keep =
-				EXIT.h +
-				Math.max(
-					lines > 1 || layout.w >= WIDE.from ? h / lines : 0,
-					layout.w <= TYPE.narrow ? TALL.exit : 0,
-				);
+			const keep = EXIT.h + Math.max(lines > 1 || wide ? h / lines : 0, hand ? TALL.exit : 0);
 			if (
 				y1 > layout.h - keep &&
 				x1 > layout.w / 2 - EXIT.w / 2 &&
@@ -410,73 +494,137 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			return { hits, air };
 		};
 
-		let best: { cx: number; y: number; w: number; h: number } | null = null;
+		type Spot = { cx: number; y: number; w: number; h: number; px: number; rows: number };
+		let best: Spot | null = null;
+		let how: Placed['how'] = 'figure';
+		/** The roomiest place that touches nothing and has less than `least` of air. */
+		let tight: (Spot & { air: number }) | null = null;
+		const words = (linesOf(figure)[0] ?? '').split(' ').length;
+		/** May the line stand in this many rows, being `whole` wide in one? */
+		const breaks = (rows: number, whole: number): boolean =>
+			whole >= Math.min((by?.breakShare ?? 0.45) * room, by?.breakPx ?? Number.POSITIVE_INFINITY) &&
+			(rows < 3 || words >= THREE_ROWS_WORDS);
+		/** True if the type broke into more rows than were asked for (a word a row). */
+		const overBroken = (rows: number, px: number, h: number): boolean =>
+			h > (rows + lines - 0.5) * px * 1.3 + (lines - 1) * 0.42 * px;
 		if (by) {
 			// By the figure: the largest type that finds free room inside or beside
-			// the figure's bounds, and of that room the place with the most air.
-			search: for (const px of by.sizes) {
-				let whole = 0;
-				for (const rows of by.rows) {
-					const { w, h } = set(px, rows);
-					if (rows === 1) whole = w;
-					// Breaking a line that is short already gains nothing.
-					else if (whole < 0.45 * room) break;
-					// Nor does a break into more rows than were asked for (a word a row).
-					else if (h > (rows + lines - 0.5) * px * 1.3 + (lines - 1) * 0.42 * px) continue;
-					const left = w / 2 + TYPE.margin;
-					const right = layout.w - w / 2 - TYPE.margin;
-					if (right < left) continue;
-					// "Beside": the words' box may reach out of the bounds, but it still touches them.
-					const fromX = Math.max(left, bounds.x0 - w / 2 + 24);
-					const toX = Math.min(right, bounds.x1 + w / 2 - 24);
-					const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h - by.reach);
-					// Well above the exit button wherever it stands across the screen.
-					const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 + by.reach);
-					// Clear of the far figures' points first; and, where they yield, without them
-					// before the type is made any smaller.
-					for (const far of by.farYields && farBlocks.length > 0 ? [true, false] : [true]) {
-						let top = Number.NEGATIVE_INFINITY;
-						let found: { cx: number; y: number } | null = null;
-						for (let y = fromY; y <= toY; y += by.step) {
-							for (let cx = fromX; cx <= toX; cx += by.step) {
-								const at = lie(cx, y, w, h, far);
-								if (at.hits > 0 || at.air < by.least) continue;
-								// Air first, up to a point; then the middle of the figure.
-								const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
-								const score = Math.min(at.air, by.air) * 3 - off * 0.35;
-								if (score > top) {
-									top = score;
-									found = { cx, y };
+			// the figure's bounds, and of that room the place with the most air. One
+			// row or two at every size; only then three, at every size.
+			search: for (const pass of by.passes) {
+				for (const px of by.sizes) {
+					let whole = 0;
+					for (const rows of pass) {
+						if (rows > 1 && whole === 0) whole = set(px).w;
+						// Breaking a line that is short already gains nothing.
+						if (rows > 1 && !breaks(rows, whole)) break;
+						const { w, h } = set(px, rows);
+						if (rows === 1) whole = w;
+						// Nor does a break into more rows than were asked for.
+						else if (overBroken(rows, px, h)) continue;
+						const left = w / 2 + TYPE.margin;
+						const right = layout.w - w / 2 - TYPE.margin;
+						if (right < left) continue;
+						// "Beside": the words' box may reach out of the bounds, but it still touches them
+						// (on a phone on its side it may stand off them, by the outermost star).
+						const fromX = Math.max(left, bounds.x0 - w / 2 + by.into);
+						const toX = Math.min(right, bounds.x1 + w / 2 - by.into);
+						const fromY = Math.max(CHROME.h * 0.6, bounds.y0 - h - by.reach);
+						// Well above the exit button wherever it stands across the screen.
+						const toY = Math.min(layout.h - EXIT.h - h - by.exit, bounds.y1 + by.reach);
+						// Clear of the far figures' points first; and, where they yield, without them
+						// before the type is made any smaller.
+						for (const far of by.farYields && farBlocks.length > 0 ? [true, false] : [true]) {
+							let top = Number.NEGATIVE_INFINITY;
+							let found: { cx: number; y: number } | null = null;
+							for (let y = fromY; y <= toY; y += by.step) {
+								for (let cx = fromX; cx <= toX; cx += by.step) {
+									const at = lie(cx, y, w, h, far);
+									if (at.hits > 0) continue;
+									if (at.air < by.least) {
+										if (by.tight && (!tight || at.air > tight.air)) {
+											tight = { cx, y, w, h, px, rows, air: at.air };
+										}
+										continue;
+									}
+									// Air first, up to a point; then the middle of the figure.
+									const off = Math.hypot(cx - middle, y + h / 2 - (bounds.y0 + bounds.y1) / 2);
+									const score = Math.min(at.air, by.air) * 3 - off * 0.35;
+									if (score > top) {
+										top = score;
+										found = { cx, y };
+									}
 								}
 							}
-						}
-						if (found) {
-							best = { ...found, w, h };
-							break search;
+							if (found) {
+								best = { ...found, w, h, px, rows };
+								break search;
+							}
 						}
 					}
 				}
+			}
+			if (!best && tight) {
+				// No place with air at any size: the one that touches nothing, set again as it was measured.
+				const { w, h } = set(tight.px, tight.rows);
+				best = { ...tight, w, h };
+				how = 'tight';
 			}
 		}
 		if (!best) {
 			// The free band nearest the figure's foot.
-			const { w, h } = set(layout.w <= TYPE.narrow ? TYPE.phone : TYPE.desktop);
-			const half = w / 2;
-			const left = half + TYPE.margin;
-			const right = layout.w - half - TYPE.margin;
-			let low = Number.POSITIVE_INFINITY;
-			best = { cx: clamp(middle, left, Math.max(left, right)), y: foot, w, h };
-			for (const shift of [0, -60, 60, -120, 120, -200, 200]) {
-				const cx = clamp(middle + shift, left, Math.max(left, right));
-				for (let y = 8; y + h <= layout.h - 8; y += 6) {
-					const score = lie(cx, y, w, h).hits * 1e6 + Math.abs(y - foot) + Math.abs(shift) * 0.5;
-					if (score < low) {
-						low = score;
-						best = { cx, y, w, h };
+			how = 'band';
+			const band = (px: number, rows: number): { spot: Spot; hits: number } | null => {
+				const { w, h } = set(px, rows);
+				if (rows > 1 && overBroken(rows, px, h)) return null;
+				const half = w / 2;
+				const left = half + TYPE.margin;
+				const right = layout.w - half - TYPE.margin;
+				let low = Number.POSITIVE_INFINITY;
+				let spot: Spot = {
+					cx: clamp(middle, left, Math.max(left, right)),
+					y: foot,
+					w,
+					h,
+					px,
+					rows,
+				};
+				for (const shift of [0, -60, 60, -120, 120, -200, 200]) {
+					const cx = clamp(middle + shift, left, Math.max(left, right));
+					for (let y = 8; y + h <= layout.h - 8; y += 6) {
+						const score = lie(cx, y, w, h).hits * 1e6 + Math.abs(y - foot) + Math.abs(shift) * 0.5;
+						if (score < low) {
+							low = score;
+							spot = { ...spot, cx, y };
+						}
 					}
 				}
+				return { spot, hits: Math.floor(low / 1e6) };
+			};
+			const size = hand ? TYPE.phone : TYPE.desktop;
+			let least = band(size, 1);
+			if (by?.tight && least && least.hits > 0) {
+				// A band that lies on a star never wins over smaller type, or more rows, that touch less.
+				search: for (const px of by.sizes) {
+					if (px > size) continue;
+					const whole = set(px).w;
+					for (const rows of [1, 2, 3]) {
+						if (rows > 1 && !breaks(rows, whole)) break;
+						const next = band(px, rows);
+						if (!next || next.hits >= least.hits) continue;
+						least = next;
+						if (least.hits === 0) break search;
+					}
+				}
+				set(least.spot.px, least.spot.rows);
 			}
+			best = least?.spot ?? null;
 		}
+		if (!best) {
+			entry.anchor = null;
+			return;
+		}
+		entry.placed = { px: Number.parseFloat(el.style.fontSize) || best.px, rows: best.rows, how };
 		const { w, h } = best;
 		const half = w / 2;
 		fitLines(entry);
@@ -707,6 +855,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 				lines: linesOf(entry.figure),
 				state: entry.state,
 				shown: entry.shown,
+				placed: entry.placed,
 			})),
 	};
 }
