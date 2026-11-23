@@ -52,7 +52,7 @@ phone 5 Capricornus: of 3276 points 10 px apart, the star offered differs at 0; 
   Capricornus slot-72 (layer +0, r 13.0): under -> right, box 151,603; before: on 1 star(s) of its own figure (13.0 px in, 418 px2); now: touches nothing
 phone 6 Aquarius: of 3276 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 15, now 15
   Aquarius slot-81 (layer +0, r 13.0): under -> right, box 216,101; before: on 1 star(s) of its own figure (9.9 px in, 184 px2); now: touches nothing
-  Aquarius slot-112 (layer +0, r 13.0): under -> right, box 266,375; before: on 11 point(s) of the figures behind (121 px2); now: touches nothing
+  Aquarius slot-112 (layer +0, r 13.0): under -> right, box 266,375; before: on 11 point(s) of the figures behind (121 px2); 1.3 px inside the reach of Cellestial's rings; now: touches nothing
   Aquarius slot-36 (layer +0, r 13.0): under -> right, box 83,372; before: on 1 star(s) of its own figure (4.1 px in, 54 px2); now: on 1 point(s) of the figures behind (10 px2)
   Aquarius slot-107 (layer +0, r 13.0): under -> above-24, box 91,376; before: on 7 point(s) of the figures behind (224 px2); now: on 2 point(s) of the figures behind (24 px2)
   Aquarius slot-130 (layer +0, r 13.0): under -> above, box 8,405; before: on 2 star(s) of its own figure (13.0 px in, 552 px2); letters 8.0 px from the side; now: on 1 star(s) of its own figure (4.0 px in, 52 px2)
@@ -111,5 +111,5 @@ phone 12 Leo: of 3276 points 10 px apart, the star offered differs at 0; a star 
   Leo slot-5 (layer +0, r 15.4): under -> under, box 286,230; before: letters 10.5 px from the side; now: touches nothing
   Leo slot-86 (layer +0, r 13.0): under -> under, box 8,172; before: letters 8.0 px from the side; now: touches nothing
 phone (390x844), the empty sky: 146 stars offered at the twelve stations; the same star's label on both builds 146; not simply under its star now 80
-  BEFORE: {"under":146}; on a star of its own figure 67 (deepest 14.6 px); on a star of the figure in front of its own 0; on points of the figures behind 23; inside the reach of Cellestial's rings 5; on the logo, the menu or the exit button 0; outside the screen 0; letters nearer a side than 16 px 34; within 40 px of a meaning 0; no label 0
+  BEFORE: {"under":146}; on a star of its own figure 67 (deepest 14.6 px); on a star of the figure in front of its own 0; on points of the figures behind 23; inside the reach of Cellestial's rings 6; on the logo, the menu or the exit button 0; outside the screen 0; letters nearer a side than 16 px 34; within 40 px of a meaning 0; no label 0
   AFTER:  {"above":14,"under":66,"right":18,"left":17,"above-24":3,"above-left":5,"under-right":1,"right+12":3,"above-right":5,"under-left":4,"left+12":4,"above+48":1,"under+24":1,"under-48":2,"under+48":1,"left-12":1}; on a star of its own figure 9 (deepest 10.1 px); on a star of the figure in front of its own 0; on points of the figures behind 8; inside the reach of Cellestial's rings 0; on the logo, the menu or the exit button 0; outside the screen 0; letters nearer a side than 16 px 0; within 40 px of a meaning 0; no label 0

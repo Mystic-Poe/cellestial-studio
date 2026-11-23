@@ -2595,3 +2595,37 @@ this round's). "Before" is the build at f7d5ea4, served beside the new one on po
   is inside the rings' reach (16 were, over the twelve stations; 20 on the desktop).
   The empty sky run again on this build (labels/desk.txt, phone.txt): the numbers of the note
   above, unchanged (146 and 146 the same star; on a star of its own figure 31 to 0 and 67 to 9).
+
+  (CHECKPOINT 5, 23 Nov.) ONE MORE THING FOUND AND PUT RIGHT, by the fourth look's own script at
+  a size outside the owner's two (label-near.mjs at 375x667 on the build of checkpoint 4: Aquarius
+  slot-107, "on Cellestial's core (0.6 px in)"; the build as it stood has the same at 360x740,
+  Aquarius slot-112, 0.7 px). THE CAUSE: Cellestial's star is drawn further off than the figures
+  are. index.ts, compose(): it stands in the next Virgo layer ahead while that is nearer than
+  1.5 x FADE.far[2], a depth of 54, nine stations; the figures are gone at 36, six stations, and
+  answer.ts, drawn(), listed the six layers of figures only. So from Capricornus, Aquarius and
+  Pisces the small light in the middle of the screen that is Cellestial's star was not among the
+  discs the words keep off. WHAT WAS CHANGED: drawn() adds Cellestial's star, as the reach of
+  its rings, wherever it is drawn (answer.ts; the rule itself was not touched). The round's own
+  scripts (r4-sheet.mjs, r4-flight.mjs, r4-motion.mjs) count it the same way, and with that the
+  build as it stood has 6 labels inside the rings' reach at 390x844 (5 by the first count) and
+  22 and 21 with a figure complete (20 and 16); this build has none in any of the four runs.
+  Every other number of labels/desk.txt, phone.txt, desk-complete.txt and phone-complete.txt
+  is what it was at checkpoint 4, and the star offered is the same at every point.
+  The sheets of labels/, looked at, every one (the old place on the left of each pair, the new
+  on the right; every label that moved or touched anything is in them: 45 of the 146 on the
+  desktop, 80 on the phone, and the labels that only came in from the screen's side):
+    1440x900 (desk-1 to 3.jpg). To the right or the left of its star a label reads as that
+    star's caption at once: the star is the one with the light round it, the words begin 8 px
+    from its disc at its own height. Above (6) reads as well; the star is under the middle of
+    the words. Three stand at a corner under their star (Sagittarius slot-80 and slot-140,
+    Taurus slot-54) and one above right (Taurus slot-69): they are clear of every star of their
+    figure and tight to their own star's disc, but slot-140's and slot-54's words lie UNDER the
+    neighbour to the left of their star (4 and 8 px under its disc), and a visitor who did not
+    see which star took the light could read them as that neighbour's. That is what is left of
+    "reads as another star's" on the desktop: two labels of 146, in the two tightest knots,
+    where the sides and the place above are all taken by stars.
+    390x844 (phone-1 to 5.jpg, phone-on-stars.jpg). The same, in a denser sky: 80 of 146 moved.
+    Where a figure's stars touch one another (Sagittarius' teapot, the ring of Pisces, the
+    Hyades of Taurus) the words now stand outside the knot, beside the star on its open side.
+    The 34 labels that began at or within 8 px of the screen's side stand 16 px in. Nine
+    labels are still on a star of their own figure (phone-on-stars.jpg; named below).

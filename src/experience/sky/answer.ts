@@ -24,7 +24,7 @@ import {
 	type LabelSpot,
 	placeLabel,
 } from './claim-label.ts';
-import { B3, FIGURES, SPACING } from './config.ts';
+import { B3, FADE, FIGURES, SPACING } from './config.ts';
 import type { SkyHooks } from './hooks.ts';
 import { mod, type PlanStar } from './layout.ts';
 
@@ -96,7 +96,8 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	/**
 	 * Every star that is drawn on screen now, the far figures' points too. Cellestial's star
 	 * is the full reach of its turning rings (the outer band's long half-axis, which the
-	 * layout keeps every star of Virgo clear of): the words are never written across it.
+	 * layout keeps every star of Virgo clear of), wherever it is drawn: the words are never
+	 * written across it.
 	 */
 	const drawn = (): Disc[] => {
 		const layout = hooks.layout();
@@ -117,6 +118,17 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 				if (p.x < -r || p.x > layout.w + r || p.y < -r || p.y > layout.h + r) continue;
 				discs.push(rings ? { x: p.x, y: p.y, r, rings } : { x: p.x, y: p.y, r });
 			}
+		}
+		// Cellestial's star is drawn further off than the figures are (index.ts, compose(): in the
+		// next Virgo layer ahead while that is nearer than 1.5 x FADE.far[2]): a small light in the
+		// middle of the screen, three stations before its figure is seen. The words keep off it there too.
+		for (let layer = front + LAYERS_SEEN + 1; layer < front + FIGURES; layer++) {
+			const plan = layout.plans[mod(layer, FIGURES)];
+			const star = plan?.stars[plan.epicentre];
+			if (!star) continue;
+			const p = hooks.project(star.x, star.y, -layer * SPACING);
+			if (p.scale <= 0 || p.depth >= FADE.far[2] * 1.5) continue;
+			discs.push({ x: p.x, y: p.y, r: B3.ring * layout.b3 * p.scale, rings: true });
 		}
 		return discs;
 	};

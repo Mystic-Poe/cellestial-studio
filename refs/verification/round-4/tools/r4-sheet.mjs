@@ -39,7 +39,7 @@ const READ = () => {
 	const cover = (s) => { const dx = Math.max(box.x0 - s.x, 0, s.x - box.x1), dy = Math.max(box.y0 - s.y, 0, s.y - box.y1); const d = dx > 0 || dy > 0 ? Math.hypot(dx, dy) : -Math.min(s.x - box.x0, box.x1 - s.x, s.y - box.y0, box.y1 - s.y); return d >= s.r ? 0 : d <= -s.r ? Math.PI * s.r * s.r : s.r * s.r * Math.acos(d / s.r) - d * Math.sqrt(s.r * s.r - d * d); };
 	let ownOff = -1;
 	const discs = [];
-	for (let layer = front; layer <= front + 5; layer++) {
+	for (let layer = front; layer <= front + 11; layer++) {
 		const f = ((layer % FIG) + FIG) % FIG;
 		const plan = layout.plans[f], fit = layout.fits[f];
 		if (!plan || !fit) continue;
@@ -47,6 +47,8 @@ const READ = () => {
 			const p = hooks.project(star.x, star.y, -layer * SP);
 			const x = p.x, y = p.y, scale = p.scale;
 			if (scale <= 0 || p.depth < 0.25) return;
+			// Beyond the six layers of figures only Cellestial's star is drawn (to a depth of 54).
+			if (layer > front + 5 && (i !== plan.epicentre || p.depth >= 54)) return;
 			if (star.slot === w.dataset.slot) { ownOff = layer - front; return; }
 			const rings = i === plan.epicentre;
 			const r = rings ? RING * layout.b3 * scale : Math.max(fit.starR * layout.sizeOf(star) * scale, 1.25);
