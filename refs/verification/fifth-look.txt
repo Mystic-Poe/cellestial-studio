@@ -78,3 +78,67 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
      Seen and not counted: phone Capricornus slot-108, above: the words stand 25 px under the logo's
        "studio", the same type and brass, at the same left edge. Clear of the logo by the rule; a little
        like a second line of it. Thin lines of a figure pass under several labels (not a finding, by the brief).
+
+2. A FIGURE COMPLETE (the station's own figure claimed in the visitor's browser; a tap on empty sky then offers
+   a star of the NEXT figure, 6 to 14 px across in the middle of the screen, among the near figure's lit stars)
+   f8-all.mjs, both sizes (logs/f8-all.log; its "within 40 px: 34 / 28" is the script's count of every FAIL
+   line, not of labels near a meaning; read from its own numbers):
+                                                   1440x900          390x844
+     labels shown                                  845 of 845        419 of 434 (the rest opened a panel)
+     nearest to a meaning                          41 px             42 px      (within 40 px: NONE, as before)
+     off the screen, on the logo/menu/button       0                 0
+     across Cellestial's star or in its rings      0  (was slot-25)  0  (was slot-88)
+     distinct labels across any other disc         19 (was 66)       22 (was 75)
+   My own measure of every disc (my-labels.mjs --complete; labels/desk-complete-analysis.txt, phone-complete-
+   analysis.txt): across a star's disc (r > 3 px) 8 and 10 distinct labels; over far points only 13 and 17.
+   Virgo complete: slot-25 (desktop), which could only be written across Cellestial's star, is no longer
+   offered (the next nearest is): right. slot-88 (phone) is still offered and its words now stand above-left
+   of it, clear of the rings, but ACROSS A LIT STAR OF VIRGO (finding 2 below).
+   The third look's two taps in real time (f8.mjs, f8-close.mjs; logs/f8.log, f8-close.log): Aries 67 px and
+   Taurus 68 px from the meaning's letters, as the fourth look had them; all 30 taps 41 px or more.
+   label-on-stars.mjs, both builds side by side (b7/label-on-stars.jpg, looked at): Libra and Aries complete:
+   the words now stand right of, or above-right of, the far star, over nothing bright; before they lay over
+   the far figure's points. Virgo complete: off Cellestial's star at both sizes.
+   WHAT THE WORDS DO NOW OVER THE FAR FIGURE (labels/zoom-complete-1.jpg, phone-complete-touching-1.jpg, looked
+   at; desk-complete-touching-1.jpg made, not opened): where they still touch, it is a dim point or two behind
+   a letter, and they read. What is NOT right is something else: the star offered is a speck, and the words,
+   16 times its width, stand as near to a LIT star of the near figure as to their own: on the phone about ten
+   of the 91 distinct labels read as a lit star's label ("claim yours" centred under Virgo's lit slot-3; level
+   with and right of Scorpius's lit slot-15; Capricornus 130 and 96, Aquarius 123), and so do two or three on
+   the desktop (Virgo slot-62, level with lit slot-3). Before round 4 the same labels lay across those stars;
+   now they stand beside them. Better, not right (finding 2).
+
+3. AS A VISITOR MEETS IT, AND IN FLIGHT (motion on, production build, real GPU; tools/my-flight.mjs, my own)
+   MEETING IT (--mode meet; Virgo, Sagittarius, Taurus at each size; flight/meet-desk.txt, meet-phone.txt):
+     a real click or touch on empty sky; the beads; the words by the star 0.5 to 0.9 s after the tap, 8 to 9 px
+     from its disc, under it or (Taurus, Virgo slot-87, Sagittarius slot-84) beside it; a tap on the WORDS
+     picked THEIR star and opened the empty-star panel, 6 of 6; a tap on the STAR itself picked that star, 6 of
+     6. Console errors 0.
+   IN FLIGHT. One push of the flight (the wheel; a swipe on the phone) takes the words off, 6 of 6: that is the
+     build's rule, as it was (index.ts: a thrust dismisses). The only flight a visitor can make with the words
+     showing is the Home key's glide to the nearest Virgo (a keyboard; a phone has none). Recorded every frame
+     (--mode words; flight/words-desk.txt, words-phone.txt; strip flight/words-desk.jpg looked at), from
+     Capricornus and Scorpius BACK to Virgo (4 and 2 stations) and from Taurus and Pisces ON to Virgo (4 and 6):
+       - the words stay with their star, 7 to 12 px from its disc in every frame they show;
+       - A, B, A: never. Changes of place: 1 a flight on the desktop, 1 to 3 on the phone's size, ALL in the
+         last one to three frames before the words go: going back, the words keep their place for 1.3 to 2.0 s
+         while the star shrinks to a speck, then as Cellestial's rings reach it they jump to another place for
+         ONE frame (desktop: under -> right, 17 ms; phone: left -> under-right -> right slid 12 -> right slid
+         -12, one frame each) and are hidden; going on, the star swells past the lens, the words jump once
+         (right -> under-left, one frame) and are gone with it. On the build as it stood they never changed
+         place (and going back they ended written across Cellestial's star at Virgo, on 5 discs). Finding 3.
+       - at Virgo, at rest, the words stay hidden (the star they belong to is a speck inside the rings' reach):
+         right by the rule ("they wait").
+     Frame times through the glide, the words showing: 16.7 ms a frame, worst 17 ms, none over 34, at both
+     sizes, on both builds, unslowed and with the CPU slowed 4x (logs/flight-x4.log; the throttle does take
+     effect: tools/throttle-control.mjs, a loop 58 ms unslowed, 231 ms slowed), and the same without the words.
+
+4. OFF THE OWNER'S SIZES (label-near.mjs at 360x740, 375x667, 844x390, both builds; logs/label-near-other-
+   new.log, label-near-other-old.log)
+                         across a star of the figure   on Cellestial's core   on the exit button   off the screen/logo/menu
+     360x740             47 -> 3                       3 -> 0                 0 -> 0               0 -> 0
+     375x667             55 -> 9                       3 -> 0                 0 -> 0               0 -> 0
+     844x390             35 -> 1                       4 -> 0                 14 -> 0              0 -> 0
+   Nothing worse than it was; a great deal better. What is left there is deep where it is left (375x667:
+   Pisces slot-141 13 px into a disc, Aquarius slot-107 11 px; 360x740: Pisces slot-123 11.5 px): crowded
+   figures on small screens, not counted (the brief: they need not be 0 there).

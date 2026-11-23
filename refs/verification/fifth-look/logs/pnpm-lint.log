@@ -43,6 +43,6 @@ biome.json:28:13 deserialize  DEPRECATED  ━━━━━━━━━━━━�
   $ biome migrate
   
 
-Checked 108 files in 63ms. No fixes applied.
+Checked 108 files in 65ms. No fixes applied.
 Found 1 info.
 exit 0

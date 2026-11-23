@@ -1,0 +1,24 @@
+  small  1 Virgo slot-3: "claim yours" under, box 181,424 96x24: touches no disc; 54 px from the centre of Cellestial's star
+  small  4 Sagittarius slot-39: "claim yours" left, box 206,368 96x24: on 1 other star(s) of the figure (deepest 2.1 px into a disc)
+  small  7 Pisces slot-123: "claim yours" under, box 256,251 96x24: on 2 other star(s) of the figure (deepest 11.5 px into a disc)
+  small 10 Gemini slot-4: "claim yours" under, box 8,302 96x24: on 1 other star(s) of the figure (deepest 6.9 px into a disc)
+small (360x740), the empty sky, the sky tapped on a grid at every station: "claim yours" shown 518 times, for 113 distinct stars and sides (a tap that gave no label 54); sides {"above":15,"under":57,"right":15,"left":16,"above-left":3,"under-right":2,"under-left":4,"above-right":1}; on another star of the figure 3; on Cellestial's core 0; on the logo, the menu or the exit button 0; outside the screen 0; the nearest any label comes to another star's disc -11.5 px (Pisces slot-123); console errors 0
+  short  1 Virgo slot-3: "claim yours" under, box 184,384 96x24: touches no disc; 51 px from the centre of Cellestial's star
+  short  4 Sagittarius slot-26: "claim yours" under, box 259,286 96x24: on 1 other star(s) of the figure (deepest 2.0 px into a disc)
+  short  5 Capricornus slot-108: "claim yours" right, box 73,101 96x24: on 1 other star(s) of the figure (deepest 5.7 px into a disc)
+  short  6 Aquarius slot-107: "claim yours" left, box 48,305 96x24: on 2 other star(s) of the figure (deepest 10.8 px into a disc)
+  short  6 Aquarius slot-130: "claim yours" above, box 8,308 96x24: on 2 other star(s) of the figure (deepest 7.9 px into a disc)
+  short  6 Aquarius slot-93: "claim yours" under-left, box 179,497 96x24: on 1 other star(s) of the figure (deepest 3.0 px into a disc)
+  short  7 Pisces slot-141: "claim yours" above, box 269,123 96x24: on 3 other star(s) of the figure (deepest 13.0 px into a disc)
+  short  7 Pisces slot-123: "claim yours" under, box 271,226 96x24: on 2 other star(s) of the figure (deepest 8.0 px into a disc)
+  short  7 Pisces slot-146: "claim yours" left, box 179,216 96x24: on 1 other star(s) of the figure (deepest 5.8 px into a disc)
+  short  7 Pisces slot-144: "claim yours" left, box 142,411 96x24: on 2 other star(s) of the figure (deepest 2.3 px into a disc)
+short (375x667), the empty sky, the sky tapped on a grid at every station: "claim yours" shown 492 times, for 118 distinct stars and sides (a tap that gave no label 51); sides {"above":17,"under":54,"right":19,"above-right":4,"left":16,"under-right":2,"above-left":2,"under-left":4}; on another star of the figure 9; on Cellestial's core 0; on the logo, the menu or the exit button 0; outside the screen 0; the nearest any label comes to another star's disc -13.0 px (Pisces slot-141); console errors 0
+  side  1 Virgo slot-53: "claim yours" above-right, box 460,94 96x24: touches no disc; 86 px from the centre of Cellestial's star
+  side  1 Virgo slot-110: "claim yours" above, box 281,104 96x24: touches no disc; 81 px from the centre of Cellestial's star
+  side  1 Virgo slot-52: "claim yours" left, box 264,160 96x24: touches no disc; 63 px from the centre of Cellestial's star
+  side  1 Virgo slot-102: "claim yours" under, box 254,217 96x24: touches no disc; 75 px from the centre of Cellestial's star
+  side  1 Virgo slot-3: "claim yours" left, box 280,224 96x24: touches no disc; 54 px from the centre of Cellestial's star
+  side  1 Virgo slot-34: "claim yours" under-right, box 486,179 96x24: touches no disc; 64 px from the centre of Cellestial's star
+  side  9 Taurus slot-54: "claim yours" above-right, box 436,136 96x24: on 1 other star(s) of the figure (deepest 7.5 px into a disc)
+side (844x390), the empty sky, the sky tapped on a grid at every station: "claim yours" shown 992 times, for 97 distinct stars and sides (a tap that gave no label 68); sides {"under":29,"under-right":4,"right":27,"above-right":5,"above":5,"left":20,"above-left":4,"under-left":3}; on another star of the figure 1; on Cellestial's core 0; on the logo, the menu or the exit button 0; outside the screen 0; the nearest any label comes to another star's disc -7.5 px (Taurus slot-54); console errors 0

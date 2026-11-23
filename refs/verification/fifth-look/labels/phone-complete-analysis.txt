@@ -1,0 +1,103 @@
+NEW build, phone-complete (390x844): 91 distinct labels (station, star, place); by place {"right":25,"above-left":6,"above-right":6,"under-right":3,"under slid 48":1,"under":12,"right slid 12":3,"left":17,"left slid -12":1,"right slid -12":3,"under slid -48":2,"under-left":4,"under slid 24":1,"left slid 12":2,"above slid -48":2,"under slid -24":2,"above":1}
+  across another STAR's disc (r > 3 px): 10; within 4 px of one, not on it: 9; over far POINTS (r <= 3 px): 17 (most on one label: 20)
+  on Cellestial's core: 1; inside the reach of its rings: 1; the nearest to the rings' reach -2.1 px
+  letters nearer a side than 16 px: 0 (the least 24.5 px); outside the screen 0; on the logo, the menu or the exit button 0
+  the box from its own star's disc: 7.2 to 8.0 px; the nearest to a meaning 42.2 px
+  taps: 648; a label 558; no label 0; a panel opened 25; on a control 65
+
+NEW build, every label that breaks a rule by my measure:
+  Virgo slot-88 above-left (star 161,391 r 2.9; box 58,360): across slot-34 (r 13.0, 6.9 px in), slot-53 (r 13.0, 8.8 px in)
+  Virgo slot-47 under slid 48 (star 209,458 r 2.9; box 209,468): across slot-3 (r 13.0, 2.7 px in)
+  Scorpius slot-94 right slid -12 (star 179,477 r 4.1; box 191,453): across slot-15 (r 13.9, 3.0 px in)
+  Sagittarius slot-106 under slid 24 (star 226,398 r 3.4; box 202,408): across slot-24 (r 13.3, 1.3 px in), slot-21 (r 13.4, 3.6 px in), slot-103 (r 3.4, 0.3 px in)
+  Sagittarius slot-136 left slid 12 (star 184,373 r 3.4; box 78,373): across slot-48 (r 13.0, 6.0 px in)
+  Sagittarius slot-103 under (star 236,405 r 3.4; box 188,416): across slot-21 (r 13.4, 2.3 px in); on Cellestial's core (0.6 px in, core r 0.6)
+  Aries slot-60 under-left (star 196,401 r 5.7; box 90,410): across slot-1 (r 4.7, 2.6 px in), slot-61 (r 3.3, 3.3 px in)
+  Aries slot-1 left slid 12 (star 188,412 r 4.7; box 80,412): across slot-61 (r 3.3, 3.3 px in)
+  Taurus slot-120 above slid -48 (star 180,374 r 4.9; box 84,337): across slot-6 (r 5.7, 4.1 px in)
+  Taurus slot-37 right slid -12 (star 215,403 r 4.9; box 227,379): across slot-69 (r 13.0, 2.9 px in)
+
+NEW build, every label NOT under its star: what took the place under it, and what was free by my measure (in the order under, right, left, above, then the corners):
+  Virgo slot-22 -> right (15 taps): under taken by slot-34 r 13.0 (1.5 px in), slot-17 r 3.3 (0.2 px in), slot-19 r 3.2 (3.2 px in), Cellestial's rings (16.3 px in); free: right, above-right
+  Virgo slot-88 -> above-left (2 taps): under taken by slot-53 r 13.0 (0.9 px off), slot-32 r 3.1 (3.4 px off), slot-2 r 3.8 (3.5 px in), slot-27 r 3.1 (3.1 px in), slot-15 r 3.3 (1.1 px off), 30 far points, Cellestial's rings (48.5 px in); free: none
+  Virgo slot-25 -> above-right (4 taps): under taken by slot-31 r 3.1 (1.7 px off), slot-2 r 3.8 (1.4 px off), slot-27 r 3.1 (3.1 px in), slot-15 r 3.3 (3.3 px in), 27 far points, Cellestial's rings (48.5 px in); free: none
+  Virgo slot-62 -> under-right (3 taps): under taken by slot-52 r 13.0 (6.0 px in); free: under-right
+  Virgo slot-47 -> under slid 48 (8 taps): under taken by slot-3 r 13.0 (2.6 px in), slot-52 r 13.0 (0.0 px in), 2 far points, Cellestial's rings (2.0 px in); free: none
+  Libra slot-19 -> right (13 taps): under taken by slot-31 r 5.7 (3.2 px in), slot-17 r 6.1 (6.1 px in), slot-32 r 5.7 (5.7 px in), slot-2 r 7.0 (5.4 px in); free: right, left, above, above-left
+  Libra slot-2 -> above-left (2 taps): under taken by slot-27 r 5.7 (1.6 px in), slot-15 r 6.1 (2.0 px off), slot-13 r 3.1 (3.1 px in), 33 far points, Cellestial's rings (1.8 px in); free: above-left
+  Libra slot-7 -> above-left (3 taps): under taken by slot-66 r 5.7 (5.7 px in), slot-49 r 5.7 (5.7 px in), slot-10 r 6.4 (6.4 px in), slot-41 r 5.7 (5.7 px in), slot-18 r 6.0 (5.1 px in); free: above-left
+  Libra slot-27 -> right slid 12 (1 taps): under taken by slot-15 r 6.1 (6.1 px in), slot-9 r 3.2 (3.2 px in), slot-13 r 3.1 (1.8 px in), 35 far points, Cellestial's rings (1.8 px in); free: none
+  Libra slot-32 -> above-left (1 taps): under taken by slot-31 r 5.7 (2.1 px off), slot-2 r 7.0 (1.6 px off), slot-27 r 5.7 (5.7 px in), slot-13 r 3.1 (3.1 px in), 28 far points; free: above-left
+  Libra slot-17 -> right (1 taps): under taken by slot-31 r 5.7 (5.7 px in), slot-32 r 5.7 (5.7 px in), slot-2 r 7.0 (7.0 px in), slot-27 r 5.7 (2.1 px in); free: right, under-right, above-right
+  Libra slot-41 -> left (3 taps): under taken by slot-49 r 5.7 (5.7 px in), slot-10 r 6.4 (6.4 px in); free: left, under-left, above-left
+  Libra slot-18 -> above-left (1 taps): under taken by slot-66 r 5.7 (3.4 px off), slot-49 r 5.7 (5.7 px in), slot-10 r 6.4 (6.4 px in), slot-41 r 5.7 (0.2 px off); free: above-left
+  Libra slot-15 -> under-right (1 taps): under taken by slot-42 r 5.7 (5.7 px in), slot-7 r 6.5 (2.0 px in), 4 far points; free: under-right
+  Libra slot-31 -> right (2 taps): under taken by slot-27 r 5.7 (0.9 px in), 3 far points; free: right, under-right
+  Libra slot-66 -> right (9 taps): under taken by slot-49 r 5.7 (1.2 px off), slot-10 r 6.4 (1.1 px in); free: right, under-right
+  Scorpius slot-127 -> left (13 taps): under taken by slot-27 r 13.1 (1.8 px off), slot-26 r 4.2 (2.4 px off), slot-126 r 4.1 (1.1 px in), slot-143 r 4.1 (3.2 px in), slot-140 r 4.1 (0.4 px in), slot-13 r 4.6 (3.4 px off), slot-80 r 4.1 (4.1 px in), slot-33 r 4.1 (4.1 px in), slot-142 r 4.1 (4.1 px in), slot-90 r 4.1 (0.8 px in), slot-57 r 4.1 (4.1 px in), slot-138 r 4.1 (4.1 px in), 4 far points; free: left
+  Scorpius slot-84 -> right (6 taps): under taken by slot-24 r 4.2 (3.6 px in), slot-26 r 4.2 (4.2 px in), slot-21 r 4.3 (4.3 px in), slot-45 r 4.1 (4.1 px in), slot-13 r 4.6 (4.6 px in), slot-39 r 4.1 (0.4 px off), slot-48 r 4.1 (0.4 px in), slot-138 r 4.1 (2.1 px off), 16 far points; free: right, under-right
+  Scorpius slot-133 -> left (2 taps): under taken by slot-15 r 13.9 (10.8 px in), slot-21 r 4.3 (2.6 px in), slot-118 r 4.1 (1.8 px in), 14 far points; free: left, under-left, above-left
+  Scorpius slot-118 -> left (1 taps): under taken by slot-15 r 13.9 (3.2 px in), slot-94 r 4.1 (4.0 px in), slot-92 r 4.1 (4.1 px in), slot-104 r 4.1 (4.1 px in); free: left, above-left
+  Scorpius slot-9 -> right slid 12 (1 taps): under taken by slot-15 r 13.9 (8.4 px in), slot-44 r 4.1 (2.5 px in), slot-94 r 4.1 (1.3 px off), slot-92 r 4.1 (2.5 px in), 2 far points; free: none
+  Scorpius slot-39 -> right (1 taps): under taken by slot-15 r 13.9 (7.6 px in), slot-44 r 4.1 (4.1 px in), slot-9 r 4.6 (4.6 px in), 9 far points; free: right, under-right, above-right
+  Scorpius slot-104 -> left slid -12 (6 taps): under taken by slot-42 r 13.0 (13.0 px in), slot-94 r 4.1 (0.9 px in); free: none
+  Scorpius slot-94 -> right slid -12 (12 taps): under taken by slot-42 r 13.0 (13.0 px in); free: none
+  Scorpius slot-44 -> right (5 taps): under taken by slot-15 r 13.9 (1.5 px off), slot-42 r 13.0 (0.4 px in), slot-94 r 4.1 (0.4 px off), slot-92 r 4.1 (2.1 px off); free: right, under-right
+  Sagittarius slot-108 -> under slid -48 (9 taps): under taken by slot-21 r 13.4 (1.4 px off), slot-13 r 14.3 (0.2 px in), slot-48 r 13.0 (13.0 px in), slot-43 r 3.4 (1.7 px off), slot-136 r 3.4 (3.4 px in), 2 far points; free: none
+  Sagittarius slot-43 -> under-left (2 taps): under taken by slot-21 r 13.4 (4.3 px in), slot-13 r 14.3 (1.3 px in), slot-48 r 13.0 (13.0 px in), slot-136 r 3.4 (3.4 px in), 3 far points; free: under-left
+  Sagittarius slot-106 -> under slid 24 (3 taps): under taken by slot-21 r 13.4 (9.9 px in), slot-103 r 3.4 (0.3 px in), slot-101 r 3.4 (3.4 px in), 25 far points, Cellestial's rings (2.1 px in); free: none
+  Sagittarius slot-136 -> left slid 12 (1 taps): under taken by slot-21 r 13.4 (13.4 px in), slot-48 r 13.0 (5.7 px in), slot-106 r 3.4 (3.4 px in), slot-103 r 3.4 (0.0 px off), 14 far points; free: none
+  Sagittarius slot-113 -> left (1 taps): under taken by slot-75 r 3.4 (2.4 px off), slot-29 r 3.4 (3.2 px in), slot-72 r 3.4 (3.4 px in); free: left, above-left
+  Sagittarius slot-75 -> right slid -12 (3 taps): under taken by slot-29 r 3.4 (3.4 px in), slot-72 r 3.4 (3.4 px in); free: none
+  Capricornus slot-134 -> right (2 taps): under taken by 5 far points; free: right, left, above, under-left, above-right, above-left
+  Capricornus slot-36 -> above-left (2 taps): under taken by slot-101 r 13.0 (13.0 px in), 23 far points, Cellestial's rings (1.0 px in); free: above-left
+  Capricornus slot-130 -> above slid -48 (2 taps): under taken by slot-101 r 13.0 (6.7 px in), 8 far points; free: none
+  Capricornus slot-71 -> right (3 taps): under taken by 3 far points; free: right, under-right, above-right
+  Capricornus slot-96 -> under slid -48 (2 taps): under taken by slot-101 r 13.0 (1.1 px off), 6 far points; free: none
+  Capricornus slot-137 -> right (15 taps): under taken by slot-75 r 13.0 (3.8 px off); free: right, left, under-right
+  Aquarius slot-125 -> above-right (16 taps): under taken by slot-112 r 13.0 (8.9 px in), slot-105 r 3.7 (3.7 px in), slot-115 r 3.7 (3.7 px in), slot-145 r 3.7 (3.7 px in), slot-73 r 3.7 (3.7 px in), slot-141 r 3.7 (3.7 px in), slot-123 r 3.7 (3.7 px in), slot-146 r 3.7 (3.3 px in), 2 far points; free: above-right, above-left
+  Aquarius slot-124 -> under slid -24 (6 taps): under taken by slot-135 r 3.7 (1.5 px off), slot-67 r 3.7 (3.7 px in); free: none
+  Aquarius slot-115 -> left (1 taps): under taken by slot-112 r 13.0 (13.0 px in), slot-95 r 3.7 (3.7 px in), slot-105 r 3.7 (2.1 px in), slot-123 r 3.7 (3.0 px in), slot-146 r 3.7 (3.7 px in), 7 far points; free: left, above-left
+  Aquarius slot-145 -> left (1 taps): under taken by slot-112 r 13.0 (13.0 px in), slot-95 r 3.7 (3.7 px in), slot-105 r 3.7 (3.7 px in), slot-115 r 3.7 (0.8 px off), slot-141 r 3.7 (3.0 px off), slot-123 r 3.7 (3.7 px in), slot-146 r 3.7 (3.7 px in), 2 far points; free: left, above-left
+  Aquarius slot-141 -> above-right (2 taps): under taken by slot-112 r 13.0 (13.0 px in), slot-95 r 3.7 (3.7 px in), slot-105 r 3.7 (3.7 px in), slot-123 r 3.7 (3.7 px in), slot-146 r 3.7 (3.7 px in), 3 far points; free: above-right
+  Aquarius slot-114 -> right (1 taps): under taken by slot-129 r 3.7 (2.4 px off), slot-131 r 3.7 (2.7 px off), slot-67 r 3.7 (3.7 px in), slot-111 r 3.7 (3.7 px in), slot-128 r 3.7 (2.9 px off), slot-122 r 3.7 (3.7 px in), slot-139 r 3.7 (3.7 px in), slot-144 r 3.7 (0.9 px in); free: right
+  Aquarius slot-123 -> above-right (1 taps): under taken by slot-112 r 13.0 (9.6 px in), slot-95 r 3.7 (3.7 px in), slot-146 r 3.7 (3.5 px off), 6 far points; free: none
+  Aquarius slot-135 -> under slid -24 (3 taps): under taken by slot-67 r 3.7 (3.7 px in), slot-111 r 3.7 (3.0 px off); free: none
+  Pisces slot-99 -> right (15 taps): under taken by slot-12 r 3.9 (3.3 px in), slot-23 r 3.6 (3.7 px off); free: right, under-right
+  Pisces slot-12 -> right (7 taps): under taken by slot-40 r 3.3 (3.3 px in), slot-69 r 3.3 (3.3 px in), slot-79 r 3.3 (3.3 px in), slot-60 r 3.3 (3.3 px in), slot-56 r 3.3 (1.8 px off), 18 far points, Cellestial's rings (2.5 px in); free: right
+  Pisces slot-68 -> right (20 taps): under taken by slot-129 r 13.0 (6.7 px in), slot-131 r 13.0 (13.0 px in); free: right, above, under-right, above-left
+  Aries slot-8 -> left (14 taps): under taken by slot-40 r 5.7 (5.7 px in), slot-60 r 5.7 (3.9 px off), slot-120 r 3.3 (3.3 px in), slot-6 r 3.8 (3.8 px in), slot-4 r 4.0 (1.8 px in), slot-100 r 3.3 (4.0 px off); free: left, above, above-left
+  Aries slot-77 -> right (3 taps): under taken by slot-89 r 5.7 (5.7 px in), slot-116 r 5.7 (1.9 px off), slot-11 r 3.7 (1.8 px off), slot-51 r 3.3 (1.5 px off); free: right, under-right, above-right
+  Aries slot-60 -> under-left (2 taps): under taken by slot-1 r 4.7 (2.6 px in), slot-54 r 4.7 (4.7 px in), slot-69 r 5.7 (5.7 px in), slot-79 r 5.7 (0.7 px off), slot-56 r 5.7 (5.7 px in), slot-46 r 3.3 (3.3 px in), slot-30 r 3.3 (3.3 px in), slot-37 r 3.3 (0.6 px off), slot-61 r 3.3 (3.3 px in), slot-82 r 3.3 (3.3 px in), slot-11 r 3.7 (2.0 px off), slot-63 r 3.3 (1.9 px off), 12 far points, Cellestial's rings (3.8 px in); free: none
+  Aries slot-40 -> left (7 taps): under taken by slot-4 r 4.0 (0.8 px off), slot-100 r 3.3 (3.3 px in), slot-61 r 3.3 (1.2 px in); free: left, under-left, above-left
+  Aries slot-64 -> right (2 taps): under taken by slot-89 r 5.7 (5.7 px in), slot-116 r 5.7 (1.0 px in); free: right, under-right, above-right
+  Aries slot-1 -> left slid 12 (1 taps): under taken by slot-69 r 5.7 (2.8 px off), slot-56 r 5.7 (5.7 px in), slot-89 r 5.7 (2.5 px off), slot-46 r 3.3 (1.9 px off), slot-30 r 3.3 (1.4 px off), slot-61 r 3.3 (1.3 px in), slot-82 r 3.3 (3.3 px in), slot-11 r 3.7 (3.7 px in), slot-63 r 3.3 (3.3 px in), 12 far points, Cellestial's rings (0.9 px in); free: none
+  Aries slot-56 -> under-right (1 taps): under taken by slot-89 r 5.7 (5.7 px in), slot-11 r 3.7 (3.7 px in), slot-51 r 3.3 (3.3 px in), slot-63 r 3.3 (3.3 px in), 5 far points; free: none
+  Aries slot-89 -> right (2 taps): under taken by slot-116 r 5.7 (5.7 px in); free: right, under-left
+  Taurus slot-6 -> above (12 taps): under taken by slot-1 r 10.7 (10.7 px in), slot-54 r 10.7 (8.5 px in), slot-79 r 13.0 (2.4 px in), slot-60 r 13.0 (7.3 px in), slot-120 r 4.9 (2.9 px in), slot-4 r 5.9 (5.9 px in), slot-100 r 4.9 (4.9 px in), 3 far points; free: above
+  Taurus slot-120 -> above slid -48 (4 taps): under taken by slot-1 r 10.7 (10.7 px in), slot-54 r 10.7 (10.7 px in), slot-69 r 13.0 (13.0 px in), slot-79 r 13.0 (12.7 px in), slot-60 r 13.0 (3.1 px off), slot-37 r 4.9 (4.9 px in), slot-4 r 5.9 (3.8 px in), slot-100 r 4.9 (4.9 px in), 11 far points; free: none
+  Taurus slot-46 -> above-right (8 taps): under taken by slot-56 r 13.0 (13.0 px in), slot-11 r 5.5 (5.0 px in); free: above-right
+  Taurus slot-4 -> left (3 taps): under taken by slot-1 r 10.7 (8.9 px in), slot-54 r 10.7 (1.9 px off), slot-100 r 4.9 (1.0 px off), slot-61 r 4.9 (4.9 px in), 3 far points; free: left, under-left
+  Taurus slot-37 -> right slid -12 (1 taps): under taken by slot-54 r 10.7 (2.9 px off), slot-69 r 13.0 (1.6 px in), slot-56 r 13.0 (13.0 px in), slot-46 r 4.9 (4.9 px in), slot-30 r 4.9 (4.9 px in), slot-61 r 4.9 (4.9 px in), slot-82 r 4.9 (4.9 px in), 14 far points, Cellestial's rings (4.4 px in); free: none
+  Taurus slot-63 -> left (9 taps): under taken by slot-51 r 4.9 (4.9 px in); free: left, under-left
+  Taurus slot-11 -> right slid 12 (1 taps): under taken by slot-89 r 13.0 (5.8 px in), slot-51 r 4.9 (4.9 px in); free: none
+  Taurus slot-51 -> left (15 taps): under taken by slot-89 r 13.0 (13.0 px in); free: left, under-left
+  Gemini slot-109 -> left (12 taps): under taken by slot-63 r 13.0 (5.3 px in); free: left
+  Gemini slot-58 -> above-right (15 taps): under taken by slot-11 r 14.5 (14.0 px in); free: above-right
+  Cancer slot-38 -> right (9 taps): under taken by slot-59 r 3.1 (3.1 px in), slot-16 r 3.4 (0.4 px off), slot-55 r 3.1 (2.3 px in), slot-86 r 3.1 (1.7 px in); free: right, above-right
+  Cancer slot-5 -> right (9 taps): under taken by slot-16 r 3.4 (3.4 px in), 7 far points; free: right, above, under-right, above-right
+  Cancer slot-86 -> under-left (5 taps): under taken by slot-59 r 3.1 (3.1 px in), slot-16 r 3.4 (3.4 px in), slot-55 r 3.1 (3.1 px in), 2 far points; free: under-left
+  Cancer slot-20 -> under-left (3 taps): under taken by 2 far points; free: under-left
+  Cancer slot-50 -> right (1 taps): under taken by 2 far points; free: right, under-right, above-right
+  Leo slot-98 -> left (9 taps): under taken by slot-65 r 4.1 (3.2 px off), slot-87 r 4.1 (4.1 px in); free: left, above, under-left, above-right, above-left
+  Leo slot-65 -> right (7 taps): under taken by slot-87 r 4.1 (4.1 px in), slot-34 r 4.1 (1.6 px off), 2 far points; free: right, under-left, above-right
+  Leo slot-28 -> left (3 taps): under taken by slot-52 r 4.1 (4.1 px in), 15 far points, Cellestial's rings (9.3 px in); free: left, under-left, above-left
+  Leo slot-87 -> right (1 taps): under taken by slot-34 r 4.1 (4.1 px in), slot-28 r 4.1 (4.1 px in), slot-53 r 4.1 (4.1 px in), 28 far points, Cellestial's rings (12.4 px in); free: left, above-right   <<< FIRST FREE IS left
+  Leo slot-3 -> right (3 taps): under taken by slot-102 r 4.1 (0.4 px in), slot-52 r 4.1 (0.3 px off), slot-110 r 4.1 (4.1 px in), 9 far points; free: right, under-right
+  Leo slot-52 -> left (1 taps): under taken by slot-102 r 4.1 (4.1 px in), slot-110 r 4.1 (4.1 px in), 4 far points; free: none
+  Leo slot-74 -> left (10 taps): under taken by slot-20 r 13.5 (13.5 px in); free: left, above-left
+  Leo slot-85 -> right (11 taps): under taken by slot-20 r 13.5 (13.5 px in); free: right
+  79 labels not under their star; the place under was free for 0; a place earlier in the order was free for 1
+
+NEW build, the 12 labels under their star: centred on it (within 0.6 px) 12; held in from a side of the screen 0
+  of them, under although my measure finds something within the rule's reach there: 3: Sagittarius slot-103: slot-21 r 13.4 (2.3 px in), 20 far points, Cellestial's rings (2.1 px in) | Capricornus slot-81: 2 far points | Gemini slot-97: 2 far points
