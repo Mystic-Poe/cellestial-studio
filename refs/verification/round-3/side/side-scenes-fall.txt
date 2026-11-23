@@ -1,0 +1,6 @@
+WHAT HANGS ON THE SKY'S LAYOUT, ON A PHONE ON ITS SIDE: 844x390 (side), production build
+THE FALL from Libra at 844x390: 6 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
+PASS     every star leaves from where it stood: 6 of 6 fall; the first step off its place is at most 0.3 px; steps upward 0; sideways at most 0.00 px
+THE FALL from Sagittarius at 844x390: 25 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
+PASS     every star leaves from where it stood: 25 of 25 fall; the first step off its place is at most 0.4 px; steps upward 0; sideways at most 0.00 px
+ALL PASS

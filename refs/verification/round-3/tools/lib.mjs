@@ -17,7 +17,8 @@ SIZES.side932 = { viewport: { width: 932, height: 430 }, deviceScaleFactor: 2, i
 
 export { ROOT, SIZES, launch, sheet, sharp };
 export const OUT = join(ROOT, 'refs/verification/round-3');
-export const PROD = 'http://localhost:4615';
+// R3_BASE: another build served somewhere else (the build as it stood, for a before picture).
+export const PROD = process.env.R3_BASE ?? 'http://localhost:4615';
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export const outDir = (sub) => {
 	const d = join(OUT, sub);
