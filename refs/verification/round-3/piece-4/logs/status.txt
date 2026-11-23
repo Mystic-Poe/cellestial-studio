@@ -9,3 +9,15 @@ exit 0 (phone-sky-phone)
 === phone-sky-small: node refs/verification/round-3/tools/phone-sky.mjs --size small
 exit 0 (phone-sky-small)
 === phone-sky-short: node refs/verification/round-3/tools/phone-sky.mjs --size short
+exit 1 (phone-sky-short)
+=== phone-sky-side: node refs/verification/round-3/tools/phone-sky.mjs --size side
+exit 1 (phone-sky-side)
+=== short-scope: node refs/verification/round-3/tools/short-scope.mjs
+exit 0 (short-scope)
+=== b7: node refs/verification/round-3/tools/b7.mjs
+exit 0 (b7)
+=== b7-small-short-side: node refs/verification/round-3/tools/b7.mjs --only all --sizes small,short,side
+exit 0 (b7-small-short-side)
+=== f8: node refs/verification/round-3/tools/f8.mjs
+exit 0 (f8)
+=== clock-all: node refs/verification/round-3/tools/clock-all.mjs

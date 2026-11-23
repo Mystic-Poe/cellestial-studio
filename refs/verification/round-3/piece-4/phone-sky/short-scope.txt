@@ -1,0 +1,13 @@
+HOW SHORT BEFORE A STAR REACHES THE EXIT BUTTON (the sky empty, the exit button shown, all twelve stations)
+ 844x390  touch: figures turned 0; nearest disc to the exit button 12 px; stars reaching it 0; nearest to the logo 172 px, to the menu 128 px; stars off the screen 0; console errors 0
+ 932x430  touch: figures turned 0; nearest disc to the exit button 12 px; stars reaching it 0; nearest to the logo 195 px, to the menu 147 px; stars off the screen 0; console errors 0
+ 667x375  touch: figures turned 0; nearest disc to the exit button 14 px; stars reaching it 0; nearest to the logo 107 px, to the menu 59 px; stars off the screen 0; console errors 0
+ 740x360  touch: figures turned 0; nearest disc to the exit button 12 px; stars reaching it 0; nearest to the logo 145 px, to the menu 104 px; stars off the screen 0; console errors 0
+1024x500  mouse: figures turned 0; nearest disc to the exit button 19 px; stars reaching it 0; nearest to the logo 198 px, to the menu 153 px; stars off the screen 0; console errors 0
+1280x560  mouse: figures turned 0; nearest disc to the exit button 13 px; stars reaching it 0; nearest to the logo 296 px, to the menu 251 px; stars off the screen 0; console errors 0
+1280x600  mouse: figures turned 0; nearest disc to the exit button 33 px; stars reaching it 0; nearest to the logo 277 px, to the menu 233 px; stars off the screen 0; console errors 0
+1366x650  mouse: figures turned 0; nearest disc to the exit button 40 px; stars reaching it 0; nearest to the logo 281 px, to the menu 237 px; stars off the screen 0; console errors 0
+1280x720  mouse: figures turned 0; nearest disc to the exit button 40 px; stars reaching it 0; nearest to the logo 183 px, to the menu 143 px; stars off the screen 0; console errors 0
+1920x1080 mouse: figures turned 0; nearest disc to the exit button 41 px; stars reaching it 0; nearest to the logo 216 px, to the menu 175 px; stars off the screen 0; console errors 0
+ 768x1024 touch: figures turned 0; nearest disc to the exit button 69 px; stars reaching it 0; nearest to the logo 146 px, to the menu 153 px; stars off the screen 0; console errors 0
+1024x768  touch: figures turned 0; nearest disc to the exit button 41 px; stars reaching it 0; nearest to the logo 26 px, to the menu 45 px; stars off the screen 0; console errors 0

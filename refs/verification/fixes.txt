@@ -2361,4 +2361,56 @@ PIECE 4 — THE CLOSE-OUT (round 3)
                  overlap 30.6%; 292 of 292 touches; no star within 20 px of a side or under the
                  chrome. The third look's numbers, each one.
        360x740   ALL PASS: 87.7 px, 2.3 px, 31.5%, 292 of 292. The third look's numbers.
-     (Parts 3 (the rest), 6 and 7 are written below as they are done.)
+       375x667   exit 1 on one line, as before the round and as the third look has it: "FAIL at
+                 least 84 px across (77.1)" (the star is clear and smaller on that phone; left by
+                 round 2 and by the third look). Everything else PASS: 2.0 px, 30.6%, 292 of 292.
+       844x390   exit 1 on three lines, each one the UPRIGHT phone's rule (piece 1 says why each
+                 stands): "at least 84 px across (72.7)", "the six wide figures are at least 50%
+                 of the height (1 are not)" (nothing is turned on a phone on its side), "no two
+                 stars overlap by more than a third (deepest 41.5%)" (Taurus's closest pair, 7 px
+                 apart, both at the rule's floor of 6 px: piece 1's "left"). What the major was
+                 about: PASS, every star clear of the logo, the menu button and the exit button
+                 (0 touches); 146 of 146 on screen, 20 px clear of the sides; 292 of 292 touches;
+                 the rings 2.0 px short of the nearest star. Looked at: piece-4/phone-sky/844/
+                 stations-empty.jpg (all twelve stand above the exit button with air under them).
+       SET BESIDE THE THIRD LOOK'S OWN OUTPUT (diff, file against file; refs/verification/
+       third-look/): phone-sky.txt at 390x844 is the same line for line but for one number, the
+       rings as drawn at the first of two moments (7.8 px now, 7.6 then: they turn on the wall
+       clock); at 360x740 the same but for that number (5.9; 5.7); at 375x667 the same, every
+       line. desk-sky/all-taps-desk.txt: the same, every line (146 stars at 1440x900, each one's
+       place against the exit button, the logo and the menu to the pixel).
+     HOW SHORT BEFORE A STAR REACHES THE EXIT BUTTON (short-scope.mjs; phone-sky/short-scope.txt):
+                    nearest disc to the exit button   stars reaching it   (the third look)
+       844x390      12 px                              0                   -11 px, eleven
+       932x430      12 px                              0                    -3 px, three
+       667x375      14 px                              0                    -7 px, eleven
+       740x360      12 px                              0                   -11 px, twelve
+       1024x500 19, 1280x560 13, 1280x600 33, 1366x650 40, 1280x720 40, 1920x1080 41, 768x1024 69,
+       1024x768 41 px; no star off the screen and no console error at any of the twelve sizes.
+       The four phones on their side as piece 1 left them; the windows and the tablet as the
+       third look has them (1024x768 was added by piece 1).
+     B7, EVERY STAR LIT (b7.mjs, and --only all --sizes small,short,side; b7/b7.txt,
+     b7-small-short-side.txt, the sheets all-*.jpg and words-*.jpg there): 60 of 60 touch nothing.
+       1440x900  12 of 12, all at 54 px, 0 far points on the words, the nearest to the exit button
+                 96 px above it
+       390x844   12 of 12, all at 24 px by their figure, 0 far points, the nearest 50 px above the
+                 button
+       360x740   12 of 12 (ten at 24 px, one at 22, Leo at 20), 0 far points
+       375x667   12 of 12 (ten at 24 px, one at 22, Leo at 18: three rows, touching nothing, 30 px
+                 from the nearest star's edge), 0 far points. The third look: Leo across two stars
+                 and three lines at 21 px.
+       844x390   12 of 12, all at 24 px, 0 far points, the nearest 45 px above the button (Leo).
+                 The third look: Leo's two lines into three stars and two lines; 27, 4 and 1 far
+                 points on Pisces's, Cancer's and Aries's words.
+       SET BESIDE THE THIRD LOOK'S OWN OUTPUT: the 24 verdict lines of 1440x900 and 390x844 are
+       the same, word for word and number for number; so are the 12 of 360x740; of the 12 of
+       375x667 eleven are the same and the twelfth is Leo's, FAIL then and PASS now.
+       The writing recorded at both of the owner's sizes (Aries 372 frames, Leo and the final line
+       522; write-*.jpg): console errors none.
+     "CLAIM YOURS" BESIDE A MEANING (f8.mjs; b7/f8.txt, claim-yours-desk.jpg, -phone.jpg): five
+     figures seeded complete one at a time, three taps each, both sizes: the label is 49 px or
+     more from the meaning in all 30 (the least: 49 px, Aries on the phone; 52 px, Cancer on the
+     desktop). Aries on the desktop 59, 130 and 59 px, Taurus 69, 136 and 60 px: the third look's
+     same taps gave 11 px, 130 and "OVER THE MEANING" (the boxes; the letters stood 5 px apart)
+     at Aries and 10 px, 136 and "OVER THE MEANING" (6 px) at Taurus.
+     (Parts 3 (the loader's runs), 6 and 7 are written below as they are done.)

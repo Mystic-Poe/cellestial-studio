@@ -1,0 +1,4 @@
+phone, a fast line: FIRST VISITS: first paint at 204, 76, 88, 88, 76 ms; the C first seen at 204, 76, 88, 88, 76 ms; loader live at 37, 60, 40, 38, 37 ms; the sky at 7541, 7204, 7176, 7174, 7175 ms after navigation
+   FIRST SEEN TO THE SKY: 7.34, 7.13, 7.09, 7.09, 7.10 s   (from the browser's first paint: 7.34, 7.13, 7.09, 7.09, 7.10 s; from the loader going live: 7.50, 7.14, 7.14, 7.14, 7.14 s; from navigation: 7.54, 7.20, 7.18, 7.17, 7.17 s)
+   same-session reload (the short version): first paint at 92 ms, the sky at 3483 ms: 3.39 s on screen; the server's unlit C shown: never
+   a skip (tap) at 1153 ms (first paint 72, loader live 38): the sky at 2861 ms, 1.71 s after the tap
