@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { CONSTELLATIONS } from '../../../../src/content/constellations.ts';
 import { PROD, SIZES, launch, open, outDir, sleep } from './lib.mjs';
-const { values } = parseArgs({ options: { size: { type: 'string', default: 'desk' }, complete: { type: 'boolean', default: false }, crops: { type: 'string' }, only: { type: 'string' } } });
+const { values } = parseArgs({ options: { size: { type: 'string', default: 'desk' }, complete: { type: 'boolean', default: false }, crops: { type: 'string' }, only: { type: 'string' }, every: { type: 'boolean', default: false } } });
 const size = values.size;
 const dir = outDir('labels');
 const { width: W, height: H } = SIZES[size].viewport;
@@ -45,8 +45,18 @@ for (let k = 0; k < 12; k++) {
 	const cols = W > 700 ? 11 : 6, rows = 9;
 	const top0 = SIZES[size].hasTouch ? 130 : 100;
 	const seen = new Set();
-	for (let n = 0; n < cols * rows; n++) {
-		const pt = [30 + ((W - 60) * (n % cols)) / (cols - 1), top0 + ((H - top0 - 100) * Math.floor(n / cols)) / (rows - 1)];
+	// --every (the second run): not the grid but EVERY STAR of the figure: points round each star, just outside its
+	// touch target, tried until a tap is answered with that star (36 a star at most), so that the label of every
+	// star a visitor can be offered is written down, not only those the grid happens to reach.
+	let pts = [];
+	if (values.every) {
+		const circles = await o.page.evaluate((slots) => slots.map((s) => [s, window.__cellestial.sky.hooks.starCircle(s)]), own);
+		for (const [slot, c0] of circles) { if (!c0) continue; for (const d of [22, 32, 44]) for (let a = 0; a < 12; a++) { const x = c0.x + (c0.r + d) * Math.cos((a * Math.PI) / 6 + d), y = c0.y + (c0.r + d) * Math.sin((a * Math.PI) / 6 + d); if (x > 6 && x < W - 6 && y > 6 && y < H - 6) pts.push({ pt: [x, y], want: slot }); } }
+	} else for (let n = 0; n < cols * rows; n++) pts.push({ pt: [30 + ((W - 60) * (n % cols)) / (cols - 1), top0 + ((H - top0 - 100) * Math.floor(n / cols)) / (rows - 1)] });
+	const got = new Set();
+	for (let n = 0; n < pts.length; n++) {
+		const { pt, want } = pts[n];
+		if (want && got.has(want)) continue;
 		const hit = await o.page.evaluate(([x, y]) => { const el = document.elementFromPoint(x, y); return el ? (el.closest('button, a, .sky-claim') ? 'a control' : 'sky') : 'nothing'; }, pt);
 		const rec = { k, fig: c.name, n, pt };
 		if (hit !== 'sky') { rec.what = hit; taps.push(rec); continue; }
@@ -99,6 +109,7 @@ for (let k = 0; k < 12; k++) {
 		}, [ALL]);
 		if (!r) { rec.what = 'none'; taps.push(rec); await o.page.keyboard.press('Escape'); await sleep(80); continue; }
 		Object.assign(rec, { what: 'label' }, r);
+		got.add(r.slot);
 		const key = `${r.slot}|${r.side}|${r.slide}`;
 		rec.first = !seen.has(key);
 		if (rec.first && values.crops) {
@@ -116,8 +127,9 @@ for (let k = 0; k < 12; k++) {
 		await sleep(80);
 	}
 	const errs = o.errors.filter((e) => !/about:blank/.test(e));
+	if (values.every) console.log(`${size} ${k + 1} ${c.name}: every star: ${own.length} stars, a label got for ${own.filter((x) => got.has(x)).length}${own.some((x) => !got.has(x)) ? `; NOT for ${own.filter((x) => !got.has(x)).join(', ')}` : ''}`);
 	console.log(`${size} ${k + 1} ${c.name}: ${taps.filter((t) => t.k === k && t.what === 'label').length} labels, ${taps.filter((t) => t.k === k && t.what === 'none').length} none, ${taps.filter((t) => t.k === k && t.what === 'panel').length} panels, console errors ${errs.length}${errs.length ? `: ${errs[0]}` : ''}`);
 	await o.context.close();
 }
-writeFileSync(join(dir, `${size}${values.complete ? '-complete' : ''}.json`), JSON.stringify(taps));
+writeFileSync(join(dir, `${size}${values.complete ? '-complete' : ''}${values.every ? '-every' : ''}.json`), JSON.stringify(taps));
 await browser.close();

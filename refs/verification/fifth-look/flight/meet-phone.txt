@@ -1,0 +1,12 @@
+phone Virgo: tap at 242,241: the words by slot-87 right after 538 ms, 8.3 px from its disc; a tap on the WORDS: the empty panel, star slot-87 (theirs)
+phone Virgo: tap at 195,422: the words by slot-3 under after 668 ms; a tap on the STAR: the empty panel, star slot-3 (that star)
+phone Virgo: the words by slot-74, then a swipe: the flight glide, coord 0.18; the words taken off
+phone Virgo: console errors 0
+phone Sagittarius: tap at 289,150: the words by slot-84 above after 845 ms, 8.7 px from its disc; a tap on the WORDS: the empty panel, star slot-84 (theirs)
+phone Sagittarius: tap at 195,513: the words by slot-92 right after 516 ms; a tap on the STAR: the empty panel, star slot-92 (that star)
+phone Sagittarius: the words by slot-104, then a swipe: the flight glide, coord 3.18; the words taken off
+phone Sagittarius: console errors 0
+phone Taurus: tap at 242,241: the words by slot-60 above after 742 ms, 8.7 px from its disc; a tap on the WORDS: the empty panel, star slot-60 (theirs)
+phone Taurus: tap at 55,422: the words by slot-40 under after 667 ms; a tap on the STAR: the empty panel, star slot-40 (that star)
+phone Taurus: the words by slot-89, then a swipe: the flight glide, coord 8.20; the words taken off
+phone Taurus: console errors 0

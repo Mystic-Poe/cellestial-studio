@@ -1,0 +1,5 @@
+# The fifth look: captures and per-tap records are made again by the scripts in tools/ (sky-same.mjs, my-labels.mjs);
+# only sheets, logs and scripts are kept in the repo.
+same/**/*.png
+labels/*.json
+old/labels/*.json

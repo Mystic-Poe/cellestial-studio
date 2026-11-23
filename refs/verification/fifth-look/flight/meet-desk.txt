@@ -1,0 +1,12 @@
+desk Virgo: tap at 893,210: the words by slot-53 under after 874 ms, 8.9 px from its disc; a tap on the WORDS: the empty panel, star slot-53 (theirs)
+desk Virgo: tap at 1238,310: the words by slot-65 under after 511 ms; a tap on the STAR: the empty panel, star slot-65 (that star)
+desk Virgo: the words by slot-3, then the wheel: the flight glide, coord 0.09; the words taken off
+desk Virgo: console errors 0
+desk Sagittarius: tap at 893,210: the words by slot-84 under after 514 ms, 8.9 px from its disc; a tap on the WORDS: the empty panel, star slot-84 (theirs)
+desk Sagittarius: tap at 1066,410: the words by slot-39 under after 869 ms; a tap on the STAR: the empty panel, star slot-39 (that star)
+desk Sagittarius: the words by slot-92, then the wheel: the flight glide, coord 3.06; the words taken off
+desk Sagittarius: console errors 0
+desk Taurus: tap at 720,210: the words by slot-60 right after 514 ms, 9.0 px from its disc; a tap on the WORDS: the empty panel, star slot-60 (theirs)
+desk Taurus: tap at 547,410: the words by slot-1 left after 512 ms; a tap on the STAR: the empty panel, star slot-1 (that star)
+desk Taurus: the words by slot-54, then the wheel: the flight glide, coord 8.08; the words taken off
+desk Taurus: console errors 0

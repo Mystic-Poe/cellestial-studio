@@ -1,0 +1,4 @@
+time-desk-x4 from Capricornus (station 5) by Home to coord -0.00, the words by slot-43: 217 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +1772 ms
+time-desk-x4 from Capricornus: console errors 0
+time-desk-x4 from Taurus (station 9) by Home to coord 12.00, the words by slot-60: 215 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +24 ms
+time-desk-x4 from Taurus: console errors 0

@@ -7,9 +7,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { ROOT, SIZES } from './lib.mjs';
-const { values } = parseArgs({ options: { size: { type: 'string', default: 'phone' }, fig: { type: 'string' }, slot: { type: 'string' }, old: { type: 'boolean', default: false }, complete: { type: 'boolean', default: false } } });
+const { values } = parseArgs({ options: { size: { type: 'string', default: 'phone' }, fig: { type: 'string' }, slot: { type: 'string' }, old: { type: 'boolean', default: false }, complete: { type: 'boolean', default: false }, suffix: { type: 'string' } } });
 const { width: W, height: H } = SIZES[values.size].viewport;
-const t = JSON.parse(readFileSync(join(ROOT, 'refs/verification/fifth-look', values.old ? 'old' : '', 'labels', `${values.size}${values.complete ? '-complete' : ''}.json`))).find((x) => x.what === 'label' && x.fig === values.fig && x.slot === values.slot);
+const t = JSON.parse(readFileSync(join(ROOT, 'refs/verification/fifth-look', values.old ? 'old' : '', 'labels', `${values.size}${values.complete ? '-complete' : values.suffix ? `-${values.suffix}` : ''}.json`))).find((x) => x.what === 'label' && x.fig === values.fig && x.slot === values.slot);
 if (!t) { console.log('no such label'); process.exit(0); }
 const gap = (b, s) => Math.hypot(Math.max(b.x - s.x, 0, s.x - (b.x + b.w)), Math.max(b.y - s.y, 0, s.y - (b.y + b.h))) - s.r;
 const cover = (b, s) => { const dx = Math.max(b.x - s.x, 0, s.x - (b.x + b.w)), dy = Math.max(b.y - s.y, 0, s.y - (b.y + b.h)); const d = dx > 0 || dy > 0 ? Math.hypot(dx, dy) : -Math.min(s.x - b.x, b.x + b.w - s.x, s.y - b.y, b.y + b.h - s.y); if (d >= s.r) return 0; if (d <= -s.r) return Math.PI * s.r * s.r; return s.r * s.r * Math.acos(d / s.r) - d * Math.sqrt(s.r * s.r - d * d); };
