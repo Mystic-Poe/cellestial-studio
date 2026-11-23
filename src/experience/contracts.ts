@@ -46,10 +46,16 @@ export interface Claim {
 export type ClaimsEvent =
 	| { type: 'picked'; slot: SlotId | null }
 	| { type: 'claimed'; slot: SlotId }
-	| { type: 'unplaced' };
+	| { type: 'unplaced' }
+	/** The waiting ask was put on this star (a 'claimed' for it follows). */
+	| { type: 'placed'; slot: SlotId };
 
 export interface ClaimsStore {
-	/** Lit stars: the published registry plus requests sent from this device. */
+	/**
+	 * Lit stars: the published registry, the stars other visitors lit (the shared
+	 * sky) and requests sent from this device. A star another visitor lit has an
+	 * empty `ask` until the owner approves its text.
+	 */
 	all(): ReadonlyMap<SlotId, Claim>;
 	isLit(slot: SlotId): boolean;
 	/** The empty star this visitor chose but has not sent for yet. */
@@ -61,6 +67,11 @@ export interface ClaimsStore {
 	recordSent(ask: string, slot: SlotId | null): void;
 	/** Put the waiting ask on an empty star the visitor just chose. */
 	place(slot: SlotId): void;
+	/**
+	 * Take in the shared sky: whatever GET /api/contact/stars.json answered.
+	 * Nothing in it is trusted, and a star already lit is never put out by it.
+	 */
+	share(raw: unknown): void;
 	subscribe(fn: (e: ClaimsEvent) => void): () => void;
 }
 

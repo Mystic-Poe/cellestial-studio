@@ -291,18 +291,27 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	});
 
 	// ── a touch ──
+	/** The route of the last touch: only its beads bring the words to a star. */
+	let latest: Route | null = null;
 	const touch = (x: number, y: number): Route | null => {
-		clear();
-		if (!hooks.isActive()) return null;
-		const route = plan(x, y);
-		if (!route) return null;
+		const route = hooks.isActive() ? plan(x, y) : null;
+		if (!route) {
+			clear();
+			return null;
+		}
 		if (hooks.isStill()) {
 			// Nothing travels in a still sky: the star is simply marked.
+			clear();
 			startPulse(route.slot);
 			return route;
 		}
+		// A touch sends MORE light: the beads of the touch before are left to finish their
+		// course. The words leave the star they were at, unless these beads are for it too.
+		if (pulse && pulse.slot !== route.slot) endPulse();
+		latest = route;
 		beads.start(route, () => {
-			if (!hooks.isLit(route.slot)) startPulse(route.slot);
+			if (latest !== route || hooks.isLit(route.slot) || pulse?.slot === route.slot) return;
+			startPulse(route.slot);
 		});
 		return route;
 	};
@@ -338,7 +347,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	});
 	hooks.on('ignite', ({ slot }) => {
 		if (pulse?.slot === slot) endPulse();
-		if (beads.run()?.route.slot === slot) beads.stop();
+		beads.stopFor(slot);
 	});
 
 	// ── an ask is waiting for a star: show where one can go ──

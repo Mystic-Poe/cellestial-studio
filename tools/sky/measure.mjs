@@ -108,6 +108,10 @@ async function browser(gpu) {
 /** The real page on the sky, up and ready. `init` runs before any of its scripts. */
 async function open(size, { gpu = true, query = '?scene=sky&debug', init, initArg, context } = {}) {
 	const ctx = context ?? (await (await browser(gpu)).newContext(SIZES[size]));
+	// The dev server has no contact Worker behind it. A request that was sent with no star tells
+	// the Worker which star it then took (the shared sky, src/experience/shared-sky.ts): that call
+	// is answered from here, as the sends themselves are, so that it is not a 404 in the console.
+	await ctx.route('**/api/contact/place', (route) => route.fulfill({ status: 200, json: { ok: true } }));
 	const page = await ctx.newPage();
 	if (init) await page.addInitScript(init, initArg);
 	// Astro's dev toolbar sits at bottom centre, over the exit button. Gone on every load.

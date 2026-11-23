@@ -378,39 +378,99 @@ export function createLayout(
 	/** A star's disc radius at its figure's station, pixels. */
 	const discPx = (star: PlanStar) => starPx * sizeOf(star);
 
-	// Knots. Where two stars of a figure would cover each other by more than a third of the
-	// smaller one's width, both are drawn smaller, so that they read as two stars and not
-	// as a lump. Only what is drawn changes: a star's tap target is as large as ever. On
-	// every screen: Taurus's closest pair is a knot on a desktop too.
+	// Clean spacing. At its station no two stars of a figure touch: every pair keeps
+	// `KNOT.gap` pixels between their discs. Crowded stars are drawn smaller first (only
+	// what is drawn changes: a star's tap target is as large as ever); where the least
+	// size is still too large for the room, the two are moved apart by the few pixels
+	// that are missing. A figure with a moved star gets a plan of its own, so that
+	// everything that reads a star's place from the layout reads the place it is drawn at.
 	for (const [i, plan] of plans.entries()) {
 		const scale = (fits[i] as FigureFit).scale;
-		for (let pass = 0; pass < 4; pass++) {
+		const n = plan.stars.length;
+		const at = plan.stars.map((s) => ({ x: s.x * scale, y: s.y * scale }));
+		const r = plan.stars.map(discPx);
+		const lack = (a: number, b: number) => {
+			const p = at[a] as { x: number; y: number };
+			const q = at[b] as { x: number; y: number };
+			return (r[a] as number) + (r[b] as number) + KNOT.gap - Math.hypot(p.x - q.x, p.y - q.y);
+		};
+		const pairs: [number, number][] = [];
+		for (let a = 0; a < n; a++) {
+			for (let b = a + 1; b < n; b++) {
+				if (a !== plan.epicentre && b !== plan.epicentre && lack(a, b) > 1e-9) pairs.push([a, b]);
+			}
+		}
+		if (pairs.length === 0) continue;
+
+		// Smaller first: each of the two down towards half the room, the larger giving way
+		// to a smaller neighbour that has no need to shrink, and none under the least size.
+		for (let pass = 0; pass < 8; pass++) {
 			let changed = false;
-			for (let a = 0; a < plan.stars.length; a++) {
-				for (let b = a + 1; b < plan.stars.length; b++) {
-					if (a === plan.epicentre || b === plan.epicentre) continue;
-					const p = plan.stars[a] as PlanStar;
-					const q = plan.stars[b] as PlanStar;
-					const d = Math.hypot(p.x - q.x, p.y - q.y) * scale;
-					const rp = discPx(p);
-					const rq = discPx(q);
-					if (rp + rq - d <= KNOT.over * 2 * Math.min(rp, rq) + 1e-9) continue;
-					const r = Math.max(
-						KNOT.leastPx,
-						Math.min(Math.max(KNOT.floorPx, KNOT.radius * d), KNOT.tight * d),
-					);
-					for (const [star, now] of [
-						[p, rp],
-						[q, rq],
-					] as const) {
-						if (r < now - 1e-9) {
-							sizes.set(star, r / starPx);
-							changed = true;
-						}
+			for (const [a, b] of pairs) {
+				if (lack(a, b) <= 1e-9) continue;
+				const room = (r[a] as number) + (r[b] as number) - lack(a, b);
+				const half = Math.max(KNOT.leastPx, room / 2);
+				for (const [k, other] of [
+					[a, b],
+					[b, a],
+				] as const) {
+					const want = Math.max(KNOT.leastPx, half, room - Math.min(r[other] as number, half));
+					if (want < (r[k] as number) - 1e-9) {
+						r[k] = want;
+						changed = true;
 					}
 				}
 			}
 			if (!changed) break;
+		}
+
+		// Then apart, where the least size is still too near: both by the same, along the
+		// line between them, until every pair of the figure has its gap again.
+		let moved = false;
+		for (let pass = 0; pass < 200; pass++) {
+			let changed = false;
+			for (let a = 0; a < n; a++) {
+				for (let b = a + 1; b < n; b++) {
+					if (a === plan.epicentre || b === plan.epicentre) continue;
+					const short = lack(a, b);
+					if (short <= 1e-3) continue;
+					const p = at[a] as { x: number; y: number };
+					const q = at[b] as { x: number; y: number };
+					const d = Math.hypot(q.x - p.x, q.y - p.y) || 1e-6;
+					const push = short / 2 + 0.005;
+					const ux = (q.x - p.x) / d;
+					const uy = (q.y - p.y) / d;
+					p.x -= ux * push;
+					p.y -= uy * push;
+					q.x += ux * push;
+					q.y += uy * push;
+					changed = true;
+					moved = true;
+				}
+			}
+			if (!changed) break;
+		}
+
+		let stars = plan.stars;
+		if (moved) {
+			stars = plan.stars.map((s, k) => {
+				const p = at[k] as { x: number; y: number };
+				const dx = p.x - s.x * scale;
+				const dy = p.y - s.y * scale;
+				const far = Math.hypot(dx, dy);
+				if (far < 1e-6) return s;
+				// Never further than the rule allows: past that the pair keeps what gap it has.
+				const keep = Math.min(1, KNOT.movePx / far);
+				return { ...s, x: s.x + (dx * keep) / scale, y: s.y + (dy * keep) / scale };
+			});
+			const clearance = Math.min(
+				...stars.map((s) => Math.hypot(s.x - plan.pass.x, s.y - plan.pass.y)),
+			);
+			plans[i] = { ...plan, stars, clearance };
+		}
+		for (const [k, star] of stars.entries()) {
+			const natural = discPx(plan.stars[k] as PlanStar);
+			if ((r[k] as number) < natural - 1e-9) sizes.set(star, (r[k] as number) / starPx);
 		}
 	}
 

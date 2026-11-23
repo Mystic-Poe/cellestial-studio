@@ -24,6 +24,7 @@ import type { LoaderScene, SceneContext, Stage } from './contracts.ts';
 import { createDirector, type StartScene } from './director.ts';
 import { mount as mountLoader } from './loader/index.ts';
 import { forceReducedMotion, reducedMotion } from './motion.ts';
+import { connectSharedSky } from './shared-sky.ts';
 import { B4_STATION_URL } from './sky/config.ts';
 import { expose, fail, register, when } from './stage.ts';
 
@@ -49,6 +50,8 @@ function boot(): void {
 	const claims = createClaimsStore(stars, browserStorage());
 	const director = createDirector();
 	const claimFlow = createClaimFlow(claims, director);
+	// The stars other visitors lit: fetched now, in the background, while the loader plays.
+	connectSharedSky(claims);
 	register('claims', claims);
 	register('director', director);
 	register('claimFlow', claimFlow);

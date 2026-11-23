@@ -15,7 +15,15 @@
   ],
   // CONTACT_TO and CONTACT_FROM were set in the dashboard, not here. Without
   // this, `wrangler deploy` would delete them.
-  "keep_vars": true
+  "keep_vars": true,
+  // The shared sky: the stars visitors have claimed, one record each (star:slot-N),
+  // and requests still waiting for a star (pending:<hash>, kept 30 days).
+  "kv_namespaces": [
+    {
+      "binding": "STARS",
+      "id": "22b3b2d3a00e4d09a11198a38634b979"
+    }
+  ]
   // All four of TURNSTILE_SECRET_KEY, RESEND_API_KEY, CONTACT_TO and
   // CONTACT_FROM are set by Gabriel on this Worker. Until they are, the
   // endpoint returns 503 and the form says it is not configured.

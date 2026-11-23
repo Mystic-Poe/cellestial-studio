@@ -547,7 +547,10 @@ export const mount: MountSky = (ctx) => {
 		emitter.emit('star-pick', { slot, lit: isLit, circle });
 		if (moving() && !(focus && focus.phase === 'travel')) flight.halt();
 		if (isLit) {
-			void scene.focusStar(slot);
+			// A star another visitor lit, whose text the owner has not approved, has nothing
+			// to show: it is lit, and a tap on it flies nowhere.
+			const nothingToRead = claims?.all().get(slot)?.ask === '';
+			if (!nothingToRead) void scene.focusStar(slot);
 			return;
 		}
 		const store = claims;
