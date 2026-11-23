@@ -1,0 +1,19 @@
+desk | first visit, played through | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+desk | same-session return (short loader) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+desk | skipped loader (a key or a tap 1 s in) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+desk | early skip (slow 4G, a key or a tap 1.0 s after navigation, before the loader is live) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+desk | ?scene=sky | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+desk | ?scene=roots | ends in scene roots | the three pictures asked for: none | console messages of any kind: 0
+desk | reduced motion (the device setting) | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+desk | ?rm=1 | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+desk | /contact | ends in scene (none) | the three pictures asked for: none | console messages of any kind: 0
+phone | first visit, played through | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+phone | same-session return (short loader) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+phone | skipped loader (a key or a tap 1 s in) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+phone | early skip (slow 4G, a key or a tap 1.0 s after navigation, before the loader is live) | ends in scene sky | the three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp | console messages of any kind: 0
+phone | ?scene=sky | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+phone | ?scene=roots | ends in scene roots | the three pictures asked for: none | console messages of any kind: 0
+phone | reduced motion (the device setting) | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+phone | ?rm=1 | ends in scene sky | the three pictures asked for: none | console messages of any kind: 0
+phone | /contact | ends in scene (none) | the three pictures asked for: none | console messages of any kind: 0
+TOTAL console messages (warnings, errors, anything), Turnstile's own aside: 0

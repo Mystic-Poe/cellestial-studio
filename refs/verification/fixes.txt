@@ -2452,4 +2452,64 @@ PIECE 4 — THE CLOSE-OUT (round 3)
      at 6.04 to 6.15 s on the desktop and 5.94 to 5.95 s on the phone; no frame without the star in
      8 of 8, nor in the 8 short loaders after them. (The third look: such a press was lost, 4 of 4,
      and the loader played through to 8.3 s.)
-     (The rest of part 3, and parts 6 and 7, are written below as they are done.)
+     THE CONSOLE (preload-console.mjs; loader/preload-console.txt): 0 messages of any kind in 18
+     cases (both sizes: a first visit played through, a return, a skip, an early skip on slow 4G,
+     ?scene=sky, ?scene=roots, reduced motion by the device, ?rm=1, /contact). The three pictures
+     are asked for where the loader plays and nowhere else ("none" on the two debug hooks, under
+     reduced motion and on /contact): the third look's three warnings are gone.
+     tools/loader/measure.mjs ON THE PRODUCTION BUILD, phone (--gpu --size phone --url
+     http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage; logs/
+     measure-prod-phone*.log), 11 of 11 in each of the four:
+                            full: from the mount / the visitor's clock   short   skip (tap / key)   Tab
+       unslowed             7.47 / 7.31                                  3.49    2.82 / 2.72        7.27 (7.24)
+       --throttle 4         7.60 / 7.37                                  3.66    3.06 / 3.02        7.50 (7.50)
+       --net slow4g         7.52 / 7.32                                  3.59    4.50 / 4.52        7.52 (7.36)
+       both                 7.51 / 7.38                                  3.75    4.72 / 4.72        7.51 (7.36)
+     The owner's 6 to 8 s holds on the visitor's clock in all four (piece 3 had 7.31, 7.45, 7.36,
+     7.37; before the round, on the old clock, 7.48, 7.50, 7.61, 7.79).
+     status.txt in piece-4/logs/: twenty-three runs; twenty-one "exit 0" and the two "exit 1" of
+     phone-sky.mjs at 375x667 and 844x390 that are explained above (the upright phone's rules
+     printed as FAIL where they do not apply or were left on purpose; no other line fails).
+     NOT RUN by the close-out (the brief's list does not have them; the pieces' own runs stand):
+     early-skip.mjs, loader-waterfall.mjs, loader-first3.mjs, loader-canvas.mjs, nojs-same.mjs,
+     sky-same.mjs, side-scenes.mjs, side-knots.mjs, f8-all.mjs, rm-words.mjs, far-words.mjs.
+
+  6. PROGRESS.md brought up to date: "Exact next step" (round 3 done, all four boxes; the fourth,
+     narrow look next, then the owner's decisions), what the owner is to be told of this round, "Final
+     verification" (a part "Round 3"), the rows of "Where things stand" this round changed (Loading,
+     Sky, B7, Final verification), the calls made where the spec is silent (a phone on its side; the
+     knots' rule and the rings' clear space on every screen; "claim yours" giving way; the clock
+     starting when the C is seen), what is in refs/, the Log.
+
+  7. Both servers stopped (4615, 4500); git status clean but for claude-vault/.
+
+  CHANGED BY THE CLOSE-OUT: no file under src/, public/, scripts/, tools/ or workers/, and no check.
+  New: refs/verification/round-3/tools/sheets-same.mjs and close-out.sh; the logs in round-3/logs/
+  (the suites) and everything under round-3/piece-4/ (the production runs, the sheets' comparison);
+  the sheets in refs/<scene>/compare/ and the three measure.txt as run-all.sh rebuilt them;
+  PROGRESS.md; this file.
+  LEFT, AND FOR THE FOURTH LOOK TO KNOW (nothing new: each is a piece's own "left", gathered here)
+  - A phone on its side: Taurus's closest pair stands 7 px apart and at the rule's floor of 6 px is
+    still 41.5% into each other at 844x390 (47% at 667x375, 49% at 740x360); Cellestial's star there
+    is its world size, 72.7 px (67 to 80 at the other three), not the upright phone's 84.
+    phone-sky.mjs prints both as FAIL at --size side, with "the six wide figures are at least 50%
+    of the height", which is the upright phone's rule.
+  - 375x667: Cellestial's star is 77.1 px (clear; smaller than the floor of the two judged phones).
+  - 360x740, Aries and Taurus both complete: Taurus's words further on stand faint 31 px from "the
+    Lamb". 320x568: Leo's three rows begin 8 px under the top. 932x430: one "claim yours" lies
+    across one of Libra's lines. With a figure and the next both complete a tap offers no star.
+  - Slow 4G: navigation to the sky is 9.1 s (8.3 before the round): the clock starts when the C is
+    seen, at 1.78 s, and no longer on a black screen at 0.8 s. The screen is black from 0.7 to 1.78
+    s. For the owner to be told; the place to change it is LATE and the plan in
+    src/experience/loader/timeline.ts.
+  - loader-slow.mjs's label "the script not yet there" is not true of this build's first case;
+    loader-seen.mjs's "whole" reads late on a FAST line (a level of light, as in the third look's
+    own run). Both are the tools', and their slow-line numbers are sound.
+  - tools/loader/measure.mjs on the production build needs --only full,short,skip,key,quiet-keys,
+    broken,resize,no-storage (its other two cases can only be made on the dev server).
+  - The 18 recorded or moving sheets differ from one rebuild to the next by themselves (part 4): a
+    later look that sets sheets side by side should use sheets-same.mjs with its control.
+  - Every number here is headless Chromium on this machine's GPU. No real phone.
+  BEFORE THE LAST COMMIT (23 Nov, 02:25): pnpm build (4 pages), pnpm test (174 of 174; 15, 16, 14),
+  pnpm lint (108 files), pnpm typecheck: all pass. Both servers stopped (nothing listens on 4615 or
+  4500); git status clean but for claude-vault/.

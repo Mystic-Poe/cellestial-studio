@@ -35,3 +35,13 @@ exit 0 (a5-probe-return)
 === a5-probe-return-slow4g: node refs/verification/round-3/tools/a5-probe-return.mjs 4 slow4g
 exit 0 (a5-probe-return-slow4g)
 === preload-console: node refs/verification/round-3/tools/preload-console.mjs
+exit 0 (preload-console)
+=== measure-prod-phone: node tools/loader/measure.mjs --gpu --size phone --url http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage
+exit 0 (measure-prod-phone)
+=== measure-prod-phone-cpu4x: node tools/loader/measure.mjs --gpu --size phone --url http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage --throttle 4
+exit 0 (measure-prod-phone-cpu4x)
+=== measure-prod-phone-slow4g: node tools/loader/measure.mjs --gpu --size phone --url http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage --net slow4g
+exit 0 (measure-prod-phone-slow4g)
+=== measure-prod-phone-cpu4x-slow4g: node tools/loader/measure.mjs --gpu --size phone --url http://localhost:4615 --only full,short,skip,key,quiet-keys,broken,resize,no-storage --throttle 4 --net slow4g
+exit 0 (measure-prod-phone-cpu4x-slow4g)
+DONE (all)
