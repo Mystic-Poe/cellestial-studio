@@ -1,0 +1,24 @@
+desk: scene at 3 s: loading
+desk: the sky 7.6 s after navigation
+desk: star buttons in the page: 12; logo true, menu button true
+desk: stars on screen 11; touching the sky beside one at 390,463
+desk: "claim yours" written at 342,490
+desk: the request form: {"action":"/api/contact","method":"post","names":["name","email","message","star","cf-turnstile-response"],"star":"slot-102","turnstile":"widget holder present"}
+desk: the menu: The Sky | What we build | Claim your star | Contact me
+desk: after the menu's second item the scene is roots
+desk: /contact/: spam-check frame from no frame
+desk: /start/new/ made a link: https://cellestialstudio.com/start/#… (131 characters after the #)
+desk: the link opens: names the business false, names the domain false, "incomplete" false
+desk: POSTs made to /api/: 0; console errors: 14: Connecting to 'data:,' violates the following Content Security Policy directive: "connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.ch || Connecting to 'data:,' violates the following Content Security Policy directive: "connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.ch || Fetch API cannot load data:,. Refused to connect because it violates the document's Content Security Policy. || %c%d font-size:0;color:transparent NaN
+phone: scene at 3 s: loading
+phone: the sky 7.4 s after navigation
+phone: star buttons in the page: 12; logo true, menu button true
+phone: stars on screen 11; touching the sky beside one at 201,582
+phone: "claim yours" written at 153,603
+phone: the request form: {"action":"/api/contact","method":"post","names":["name","email","message","star","cf-turnstile-response"],"star":"slot-102","turnstile":"widget holder present"}
+phone: the menu: The Sky | What we build | Claim your star | Contact me
+phone: after the menu's second item the scene is roots
+phone: /contact/: spam-check frame from no frame
+phone: /start/new/ made a link: https://cellestialstudio.com/start/#… (131 characters after the #)
+phone: the link opens: names the business false, names the domain false, "incomplete" false
+phone: POSTs made to /api/: 0; console errors: 14: Connecting to 'data:,' violates the following Content Security Policy directive: "connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.ch || Connecting to 'data:,' violates the following Content Security Policy directive: "connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.ch || Fetch API cannot load data:,. Refused to connect because it violates the document's Content Security Policy. || %c%d font-size:0;color:transparent NaN

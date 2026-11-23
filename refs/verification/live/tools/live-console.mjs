@@ -1,0 +1,23 @@
+import { chromium } from '/home/poe/cellestial-studio/node_modules/playwright-core/index.mjs';
+const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', args: ['--enable-gpu', '--use-angle=vulkan', '--ignore-gpu-blocklist'] });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await ctx.newPage();
+let bucket = [];
+page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') bucket.push(`${m.type()} @ ${(m.location().url || '(no url)').replace(/\?.*/, '').slice(0, 90)} :: ${m.text().slice(0, 90)}`); });
+page.on('pageerror', (e) => bucket.push(`pageerror :: ${String(e).slice(0, 120)}`));
+const failed = [];
+page.on('requestfailed', (r) => failed.push(`${r.url().slice(0, 100)} ${r.failure()?.errorText}`));
+page.on('response', (r) => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url().slice(0, 110)}`); });
+await page.goto('https://cellestialstudio.com/', { waitUntil: 'load' });
+await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 15000 });
+await page.waitForTimeout(3000);
+console.log('HOME, loader to sky, 3 s in the sky: console errors and warnings:', bucket.length); bucket.forEach((b) => console.log('  ', b));
+bucket = [];
+await page.goto('https://cellestialstudio.com/contact/', { waitUntil: 'load' });
+await page.waitForTimeout(5000);
+const by = {};
+for (const b of bucket) { const k = b.split(' :: ')[0]; by[k] = (by[k] ?? 0) + 1; }
+console.log('CONTACT page, 5 s: console errors and warnings by source:', JSON.stringify(by, null, 1));
+console.log('frames:', page.frames().map((f) => { try { return new URL(f.url()).host; } catch { return f.url().slice(0, 30); } }).join(', '));
+console.log('failed or 4xx/5xx requests:', failed.length); failed.slice(0, 8).forEach((f) => console.log('  ', f));
+await browser.close();

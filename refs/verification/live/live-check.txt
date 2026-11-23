@@ -1,0 +1,32 @@
+== pages
+200  /
+307  /contact
+200  /contact/
+307  /start
+200  /start/
+307  /start/new
+200  /start/new/
+200  /admin/
+200  /admin/config.yml
+200  /credits.txt
+200  /favicon.ico
+200  /favicon.png
+404  /nope-404
+== the homepage against the clean build of the same commit
+same, but for the stylesheet's name and the spam-check key
+same: /contact/
+same: /start/
+same: /start/new/
+same: /admin/
+== the spam-check key in the live pages (must not be the test key)
+      3 0x4AAA…
+index.html:0
+page-contact.html:0
+== every file of the build is served, byte for byte (pages and the stylesheet apart)
+  33 the same, 0 not
+  stylesheet /_astro/Base.CXtRmWvP.css -> 200 33732 bytes (clean build: 33732 bytes; identical)
+== the three Workers answer on their routes (nothing is sent)
+contact, GET:            {"error":"Send the form with POST."} [405]
+contact, POST, no token: {"error":"Please complete the spam check and try again."} [400]
+auth, GET:               302 -> https://github.com/login/oauth/authorize?client_id=Ov23li…&redirect_uri=https%3A%2F%2Fcellestialstudio.com%2Fapi%2Fauth%2Fcallback&scope=public
+onboard, GET ping:       {"error":"POST only."} [405]

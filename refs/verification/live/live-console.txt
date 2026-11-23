@@ -1,0 +1,9 @@
+HOME, loader to sky, 3 s in the sky: console errors and warnings: 0
+CONTACT page, 5 s: console errors and warnings by source: {
+ "warning @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/x5urk": 6,
+ "error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/x5urk": 7
+}
+frames: cellestialstudio.com, challenges.cloudflare.com
+failed or 4xx/5xx requests: 2
+   https://brunhild.challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/i/a5f3350ceacf1be2/Cp-1nNC net::ERR_ADDRESS_UNREACHABLE
+   401 https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/pat/a5f3350ceacf1be2/1795468715574/c441d57b1b
