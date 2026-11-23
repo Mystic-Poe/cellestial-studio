@@ -1,0 +1,3 @@
+PASS  desk (1440x900), two figures complete: 849 taps on empty sky at twelve stations, "claim yours" shown 0 times: under its star 0, above 0, right 0, left 0; the nearest to a meaning none; within 40 px: 0
+PASS  phone (390x844), two figures complete: 446 taps on empty sky at twelve stations, "claim yours" shown 0 times: under its star 0, above 0, right 0, left 0; the nearest to a meaning none; within 40 px: 0
+PASS  side (844x390), two figures complete: 499 taps on empty sky at twelve stations, "claim yours" shown 0 times: under its star 0, above 0, right 0, left 0; the nearest to a meaning none; within 40 px: 0

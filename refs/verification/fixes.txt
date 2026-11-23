@@ -1821,10 +1821,81 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
     WHAT IS DIFFERENT AT 390x844, AND WHY IT IS WANTED: Pisces complete, six of the 444 taps
       (the upper left of the sky: 30,130 113,130 30,218 113,218 195,218 195,305). Before, the
       beads ran to slot-23 and "claim yours" stood under it 39 px from "His people": 1 px inside
-      the 40 this piece asks for. No other side of that star is free (the figure's own stars),
-      so that star is no longer offered from those taps and the beads run to the next nearest
-      empty star, slot-99, whose label stands under it, 40 px clear. Nothing else at 390x844
+      the 40 this piece asks for. No other side of that star is free (measured in the page:
+      above it the label would stand 4 px from the meaning, to its left 16 px, and to its right
+      on the next star), so that star is no longer offered from those taps and the beads run
+      to the next nearest empty star, slot-99, which is 16 px from it, and whose label stands
+      under it 40 px clear. Nothing else at 390x844
       and nothing at 1440x900 but the 24 taps at Aries and Taurus, which are 2c itself.
     Which was chosen, and why: the LABEL gives way; no meaning moved for 2c (the twelve desktop
     lines are the third look's, above). To keep 40 px from the label of every empty star on
     screen the words at Aries and Taurus would have had to leave the places round 2 gave them.
+    f8-all.mjs at the other sizes of 2a and 2b (f8-all-side667-side740-side932-short640-short568.txt):
+      667x375 268 taps, 246 shown, all under, nearest 41 px; 740x360 480, 439, all under, 43 px;
+      932x430 503, 479 (461 under, 18 above), 43 px; 360x640 269, 261 (9 right), 46 px;
+      320x568 261, 245 (7 right), 42 px. Within 40 px: 0 at each of the five.
+      The 18 "above" are Libra at 932x430 (slot-19; under its star the label would be 38 px
+      from "the price paid"): it stands over its star, 83 px from the meaning, 3 px off the
+      next star, and across one of Libra's thin lines (claim-yours-above-side932.jpg, enlarged,
+      looked at: it reads, and belongs to its star). The lines of a figure were never asked of
+      the label, under its star or anywhere; noted, not changed.
+    f8-all.mjs --pair (the figure AND the next complete; f8-all-pair-desk-phone-side.txt): no
+      "claim yours" is shown at all at 1440x900, 390x844 or 844x390 (849, 446 and 499 taps): the
+      answer looks for an empty star in the layer the visitor stands at and the one behind it,
+      and both are full. So there is nothing there to stand by a meaning. (As before this piece.)
+
+  WRITTEN WHERE THEY NOW STAND (b7.mjs --only write --sizes desk,side; b7-write-desk-side.txt;
+  372 and 522 frames a recording, console errors none; both strips looked at)
+    write-aries-desk.jpg  1440x900: the bolt comes down from the star at the right, "th", "the
+      La", "the Lamb" blue-white at +243 to +730 ms, cooled to brass by +1.2 s and still after.
+    write-leo-side.jpg    844x390: "the Lion of the / tribe of Judah" written row by row by the
+      bolt (+357 ms to +1.4 s), cooled by +2.1 s; then "Jesus is King." written under them
+      (+2.9 to +3.9 s) and cooled by +4.6 s; nothing moves after. (write-aries-side.jpg,
+      write-leo-desk.jpg are there too.)
+
+  REDUCED MOTION: THE WORDS ARE SIMPLY THERE (round-3/tools/rm-words.mjs, new: every star lit,
+  reduced motion; at each station 0.4 s after the visitor is stood there the figure's words are
+  shown, state "written", opacity 1, lit; a second picture 2 s later is compared pixel for pixel
+  inside the words' box; rm-words.txt, rm-words-<size>.jpg)
+    844x390, 667x375, 740x360, 932x430, 1440x900, 390x844, 375x667: 12 of 12 at each, nothing
+    moving in any box. The places are the ones b7.mjs measures with motion on (844x390 Leo
+    209x104 at 616,157; 1440x900 Aries 262x70 at 516,563). What the page says of each place
+    (state().placed) at 375x667: eleven "figure", Leo "tight" (18 px, two rows).
+    360x740: 11 of 12 by this tool's count; see the next entry (Aries, Taurus's words further on).
+
+  A FOURTH FAULT, FOUND BY THAT RUN AND PUT RIGHT: THE NEXT FIGURE'S WORDS AGAINST THESE, ON A
+  PHONE ON ITS SIDE (not in the third look; it comes of 2a's new places)
+  FOUND: rm-words-side.jpg as first made (kept as rm-words-side-before.jpg, looked at): at Virgo
+    a small faint "the price paid" stands against the upper left corner of "the virgin birth".
+    Words once written travel with their figure and are seen from afar (as built, on every
+    screen). Measured (rm-words.mjs --tag before; rm-words-before.txt), words of a figure
+    further on showing at a tenth of their strength or more, at a station:
+      844x390  six; the strongest 0.51; Libra's 88x16 at 474,209, 1 px from Virgo's words;
+               Taurus's 39 px from Aries's
+      667x375  six; 0.58; Libra's 0 px from Virgo's
+      740x360  six; 0.55; Libra's 25 px, Taurus's 35 px
+      932x430  six; 0.53; Libra's 16 px, Taurus's 38 px
+      1440x900 none (0.07 at most). 390x844 two, 0.23 at most, the nearer 129 px away.
+      375x667  none. 360x740 two, 0.19 at most: Taurus's 97x13, 31 px from "the Lamb".
+    Seen whenever both figures are complete: at once under reduced motion; with motion on a
+    second time round (the first time the next figure's words are not written yet).
+  THE CAUSE: on a phone on its side the visitor stands far back from a figure to see it whole,
+    so the next figure, one spacing further, is at 0.51 to 0.53 of its own station size (the
+    scale read from the page at all twelve stations of the four sizes; an upright phone has
+    0.44 at most, the desktop 0.38). Words are seen from 0.32 of that size and whole at 0.7
+    (SEEN, meaning.ts): so there they stood at half strength in the middle of the screen,
+    which on that screen is where 2a now finds the room for the station's own words.
+  CHANGED (src/experience/sky/meaning.ts): on a screen under 450 px high (SHORT, as 2a) words are
+    first seen at 0.58 of their station size and whole at 0.88 (SEEN_SIDE); every other screen
+    as before. The rule is its own exported function, seenAt(rel, height), tested in node
+    (sky-meaning-place.test.ts, 1 new: nothing at 0.36 to 0.53 on the six side sizes, whole at
+    the station and where the writing begins, and the old numbers exactly at 450 px and up).
+  CHECKED AGAIN (production build, rm-words.mjs, all eight sizes; rm-words.txt): at 844x390,
+    667x375, 740x360 and 932x430 no words of a figure further on are seen at any station (the
+    strongest 0.00), 12 of 12 simply there at each. 1440x900 none; 390x844 two at 0.23, 129 px,
+    as before; 375x667 none.
+  LEFT, AND WHY: 360x740, Aries: Taurus's words further on at 0.19 of their strength, 13 px
+    high, 31 px from "the Lamb" (both figures complete; reduced motion or a second time round).
+    It is as the build was before this piece (nothing at 360x740 moved), it is faint, and to
+    change it the upright phone's rule would have to change, which 390x844 shares: not touched.
+    rm-words.mjs counts it, so that tool says FAIL at that one size. For the fourth look.

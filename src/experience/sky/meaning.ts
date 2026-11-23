@@ -182,6 +182,14 @@ const WRITE = {
 } as const;
 /** The words are seen while their plane is between these multiples of its scale at the station. */
 const SEEN = { from: 0.32, full: 0.7, near: 1.5, gone: 2.4 } as const;
+/**
+ * On a phone held on its side the visitor stands far back from a figure to see it whole, so
+ * the next figure is at half its station size already (0.51 to 0.53, where an upright phone
+ * has 0.44 at most and a desktop 0.38) and in the middle of the screen, which is where the
+ * room for this figure's words is: its words, once written, stood there at half strength,
+ * small, against these (Libra's 1 px from Virgo's). There they are first seen later.
+ */
+const SEEN_SIDE = { ...SEEN, from: 0.58, full: 0.88 } as const;
 /** "At the station": the plane's scale is within this of its scale there. */
 const AT_STATION = 0.06;
 /** Room kept clear around a star: its 44 px button, and a little air. */
@@ -261,6 +269,15 @@ const smoothstep = (a: number, b: number, x: number): number => {
 	const t = clamp((x - a) / (b - a), 0, 1);
 	return t * t * (3 - 2 * t);
 };
+
+/**
+ * How strongly a figure's words are seen, 0 to 1, when their plane is drawn at `rel` times
+ * its scale at the station, on a screen `h` pixels high.
+ */
+export function seenAt(rel: number, h: number): number {
+	const seen = h < SHORT ? SEEN_SIDE : SEEN;
+	return smoothstep(seen.from, seen.full, rel) * (1 - smoothstep(seen.near, seen.gone, rel));
+}
 
 export function createMeaning(hooks: SkyHooks): Meaning {
 	const entries = new Map<number, Entry>();
@@ -825,10 +842,7 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			const layer = front + mod(entry.figure - front, FIGURES);
 			const p = hooks.project(entry.anchor.x, entry.anchor.y, -layer * SPACING);
 			const rel = p.scale / fit.scale;
-			const alpha =
-				p.scale > 0
-					? smoothstep(SEEN.from, SEEN.full, rel) * (1 - smoothstep(SEEN.near, SEEN.gone, rel))
-					: 0;
+			const alpha = p.scale > 0 ? seenAt(rel, layout.h) : 0;
 			const seen = alpha > 0.01;
 			if (seen) {
 				entry.el.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) translate(-50%, 0) scale(${rel.toFixed(4)})`;

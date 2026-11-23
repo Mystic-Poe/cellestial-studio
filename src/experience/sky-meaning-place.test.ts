@@ -12,7 +12,7 @@ import {
 	labelAt,
 	placeLabel,
 } from './sky/claim-label.ts';
-import { placingFor } from './sky/meaning.ts';
+import { placingFor, seenAt } from './sky/meaning.ts';
 
 const SIDES = [
 	[844, 390],
@@ -94,6 +94,33 @@ const scene = (meanings: Box[], stars: Disc[] = [], w = 1440, h = 900): LabelSce
 	stars: () => stars,
 });
 const gapTo = (place: { box: Box }, m: Box) => boxGap(place.box, m);
+
+test("on a phone on its side the next figure's words wait until their figure is near", () => {
+	// The next figure stands at 0.51 to 0.53 of its station size when the visitor is at a
+	// station there (measured in the page at the four sizes): its words are not shown yet.
+	for (const [w, h] of SIDES) {
+		for (const rel of [0.36, 0.44, 0.51, 0.53]) {
+			assert.equal(seenAt(rel, h), 0, `${w}x${h}, the next figure at ${rel} of its size`);
+		}
+		assert.equal(seenAt(1, h), 1, `${w}x${h}: at the station the words are whole`);
+		assert.equal(seenAt(0.94, h), 1, `${w}x${h}: and where the writing may begin`);
+		assert.ok(seenAt(0.7, h) > 0 && seenAt(0.7, h) < 1, `${w}x${h}: they come as the figure nears`);
+		assert.equal(seenAt(2.4, h), 0, `${w}x${h}: and are gone behind the visitor as on any screen`);
+	}
+	// Every other screen sees them as it did: from 0.32 of the station size, whole at 0.7.
+	const before = (rel: number): number => {
+		const s = (a: number, b: number, x: number): number => {
+			const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+			return t * t * (3 - 2 * t);
+		};
+		return s(0.32, 0.7, rel) * (1 - s(1.5, 2.4, rel));
+	};
+	for (const h of [450, 568, 667, 740, 844, 900, 1080]) {
+		for (const rel of [0.2, 0.32, 0.38, 0.44, 0.53, 0.7, 1, 1.5, 1.9, 2.4, 3]) {
+			assert.equal(seenAt(rel, h), before(rel), `${h} px high, ${rel}`);
+		}
+	}
+});
 
 test('with no meaning near, the words stand under their star, where they always stood', () => {
 	const star = { x: 700, y: 400, r: 10 };

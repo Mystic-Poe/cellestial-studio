@@ -1,0 +1,39 @@
+PASS  side667 (667x375): 268 taps on empty sky at twelve stations, "claim yours" shown 246 times: under its star 246, above 0, right 0, left 0; the nearest to a meaning 41 px (Libra, tap at 334,130, slot-27, under); within 40 px: 0
+PASS  side740 (740x360): 480 taps on empty sky at twelve stations, "claim yours" shown 439 times: under its star 439, above 0, right 0, left 0; the nearest to a meaning 43 px (Libra, tap at 370,130, slot-27, under); within 40 px: 0
+      side932 Libra complete, tap at 466,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,330: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,330: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+PASS  side932 (932x430): 503 taps on empty sky at twelve stations, "claim yours" shown 479 times: under its star 461, above 18, right 0, left 0; the nearest to a meaning 43 px (Capricornus, tap at 575,130, slot-134, under); within 40 px: 0
+      short640 Aries complete, tap at 105,438: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 180,438: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 255,438: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 330,438: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 30,540: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 105,540: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 180,540: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 255,540: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+      short640 Aries complete, tap at 330,540: "claim yours" RIGHT slot-116 (star at 224,364 r 4.8), box 236,352 96x24; 46 px from the meaning; 16 px from the nearest other star
+PASS  short640 (360x640): 269 taps on empty sky at twelve stations, "claim yours" shown 261 times: under its star 252, above 0, right 9, left 0; the nearest to a meaning 46 px (Aquarius, tap at 30,130, slot-125, under); within 40 px: 0
+      short568 Aries complete, tap at 160,384: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 225,384: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 290,384: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 95,468: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 160,468: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 225,468: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+      short568 Aries complete, tap at 290,468: "claim yours" RIGHT slot-116 (star at 198,322 r 4.8), box 211,310 96x24; 52 px from the meaning; 13 px from the nearest other star
+PASS  short568 (320x568): 261 taps on empty sky at twelve stations, "claim yours" shown 245 times: under its star 238, above 0, right 7, left 0; the nearest to a meaning 42 px (Aquarius, tap at 30,130, slot-125, under); within 40 px: 0
