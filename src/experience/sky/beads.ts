@@ -52,6 +52,11 @@ export const BEADS = {
 	sparkTime: 0.45,
 	/** How bright a passed edge is lit. */
 	edge: 1,
+	/**
+	 * How many runs can be on their way at once. A touch never puts out the beads of the
+	 * touch before it: it sends more. Past this many, the oldest run gives way.
+	 */
+	runs: 6,
 } as const;
 
 const EDGE = LATTICE.edge;
@@ -240,18 +245,41 @@ export interface BeadRun {
 }
 
 export interface Beads {
-	/** Send beads along a route, now. A run in progress is replaced. */
+	/**
+	 * Send beads along a route, now. Beads already on their way are left to finish their
+	 * course: a second touch sends more light, it does not start the light over.
+	 */
 	start(route: Route, onArrive: (run: BeadRun) => void): BeadRun;
 	/** Put out whatever is running. */
 	stop(): void;
-	/** The run in progress, or null. */
+	/** Put out the beads bound for one star (it has just been lit). */
+	stopFor(slot: SlotId): void;
+	/** The newest run in progress, or null. */
 	run(): BeadRun | null;
-	/** Where the beads are on screen now, head first (viewport pixels), for the capture tools. */
+	/** Every run in progress, oldest first. */
+	runs(): BeadRun[];
+	/** Where the newest run's beads are on screen now, head first (viewport pixels), for the capture tools. */
 	screen(): { x: number; y: number; level: number }[];
+	/** The same for every run in progress. */
+	screenAll(): { x: number; y: number; level: number }[];
+}
+
+/** One run on its way: its own pace, its own beads (a block of the points), its own arrival. */
+interface Live {
+	run: BeadRun;
+	/** Which block of points draws it. */
+	block: number;
+	speed: number;
+	gap: number;
+	arrive: ((run: BeadRun) => void) | null;
+	/** The next corner whose edge has not been lit yet. */
+	nextCorner: number;
+	places: { x: number; y: number; level: number }[];
 }
 
 export function createBeads(hooks: SkyHooks): Beads {
-	const n = BEADS.count + 1; // the spark is the last point
+	const per = BEADS.count + 1; // a run's beads, and its spark as the last point
+	const n = per * BEADS.runs;
 	const position = new BufferAttribute(new Float32Array(n * 3), 3);
 	const bead = new BufferAttribute(new Float32Array(n * 2), 2);
 	const geometry = new BufferGeometry();
@@ -283,25 +311,34 @@ export function createBeads(hooks: SkyHooks): Beads {
 	// rest of the sky, and the first touch does not have to wait for it.
 	hooks.three.scene.add(points);
 
-	let run: BeadRun | null = null;
-	let speed = 1;
-	let gap: number = BEADS.gap[1];
-	let arrive: ((run: BeadRun) => void) | null = null;
-	/** The next corner whose edge has not been lit yet. */
-	let nextCorner = 1;
+	/** The runs on their way, oldest first. */
+	const live: Live[] = [];
 	let release: (() => void) | null = null;
-	const places: { x: number; y: number; level: number }[] = [];
+
+	/** Put a block's points out. */
+	const dark = (block: number) => {
+		const look = bead.array as Float32Array;
+		for (let i = 0; i < per; i++) look[(block * per + i) * 2 + 1] = 0;
+		bead.needsUpdate = true;
+	};
+
+	/** Take one run off; when it was the last, the frame loop is let go. */
+	const end = (l: Live) => {
+		const at = live.indexOf(l);
+		if (at < 0) return;
+		live.splice(at, 1);
+		l.arrive = null;
+		l.places.length = 0;
+		dark(l.block);
+		if (live.length === 0) {
+			release?.();
+			release = null;
+		}
+		hooks.requestFrame();
+	};
 
 	const stop = () => {
-		run = null;
-		arrive = null;
-		const look = bead.array as Float32Array;
-		for (let i = 0; i < n; i++) look[i * 2 + 1] = 0;
-		bead.needsUpdate = true;
-		places.length = 0;
-		release?.();
-		release = null;
-		hooks.requestFrame();
+		for (const l of [...live]) end(l);
 	};
 
 	/** A place along the route, `s` edges from its start. */
@@ -321,94 +358,106 @@ export function createBeads(hooks: SkyHooks): Beads {
 
 	const tmp: RoutePoint = { x: 0, y: 0, layer: 0 };
 
-	const draw = (time: number) => {
-		const r = run;
-		if (!r) return;
+	const drawOne = (l: Live, time: number) => {
+		const r = l.run;
 		const t = time - r.t0;
 		const { route } = r;
 		const length = route.at[route.at.length - 1] as number;
 
 		// Light each edge as the head comes onto it.
-		while (nextCorner < r.times.length && (r.times[nextCorner - 1] as number) <= t) {
-			const kind = route.kinds[nextCorner];
-			const id = route.ids[nextCorner] as number;
-			const when = r.t0 + (r.times[nextCorner - 1] as number);
+		while (l.nextCorner < r.times.length && (r.times[l.nextCorner - 1] as number) <= t) {
+			const kind = route.kinds[l.nextCorner];
+			const id = route.ids[l.nextCorner] as number;
+			const when = r.t0 + (r.times[l.nextCorner - 1] as number);
 			if (kind === 'edge') hooks.lattice.pulseEdge(route.fromLayer, id, BEADS.edge, when);
 			else if (kind === 'edge2') hooks.lattice.pulseEdge(route.toLayer, id, BEADS.edge, when);
 			else if (kind === 'strut') hooks.lattice.pulseStrut(route.fromLayer, id, BEADS.edge, when);
-			nextCorner++;
+			l.nextCorner++;
 		}
 
 		if (!r.arrived && t >= r.arriveAfter) {
 			r.arrived = true;
-			const done = arrive;
-			arrive = null;
+			const done = l.arrive;
+			l.arrive = null;
 			done?.(r);
-			if (run !== r) return;
+			if (!live.includes(l)) return;
 		}
 		if (t >= r.endAfter && t >= BEADS.sparkTime) {
-			stop();
+			end(l);
 			return;
 		}
 
-		const { dpr } = hooks.quality();
-		uDpr.value = dpr;
 		const layout = hooks.layout();
 		const cam = hooks.camera();
 		// A bead is as large as it would be at a station; nearer or further, it follows a little.
 		const station = layout.fits[((route.fromLayer % 12) + 12) % 12]?.dist ?? 3;
-		const head = travelled(t, speed);
+		const head = travelled(t, l.speed);
 		const pos = position.array as Float32Array;
 		const look = bead.array as Float32Array;
-		places.length = 0;
+		const first = l.block * per;
+		l.places.length = 0;
 		for (let i = 0; i < BEADS.count; i++) {
-			const s = head - i * gap;
+			const s = head - i * l.gap;
 			const k = i / (BEADS.count - 1);
 			let level = s < 0 || s >= length ? 0 : BEADS.fade ** k;
 			// A bead comes up out of the spark rather than appearing whole.
 			if (level > 0) level *= Math.min(1, s / 0.35 + 0.25);
 			along(route, Math.min(Math.max(s, 0), length), tmp);
 			const depth = cam.z + tmp.layer * SPACING;
-			pos[i * 3] = tmp.x;
-			pos[i * 3 + 1] = tmp.y;
-			pos[i * 3 + 2] = -depth;
+			const at = first + i;
+			pos[at * 3] = tmp.x;
+			pos[at * 3 + 1] = tmp.y;
+			pos[at * 3 + 2] = -depth;
 			const near = Math.min(1.5, Math.max(0.4, station / Math.max(0.05, depth)));
-			look[i * 2] = BEADS.px * near * (1 - (1 - BEADS.tail) * k);
-			look[i * 2 + 1] = depth > 0.05 ? level : 0;
+			look[at * 2] = BEADS.px * near * (1 - (1 - BEADS.tail) * k);
+			look[at * 2 + 1] = depth > 0.05 ? level : 0;
 			if (level > 0 && depth > 0.05) {
 				const p = hooks.project(tmp.x, tmp.y, -tmp.layer * SPACING);
-				places.push({ x: p.x, y: p.y, level });
+				l.places.push({ x: p.x, y: p.y, level });
 			}
 		}
 		// The spark under the finger.
 		const origin = route.points[0] as RoutePoint;
 		const depth0 = cam.z + origin.layer * SPACING;
-		const s = BEADS.count;
+		const s = first + BEADS.count;
 		pos[s * 3] = origin.x;
 		pos[s * 3 + 1] = origin.y;
 		pos[s * 3 + 2] = -depth0;
 		const u = Math.min(1, Math.max(0, t / BEADS.sparkTime));
 		look[s * 2] = BEADS.spark * (0.55 + 0.45 * u);
 		look[s * 2 + 1] = depth0 > 0.05 ? 0.9 * (1 - u) ** 2 : 0;
+	};
+
+	const draw = (time: number) => {
+		if (live.length === 0) return;
+		uDpr.value = hooks.quality().dpr;
+		// A run may end, or be ended by what its arrival sets off, while the others are drawn.
+		for (const l of [...live]) if (live.includes(l)) drawOne(l, time);
 		position.needsUpdate = true;
 		bead.needsUpdate = true;
-		points.renderOrder = hooks.three.layerOrder(route.fromLayer) + 3;
+		const newest = live[live.length - 1];
+		if (newest) points.renderOrder = hooks.three.layerOrder(newest.run.route.fromLayer) + 3;
 	};
 
 	hooks.on('frame', ({ time }) => draw(time));
 
 	return {
 		start(route, onArrive) {
-			stop();
+			// No room left: the oldest run gives way (a visitor tapping faster than light travels).
+			while (live.length >= BEADS.runs) end(live[0] as Live);
+			const used = new Set(live.map((l) => l.block));
+			let block = 0;
+			while (used.has(block)) block++;
+
 			const length = route.at[route.at.length - 1] as number;
 			// A long way is run faster, so that no run keeps the visitor waiting.
 			const [slow, fast] = BEADS.speed;
-			speed = Math.min(fast, Math.max(slow, slow + (length - 6) * 0.55));
+			let speed = Math.min(fast, Math.max(slow, slow + (length - 6) * 0.55));
 			speed = Math.min(speed, length / Math.max(0.05, BEADS.minTime - BEADS.ease));
 			// The beads stand about as far apart on screen whatever the size of the honeycomb there.
 			const fit = hooks.layout().fits[((route.fromLayer % 12) + 12) % 12];
 			const edgePx = route.fromLayer === route.toLayer ? (fit?.scale ?? 300) * EDGE : 0;
-			gap = Math.min(BEADS.gap[1], Math.max(BEADS.gap[0], BEADS.gapPx / Math.max(1, edgePx)));
+			const gap = Math.min(BEADS.gap[1], Math.max(BEADS.gap[0], BEADS.gapPx / Math.max(1, edgePx)));
 			const times = route.at.map((s) => timeAt(s, speed));
 			const next: BeadRun = {
 				route,
@@ -418,15 +467,18 @@ export function createBeads(hooks: SkyHooks): Beads {
 				times,
 				arrived: false,
 			};
-			run = next;
-			arrive = onArrive;
-			nextCorner = 1;
-			release = hooks.keepAwake();
+			live.push({ run: next, block, speed, gap, arrive: onArrive, nextCorner: 1, places: [] });
+			release ??= hooks.keepAwake();
 			hooks.requestFrame();
 			return next;
 		},
 		stop,
-		run: () => run,
-		screen: () => places.map((p) => ({ ...p })),
+		stopFor(slot) {
+			for (const l of [...live]) if (l.run.route.slot === slot) end(l);
+		},
+		run: () => live[live.length - 1]?.run ?? null,
+		runs: () => live.map((l) => l.run),
+		screen: () => (live[live.length - 1]?.places ?? []).map((p) => ({ ...p })),
+		screenAll: () => live.flatMap((l) => l.places.map((p) => ({ ...p }))),
 	};
 }
