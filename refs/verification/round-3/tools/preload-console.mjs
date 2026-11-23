@@ -5,6 +5,8 @@
 // (the short loader), a skipped loader, ?scene=sky, ?scene=roots, reduced motion (the device's own
 // setting, and ?rm=1). Each page is left open 7 s after it has settled (Chromium's "preloaded but not
 // used" warning comes about 3 s after the load event). Production build, both sizes.
+// Round 3, piece 3: one more visitor's path, AN EARLY SKIP (slow 4G, a key or a tap 1.0 s after
+// navigation, before the loader's script is live).
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PROD, SIZES, launch, outDir, sleep } from './lib.mjs';
@@ -18,6 +20,7 @@ for (const size of ['desk', 'phone']) {
 		{ name: 'first visit, played through', url: '/', sky: true },
 		{ name: 'same-session return (short loader)', url: '/', sky: true, reload: true },
 		{ name: 'skipped loader (a key or a tap 1 s in)', url: '/', sky: true, skip: true },
+		{ name: 'early skip (slow 4G, a key or a tap 1.0 s after navigation, before the loader is live)', url: '/', sky: true, early: true },
 		{ name: '?scene=sky', url: '/?scene=sky' },
 		{ name: '?scene=roots', url: '/?scene=roots' },
 		{ name: 'reduced motion (the device setting)', url: '/', rm: true },
@@ -37,9 +40,19 @@ for (const size of ['desk', 'phone']) {
 		page.on('requestfailed', (r) => failed.push(`${r.url()} ${r.failure()?.errorText}`));
 		const preloaded = [];
 		page.on('request', (r) => { if (/loader\/(c-lit|wordmark|wordmark-matte)\.webp/.test(r.url())) preloaded.push(r.url().split('/').pop()); });
+		if (c.early) {
+			await cdp.send('Network.enable');
+			await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: (1.6 * 1024 * 1024) / 8, uploadThroughput: (750 * 1024) / 8 });
+			await page.goto(`${PROD}${c.url}`, { waitUntil: 'commit' });
+			await page.waitForFunction(() => performance.now() >= 1000, null, { polling: 'raf' });
+			const live = await page.evaluate(() => document.getElementById('loader')?.classList.contains('is-live'));
+			if (live) msgs.push('THE SCRIPT (not the page): the loader was already live at the press; this was not an early skip');
+			if (SIZES[size].hasTouch) await page.touchscreen.tap(200, 400); else await page.keyboard.press('a');
+			await page.waitForLoadState('load');
+		} else
 		await page.goto(`${PROD}${c.url}`, { waitUntil: 'load' });
 		if (c.skip) { await sleep(1000); if (SIZES[size].hasTouch) await page.touchscreen.tap(200, 400); else await page.keyboard.press('a'); }
-		if (c.sky) await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 30000 });
+		if (c.sky) await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 60000 });
 		if (c.reload) { msgs.push('--- reload ---'); await page.reload({ waitUntil: 'load' }); await page.waitForFunction(() => document.documentElement.dataset.scene === 'sky', null, { timeout: 30000 }); }
 		await sleep(7000);
 		const scene = await page.evaluate(() => document.documentElement.dataset.scene ?? '(none)');

@@ -5,9 +5,20 @@
 //
 // Each line is one run: what was done, and the seconds from the loader's mount
 // (the moment #loader gets .is-live) to the moment its `done` resolves; and,
-// in brackets, the same run on the VISITOR'S clock: from the first paint of
-// the loader's picture (the browser's first-contentful-paint: the unlit C of
-// the server's markup, or the canvas's first frame) to `done`.
+// in brackets, the same run on the VISITOR'S clock: from the moment the
+// loader's picture is first SEEN to `done`.
+//
+// When it is first seen is the loader's own definition (firstSeen() in
+// src/experience/loader/clock.ts), since round 3, piece 3: the earlier of the
+// frame in which the page showed the server's unlit C (the markup's script
+// notes it: window.__loaderEarly.seenAt) and the canvas's first drawing
+// (.is-drawn on #loader), and never before the browser's
+// first-contentful-paint: the later of the two. Until then this tool counted
+// from the first-contentful-paint alone, and so did the loader. The third
+// look found that on a slow line the browser reports that paint a second
+// before anything of the C is on screen, so both counted a second the visitor
+// had not had; the check follows the loader's clock, on purpose. On a fast
+// line the two starts are the same frame.
 //
 // The owner's rule, "6 to 8 s, never under 6", is on the visitor's clock, and
 // since round 2 (piece 2c) so are the loader's plan and its floor
@@ -71,14 +82,12 @@ const SIZES = {
 
 const INIT = `
 	(() => {
-		const m = (window.__m = { mount: null, done: null, sky: null, frames: [] });
+		const m = (window.__m = { mount: null, drawn: null, done: null, sky: null, frames: [] });
 		const seen = () => {
 			const el = document.getElementById('loader');
-			if (m.mount === null && el && el.classList.contains('is-live')) {
-				m.mount = performance.now();
-				return true;
-			}
-			return false;
+			if (m.mount === null && el && el.classList.contains('is-live')) m.mount = performance.now();
+			if (m.drawn === null && el && el.classList.contains('is-drawn')) m.drawn = performance.now();
+			return m.mount !== null && m.drawn !== null;
 		};
 		const mo = new MutationObserver(() => { if (seen()) mo.disconnect(); });
 		mo.observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
@@ -141,11 +150,17 @@ async function result(page, timeout = 25000) {
 		const m = window.__m;
 		const f = m.frames.slice().sort((a, b) => a - b);
 		const paint = performance.getEntriesByName('first-contentful-paint')[0];
+		// When the picture was first seen, as the loader has it (clock.ts, firstSeen).
+		const poster = window.__loaderEarly ? window.__loaderEarly.seenAt : null;
+		const shown = Math.min(poster ?? Infinity, m.drawn ?? Infinity);
+		const first = paint && Number.isFinite(shown) ? Math.max(paint.startTime, shown) : null;
 		return {
 			seconds: (m.done - m.mount) / 1000,
-			// On the visitor's clock. A run with nothing painted (a picture that 404s can end at once) has none.
-			seen: paint ? (m.done - paint.startTime) / 1000 : (m.done - m.mount) / 1000,
-			wait: paint ? (m.mount - paint.startTime) / 1000 : 0,
+			// On the visitor's clock. A run with nothing seen (a picture that 404s can end at once) has none.
+			seen: first !== null ? (m.done - first) / 1000 : (m.done - m.mount) / 1000,
+			// The same from the browser's first paint alone, as it was judged before round 3.
+			painted: paint ? (m.done - paint.startTime) / 1000 : (m.done - m.mount) / 1000,
+			wait: first !== null ? (m.mount - first) / 1000 : 0,
 			sky: m.sky === null ? null : (m.sky - m.mount) / 1000,
 			avg: f.reduce((a, b) => a + b, 0) / (f.length || 1),
 			p95: f[Math.floor(f.length * 0.95)] ?? 0,
@@ -158,7 +173,7 @@ async function result(page, timeout = 25000) {
 }
 
 function report(name, r, rule, ok, errors = []) {
-	const line = `${name.padEnd(22)} ${r.seconds.toFixed(2)} s (visitor's clock ${r.seen.toFixed(2)} s)  mode=${r.mode}  frames avg ${r.avg.toFixed(1)} ms, p95 ${r.p95.toFixed(1)} ms  → scene=${r.scene}, overlay=${r.overlay}  ${ok ? 'OK' : 'FAIL'} (${rule})`;
+	const line = `${name.padEnd(22)} ${r.seconds.toFixed(2)} s (visitor's clock ${r.seen.toFixed(2)} s; from the browser's first paint ${r.painted.toFixed(2)} s)  mode=${r.mode}  frames avg ${r.avg.toFixed(1)} ms, p95 ${r.p95.toFixed(1)} ms  → scene=${r.scene}, overlay=${r.overlay}  ${ok ? 'OK' : 'FAIL'} (${rule})`;
 	console.log(line);
 	for (const e of errors) console.log(`    console: ${e}`);
 	if (!ok) failed++;
@@ -286,5 +301,5 @@ if (want('late-sky')) {
 }
 
 await browser.close();
-if (full !== null) console.log(`\nfull version, mount to done: ${full.toFixed(2)} s; first paint to done (the visitor's clock): ${fullSeen.toFixed(2)} s`);
+if (full !== null) console.log(`\nfull version, mount to done: ${full.toFixed(2)} s; first seen to done (the visitor's clock): ${fullSeen.toFixed(2)} s`);
 process.exit(failed ? 1 : 0);
