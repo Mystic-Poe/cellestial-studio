@@ -54,7 +54,7 @@ const READ = () => {
 			discs.push({ x, y, r, off: layer - front, rings });
 		});
 	}
-	const near = discs.filter((s) => !s.rings && s.off === ownOff), far = discs.filter((s) => !s.rings && s.off !== ownOff), rings = discs.filter((s) => s.rings);
+	const near = discs.filter((s) => !s.rings && s.off === ownOff), far = discs.filter((s) => !s.rings && s.off > ownOff), front = discs.filter((s) => !s.rings && s.off < ownOff), rings = discs.filter((s) => s.rings);
 	const deepest = (l) => l.length ? Math.max(...l.map((s) => -gap(s))) : -Infinity;
 	const rect = (e) => { if (!e || e.hidden) return null; const q = e.getBoundingClientRect(); return q.width ? { x0: q.left, y0: q.top, x1: q.right, y1: q.bottom } : null; };
 	const bgap = (a, q) => Math.hypot(Math.max(a.x0 - q.x1, 0, q.x0 - a.x1), Math.max(a.y0 - q.y1, 0, q.y0 - a.y1));
@@ -65,6 +65,7 @@ const READ = () => {
 		letters: { x0: t.left, x1: t.right },
 		nearOn: near.filter((s) => gap(s) < 0).length, nearDeep: deepest(near), nearAir: near.length ? Math.min(...near.map(gap)) : Infinity,
 		farOn: far.filter((s) => gap(s) < 0).length, farCover: far.reduce((a, s) => a + cover(s), 0), nearCover: near.reduce((a, s) => a + cover(s), 0),
+		frontOn: front.filter((s) => gap(s) < 0).length, frontDeep: deepest(front),
 		rings: rings.length ? Math.min(...rings.map(gap)) : Infinity,
 		chrome, toMeaning: meanings.length ? Math.min(...meanings.map((q) => bgap(box, q))) : Infinity,
 		inside: box.x0 >= 0 && box.y0 >= 0 && box.x1 <= innerWidth && box.y1 <= innerHeight,
@@ -76,6 +77,7 @@ const faults = (r) => {
 	if (!r) return ['no label'];
 	const f = [];
 	if (r.nearOn) f.push(`on ${r.nearOn} star(s) of its own figure (${r.nearDeep.toFixed(1)} px in, ${r.nearCover.toFixed(0)} px2)`);
+	if (r.frontOn) f.push(`on ${r.frontOn} star(s) of the figure in front of its own (${r.frontDeep.toFixed(1)} px in)`);
 	if (r.farOn) f.push(`on ${r.farOn} point(s) of the figures behind (${r.farCover.toFixed(0)} px2)`);
 	if (r.rings < 0) f.push(`${(-r.rings).toFixed(1)} px inside the reach of Cellestial's rings`);
 	if (r.chrome.length) f.push(`on ${r.chrome.join(', ')}`);
@@ -93,7 +95,7 @@ for (const size of values.sizes.split(',')) {
 	const left = [];
 	const tally = { before: {}, after: {} };
 	const count = { stars: 0, moved: 0, sameStar: 0 };
-	const sum = { before: { near: 0, far: 0, rings: 0, chrome: 0, outside: 0, edge: 0, meaning: 0, none: 0, deepest: 0 }, after: { near: 0, far: 0, rings: 0, chrome: 0, outside: 0, edge: 0, meaning: 0, none: 0, deepest: 0 } };
+	const sum = { before: { near: 0, front: 0, far: 0, rings: 0, chrome: 0, outside: 0, edge: 0, meaning: 0, none: 0, deepest: 0 }, after: { near: 0, front: 0, far: 0, rings: 0, chrome: 0, outside: 0, edge: 0, meaning: 0, none: 0, deepest: 0 } };
 	let pages = null;
 	for (let k = 0; k < 12; k++) {
 		const c = CONSTELLATIONS[k];
@@ -137,6 +139,7 @@ for (const size of values.sizes.split(',')) {
 				const s = sum[name];
 				if (!r) { s.none++; continue; }
 				if (r.nearOn) { s.near++; s.deepest = Math.max(s.deepest, r.nearDeep); }
+				if (r.frontOn) s.front++;
 				if (r.farOn) s.far++;
 				if (r.rings < 0) s.rings++;
 				if (r.chrome.length) s.chrome++;
@@ -160,13 +163,13 @@ for (const size of values.sizes.split(',')) {
 				const cell = { img, label: `${c.name} ${key.replace('slot-', '')}: ${values.complete ? '' : `${where(b)} > `}${where(a)}${fa.length ? ' !' : ''}` };
 				cells.push(cell);
 				// Still on a star of its own figure, or on anything it must never be on: on a sheet of their own.
-				if (a && (a.nearOn || a.rings < 0 || a.chrome.length || !a.inside || a.edge < 16 || a.toMeaning < 40)) left.push({ ...cell, label: `${c.name} ${key.replace('slot-', '')}: ${where(a)}, ${a.nearOn ? `${a.nearDeep.toFixed(1)} px into a star` : fa[0]}` });
+				if (a && (a.nearOn || a.frontOn || a.rings < 0 || a.chrome.length || !a.inside || a.edge < 16 || a.toMeaning < 40)) left.push({ ...cell, label: `${c.name} ${key.replace('slot-', '')}: ${where(a)}, ${a.nearOn ? `${a.nearDeep.toFixed(1)} px into a star` : a.frontOn ? `${a.frontDeep.toFixed(1)} px into a near star` : fa[0]}` });
 			}
 			for (const o of pages) await o.page.evaluate(() => window.__cellestial.sky.answer.clear());
 		}
 	}
 	for (const o of pages) { const e = o.errors.filter((x) => !/about:blank/.test(x)); if (e.length) say(`console errors: ${e.join(' | ').slice(0, 300)}`); await o.context.close(); }
-	const line = (n) => `${JSON.stringify(tally[n])}; on a star of its own figure ${sum[n].near} (deepest ${sum[n].deepest.toFixed(1)} px); on points of the figures behind ${sum[n].far}; inside the reach of Cellestial's rings ${sum[n].rings}; on the logo, the menu or the exit button ${sum[n].chrome}; outside the screen ${sum[n].outside}; letters nearer a side than 16 px ${sum[n].edge}; within 40 px of a meaning ${sum[n].meaning}; no label ${sum[n].none}`;
+	const line = (n) => `${JSON.stringify(tally[n])}; on a star of its own figure ${sum[n].near} (deepest ${sum[n].deepest.toFixed(1)} px); on a star of the figure in front of its own ${sum[n].front}; on points of the figures behind ${sum[n].far}; inside the reach of Cellestial's rings ${sum[n].rings}; on the logo, the menu or the exit button ${sum[n].chrome}; outside the screen ${sum[n].outside}; letters nearer a side than 16 px ${sum[n].edge}; within 40 px of a meaning ${sum[n].meaning}; no label ${sum[n].none}`;
 	say(`${size} (${W}x${H})${values.complete ? ', the figure of each station complete' : ', the empty sky'}: ${count.stars} stars offered at the twelve stations; the same star's label on both builds ${count.sameStar}; not simply under its star now ${count.moved}`);
 	say(`  BEFORE: ${line('before')}`);
 	say(`  AFTER:  ${line('after')}`);

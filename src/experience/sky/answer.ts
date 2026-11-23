@@ -16,7 +16,14 @@
 
 import type { ClaimsStore, SlotId } from '../contracts.ts';
 import { type BeadRun, type Beads, createBeads, planRoute, type Route } from './beads.ts';
-import { type Box, type Disc, type LabelScene, type LabelSpot, placeLabel } from './claim-label.ts';
+import {
+	type Box,
+	type Disc,
+	hadPlace,
+	type LabelScene,
+	type LabelSpot,
+	placeLabel,
+} from './claim-label.ts';
 import { B3, FIGURES, SPACING } from './config.ts';
 import type { SkyHooks } from './hooks.ts';
 import { mod, type PlanStar } from './layout.ts';
@@ -147,9 +154,11 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (p.x < r || p.x > layout.w - r) continue;
 			if (p.y - r < 6 || p.y + r + WORDS.gap + WORDS.height > layout.h - 6) continue;
 			if (p.x - WORDS.half < CHROME.w && p.y - r < CHROME.h) continue;
-			// The words need a place by it: clear of every meaning and of Cellestial's star.
+			// The words need a place by it: as they always did (round 3's question, so that a
+			// touch offers the star it offered), and one that does not cross Cellestial's star.
 			view ??= scene();
-			if (!placeLabel({ x: p.x, y: p.y, r }, view)) continue;
+			const disc = { x: p.x, y: p.y, r };
+			if (!hadPlace(disc, view) || !placeLabel(disc, view)) continue;
 			const d = Math.hypot(p.x - x, p.y - y);
 			if (d < best) {
 				best = d;

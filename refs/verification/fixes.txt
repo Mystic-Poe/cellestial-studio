@@ -2539,3 +2539,43 @@ this round's). "Before" is the build at f7d5ea4, served beside the new one on po
   the full reach of the rings, B3.ring x layout.b3 x the scale: 100 px at Virgo on the desktop,
   48.5 on the phone, the same radius the layout keeps every star of Virgo clear of), but nothing
   marked it, and nothing under a star was ever compared with it.
+
+  ORCHESTRATOR'S NOTE (23 Nov, 09:10): THE FIXER WAS CUT OFF at 07:33 by the usage limit, in the
+  middle of a step. Checkpoints 1 and 2 are its own commits (548494f, 0f22156). What follows is
+  taken from its transcript, for whoever goes on; nothing here has been checked by anyone else.
+  WHAT IT HAD ESTABLISHED after checkpoint 1 (its own script, tools/r4-sheet.mjs: every star's
+  label at every station, the build as it stood beside the new one; labels/desk.txt, phone.txt,
+  desk-1 to 3.jpg, phone-1 to 5.jpg):
+    the empty sky, 1440x900, 146 labels: under their star 101, beside it 45; on a star of their
+      own figure 0 (it was 31, deepest 21.8 px); on points of the figures behind 4 (it was 13);
+      inside the reach of Cellestial's rings 0 (5); letters nearer a side than 16 px 0; no label
+      0; the same star offered at all 146.
+    the empty sky, 390x844, 146 labels: under 66, beside 80; on a star of their own figure 9,
+      deepest 10.1 px (it was 67, deepest 14.6); on far points 8 (23); inside the rings' reach 0
+      (5); letters nearer a side than 16 px 0 (34); no label 0; the same star offered at all 146.
+      The nine it could not clear are named in labels/phone.txt ("now: on N star(s) of its own
+      figure").
+    The places it tries are more than the brief's eight: also the places beside the star slid
+    12 px along it, and the places under and above slid 24 and 48 px (the names "right+12",
+    "under-48" and so on in those files). It had looked at the phone's sheets and was weighing
+    the labels that stand under ANOTHER star as near as their own (seven on the desktop).
+  WHAT IT WAS DOING WHEN CUT OFF (uncommitted then; committed with this note exactly as it was
+  left, after pnpm test (184 of 184; 15, 16, 14), pnpm lint and pnpm typecheck passed on it):
+    with a figure complete (r4-sheet.mjs --complete) the star a tap OFFERS had changed, at four
+    stations on the desktop and one on the phone. At Virgo complete on the desktop slot-88,
+    slot-25 and slot-47, whose words crossed Cellestial's star, were no longer offered, which
+    the brief allows. But elsewhere MORE stars were offered than before, because the words now
+    have more places to go (Scorpius 20 to 25, Taurus 10 to 12, Aries 11 to 12; Pisces on the
+    phone 3 to 4), which the brief's rule 4 does not allow. Its answer, in this commit:
+    hadPlace() in claim-label.ts asks round 3's question as it was, and nearestIn() in answer.ts
+    offers a star only if its words had a place then AND have one now; a test for it; and
+    r4-sheet.mjs changed to count it. BUILT, NOT YET MEASURED: run r4-sheet.mjs --complete again
+    first, and see that the star offered differs only where the words would cross Cellestial's
+    star.
+  STILL TO DO, all of it: the brief's numbers with the fourth look's own scripts (label-near.mjs
+  at the two sizes and at small, short and side; f8-all.mjs; label-on-stars.mjs; f8.mjs;
+  f8-close.mjs); motion on, and the click on the words (the brief's 7); the flight (8);
+  sky-same.mjs and all-taps.mjs (10); the builders' suites and run-all.sh; the sheets; the
+  gates; this record written out in full (the rule as settled: the order of places, what counts
+  as free, what covers least, the slack); PROGRESS.md. The preview server it left on 4615 was
+  stopped; the build as it stood is still at the scratchpad path the brief gives.

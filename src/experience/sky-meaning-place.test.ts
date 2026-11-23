@@ -10,6 +10,7 @@ import {
 	type Disc,
 	discCover,
 	discGap,
+	hadPlace,
 	LABEL,
 	LABEL_SPOTS,
 	type LabelScene,
@@ -229,6 +230,36 @@ test('once in a place, the words stay there while it will do', () => {
 	// A place between the sides is held the same way.
 	const held = placeLabel(star, scene([]), { side: 'under', slide: 24 });
 	assert.deepEqual([held?.side, held?.slide, held?.x], ['under', 24, 724]);
+});
+
+test('which star a touch offers is asked as round 3 asked it', () => {
+	const star = { x: 700, y: 400, r: 10 };
+	// No meaning near: a place under the star, whatever stands there (as before round 4).
+	assert.equal(hadPlace(star, scene([], [star, { x: 700, y: 430, r: 12 }])), true);
+	// A meaning under it: above is clear.
+	const below: Box = { x0: 500, y0: 455, x1: 900, y1: 525 };
+	assert.equal(hadPlace(star, scene([below])), true);
+	// Stars above it, to its right and to its left: it had no place, and was not offered.
+	const round = [
+		star,
+		{ x: 700, y: 366, r: 6 },
+		{ x: 760, y: 400, r: 6 },
+		{ x: 640, y: 400, r: 6 },
+	];
+	assert.equal(hadPlace(star, scene([below], round)), false);
+	// The words have a place by it now (a corner), but a touch does not offer it for that.
+	const now = placeLabel(star, scene([below], round));
+	assert.ok(now && now.side !== 'under');
+	// Meanings round every side: none, then and now.
+	const all: Box = { x0: 600, y0: 300, x1: 800, y1: 500 };
+	assert.equal(hadPlace(star, scene([all])), false);
+	assert.equal(placeLabel(star, scene([all])), null);
+	// 2 px off a star was enough beside it, and the box might stand at the screen's edge.
+	assert.equal(
+		hadPlace(star, scene([below], [star, { x: 700, y: 400 - 21 - 24 - 2.5 - 6, r: 6 }])),
+		true,
+	);
+	assert.equal(hadPlace({ x: 10, y: 400, r: 10 }, scene([])), true);
 });
 
 // ── round 4: "claim yours" and the stars ──

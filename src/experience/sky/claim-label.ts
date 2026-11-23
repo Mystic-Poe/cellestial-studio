@@ -266,6 +266,51 @@ function covered(box: Box, star: Disc, scene: LabelScene): number {
 }
 
 /**
+ * WHICH STAR A TOUCH OFFERS is not this file's to change, and round 4 did not change it. Until
+ * round 4 a star was offered when the words had a place by it under the rule of round 3: under
+ * the star, 40 px from every meaning (nothing else was asked of that place, and its middle was
+ * held 48 px from a side of the screen); or else above it, to its right or to its left, inside
+ * the screen by 4 px, off the logo, the menu and the exit button, 40 px from every meaning and
+ * 2 px off every other star. This is that question, kept as it was, so that a tap offers the
+ * star it offered before: a star that had no place then is not offered now because the words
+ * have more places to go. (A star they could not be written by without crossing Cellestial's
+ * star is no longer offered: `placeLabel` is asked as well.)
+ */
+export function hadPlace(star: Disc, scene: LabelScene): boolean {
+	const reach = star.r * 1.1 + LABEL.gap;
+	const at = (x: number, y: number): Box => ({
+		x0: x - LABEL.half,
+		y0: y,
+		x1: x + LABEL.half,
+		y1: y + LABEL.height,
+	});
+	const held = clamp(star.x, LABEL.half, scene.w - LABEL.half);
+	if (clearOfMeanings(at(held, star.y + reach), scene.meanings)) return true;
+	const mid = star.y - LABEL.height / 2;
+	const beside = [
+		at(held, star.y - reach - LABEL.height),
+		at(star.x + reach + LABEL.half, mid),
+		at(star.x - reach - LABEL.half, mid),
+	];
+	const exit: Box = {
+		x0: scene.w / 2 - EXIT_HALF,
+		x1: scene.w / 2 + EXIT_HALF,
+		y0: scene.h - B11.above - B11.height - LABEL.edge,
+		y1: scene.h,
+	};
+	return beside.some((box) => {
+		if (box.x0 < LABEL.edge || box.x1 > scene.w - LABEL.edge) return false;
+		if (box.y0 < LABEL.edge || box.y1 > scene.h - LABEL.edge) return false;
+		if (overlaps(box, CHROME) || overlaps(box, exit)) return false;
+		if (!clearOfMeanings(box, scene.meanings)) return false;
+		for (const s of scene.stars()) {
+			if (!own(s, star) && discGap(box, s) < 2) return false;
+		}
+		return true;
+	});
+}
+
+/**
  * Where the words stand by this star, or null if they can stand nowhere. `now` is the
  * place they have already: they stay in it while it will still do.
  */
