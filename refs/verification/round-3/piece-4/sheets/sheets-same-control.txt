@@ -1,0 +1,106 @@
+The builders' sheets at commit aed4b96 against commit 8e519d2. "Differs" counts pixels with a channel more than 24 of 255 apart.
+
+refs/sky/compare/
+  b3.jpg                     the same to the byte (141996 bytes, sha1 40e70d3a4f)
+  b7-all-desk.jpg            DIFFERS: 146116 -> 146160 bytes; 1600x842; 0 pixels over the noise (0.0000%), 6283 not identical at all, largest difference 15 of 255; 0 clusters
+  b7-all-phone.jpg           DIFFERS: 265384 -> 265386 bytes; 1600x1189; 0 pixels over the noise (0.0000%), 88881 not identical at all, largest difference 24 of 255; 0 clusters
+  b7-all.txt                 the same to the byte (3801 bytes, sha1 bac21cdd9a)
+  beads-desk.jpg             the same to the byte (162808 bytes, sha1 8770c43bcc)
+  beads-phone.jpg            the same to the byte (200496 bytes, sha1 b8dce33b7a)
+  between.jpg                DIFFERS: 90308 -> 127743 bytes; 1436x1434; 3 pixels over the noise (0.0001%), 367096 not identical at all, largest difference 28 of 255; 3 clusters
+       1. x 31 to 31, y 935 to 935 (1x1 px, 1 pixels)
+       2. x 801 to 801, y 935 to 935 (1x1 px, 1 pixels)
+       3. x 31 to 31, y 1231 to 1231 (1x1 px, 1 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-between-diff-control.jpg
+  claim-walk.jpg             the same to the byte (184840 bytes, sha1 00648a5101)
+  fall-phone.jpg             DIFFERS: 34134 -> 34130 bytes; 942x272; 0 pixels over the noise (0.0000%), 535 not identical at all, largest difference 5 of 255; 0 clusters
+  fall.jpg                   the same to the byte (63107 bytes, sha1 5edbf04ae9)
+  handoff-phone.jpg          the same to the byte (23420 bytes, sha1 8a06f9a390)
+  handoff.jpg                the same to the byte (45521 bytes, sha1 d225b77d9e)
+  ignite.jpg                 the same to the byte (169967 bytes, sha1 1e53aebb62)
+  lit.jpg                    DIFFERS: 138568 -> 138599 bytes; 1560x708; 78 pixels over the noise (0.0071%), 36830 not identical at all, largest difference 40 of 255; 1 cluster
+       1. x 216 to 358, y 26 to 116 (143x91 px, 78 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-lit-diff-control.jpg
+  meaning-aries-desk.jpg     DIFFERS: 115258 -> 115049 bytes; 1600x842; 4544 pixels over the noise (0.3373%), 61482 not identical at all, largest difference 245 of 255; 16 clusters
+       1. x 1262 to 1381, y 293 to 306 (120x14 px, 774 pixels)
+       2. x 144 to 271, y 144 to 203 (128x60 px, 713 pixels)
+       3. x 69 to 188, y 571 to 584 (120x14 px, 685 pixels)
+       4. x 858 to 976, y 293 to 306 (119x14 px, 675 pixels)
+       5. x 550 to 668, y 148 to 201 (119x54 px, 649 pixels)
+       6. x 176 to 271, y 425 to 479 (96x55 px, 434 pixels)
+       7. x 467 to 482, y 572 to 581 (16x10 px, 93 pixels)
+       8. x 460 to 474, y 16 to 26 (15x11 px, 90 pixels)
+       9. x 62 to 77, y 294 to 303 (16x10 px, 87 pixels)
+      10. x 1256 to 1270, y 16 to 25 (15x10 px, 82 pixels)
+      11. x 459 to 473, y 294 to 303 (15x10 px, 77 pixels)
+      12. x 865 to 872, y 16 to 26 (8x11 px, 47 pixels)
+      and 4 more
+  meaning-aries-phone.jpg    DIFFERS: 210165 -> 210187 bytes; 1600x1189; 618 pixels over the noise (0.0325%), 16577 not identical at all, largest difference 214 of 255; 12 clusters
+       1. x 1388 to 1402, y 16 to 30 (15x15 px, 79 pixels)
+       2. x 592 to 607, y 16 to 25 (16x10 px, 69 pixels)
+       3. x 1130 to 1138, y 16 to 25 (9x10 px, 64 pixels)
+       4. x 1404 to 1410, y 606 to 616 (7x11 px, 62 pixels)
+       5. x 343 to 349, y 606 to 616 (7x11 px, 61 pixels)
+       6. x 54 to 68, y 16 to 25 (15x10 px, 58 pixels)
+       7. x 865 to 872, y 16 to 25 (8x10 px, 57 pixels)
+       8. x 1138 to 1145, y 609 to 616 (8x8 px, 41 pixels)
+       9. x 334 to 341, y 16 to 25 (8x10 px, 35 pixels)
+      10. x 873 to 880, y 607 to 615 (8x9 px, 32 pixels)
+      11. x 69 to 76, y 606 to 615 (8x10 px, 31 pixels)
+      12. x 607 to 614, y 607 to 614 (8x8 px, 29 pixels)
+  meaning-leo-desk.jpg       DIFFERS: 145878 -> 145348 bytes; 1600x842; 3210 pixels over the noise (0.2383%), 91904 not identical at all, largest difference 255 of 255; 23 clusters
+       1. x 135 to 242, y 340 to 416 (108x77 px, 850 pixels)
+       2. x 1314 to 1384, y 65 to 140 (71x76 px, 549 pixels)
+       3. x 915 to 939, y 66 to 138 (25x73 px, 282 pixels)
+       4. x 494 to 534, y 650 to 694 (41x45 px, 262 pixels)
+       5. x 443 to 465, y 16 to 26 (23x11 px, 161 pixels)
+       6. x 842 to 863, y 16 to 26 (22x11 px, 153 pixels)
+       7. x 451 to 473, y 572 to 582 (23x11 px, 143 pixels)
+       8. x 1247 to 1269, y 572 to 581 (23x10 px, 123 pixels)
+       9. x 1255 to 1269, y 16 to 26 (15x11 px, 108 pixels)
+      10. x 53 to 67, y 572 to 582 (15x11 px, 106 pixels)
+      11. x 1247 to 1261, y 294 to 303 (15x10 px, 88 pixels)
+      12. x 459 to 479, y 294 to 303 (21x10 px, 84 pixels)
+      and 11 more
+  meaning-leo-phone.jpg      DIFFERS: 246924 -> 246472 bytes; 1600x1189; 6274 pixels over the noise (0.3298%), 209468 not identical at all, largest difference 255 of 255; 30 clusters
+       1. x 696 to 770, y 73 to 173 (75x101 px, 1591 pixels)
+       2. x 86 to 173, y 74 to 205 (88x132 px, 1056 pixels)
+       3. x 921 to 970, y 93 to 174 (50x82 px, 1024 pixels)
+       4. x 390 to 454, y 74 to 215 (65x142 px, 824 pixels)
+       5. x 1198 to 1294, y 94 to 175 (97x82 px, 761 pixels)
+       6. x 920 to 965, y 713 to 766 (46x54 px, 471 pixels)
+       7. x 1150 to 1240, y 713 to 806 (91x94 px, 148 pixels)
+       8. x 849 to 871, y 606 to 616 (23x11 px, 114 pixels)
+       9. x 325 to 333, y 16 to 25 (9x10 px, 57 pixels)
+      10. x 334 to 340, y 606 to 615 (7x10 px, 44 pixels)
+      11. x 599 to 605, y 606 to 615 (7x10 px, 43 pixels)
+      12. x 1395 to 1401, y 606 to 616 (7x11 px, 41 pixels)
+      and 18 more
+  meaning-settled.jpg        DIFFERS: 98467 -> 98476 bytes; 1600x736; 0 pixels over the noise (0.0000%), 7831 not identical at all, largest difference 16 of 255; 0 clusters
+  meaning-still.jpg          the same to the byte (67693 bytes, sha1 b47bd1acd8)
+  meaning.txt                the same to the byte (3160 bytes, sha1 1849ca3111)
+  open.jpg                   DIFFERS: 75977 -> 84095 bytes; 1436x720; 0 pixels over the noise (0.0000%), 166398 not identical at all, largest difference 16 of 255; 0 clusters
+  panel.jpg                  DIFFERS: 148269 -> 148229 bytes; 1560x708; 0 pixels over the noise (0.0000%), 242 not identical at all, largest difference 6 of 255; 0 clusters
+  pulse.jpg                  the same to the byte (101266 bytes, sha1 f61a9f24c4)
+  stars.jpg                  DIFFERS: 121374 -> 121359 bytes; 1560x518; 0 pixels over the noise (0.0000%), 136 not identical at all, largest difference 6 of 255; 0 clusters
+  stations-desk-1.jpg        DIFFERS: 152961 -> 152945 bytes; 1594x1014; 0 pixels over the noise (0.0000%), 1269 not identical at all, largest difference 7 of 255; 0 clusters
+  stations-desk-2.jpg        DIFFERS: 142382 -> 142354 bytes; 1594x1014; 0 pixels over the noise (0.0000%), 571 not identical at all, largest difference 5 of 255; 0 clusters
+  stations-phone.jpg         DIFFERS: 206112 -> 206153 bytes; 1534x1284; 0 pixels over the noise (0.0000%), 144 not identical at all, largest difference 5 of 255; 0 clusters
+
+refs/loading/compare/
+  a5-desk.jpg                DIFFERS: 113019 -> 113019 bytes; 1604x819; 21 pixels over the noise (0.0016%), 17888 not identical at all, largest difference 37 of 255; 2 clusters
+       1. x 986 to 1019, y 676 to 702 (34x27 px, 12 pixels)
+       2. x 601 to 619, y 693 to 702 (19x10 px, 9 pixels)
+  a5-phone.jpg               DIFFERS: 86138 -> 85133 bytes; 1364x1018; 761 pixels over the noise (0.0548%), 52618 not identical at all, largest difference 186 of 255; 4 clusters
+       1. x 1178 to 1292, y 163 to 362 (115x200 px, 485 pixels)
+       2. x 548 to 587, y 748 to 793 (40x46 px, 101 pixels)
+       3. x 323 to 359, y 746 to 790 (37x45 px, 91 pixels)
+       4. x 104 to 138, y 742 to 783 (35x42 px, 84 pixels)
+  desk-1.jpg                 the same to the byte (180941 bytes, sha1 7071fa7815)
+  desk-2.jpg                 the same to the byte (200614 bytes, sha1 cfe49ff89e)
+  light.txt                  the same to the byte (4337 bytes, sha1 1b9f11fb2b)
+  phone-1.jpg                the same to the byte (107741 bytes, sha1 b76d013b14)
+  phone-2.jpg                the same to the byte (97546 bytes, sha1 8eefec1a09)
+  short.jpg                  the same to the byte (69178 bytes, sha1 81ee65fd85)
+
+18 files the same to the byte, 18 not.

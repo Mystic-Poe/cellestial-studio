@@ -1,0 +1,122 @@
+The builders' sheets now (on disk) against commit 8724ef5. "Differs" counts pixels with a channel more than 24 of 255 apart.
+
+refs/sky/compare/
+  b3.jpg                     the same to the byte (141996 bytes, sha1 40e70d3a4f)
+  b7-all-desk.jpg            DIFFERS: 146160 -> 146084 bytes; 1600x842; 193 pixels over the noise (0.0143%), 8369 not identical at all, largest difference 204 of 255; 2 clusters
+       1. x 288 to 303, y 731 to 747 (16x17 px, 173 pixels)
+       2. x 1427 to 1431, y 441 to 446 (5x6 px, 20 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-b7-all-desk-diff.jpg
+  b7-all-phone.jpg           DIFFERS: 265386 -> 265407 bytes; 1600x1189; 0 pixels over the noise (0.0000%), 18172 not identical at all, largest difference 13 of 255; 0 clusters
+  b7-all.txt                 the same to the byte (3801 bytes, sha1 bac21cdd9a)
+  beads-desk.jpg             DIFFERS: 162808 -> 162806 bytes; 1590x910; 199 pixels over the noise (0.0138%), 3930 not identical at all, largest difference 50 of 255; 6 clusters
+       1. x 351 to 361, y 588 to 598 (11x11 px, 38 pixels)
+       2. x 87 to 97, y 588 to 598 (11x11 px, 34 pixels)
+       3. x 1407 to 1417, y 588 to 598 (11x11 px, 34 pixels)
+       4. x 879 to 888, y 588 to 598 (10x11 px, 32 pixels)
+       5. x 615 to 624, y 588 to 598 (10x11 px, 31 pixels)
+       6. x 1143 to 1152, y 588 to 598 (10x11 px, 30 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-beads-desk-diff.jpg
+  beads-phone.jpg            the same to the byte (200496 bytes, sha1 b8dce33b7a)
+  between.jpg                DIFFERS: 127743 -> 90302 bytes; 1436x1434; 3 pixels over the noise (0.0001%), 366271 not identical at all, largest difference 28 of 255; 3 clusters
+       1. x 31 to 31, y 935 to 935 (1x1 px, 1 pixels)
+       2. x 801 to 801, y 935 to 935 (1x1 px, 1 pixels)
+       3. x 31 to 31, y 1231 to 1231 (1x1 px, 1 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-between-diff.jpg
+  claim-walk.jpg             the same to the byte (184840 bytes, sha1 00648a5101)
+  fall-phone.jpg             DIFFERS: 34130 -> 34135 bytes; 942x272; 0 pixels over the noise (0.0000%), 142 not identical at all, largest difference 4 of 255; 0 clusters
+  fall.jpg                   DIFFERS: 63107 -> 63112 bytes; 1566x538; 0 pixels over the noise (0.0000%), 48 not identical at all, largest difference 3 of 255; 0 clusters
+  handoff-phone.jpg          the same to the byte (23420 bytes, sha1 8a06f9a390)
+  handoff.jpg                the same to the byte (45521 bytes, sha1 d225b77d9e)
+  ignite.jpg                 the same to the byte (169967 bytes, sha1 1e53aebb62)
+  lit.jpg                    DIFFERS: 138599 -> 138582 bytes; 1560x708; 459 pixels over the noise (0.0416%), 58611 not identical at all, largest difference 85 of 255; 1 cluster
+       1. x 216 to 364, y 26 to 161 (149x136 px, 459 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-lit-diff.jpg
+  meaning-aries-desk.jpg     DIFFERS: 115049 -> 115108 bytes; 1600x842; 5105 pixels over the noise (0.3789%), 64301 not identical at all, largest difference 245 of 255; 21 clusters
+       1. x 144 to 271, y 144 to 203 (128x60 px, 720 pixels)
+       2. x 550 to 668, y 148 to 201 (119x54 px, 651 pixels)
+       3. x 873 to 984, y 571 to 585 (112x15 px, 627 pixels)
+       4. x 77 to 188, y 570 to 584 (112x15 px, 626 pixels)
+       5. x 475 to 586, y 572 to 584 (112x13 px, 625 pixels)
+       6. x 865 to 976, y 293 to 306 (112x14 px, 619 pixels)
+       7. x 69 to 180, y 293 to 307 (112x15 px, 617 pixels)
+       8. x 187 to 271, y 425 to 479 (85x55 px, 437 pixels)
+       9. x 1256 to 1270, y 16 to 25 (15x10 px, 87 pixels)
+      10. x 62 to 68, y 17 to 25 (7x9 px, 31 pixels)
+      11. x 866 to 871, y 16 to 26 (6x11 px, 27 pixels)
+      12. x 1271 to 1277, y 576 to 581 (7x6 px, 24 pixels)
+      and 9 more
+  meaning-aries-phone.jpg    DIFFERS: 210187 -> 210175 bytes; 1600x1189; 658 pixels over the noise (0.0346%), 25667 not identical at all, largest difference 221 of 255; 16 clusters
+       1. x 1388 to 1403, y 16 to 27 (16x12 px, 89 pixels)
+       2. x 54 to 70, y 16 to 25 (17x10 px, 84 pixels)
+       3. x 873 to 880, y 606 to 616 (8x11 px, 64 pixels)
+       4. x 69 to 76, y 606 to 616 (8x11 px, 62 pixels)
+       5. x 334 to 341, y 16 to 25 (8x10 px, 56 pixels)
+       6. x 1130 to 1137, y 16 to 25 (8x10 px, 53 pixels)
+       7. x 1404 to 1410, y 606 to 616 (7x11 px, 52 pixels)
+       8. x 865 to 872, y 16 to 25 (8x10 px, 51 pixels)
+       9. x 343 to 349, y 606 to 616 (7x11 px, 50 pixels)
+      10. x 1138 to 1145, y 608 to 616 (8x9 px, 31 pixels)
+      11. x 607 to 614, y 609 to 615 (8x7 px, 31 pixels)
+      12. x 600 to 606, y 16 to 25 (7x10 px, 30 pixels)
+      and 4 more
+  meaning-leo-desk.jpg       DIFFERS: 145348 -> 145845 bytes; 1600x842; 3440 pixels over the noise (0.2553%), 66896 not identical at all, largest difference 251 of 255; 20 clusters
+       1. x 1239 to 1384, y 16 to 138 (146x123 px, 1300 pixels)
+       2. x 45 to 171, y 16 to 28 (127x13 px, 727 pixels)
+       3. x 494 to 534, y 648 to 694 (41x47 px, 271 pixels)
+       4. x 53 to 75, y 572 to 582 (23x11 px, 154 pixels)
+       5. x 443 to 465, y 16 to 29 (23x14 px, 144 pixels)
+       6. x 1247 to 1269, y 294 to 303 (23x10 px, 136 pixels)
+       7. x 849 to 871, y 572 to 581 (23x10 px, 121 pixels)
+       8. x 842 to 863, y 16 to 26 (22x11 px, 119 pixels)
+       9. x 849 to 871, y 294 to 303 (23x10 px, 115 pixels)
+      10. x 53 to 75, y 294 to 303 (23x10 px, 108 pixels)
+      11. x 459 to 473, y 572 to 582 (15x11 px, 98 pixels)
+      12. x 459 to 473, y 294 to 303 (15x10 px, 86 pixels)
+      and 8 more
+  meaning-leo-phone.jpg      DIFFERS: 246472 -> 246889 bytes; 1600x1189; 2621 pixels over the noise (0.1378%), 188463 not identical at all, largest difference 252 of 255; 30 clusters
+       1. x 409 to 449, y 75 to 170 (41x96 px, 1164 pixels)
+       2. x 917 to 1002, y 79 to 172 (86x94 px, 687 pixels)
+       3. x 920 to 962, y 714 to 803 (43x90 px, 441 pixels)
+       4. x 325 to 333, y 16 to 25 (9x10 px, 57 pixels)
+       5. x 857 to 863, y 16 to 25 (7x10 px, 52 pixels)
+       6. x 68 to 75, y 609 to 616 (8x8 px, 47 pixels)
+       7. x 598 to 607, y 609 to 616 (10x8 px, 44 pixels)
+       8. x 1130 to 1136, y 606 to 615 (7x10 px, 43 pixels)
+       9. x 334 to 340, y 609 to 616 (7x8 px, 39 pixels)
+      10. x 1531 to 1561, y 96 to 107 (31x12 px, 15 pixels)
+      11. x 714 to 724, y 1089 to 1094 (11x6 px, 6 pixels)
+      12. x 1176 to 1176, y 372 to 374 (1x3 px, 3 pixels)
+      and 18 more
+  meaning-settled.jpg        DIFFERS: 98476 -> 98513 bytes; 1600x736; 0 pixels over the noise (0.0000%), 6585 not identical at all, largest difference 21 of 255; 0 clusters
+  meaning-still.jpg          the same to the byte (67693 bytes, sha1 b47bd1acd8)
+  meaning.txt                the same to the byte (3160 bytes, sha1 1849ca3111)
+  open.jpg                   DIFFERS: 84095 -> 75967 bytes; 1436x720; 0 pixels over the noise (0.0000%), 166324 not identical at all, largest difference 16 of 255; 0 clusters
+  panel.jpg                  DIFFERS: 148229 -> 148287 bytes; 1560x708; 0 pixels over the noise (0.0000%), 256 not identical at all, largest difference 11 of 255; 0 clusters
+  pulse.jpg                  the same to the byte (101266 bytes, sha1 f61a9f24c4)
+  stars.jpg                  DIFFERS: 121359 -> 121374 bytes; 1560x518; 0 pixels over the noise (0.0000%), 136 not identical at all, largest difference 6 of 255; 0 clusters
+  stations-desk-1.jpg        DIFFERS: 152945 -> 152967 bytes; 1594x1014; 0 pixels over the noise (0.0000%), 1322 not identical at all, largest difference 8 of 255; 0 clusters
+  stations-desk-2.jpg        DIFFERS: 142354 -> 142308 bytes; 1594x1014; 181 pixels over the noise (0.0112%), 1949 not identical at all, largest difference 140 of 255; 2 clusters
+       1. x 655 to 673, y 543 to 561 (19x19 px, 176 pixels)
+       2. x 1379 to 1383, y 190 to 192 (5x3 px, 5 pixels)
+      crops (before above, now below, one column a cluster): refs/verification/round-3/piece-4/sheets/sky-stations-desk-2-diff.jpg
+  stations-phone.jpg         DIFFERS: 206153 -> 206112 bytes; 1534x1284; 0 pixels over the noise (0.0000%), 144 not identical at all, largest difference 5 of 255; 0 clusters
+
+refs/loading/compare/
+  a5-desk.jpg                DIFFERS: 113019 -> 112983 bytes; 1604x819; 21 pixels over the noise (0.0016%), 14159 not identical at all, largest difference 37 of 255; 2 clusters
+       1. x 986 to 1019, y 676 to 702 (34x27 px, 12 pixels)
+       2. x 601 to 619, y 693 to 702 (19x10 px, 9 pixels)
+  a5-phone.jpg               DIFFERS: 85133 -> 86125 bytes; 1364x1018; 1365 pixels over the noise (0.0983%), 57869 not identical at all, largest difference 187 of 255; 6 clusters
+       1. x 1178 to 1292, y 163 to 362 (115x200 px, 496 pixels)
+       2. x 547 to 587, y 747 to 796 (41x50 px, 307 pixels)
+       3. x 775 to 816, y 745 to 796 (42x52 px, 220 pixels)
+       4. x 1002 to 1044, y 748 to 795 (43x48 px, 167 pixels)
+       5. x 323 to 359, y 746 to 790 (37x45 px, 91 pixels)
+       6. x 104 to 138, y 742 to 783 (35x42 px, 84 pixels)
+  desk-1.jpg                 the same to the byte (180941 bytes, sha1 7071fa7815)
+  desk-2.jpg                 the same to the byte (200614 bytes, sha1 cfe49ff89e)
+  light.txt                  the same to the byte (4337 bytes, sha1 1b9f11fb2b)
+  phone-1.jpg                the same to the byte (107741 bytes, sha1 b76d013b14)
+  phone-2.jpg                the same to the byte (97546 bytes, sha1 8eefec1a09)
+  short.jpg                  the same to the byte (69178 bytes, sha1 81ee65fd85)
+
+16 files the same to the byte, 20 not.

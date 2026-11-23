@@ -1,0 +1,3 @@
+=== all-taps-desk: node refs/verification/round-3/tools/all-taps.mjs --size desk
+exit 0 (all-taps-desk)
+=== all-taps-phone: node refs/verification/round-3/tools/all-taps.mjs --size phone

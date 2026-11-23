@@ -17,16 +17,16 @@ INPUT, 1440x900 (wheel and keys)
 INPUT, 390x844 (touch)
   ok    a swipe up flies forward: speed 2.42
   ok    swipe after swipe builds speed, up to the ceiling: 2.42 after one, then 4.73, 7.10, 7.94, 8.00, 8.00, 8.00, 8.00
-  ok    and it rests on a station: layer 9.00 after 2.33 s
-  ok    a swipe down flies backward: speed -2.43
+  ok    and it rests on a station: layer 9.00 after 2.29 s
+  ok    a swipe down flies backward: speed -2.42
   ok    and rests on a station behind: layer 8.00
   ok    a tap on empty sky stops it dead: speed 4.42 before, 0 after; still at layer 8.595
   ok    the document did not scroll
 
 ENDLESS, 1440x900
-  ok    thirty layers forward: at layer 31.00 after 23.51 s of holding the key
+  ok    thirty layers forward: at layer 31.00 after 23.53 s of holding the key
   ok    every station passed in order, the figures repeating every twelve: 31 stations, layers 1 to 31
-  ok    fifteen layers back: at layer 15.00 after 12.24 s
+  ok    fifteen layers back: at layer 15.00 after 12.25 s
   ok    every station passed in order on the way back: 16 stations
   ok    nothing drifts: every star is where it is in the first round: largest difference 3.9e-12 px (layer 31 against 7, layer 15 against 3)
 
@@ -60,35 +60,35 @@ REDUCED MOTION, 1440x900 and 390x844 ("/?rm=1")
   ok    phone: a star is still picked by a tap: slot-98
 
 FRAME TIMES, real GPU: 4.6 layers forward, rest, 1.6 back, rest
-  1440x900  733 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 2, pixel ratio 1
+  1440x900  732 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 2, pixel ratio 1
   ok    desk: smooth
-  390x844   738 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 4, pixel ratio 2
+  390x844   737 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; ended at layer 2.00; governor at level 0 of 4, pixel ratio 2
   ok    phone: smooth
 
 THE GOVERNOR, 390x844, software rendering (SwiftShader), CPU slowed 4x
   renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)
-   0- 2 s  average  50.41 ms  worst  100.10 ms  governor level 1 to 3
-   2- 4 s  average  18.85 ms  worst   33.40 ms  governor level 3
-   4- 6 s  average  18.33 ms  worst   33.40 ms  governor level 3
-   6- 8 s  average  18.52 ms  worst   33.40 ms  governor level 3
-   8-10 s  average  18.67 ms  worst   33.40 ms  governor level 3
-  10-12 s  average  18.01 ms  worst   33.40 ms  governor level 3
-  12-14 s  average  18.33 ms  worst   33.40 ms  governor level 3
-  14-16 s  average  18.17 ms  worst   33.40 ms  governor level 3
-  16-18 s  average  18.33 ms  worst   33.50 ms  governor level 3
-  18-20 s  average  19.02 ms  worst   33.40 ms  governor level 3
-  20-22 s  average  18.67 ms  worst   33.40 ms  governor level 3
-  22-24 s  average  17.54 ms  worst   33.30 ms  governor level 3
+   0- 2 s  average  40.33 ms  worst  100.10 ms  governor level 2 to 3
+   2- 4 s  average  19.21 ms  worst   33.50 ms  governor level 3
+   4- 6 s  average  18.00 ms  worst   33.40 ms  governor level 3
+   6- 8 s  average  17.85 ms  worst   33.40 ms  governor level 3
+   8-10 s  average  18.85 ms  worst   33.40 ms  governor level 3
+  10-12 s  average  18.52 ms  worst   33.50 ms  governor level 3
+  12-14 s  average  18.50 ms  worst   33.40 ms  governor level 3
+  14-16 s  average  18.33 ms  worst   33.40 ms  governor level 3
+  16-18 s  average  18.17 ms  worst   33.40 ms  governor level 3
+  18-20 s  average  18.33 ms  worst   33.40 ms  governor level 3
+  20-22 s  average  19.00 ms  worst   33.40 ms  governor level 3
+  22-24 s  average  18.35 ms  worst   33.40 ms  governor level 3
   pixel ratio at the end 1 (it began at 2); level 3 of 4
   ok    the governor stepped down by itself: to level 3
-  ok    and the frame time recovered: 50.41 ms in the first two seconds, 18.41 ms over the last six
+  ok    and the frame time recovered: 40.33 ms in the first two seconds, 18.56 ms over the last six
 
 PICKING, 1440x900
   ok    at rest, every star of the figure in front has a button over it: at four stations: 12 of 12 (layer 0), 14 of 14 (layer 2), 10 of 10 (layer 4), 22 of 22 (layer 6)
   ok    button centre on star centre, at rest: largest offset 0.105 px
   ok    no button smaller than 44 px: smallest 43.999969482421875 px
   ok    each is a real <button> with a name of its own ("Empty star 3 of 12 in Virgo"): Empty star 1 of 22 in Pisces; Empty star 2 of 22 in Pisces; Empty star 3 of 22 in Pisces; Empty star 4 of 22 in Pisces; Empty star 5 of 22 in Pisces; Empty star 6 of 22 in Pisces; Empty star 7 of 22 in Pisces; Empty star 8 of 22 in Pisces; Empty star 9 of 22 in Pisces; Empty star 10 of 22 in Pisces; Empty star 11 of 22 in Pisces; Empty star 12 of 22 in Pisces; Empty star 13 of 22 in Pisces; Empty star 14 of 22 in Pisces; Empty star 15 of 22 in Pisces; Empty star 16 of 22 in Pisces; Empty star 17 of 22 in Pisces; Empty star 18 of 22 in Pisces; Empty star 19 of 22 in Pisces; Empty star 20 of 22 in Pisces; Empty star 21 of 22 in Pisces; Empty star 22 of 22 in Pisces
-  ok    button centre on star centre, in flight: largest offset 0.070 px over 181 frames
+  ok    button centre on star centre, in flight: largest offset 0.069 px over 181 frames
         (frames in which a star on screen had no button: 0; a button is withdrawn within 0.13 units of the lens)
   ok    an empty star: claims.pick(slot), and nothing is claimed
   ok    the hook for part B fires: 'open-empty' with the slot and the star's circle: {"type":"open-empty","slot":"slot-34","circle":{"x":859.6849478014486,"y":369.9139632605028,"r":20.990495180722895}}
@@ -118,9 +118,9 @@ PICKING, 390x844
   ok    Escape lets it go: 'focus' with slot null
 
 THE FALL (the contract only; the transition belongs to the Roots), 1440x900
-  an empty star's y on screen: 9 ms 370, 142 ms 371, 275 ms 401, 409 ms 471, 542 ms 583, 675 ms 735
-  ok    onImpact fires once: [{"x":645.4547995232936,"at":425,"ground":772}]
-  ok    fall() resolves: after 1708 ms
+  an empty star's y on screen: 4 ms 370, 137 ms 371, 270 ms 401, 403 ms 471, 536 ms 583, 670 ms 736
+  ok    onImpact fires once: [{"x":645.4547995232936,"at":420,"ground":774}]
+  ok    fall() resolves: after 1703 ms
   ok    the stars are gone
   ok    an empty and a lit star fall alike: 2325 and 2332 px/s² on screen
   ok    restore() puts every star back
@@ -210,7 +210,7 @@ THE EMPTY-STAR PANEL on a shorter screen, 360x640
         (there is not always room beside the star there: the panel lies partly over its star for 33 of 146 stars)
 
 THE LIT-STAR PANEL, 1440x900
-  ok    a click on a lit star flies in on it, then the panel opens beside it: 1.19 s after the click; the star's disc is 108 px in radius, the panel 12.00 px from it
+  ok    a click on a lit star flies in on it, then the panel opens beside it: 1.17 s after the click; the star's disc is 108 px in radius, the panel 12.00 px from it
   ok    it shows exactly what was asked and nothing else: no title, name, date or label, only a close button named "Close": "A site for my bakery, with the week's bread on the first page."
   ok    focus goes into it; it is whole on the screen and clear of the logo
   ok    its close button closes it and lets the camera go: the camera is 0.0e+0 from the flight path 1.3 s later; focus on slot-3
@@ -222,7 +222,7 @@ THE LIT-STAR PANEL, 1440x900
   ok    and the three stars are still lit, no more
 
 THE LIT-STAR PANEL, 390x844
-  ok    a click on a lit star flies in on it, then the panel opens beside it: 1.17 s after the click; the star's disc is 62 px in radius, the panel 11.60 px from it
+  ok    a click on a lit star flies in on it, then the panel opens beside it: 1.19 s after the click; the star's disc is 62 px in radius, the panel 11.60 px from it
   ok    it shows exactly what was asked and nothing else: no title, name, date or label, only a close button named "Close": "A site for my bakery, with the week's bread on the first page."
   ok    focus goes into it; it is whole on the screen and clear of the logo
   ok    its close button closes it and lets the camera go: the camera is 0.0e+0 from the flight path 1.3 s later; focus on slot-3
@@ -238,7 +238,7 @@ THE CLAIM, sent for real, 1440x900
   ok    and still nothing after a reload
   ok    while the request is on its way, nothing is lit
   ok    what is posted is the form and the star, nothing added: star=slot-34
-  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.58 s after the 200 (the "Sent." beat, then the flight in)
+  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.56 s after the 200 (the "Sent." beat, then the flight in)
   ok    then its panel shows exactly what was asked: "A site for my bakery,\nwith the week's bread on the first page."
   ok    it is stored on this device as the slot and the ask, nothing else: [{"slot":"slot-34","ask":"A site for my bakery,\nwith the week's bread on the first page."}]
   ok    still lit after a reload: Claimed star 4 of 12 in Virgo
@@ -253,7 +253,7 @@ THE CLAIM, sent for real, 390x844
   ok    and still nothing after a reload
   ok    while the request is on its way, nothing is lit
   ok    what is posted is the form and the star, nothing added: star=slot-34
-  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.58 s after the 200 (the "Sent." beat, then the flight in)
+  ok    answered 200: the camera flies to the star and it ignites, after the answer and not before: ignited 2.57 s after the 200 (the "Sent." beat, then the flight in)
   ok    then its panel shows exactly what was asked: "A site for my bakery,\nwith the week's bread on the first page."
   ok    it is stored on this device as the slot and the ask, nothing else: [{"slot":"slot-34","ask":"A site for my bakery,\nwith the week's bread on the first page."}]
   ok    still lit after a reload: Claimed star 4 of 12 in Virgo
@@ -264,13 +264,13 @@ THE CLAIM, sent for real, 390x844
   ok    the next empty star they click is theirs at once and ignites (no panel, no second send): slot-47
 
 FRAME TIMES WITH THE BEADS, real GPU: ten bead runs in a row
-  1440x900  10 runs, 541 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 2, pixel ratio 1
+  1440x900  10 runs, 541 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 2, pixel ratio 1
   ok    desk: ten runs, smooth
-  390x844   10 runs, 559 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 4, pixel ratio 2
+  390x844   10 runs, 560 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 4, pixel ratio 2
   ok    phone: ten runs, smooth
 
 FRAME TIMES WITH THE BEADS, 390x844, software rendering (SwiftShader), CPU slowed 4x
-  at rest, the governor settled and held at level 3 of 4, pixel ratio 1: average 17.42 ms, 95th percentile 16.80 ms, worst 33.40 ms, 1 frames over 33 ms
-  during 10 bead runs, 541 frames: average 18.30 ms, 95th percentile 33.30 ms, worst 50.00 ms, 17 frames over 33 ms
-  ok    the beads cost little: the frame time with them is within 25% of the frame time at rest: 17.42 ms at rest, 18.30 ms with the beads
+  at rest, the governor settled and held at level 3 of 4, pixel ratio 1: average 17.67 ms, 95th percentile 33.20 ms, worst 33.40 ms, 2 frames over 33 ms
+  during 10 bead runs, 547 frames: average 18.16 ms, 95th percentile 33.30 ms, worst 50.00 ms, 14 frames over 33 ms
+  ok    the beads cost little: the frame time with them is within 25% of the frame time at rest: 17.67 ms at rest, 18.16 ms with the beads
 

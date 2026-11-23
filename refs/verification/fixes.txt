@@ -2202,3 +2202,53 @@ PIECE 3 — THE LOADER'S FIRST TWO SECONDS ON A SLOW LINE (third look: closing l
       is the script for 3a. Its strips (fast-*.jpg, slow-*.jpg) are as good as before.
     - A key held down from before the page, repeating, is a skip here as it is while the loader
       plays (the one rule). Nothing else is carried from the page before.
+
+PIECE 4 — THE CLOSE-OUT (round 3)
+
+  Begun 23 Nov, 00:38, from the head 0dfa3ca (piece 3's last commit). It changes no file of the site.
+  This entry is written as the work goes; a part that is not here yet has not been done yet.
+
+  1. THE FOUR GATES: pnpm build (Turnstile test key; 4 pages) passes; pnpm test 174 of 174 in node (the
+     brief's general part gives 138: the round added 36 tests, 10 in piece 1, 8 in piece 2, 18 in piece
+     3) and the three Workers' own (15, 16, 14); pnpm lint (108 files, 1 info that is biome.json's own,
+     no error); pnpm typecheck clean.
+
+  2. EVERY SUITE AND EVERY SHEET TOOL (tools/run-all.sh refs/verification/round-3/logs; dev server on
+     4500 with the key, the key seen in the served /contact; 00:39 to 01:06; a log each and status.txt
+     there). status.txt: thirteen tools, thirteen "exit 0". No check was changed by the close-out.
+                                  now                                             the brief gives
+       loader-measure            13 of 13; full 7.35 s from the mount, 7.34 on    13 of 13
+                                 the visitor's clock (from the first sight of
+                                 the C, as the loader counts since piece 3);
+                                 short 3.53; skipped at 1 s 2.70 / 2.74; Tab and
+                                 modifiers 7.26; two resizes 7.18; storage
+                                 blocked 7.12; no sky 6.04; sky 30 s late 12.01
+       loader-measure-phone-4x   13 of 13; full 7.52 s (7.53); short 3.72;        13 of 13
+                                 skipped 3.10 / 2.97; Tab 7.46; resizes 7.36;
+                                 storage blocked 7.47; no sky 6.09; sky 30 s
+                                 late 12.07
+       sky-measure               201 of 201                                       201 of 201
+       sky-meaning               38 of 38                                         38 of 38
+       sky-meaning-all           24 of 24                                         24 of 24
+       roots-words               197 of 197                                       197 of 197
+       roots-measure             245 of 245                                       245 of 245
+       transitions-measure       148 of 148                                       148 of 148
+       chrome-compare            48 of 48                                         48 of 48
+       sky-compare, roots-compare, transitions-strip, loader-compare   exit 0 (the sheet tools)
+     The sheets these rewrote (refs/loading, sky, roots, transitions, chrome /compare, and the three
+     measure.txt) are committed as this run left them: they show the site as it is after round 3.
+
+  4. THE OWNER'S TWO SIZES, THE BUILDERS' SHEETS BEFORE AND AFTER THE ROUND (first part: the bytes and
+     the pixels; what was looked at follows). c-before is 8724ef5, the third look's last commit; its
+     sheets in refs/sky/compare/ and refs/loading/compare/ are those of aed4b96, round 2's close-out
+     (the third look ran the sheet tools and committed no sheet). A new script sets every file of those
+     two folders as run-all.sh has just rebuilt it beside the same file at a commit:
+     refs/verification/round-3/tools/sheets-same.mjs (the same to the byte or not; if not, the pixels
+     that differ by more than 24 of 255 in a channel, which is over a JPEG's own noise, and the boxes
+     they fall in). Its three reports are in refs/verification/round-3/piece-4/sheets/:
+       sheets-same.txt                now against 8724ef5
+       sheets-same-control.txt        THE CONTROL: round 2's two rebuilds of the same code (8e519d2
+                                      against aed4b96; no file of the site differs between them), to
+                                      know which sheets differ from one run to the next by themselves
+       sheets-same-first-rebuild.txt  now against 8e519d2, round 2's other rebuild
+     (More of this part, and parts 3, 5, 6 and 7, are written below as they are done.)
