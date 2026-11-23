@@ -8,8 +8,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 import { ROOT } from './lib.mjs';
-const { values } = parseArgs({ options: { size: { type: 'string', default: 'desk' }, complete: { type: 'boolean', default: false }, old: { type: 'boolean', default: false } } });
-const taps = JSON.parse(readFileSync(join(ROOT, 'refs/verification/fifth-look', values.old ? 'old' : '', 'labels', `${values.size}${values.complete ? '-complete' : ''}.json`))).filter((t) => t.what === 'label' && t.first);
+const { values } = parseArgs({ options: { size: { type: 'string', default: 'desk' }, complete: { type: 'boolean', default: false }, suffix: { type: 'string' }, old: { type: 'boolean', default: false } } });
+const taps = JSON.parse(readFileSync(join(ROOT, 'refs/verification/fifth-look', values.old ? 'old' : '', 'labels', `${values.size}${values.complete ? '-complete' : values.suffix ? `-${values.suffix}` : ''}.json`))).filter((t) => t.what === 'label' && t.first);
 const gap = (b, s) => Math.hypot(Math.max(b.x - s.x, 0, s.x - (b.x + b.w)), Math.max(b.y - s.y, 0, s.y - (b.y + b.h))) - s.r;
 let n = 0;
 for (const t of taps) {
