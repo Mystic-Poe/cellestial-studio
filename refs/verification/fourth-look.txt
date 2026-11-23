@@ -60,3 +60,84 @@ run's build did; the checkout's own install was unharmed, and its gates passed a
 dist/ is already built: serve it with tools/static.mjs and leave it at that.
 
 (The inspector's report begins here.)
+
+THE FOURTH LOOK — THE INSPECTOR'S REPORT (third run of the brief; written as it goes)
+
+HOW IT IS BEING DONE
+- The PRODUCTION build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build, built again by this
+  run: logs/gate-build-run3.log; pnpm astro preview --port 4615) for everything that is a judgment of what
+  the visitor gets. The build the third look judged (8724ef5; src/experience/main.ts there checked
+  against git, same hash) served beside it from scratchpad/old/dist on port 4616 by tools/static.mjs,
+  and, because that server does not compress and the preview does, the NEW dist served the same way on
+  4617 wherever the two are timed against each other on a slowed line.
+- System Chromium, the real GPU, phones at scale 2, mobile, touch. One browser at a time.
+- The first run's captures (see the orchestrator's note above) are of this same build (no file under src/,
+  public/, workers/, scripts/ or tools/ differs between a039350 and HEAD: git diff --stat prints nothing)
+  and were made by this brief's scripts; I read every number of them and opened their pictures myself
+  before ruling. What they did not cover I made.
+- A verdict line of a fixer's script was not leaned on: the rulings are from the numbers under it, the
+  pictures, and the third look's own scripts (all-taps.mjs, b7.mjs, phone-sky.mjs, a5-probe.mjs) or mine
+  (pairs.mjs, mine-loader.mjs: the loader's first seconds and its clock from the recorded frames alone).
+- refs/verification/fixes.txt, "ROUND 3": each entry read only after the item was ruled on.
+- Evidence: refs/verification/fourth-look/<item>/, logs in refs/verification/fourth-look/logs/.
+
+PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
+
+1a. A PHONE HELD ON ITS SIDE (third look: MAJOR there) — RESOLVED, but for one knot (MINOR, below)
+  The stars and the button. At 844x390, 667x375, 740x360 and 932x430, the round flown and the exit
+  button shown, every station: no star's disc reaches the button; the nearest disc is 12 px from it at
+  844, 740 and 932 and 14 px at 667 (it was 3 to 11 px INSIDE it); the nearest to the logo is 107 px,
+  to the menu 59 px, to a side of the screen 35 px. A real touch at the centre of every star of every
+  figure: 146 of 146 took the star under the finger at each of the four sizes (584 touches), none
+  picked a second star, none left the sky, no console error. Libra's lowest and Cancer's lowest are
+  whole and are taken. (phone-sky/all-taps-side*.txt, taps-side.jpg, 844|667|740|932/phone-sky-
+  stations.txt, stations-empty.jpg.)
+  Nothing jumps when the button first appears: all 147 stars at the twelve stations stand in the same
+  place with the button not yet shown and shown (largest difference 0.0000 px), at the four sizes; the
+  layout keeps the button's room whether it is there or not. Turned on its side and back: every star
+  where a fresh load at that size puts it (0.0000 px), and the picture pixel for pixel the fresh
+  load's at four stations, both ways, four sizes. (side/side-scenes*.txt: a fixer's script; the star
+  places are from the same hook the third look's all-taps.mjs touches by, and its touches land.)
+  The fall from that screen (Libra, Sagittarius; side/fall-side.jpg looked at): every star leaves
+  from where it stood, falls straight, strikes with its burst; the roots follow. Reduced motion: the
+  still sky, the button there, Virgo's stars 59 px clear of it, nothing moving.
+  The hand-off's end on that screen (the third look's a5-probe.mjs, 6 first visits at 844x390 and 6 at
+  740x360, the whole loader played): no dip in 12 of 12; the lowest frame round the scene change is
+  100% of the usual light at the sky's middle. No frame without Cellestial's star.
+  (side-a5/a5/blink-probe-summary.txt, logs/a5-probe-sides.log.)
+  Cellestial's star: clear of every star (its rings' full reach ends 2.0 px short of Virgo's nearest
+  disc at every size, 8 to 13 px as drawn at two moments of the turn) and plainly the chief light
+  (phone-sky/740/cellestial-star.jpg). It is 67 to 80 px across there, under the build's own floor of
+  84; like the short phone's 77 px, not worth a change by itself.
+  B7 with every star lit, the twelve figures at the four sizes (the third look's b7.mjs): 48 of 48
+  touch nothing (no star, no line of the figure, not the logo, the menu, the button or an edge); no
+  point of a figure further on lies on any words (it was 27, 4 and 1); each stands by its own figure,
+  40 px or more from the nearest star's edge (34 px at Leo); 24 px type but Leo's at 667x375 (18 px)
+  and 740x360 (21 px); never nearer a side than 16 px. Leo's two lines and "Jesus is King." stand in
+  the open sky to the right of the figure. One watched being written at 844x390 (b7/write-leo-
+  side.jpg): the arc writes the letters, they cool to brass, nothing lands on a star.
+  (b7/b7-side-side667-side740-side932.txt, all-side.jpg, words-side740.jpg looked at.)
+  WHAT IS LEFT. The knots: Sagittarius is under a third now at every one of the four (30 to 32%; it
+  was 47%). Taurus is not: two stars of the Hyades (slot-77 and slot-64) stand 41% into each other
+  at 844x390, 47% at 667x375, 49% at 740x360 and 35% at 932x430 (it was 63%), both already at the
+  smallest size the build allows (6 px radius, 12 px across), both taking their own touch
+  (knots/pairs-sides.txt, pairs-sides.jpg: two small discs overlapping by nearly half, still two).
+  MINOR, on a phone on its side only. The fixers knew of it (fixes.txt, round 3 piece 1, "LEFT") and
+  kept the 6 px floor. Fix, if the owner wants the rule to hold there too: spread that one pair apart
+  along the line between them until they stand a third into each other (2 to 3 px of movement at
+  these sizes; src/experience/sky/layout.ts, where the knots are thinned), not a smaller star.
+  The fixers also left, untried in a browser, a desktop window squeezed flatter than 480 px and wider
+  than about 1000 px. Not a phone, not one of the owner's sizes; not looked at here.
+
+1b. A SHORT PHONE (third look: MINOR) — RESOLVED
+  At 375x667, 360x640 and 320x568, every star lit, all twelve figures (b7.mjs, 36 of 36): no words on
+  a star, across a line of the figure, on the logo, the menu, the button or off the screen; no far
+  point on any words. Leo's words at 375x667 now stand in the open sky above the figure, in two rows
+  and the closing line, 30 px from the nearest star (b7/all-short.jpg, all-short568.jpg looked at).
+  Type: never under 18 px. It is 18 px at Leo on 375x667 and 360x640, 21 or 22 px at Aquarius there,
+  18 to 22 px at five figures on 320x568, 24 px everywhere else. Placed sensibly at every one: by the
+  figure, in the largest open piece of sky.
+  Two things of polish that do not make a finding: at 320x568 Leo's three rows begin 8 px under the
+  top of the screen, level with the menu (clear of it by 60 px; the fixers knew: piece 2, "LEFT");
+  and Leo's words are smaller on the larger of the three phones (18 px at 375x667, 20 px at 320x568).
+  (b7/b7-short-short640-short568.txt.)

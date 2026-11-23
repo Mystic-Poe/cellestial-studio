@@ -112,7 +112,7 @@ for (const size of values.sizes.split(',')) {
 			await o.page.goto(`${PROD}/`, { waitUntil: 'commit' });
 		}
 		if (kind === 'mount') { await o.page.waitForFunction(() => window.__t?.['is-live'], null, { timeout: 60000, polling: 'raf' }); at = (await read(o)).now; await press(); }
-		if (kind === 'at') { await o.page.waitForFunction((ms) => performance.now() >= ms, Number(kindArg), { timeout: 60000, polling: 'raf' }); at = (await read(o)).now; await press(); }
+		if (kind === 'at') { await o.page.waitForFunction((ms) => performance.now() >= ms, Number.parseFloat(kindArg), { timeout: 60000, polling: 'raf' }); at = (await read(o)).now; await press(); }
 		if (kind === 'seen') { await o.page.waitForFunction(() => window.__t?.['has-poster'] || window.__t?.['is-drawn'], null, { timeout: 60000, polling: 'raf' }); await sleep(Number(kindArg ?? 300)); at = (await read(o)).now; await press(); }
 		if (kind === 'quiet') { await o.page.waitForFunction((ms) => performance.now() >= ms, Number(kindArg), { timeout: 60000, polling: 'raf' }); at = (await read(o)).now; for (const key of ['Tab', 'Shift', 'Control', 'Alt', 'Meta', 'CapsLock']) await o.page.keyboard.press(key); }
 		let reached = true;
@@ -193,7 +193,7 @@ for (const size of values.sizes.split(',')) {
 			}
 			const cols = o.phone ? 12 : 6;
 			const cellW = o.phone ? 125 : 258;
-			await sheet(cells, join(dir, `mine-${tag}-${size}.jpg`), { cols, cellW, cellH: Math.round(cellW * o.H / o.W) });
+			await sheet(join(dir, `mine-${tag}-${size}.jpg`), cells, { cols, cellW, cellH: Math.round(cellW * o.H / o.W) });
 		}
 		await o.context.close();
 	}
