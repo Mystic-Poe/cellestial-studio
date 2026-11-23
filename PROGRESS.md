@@ -147,9 +147,28 @@ pushed.
    `tools/loader/measure.mjs` on the production build takes `--only
    full,short,skip,key,quiet-keys,broken,resize,no-storage` (its other two cases can only be
    made on the dev server).
-   - [ ] 1. **The sky on a phone on its side** (major). No star under the exit button at
-     844x390, 667x375, 740x360 and 932x430; 146 of 146 stars can be taken; the knots thinned
-     at every size (Taurus's on the desktop too); the upright phone and the desktop unchanged.
+   - [x] 1. **The sky on a phone on its side** (major) `ddac183`. The cause was two facts in
+     `src/experience/sky/layout.ts`: the room under the figures was a fifth of the screen's
+     height (78 px at 390 high) while the exit button's top is 84 px up on every screen; and a
+     figure held at its furthest stand, too tall for that screen, was centred and hung into
+     the button. The room is now never less than the button and 12 px (`B11` in
+     `sky/config.ts`; `layout.safe.bottom` is 96 under 480 px of height, what it was above),
+     and a held figure stands its foot 12 px above the button. No star nearer than 12 px to
+     the button at 844x390, 932x430, 667x375, 740x360 (they were 3 to 11 px into it), shown or
+     not; 146 of 146 stars take their touch at each of the four. The knots' rule and the
+     rings' 2 px of clear space hold on every screen: at 1440x900 Taurus's closest pair
+     (slot-77, slot-64; 46% into each other, now 16%) and nothing else. The upright phones: 0
+     pixels differ in 24 captures at each of 390x844, 360x740, 375x667; the desktop differs
+     only inside the box of that pair. `pnpm test` is 148 of 148 now. **Left, for the fourth
+     look or the owner:** on a phone on its side Taurus's closest pair stands 6 to 7 px apart
+     and at the rule's floor of 6 px is still 41 to 49% into each other (two small spheres, a
+     close double; under a third would need 5 px); Cellestial's star there is its world size,
+     67 to 80 px, not the upright phone's 84. Record: `refs/verification/fixes.txt`, "ROUND
+     3", piece 1 (it ends with what piece 2 needs to know); evidence in
+     `refs/verification/round-3/` (`before/` is the build as it stood); new scripts there:
+     `sky-same.mjs` (a size before and after, pixel for pixel, twelve stations),
+     `side-scenes.mjs`, `side-knots.mjs`. Not brought up to date here, for the close-out: the
+     older parts of this file that describe the knots as the upright phone's only.
    - [ ] 2. **Where the meanings stand.** B7 on a phone on its side (type capped, placed as on
      the phone); on a short phone (rows before the band, 18 px at least, never across a
      star); "claim yours" never within 40 px of the words.

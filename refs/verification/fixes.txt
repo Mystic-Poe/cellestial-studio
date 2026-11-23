@@ -1490,7 +1490,8 @@ PIECE 1 — THE SKY ON A PHONE HELD ON ITS SIDE (third look: closing list 1, the
      half behind it), phone-sky/844/stations-empty.jpg (all twelve).
   2. all-taps.mjs, a real touch at the centre of every star: 844x390 146 of 146 (it was 145: Libra's
      slot-70 started the fall); 667x375 (--size side667) 146 of 146 (phone-sky/all-taps-side.txt,
-     all-taps-side667.txt). Scene "sky" after every one.
+     all-taps-side667.txt). Scene "sky" after every one. And, not asked for: 740x360 (--size
+     side740) 146 of 146, 932x430 (--size side932) 146 of 146 (all-taps-side740.txt, -side932.txt).
   3. The knots (side-knots.mjs, new: side/knots-side-before.jpg and -after.jpg at device pixels x8,
      knots-side667-after.jpg, and their .txt; before is the old build served beside the new):
        844x390   Taurus slot-77/slot-64   7.3 px apart, r 9.6, 9.8: 63%  ->  r 6.0, 6.0: 41%
