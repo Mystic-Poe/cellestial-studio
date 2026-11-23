@@ -1,0 +1,19 @@
+desk, scripts-off: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one: 0
+      before: scripts off, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scripts off, the loader's other three pictures asked for: none
+desk, script-fails: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one: 155
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+desk, script-fails-13s: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one: 0
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+phone, scripts-off: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one: 0
+      before: scripts off, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scripts off, the loader's other three pictures asked for: none
+phone, script-fails: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one: 0
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+phone, script-fails-13s: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one: 0
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+CASES IN WHICH THE TWO BUILDS DIFFER: 1 of 6

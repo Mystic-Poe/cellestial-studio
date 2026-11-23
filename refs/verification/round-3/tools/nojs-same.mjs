@@ -38,10 +38,25 @@ for (const size of ['desk', 'phone']) for (const [name, js, wait] of [['scripts-
 	const a = await sharp(shots.before).raw().toBuffer({ resolveWithObject: true });
 	const b = await sharp(shots.after).raw().toBuffer({ resolveWithObject: true });
 	let n = 0;
+	let box = '';
 	if (a.info.width !== b.info.width || a.info.height !== b.info.height) n = -1;
-	else for (let i = 0; i < a.data.length; i += a.info.channels) if (a.data[i] !== b.data[i] || a.data[i + 1] !== b.data[i + 1] || a.data[i + 2] !== b.data[i + 2]) n++;
+	else {
+		let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1, most = 0;
+		for (let i = 0; i < a.data.length; i += a.info.channels) {
+			const d = Math.max(Math.abs(a.data[i] - b.data[i]), Math.abs(a.data[i + 1] - b.data[i + 1]), Math.abs(a.data[i + 2] - b.data[i + 2]));
+			if (!d) continue;
+			n++;
+			most = Math.max(most, d);
+			const px = i / a.info.channels, x = px % a.info.width, y = Math.floor(px / a.info.width);
+			x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+		}
+		const dpr = SIZES[size].deviceScaleFactor ?? 1;
+		if (n) box = ` (the largest difference ${most} of 255; all inside x ${Math.floor(x0 / dpr)} to ${Math.ceil(x1 / dpr)}, y ${Math.floor(y0 / dpr)} to ${Math.ceil(y1 / dpr)} CSS px)`;
+	}
 	if (n !== 0) differ++;
-	say(`${size}, ${name}: the whole page ${a.info.width}x${a.info.height} px; PIXELS THAT DIFFER between the build as it stood and this one: ${n === -1 ? 'the pages are not the same size' : n}\n      before: ${notes.before}\n      after:  ${notes.after}`);
+	// The pictures are kept small, for looking: the PNGs are not committed.
+	if (name === 'scripts-off') await sharp(shots.after).resize({ height: 1600 }).jpeg({ quality: 82 }).toFile(join(dir, `${name}-${size}-after.jpg`));
+	say(`${size}, ${name}: the whole page ${a.info.width}x${a.info.height} px; PIXELS THAT DIFFER between the build as it stood and this one: ${n === -1 ? 'the pages are not the same size' : n}${box}\n      before: ${notes.before}\n      after:  ${notes.after}`);
 }
 say(`CASES IN WHICH THE TWO BUILDS DIFFER: ${differ} of 6`);
 writeFileSync(join(dir, 'nojs-same.txt'), `${log.join('\n')}\n`);
