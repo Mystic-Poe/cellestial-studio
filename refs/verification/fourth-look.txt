@@ -292,3 +292,69 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   and 1d, on a fast line, slow 4G, 1 Mbit/s, the CPU slowed, skipped at every moment, returned to:
   nothing in any. The only messages I could raise are the two that a picture answered 404 by my own
   script raises (the browser's and the loader's "could not start"), as on the old build.
+
+1d, CONTINUED — the builders' tool, and the page without script
+  tools/loader/measure.mjs now counts each run twice: from the loader's mount (as it always did) and
+  on "the visitor's clock", from the loader's own firstSeen(): the later of the browser's first paint
+  and the frame the page showed the unlit C in (or the canvas's first drawing). The rules marked * are
+  judged on the second. I agree with that start: on slow 4G it is the frame the whole C goes on
+  screen, 3 to 15 ms before the same frame reaches my recording, and on a fast line it is the first
+  paint. On the production build, --only full,short,skip,key,quiet-keys,broken,resize,no-storage,
+  the real GPU (logs/measure-*.log): 11 of 11 OK and exit 0 in each of the eight runs:
+                           1440x900: full / short / skip      390x844: full / short / skip
+    a fast line            7.30 / 3.40 / 2.79 s               7.33 / 3.41 / 2.79 s
+    the CPU slowed 4x      7.31 / 3.41 / 3.05                 7.45 / 3.57 / 3.05
+    slow 4G                7.34 / 3.53 / 4.44                 7.31 / 3.39 / 4.36
+    both                   7.31 / 3.50 / 4.67                 7.37 / 3.67 / 4.58
+  (the visitor's clock; "skip" is a tap one second in, to the loader's end). Its full runs are my
+  recorded clock to within 0.2 s on a fast line and 0.03 s on slow 4G.
+  The page with scripts off (tools/nojs-same.mjs, a fixer's; full-page pictures of both builds, pixel
+  for pixel, with the old build captured twice as its control): at both sizes the cover is gone and
+  the no-script page is there (1440x3910 and 390x3690 px of it), 0 pixels different from the build at
+  8724ef5 in 3 rounds of 3; where the page's own script answers 404, the same, or differing by at most
+  2 levels of 255 exactly as the old build differs from itself in the control. With scripts off the
+  loader's other three pictures are no longer asked for (they were: the third look's item 7, second
+  half). (nojs/nojs-same.txt, logs/nojs-same.log.)
+
+PART 2 — THE OWNER'S TWO SIZES ARE WHAT THE THIRD LOOK RULED DONE
+(The builders' sheets and suites are at the end of this part: they run last.)
+
+THE THREE THINGS THE SECOND LOOK CALLED MAJOR, ONCE MORE (production build)
+  The end of the hand-off (the third look's a5-probe.mjs, the sky canvas's middle read back every
+  frame): 12 first visits at 1440x900 and 12 at 390x844: no dip in 24 of 24; the lowest frame round the
+  scene change 100% of the usual. Skipped and returned-to (a5-probe-return.mjs): 12 skips and 12
+  returns, no dip; the early skip on slow 4G, 8 of 8 and their 8 returns, no dip. (a5/blink-probe-
+  summary.txt, blink-probe-return.txt, blink-probe-return-slow4g.txt.)
+  The fall (fall-cut.mjs; Virgo, Aries, Sagittarius): every frame 16.7 ms on both sizes unslowed (155
+  frames, none over 34 ms; worst 17 ms); with the CPU slowed 4x the desktop averages 18.6 to 19.4 ms
+  with one frame of 50 ms in three falls, the phone 16.7 to 17.1. The steepest drop of the screen's
+  light between two frames: 3.3 to 3.5% of the peak on the desktop, 0.9 to 1.3% on the phone: no
+  light is switched off. (logs/fall-cut.log, fall/.)
+  The phone's sky at 390x844 (phone-sky.mjs): every claimable star on screen at every station, 20 px
+  or more from the sides, clear of the logo, the menu and the button; the six wide figures 56 to 73%
+  of the height; no two stars more than 30.6% into each other; Cellestial's star 97 px across, its
+  rings 3.9 px short of Virgo's nearest disc at their full reach; a touch at the centre and one on
+  the free side of every star of every figure takes that star, 292 of 292; no console error.
+  (phone-sky/phone-sky-stations.txt, stations-empty.jpg looked at: the twelve as the third look
+  described them.) The desktop: 146 of 146 clicks (item 1f).
+
+ONE WHOLE VISIT IN REAL TIME AT EACH SIZE (visit.mjs, production build, real input; walk/)
+  A first visit: the loader (the sky 7.51 s after navigation at both sizes), the hand-off, a flight
+  through four constellations, a tap and its beads, an empty star and its panel, a full round and the
+  exit button, the fall, the five tiles with the guided light, the two closing buttons and their
+  dialogs, the warp back, each of the four menu teleports ("What we build" to the first tile, "Claim
+  your star" to the close, "Contact me" to the close with the message box open, "The Sky" to the
+  sky), a build request sent with /api/contact answered 200 from the script: the star lit in the
+  store and in the sky, its panel saying exactly what was asked ("A site for my bakery, with the
+  week's bread on the first page."), still lit after a reload and saying the same; then a return (the
+  short loader, the sky at 3.5 and 3.6 s), a flight, the fall and the warp again.
+  Frame times, part by part, are the third look's (third-look/walk/frames-*.txt beside walk/frames-
+  *.txt): the two flights, the tap, the panel, the round, the fall, the warp, the claim and every part
+  of the return's sky 16.7 ms a frame with none over 34 ms at either size; the loader has its one long
+  frame at its still moment, where the sky is mounted (283 ms on the desktop, 250 on the phone; it
+  was 300 and 267); the desktop's teleports one frame of 50 ms each (it was 50, 33, 33). No stutter,
+  pop or wait that the third look's walk did not have. Strips looked at: the loader, the hand-off on
+  the phone, the fall on the phone, the five tiles and the guided light, the close and its two
+  dialogs, the warp. It holds together as one made thing. Console: nothing of the site's; the only
+  lines are Cloudflare's own ("Blocked script execution in 'about:blank'", its widget's sandboxed
+  frame under the test key), which the third look's walk had too.

@@ -1,0 +1,12 @@
+/: 200 text/html
+/contact: 200 text/html
+/start: 200 text/html
+/start/new: 200 text/html
+/admin/: 200 text/html
+/contact: {"action":"/api/contact","method":"POST","fields":["input[name=name, type=text, required]","input[name=email, type=email, required]","textarea[name=message, type=textarea, required]","input[name=cf-turnstile-response, type=hidden]"],"turnstileSlot":true,"siteKey":"1x00000000000000000000AA","turnstileFrame":false,"send":"Send"}
+/start with a deep link for "Maple Street Bakery", maplestreetbakery.example, the Google lane, tier 1, test: names the business false, the domain true; the flow's first lines: ["TEST MODE — Gabriel gets a [TEST] email at each step.","STEP 1 OF 2","Create your Cloudflare account","Tap \"Continue with Google\" and pick your business account.","Your email (tap to copy)","owner@maplestreetbakery.example","Open Cloudflare (copies for you)","Done → Next step"]
+/start with another link (Northside Plumbing, the Microsoft lane, tier 2, in person): names the business false; first lines: ["STEP 1 OF 4","Create your GitHub account","Your email is already filled in.","Choose a password and a username, then enter the code GitHub emails you.","GitHub may show a short puzzle — that is normal.","Open GitHub"]
+/start with no link: ["This link is incomplete","Ask Gabriel for a new one — it only takes him a moment."]
+/start/new: fields ["name","email","domain","lane","lane","tier","tier","mode","mode","mode"]
+/admin/: title "Content Manager"; scripts ["https://unpkg.com/decap-cms@%5E3.0.0/dist/decap-cms.js"]; body text "Login with GitHub"
+page errors: none

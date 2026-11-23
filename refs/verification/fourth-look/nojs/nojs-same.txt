@@ -1,0 +1,25 @@
+desk, scripts-off: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one, 3 rounds: 0 | 0 | 0
+      the control, the build as it stood captured twice: 0 | 0 | 0
+      before: scripts off, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scripts off, the loader's other three pictures asked for: none
+desk, script-fails: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one, 3 rounds: 0 | 0 | 21494 (at most 2 of 255; inside x 84 to 1015, y 21 to 3721 CSS px)
+      the control, the build as it stood captured twice: 0 | 0 | 21494 (at most 2 of 255; inside x 84 to 1015, y 21 to 3721 CSS px)
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+desk, script-fails-13s: the whole page 1440x3910 px; PIXELS THAT DIFFER between the build as it stood and this one, 2 rounds: 722 (at most 2 of 255; inside x 656 to 787, y 3746 to 3789 CSS px) | 21494 (at most 2 of 255; inside x 84 to 1015, y 21 to 3721 CSS px)
+      the control, the build as it stood captured twice: 0 | 21494 (at most 2 of 255; inside x 84 to 1015, y 21 to 3721 CSS px)
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+phone, scripts-off: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one, 3 rounds: 0 | 0 | 0
+      the control, the build as it stood captured twice: 0 | 0 | 0
+      before: scripts off, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scripts off, the loader's other three pictures asked for: none
+phone, script-fails: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one, 3 rounds: 0 | 0 | 0
+      the control, the build as it stood captured twice: 0 | 0 | 0
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+phone, script-fails-13s: the whole page 780x7380 px; PIXELS THAT DIFFER between the build as it stood and this one, 2 rounds: 0 | 0
+      the control, the build as it stood captured twice: 0 | 1595455 (at most 3 of 255; inside x 0 to 390, y 10 to 3690 CSS px)
+      before: scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+      after:  scene (none), the cover's display none, the loader's other three pictures asked for: c-lit.webp, wordmark.webp, wordmark-matte.webp
+CASES IN WHICH NO ROUND CAME OUT WITH 0 PIXELS DIFFERING: 1 of 6
