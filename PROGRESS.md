@@ -14,6 +14,14 @@
 
 ## Exact next step
 
+**THE OWNER'S CHANGES OF 23 NOV (after he saw the live site on his phone), built on the branch
+`owner-changes` in a second working copy (`~/cellestial-studio-work`) so as not to disturb the
+fifth look: item 5 below has each one, what was checked, and what is live.** In short: stars
+100 to 146 named in his email (Worker, deployed); the shared sky (Worker with a KV store,
+deployed; the page's side); the beads no longer start over on a second tap; clean spacing, no
+two stars touching; the twelve meanings in `SPEC-ADDENDUM.md`. NEXT, if it is not done: run the
+suites on the branch, merge it into `redesign-build`, fast-forward `main`, check the live site.
+
 **PUBLISHED (23 Nov, 14:14), on the owner's word: `main` was fast-forwarded from `052f82a` to
 `c66bb73` and pushed, and cellestialstudio.com has served the redesign since 14:15 (item 3:
 what was checked on the live site, and how to roll back). The fourth look is done (23 Nov,
@@ -386,6 +394,50 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
    - **After this,** whatever more is committed on `redesign-build` (the fifth look's report,
      the final record) goes to `main` by another fast-forward; a fix to the site is built,
      tested and published the same way.
+5. **The owner's changes of 23 Nov** (his words are in `SPEC-ADDENDUM.md`, "Decisions of 23 Nov
+   2026"). Of the six things only he could decide (item 2): code 3 YES (done); code 4 "Build it
+   so it's shared" (done, the text of a star shown to others only after he approves it: his
+   choice of three); the Turnstile retry "Leave it"; `/admin` stays as it is, copy is changed
+   in the code; code 13 YES, the meanings are in the addendum (they appear only once a figure is
+   filled, as built); code 5 (the logo and menu during the loader) not answered: as built.
+   - **Stars 100 to 146 in his email.** `workers/contact/src/index.ts`: the pattern is 1 to 146.
+     Tests first. Deployed with wrangler on 23 Nov (the Worker answers as before).
+   - **The shared sky.** The Worker (`workers/contact`), with a KV namespace bound as `STARS`
+     (id in its `wrangler.jsonc`): a SENT request lights its star in the store, one record a
+     star (`star:slot-N`; the first claim stands); a request sent with no star is kept 30 days
+     under the hash of a key the form sends (`claim-key`, a hidden field `claim-flow.ts` adds),
+     and takes the star its sender then chooses (`POST /api/contact/place`); the public list is
+     `GET /api/contact/stars.json` (`ask` is null until approved); his email carries a signed
+     link (`/api/contact/star?...`, signed with a key made from the Resend key, so no new
+     secret) to a page with three buttons: show the text to everyone, hide it again, take the
+     star back. Looking at the page changes nothing (mail scanners follow links). Without the
+     binding the Worker is what it was. 27 checks (`workers/contact/test`). The page:
+     `src/experience/claims.ts` has a third source (registry, then this device, then the shared
+     sky), `src/experience/shared-sky.ts` fetches the list and reports a placement;
+     `public/api/contact/stars.json` is an empty list for servers with no Worker. A star lit by
+     another visitor whose text is not approved is simply lit: its panel does not open.
+     An automated security review of the first version found two faults (all stars in one
+     record, so two writes could undo each other; a waiting request could be raced to light
+     two stars): both put right before the store was ever bound. What is left, and is KV's
+     nature: two requests for the SAME star in the same instant can both be told it is free;
+     both messages reach him, the later text stands.
+   - **The beads never start over.** `sky/beads.ts` runs up to six runs at once
+     (`BEADS.runs`), each with its own beads and arrival; `sky/answer.ts`: the words go to the
+     star of the last tap, and a tap for the star they are already at leaves them there.
+     `src/experience/sky-beads.test.ts` (failing first); tried in the page: three taps, three
+     runs, each finishing its course.
+   - **Clean spacing.** `KNOT` in `sky/config.ts` is now `{ gap: 4, leastPx: 6, movePx: 8 }`
+     and the rule is in `sky/layout.ts`: at its station every pair of stars of a figure keeps
+     4 px between their discs, on every screen. Crowded stars are drawn smaller first (never
+     under 6 px in radius); only where that is not enough are two moved apart, each by the
+     same, along the line between them. At 390×844: 36 of 146 drawn smaller, two moved
+     (Taurus's closest pair, 3.3 px each); at 1440×900: 10 smaller, none moved. This REPLACES
+     the knots' rule (a third of an overlap was allowed) and call 24, and it settles the fourth
+     look's second minor (Taurus on a phone on its side: 7 stars of Taurus moved up to 4.5 px
+     there). A figure with a moved star has a plan of its own in the layout, so everything
+     reads the place a star is drawn at. One screen keeps less than 4 px: 568×320, where
+     Sagittarius keeps 3. Layout tests rewritten for the rule; the sky's suite 201 of 201.
+   - **The meanings** are in `SPEC-ADDENDUM.md`, locked.
 4. **What only a person with the device can do** (unchanged): a real phone (every frame time
    here is headless Chromium on a desktop GPU, or with the CPU slowed 4×), a screen reader, a
    browser without popovers, a phone held on its side in the hand (round 3 measured and put
