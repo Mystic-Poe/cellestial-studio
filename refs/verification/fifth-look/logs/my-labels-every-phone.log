@@ -10,3 +10,16 @@ phone 5 Capricornus: every star: 10 stars, a label got for 10
 phone 5 Capricornus: 12 labels, 0 none, 3 panels, console errors 0
 phone 6 Aquarius: every star: 15 stars, a label got for 14; NOT for slot-78
 phone 6 Aquarius: 23 labels, 0 none, 5 panels, console errors 0
+phone 7 Pisces: every star: 22 stars, a label got for 22
+phone 7 Pisces: 32 labels, 0 none, 12 panels, console errors 0
+phone 8 Aries: every star: 4 stars, a label got for 4
+phone 8 Aries: 5 labels, 0 none, 0 panels, console errors 0
+phone 9 Taurus: every star: 12 stars, a label got for 12
+phone 9 Taurus: 14 labels, 0 none, 8 panels, console errors 0
+phone 10 Gemini: every star: 12 stars, a label got for 12
+phone 10 Gemini: 13 labels, 0 none, 2 panels, console errors 0
+phone 11 Cancer: every star: 5 stars, a label got for 5
+phone 11 Cancer: 5 labels, 0 none, 0 panels, console errors 0
+phone 12 Leo: every star: 9 stars, a label got for 9
+phone 12 Leo: 9 labels, 0 none, 0 panels, console errors 0
+exit 0

@@ -67,7 +67,7 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
      1440x900: all 37 that moved read as their own star's: tight beside it, clear of every disc, level
        with it or centred over it. The three corner ones (Scorpius 15, Sagittarius 80, Taurus 54) hang a
        little, in knots where nothing better is to be had. Nothing the owner would call wrong.
-     390x844: 51 of the 53 that moved read as their own star's. TWO DO NOT (finding 1 below):
+     390x844 (the labels the grid reaches): 51 of the 53 that moved read as their own star's. TWO DO NOT:
        - VIRGO slot-53 (the first station): the words stand above it slid 24 px left, box 38,343, and that is
          level with slot-34, 9 px from ITS disc: they read "claim yours o" as slot-34's. slot-34's own label
          (left of it) stands at 39,342: the two stars' labels are in the same place to a pixel, and only
@@ -75,6 +75,27 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
        - TAURUS slot-77 (one of the two small feet, 14 px across): the words stand above it, box 286,419,
          level with slot-56 (26 px across) 10 px to their left, and read as slot-56's "right" label, which
          stands 15 px from the same place.
+   EVERY STAR, NOT ONLY THOSE THE GRID REACHES. The grid is answered with 137 of the 146 stars on the desktop
+   and 117 on the phone; the stars it misses are the ones in the knots, where the labels are hardest to place.
+   So I had every star offered (my-labels.mjs --every: touches round each star just outside its touch target
+   until one is answered with that star; labels/desk-every-analysis.txt, phone-every-analysis.txt; the labels
+   the grid had not shown, looked at: zoom-every-desk-1.jpg, zoom-every-phone-1.jpg, zoom-every-phone-2.jpg):
+     1440x900: 146 of 146 stars: under 101, beside 45; across a star of its own figure 0; across a far figure's
+       small star 2 (Taurus slot-54, above; Sagittarius slot-45 over one 8 px point); rings, sides, chrome 0.
+       One reads as its neighbours': Sagittarius slot-140, under-left, stands centred under the two stars to
+       its left (and Taurus slot-54 likewise, less). The rest read as their own.
+     390x844: 143 of 146 stars (Sagittarius slot-13 and slot-80 and Aquarius slot-78 were not offered by any
+       of my touches): under 66, beside 77; ACROSS A STAR'S DISC 10 (it was 67 of 146 by the fixer's count,
+       which mine agrees with): Pisces slot-141 10 px into one star and into two more, Pisces slot-123 6.6
+       and 5.3 px, Pisces slot-139 5.2, Gemini slot-4 4.5, Aquarius slot-130 4.0, Scorpius slot-41 2.8,
+       Taurus slot-54 over a far star, three by under 1 px; rings, sides, chrome 0. For each my own measure
+       finds no place free (Pisces slot-141: every place costs more; the right side is the screen's edge).
+       LOOKED AT: Pisces slot-141's LETTERS are on a star ("yours" across the top of slot-105); the others
+       touch with the box's padding and read, wedged. And five or six read as a neighbour's without touching
+       anything: Virgo slot-53 and Taurus slot-77 (above), Sagittarius slot-138 (level with slot-84, 1 px
+       from it), Sagittarius slot-140 (under two other stars), Pisces slot-139, Pisces slot-122.
+     So at 390x844 about 130 of the 143 are right, and a dozen in the knots of Sagittarius, Pisces and Taurus
+     (and one at Virgo) are wedged, ambiguous or, once, across a star. Finding 1.
      Seen and not counted: phone Capricornus slot-108, above: the words stand 25 px under the logo's
        "studio", the same type and brass, at the same left edge. Clear of the logo by the rule; a little
        like a second line of it. Thin lines of a figure pass under several labels (not a finding, by the brief).
@@ -142,3 +163,34 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
    Nothing worse than it was; a great deal better. What is left there is deep where it is left (375x667:
    Pisces slot-141 13 px into a disc, Aquarius slot-107 11 px; 360x740: Pisces slot-123 11.5 px): crowded
    figures on small screens, not counted (the brief: they need not be 0 there).
+
+5. NOTHING ELSE MOVED
+   The standing sky, pixel for pixel (sky-same.mjs: the clock held, twelve stations, empty and seeded; "before" on
+   the build as it stood, "after" and "again" on the new one; run by the first run of this look and again by
+   this one; logs/sky-same.log): 0 pixels differ in all 48 captures at 1440x900 and all 48 at 390x844; the
+   repeat 0. My control, that the count sees a difference where there is one (tools/same-control.mjs): the
+   same station empty against seeded differs in 6,113 and 6,228 pixels.
+   Every star tapped (all-taps.mjs, the first run; logs/all-taps-desk.log, all-taps-phone.log): 146 of 146 took
+   the star under the finger at both sizes; none picked two; none left the sky.
+   WHAT ROUND 4 CHANGED (git diff f7d5ea4 HEAD): of the site, three files and no more:
+     src/experience/sky/claim-label.ts   the rule (read whole): the places and their order, what is never done,
+                                         what is free, the least cover, the slack, the flight. All of it the label.
+     src/experience/sky/answer.ts        what the page hands the rule (Cellestial's star as its rings' reach,
+                                         also far off); which star is offered asks round 3's question as it was
+                                         (hadPlace) AND the new one; the words carry data-slide; and ONE THING
+                                         THAT IS NOT PLACING: a click on the words now counts only if a press
+                                         began after they were written. It is about the label and it is right:
+                                         it is what mended the 18 touches of part 1. The words are a <p>, not
+                                         focusable, so no keyboard path is lost by it.
+     src/experience/sky-meaning-place.test.ts   11 tests added, two expectations changed. Read three (under
+                                         blocked by a disc; the rings; the letters 16 px in): each states the
+                                         rule and each fails on the old code (the old placeLabel returns
+                                         "under" in all three cases, and LABEL_SPOTS does not exist there).
+   Of the tools, one line of one check: tools/sky/measure.mjs, "a touch elsewhere moves it to the star nearest
+     that touch" asked that the words be centred on the star (exactly under); it now asks that they be by THAT
+     star, 7 to 11 px from its disc, whole on the screen. Still a real question (the right star, tight, on the
+     screen); it no longer says which side, which the node tests do. The check before it ("centred under the
+     star", for a star whose place under is free) is untouched.
+   Of the builders' sheets: refs/sky/compare/beads-desk.jpg and beads-phone.jpg (they show the words) and
+     refs/sky/measure.txt (the changed check's line; the rest of its diff is one run's timings against another's).
+   Nothing in the loader, the Roots, the chrome, the layout of the stars, or which star a tap chooses.
