@@ -1740,3 +1740,46 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
   sheets; they were restored to the committed ones, since at the owner's two sizes no place had
   moved: rebuild and commit them only if one has); the full record; the box ticked. The three
   servers it left (4500, 4615, and the build as it stood on 4616) were stopped.
+
+  TAKEN UP AGAIN (22 Nov, 20:20) by a second fixer, from the record above and the repo alone.
+  What the first run left was read first (the whole of meaning.ts's change, claim-label.ts,
+  answer.ts's change: four files under src/, nothing else of the site) and then run again from
+  nothing: pnpm build, the production build on 4615, pnpm test 155 of 155. No line of the site
+  was changed by this second run; it checked that what is recorded holds, and finished the list.
+
+  B7, EVERY STAR LIT, RUN AGAIN ON THE FINAL BUILD (b7.mjs --only all; refs/verification/round-3/b7/:
+  b7-side-side667-side740-side932.txt, b7-desk-phone-small-short-short640-short568.txt, and the
+  sheets all-<size>.jpg, words-<size>.jpg, rewritten by this run)
+    2a. 844x390   12 of 12 touch nothing; far points on the words 0; 24 px, all twelve; 45 px
+                  (Leo) to 220 px above the exit button; the nearest star 40 px (Aquarius) or more
+        667x375   12 of 12; far points 0; eleven at 24 px, Leo 18 px in three rows beside the
+                  figure, 35 px from its nearest star; 45 px or more above the button
+        740x360   12 of 12; far points 0; eleven at 24 px, Leo 21 px, 34 px clear; 46 px or more
+        932x430   12 of 12; far points 0; 24 px, all twelve; 56 px or more above the button
+        It was (before-2/b7/, the build as piece 1 left it): Leo 34 px with 3 stars and 2 or 3
+        lines in its box at 844, 740 and 932; 30, 10 and 32 far points on the words; 24 to 26 px
+        above the button. 45 of the 48 lines moved; the three that did not are at 667x375, which
+        was under 720 wide and had the phone's search already.
+        Looked at: all-side.jpg (each of the twelve stands beside or within its figure, none
+        under a star, a line or a speck) and words-side.jpg (the words at the screen's own
+        pixels, 40 px round them: nothing but the honeycomb behind any of the twelve; Leo's
+        two rows and "Jesus is King." under them, in that order).
+    2b. 375x667   12 of 12; Leo 158x78 at 160,55, 18 px in two rows, 30 px from the nearest star
+                  (it was 318x63 at 27,98, 21 px in one row, across 2 stars and 3 lines)
+        360x640   12 of 12; Leo 158x78 at 154,55, 18 px in two rows, 26 px clear (it was 21 px
+                  in one row across 4 stars and 3 lines)
+        320x568   12 of 12; Leo 137x112 at 167,8, 20 px in three rows, 24 px clear (it was 19 px
+                  in one row across 1 star and 4 lines); Aquarius 127x47 at 172,157, 18 px in two
+                  rows, 33 px clear (it was 21 px in one row across 2 stars and 2 lines)
+        No type under 18 px at any of the ten sizes. Looked at: all-short.jpg, all-short568.jpg.
+        Noted, not changed: at 320x568 Leo's three rows begin 8 px under the top of the screen
+        (right of the menu, 16 px from the right side): that is the band's own margin, which the
+        build had before; the words are whole and on nothing.
+    NOTHING ELSE MOVED (the comparison is of every line's box, place and type; the third look's
+    own files against this run's):
+        1440x900  12 of 12 as refs/verification/third-look/b7/b7.txt
+        390x844   12 of 12 as the same file
+        360x740   12 of 12 as third-look/b7/b7-small-short.txt
+        375x667   11 of 12 as that file; the twelfth is Leo, above
+        Of the 72 lines at the six upright sizes, 68 are the lines of before-2/; the four that
+        moved are the four named under 2b.
