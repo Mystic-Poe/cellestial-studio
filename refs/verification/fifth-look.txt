@@ -1,43 +1,80 @@
 THE FIFTH LOOK — "claim yours" after round 4, and whether anything else moved
 23 Nov 2026. Branch redesign-build, HEAD 63c8886 (round 4's last commit). An inspector independent of
 the builders, the fixers and the four looks before. IN PROGRESS: this file is written as the work goes.
+SECOND RUN (23 Nov, from 14:15): the first run was cut off in part 1 (the orchestrator's note below). This run
+kept what it had measured, checked it, and went on. Everything below the note is this run's unless it says so.
 
 ORCHESTRATOR'S NOTE (23 Nov, 14:15): THE INSPECTOR WAS CUT OFF by the usage limit at about 12:45, in
 part 1, after 62 tool uses. Everything it had made is committed with this note, exactly as it left it.
-  WHAT IT HAD DONE (its lines under "(so far)" below, and files not yet written into this report):
-    the two builds side by side; label-near.mjs at 1440x900 on the new build; its own tools/my-labels.mjs
-    (every tap written down, a crop of every distinct label) run at 1440x900 and 390x844 on BOTH builds
-    (labels/desk.json, phone.json; logs/my-labels-*.log); labels/desk-analysis.txt and phone-analysis.txt
-    (every label not under its star: what took the place under it, and what was free by its own measure);
-    the sheets labels/desk-moved-1..2, desk-under-1..3, phone-moved-1..3, phone-under-1..2 and the zooms
-    zoom-desk-1, zoom-phone-1 (it had opened them; it had not yet written down what it saw); its own
-    tools my-near.mjs (whose label does it read as), my-zoom.mjs, my-spots.mjs (every place the rule
-    knows for one star) and probe1.mjs. pnpm test, lint and typecheck (the line below).
-  WHAT IT WAS DOING WHEN CUT OFF: looking into the phone's taps that its own script counted as "none"
-    (30-odd grid points, e.g. Virgo 228,284), with probe1.mjs: at that point the words were showing, for
-    slot-87, so the count may be the script's and not the page's. NOT SETTLED.
-  STILL TO DO: the rest of part 1 (the ruling from the sheets at both sizes; the taps above; where no
-    place is free), then parts 2 to 6, all of them, and the closing list and verdict.
-  The preview server it left on 4615 was stopped. Whoever goes on: build again before measuring.
-  ALSO NEW SINCE IT BEGAN: on the owner's word (23 Nov, about 14:00) the branch was merged to main and
-    published. That changes nothing in what this look is to judge (the same commit of the site).
+  WHAT IT HAD DONE (its lines under "1. "CLAIM YOURS" IN THE EMPTY SKY (1440x900 and 390x844; reduced motion, a real click or touch on a grid of
+   99 and 54 points at each of the twelve stations; the new build and, for the same taps, the build as it stood)
 
-HOW IT WAS DONE
-Nothing of the site was changed. The production build (PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
-pnpm build; astro preview on 4615) beside the build as it stood before round 4 (commit f7d5ea4, the
-ready-built folder, served by tools/static.mjs on 4616), the same script run against both. Real GPU,
-phones at deviceScaleFactor 2, mobile, touch. The fourth look's scripts as its inspector left them
-(refs/verification/fifth-look/tools/), and my own beside them:
-  tools/my-labels.mjs   the same grid of taps as label-near.mjs, but EVERY tap written down (which star,
-                        which side, the words' box, the letters' own extent, the star's disc, every other
-                        disc drawn, Cellestial's core and its rings' reach), so that the same tap can be
-                        set beside itself on the two builds; and a crop of every distinct label.
-I ruled from my own captures before reading the fixer's entry ("ROUND 4" in fixes.txt) or its pictures.
+   THE NUMBERS (label-near.mjs, the fourth look's script, and my-labels.mjs + my-analyse.mjs, which measure
+   every disc that is drawn, not only the figure's own; logs/label-near-new.log, label-near-old.log,
+   labels/desk-analysis.txt, phone-analysis.txt)
+                                               1440x900            390x844
+                                               before   now        before   now
+     distinct labels                           137      137        113      117
+     across another star of the figure         25       0          38       2
+     across ANY star's disc (r > 3 px)         --       1          43       3
+     on Cellestial's core                      2        0          2        0
+     inside the reach of its rings             2        0          5        0   (nearest now: 8.2 and 5.0 px off)
+     letters nearer a side than 16 px          0        0          28       0   (least now 51 and 16.0 px)
+     off the screen, on the logo/menu/button   0        0          0        0
+     the box from its own star's disc          --       8.2-9.7    --       7.6-8.9 px (tight, every one)
+   WHERE THEY STAND NOW
+     1440x900: under 100, right 20, left 7 (+2 slid 12 px down), above 5, under-right 1, under-left 2
+     390x844:  under 64, right 17, left 13 (+2 slid), above 12 (+2 slid 24 px left), above-right 3,
+               above-left 2, under-right 1, under-left 1
+     Of the 37 and 53 that left the place under their star: that place was REALLY taken for every one (my own
+     geometry: a star's disc with 4 px of air, the rings' reach, or the screen's side; the list, star by
+     star, is in the two analysis files), and for none was a place earlier in the fixer's order (under, right,
+     left, above, the corners, then the slid places) free. The 100 and 64 under their star: centred on it, the
+     17 on the phone that stand by a side held in 5 to 19 px so that the letters keep 16 px (it was 8).
+   THE FOUR THAT STILL TOUCH A DISC, each where my measure too finds no place free (tools/my-spots.mjs):
+     desk  Taurus slot-54, under-left: across two dim stars of the NEXT figure (r 6 px, 6.4 and 1.1 px in),
+           in the Hyades knot. Reads; the stars it crosses are the far figure's.
+     phone Sagittarius slot-39, left slid 12: 0.9 px into slot-24's disc (the box, not the letters).
+     phone Taurus slot-1, left slid 12: 0.7 px into a far star 10 px across.
+     phone Gemini slot-4, right: 4.5 px into slot-100's disc (the box's padding; the letters clear it). Its
+           star stands at the screen's left side, so left is off the screen; under covers 313 px2 of
+           slot-100, above 258 of slot-6, right 209: right is the least. Agreed.
 
-(so far)
-- label-near.mjs, 1440x900, the new build: 137 distinct labels; on another star of the figure 0; on
-  Cellestial's core 0; on the chrome 0; outside 0; a tap that gave no label 0; the nearest any label
-  comes to another star's disc 4.4 px. Sides: under 100, right 20, left 9, above 5, under-right 1,
-  under-left 2. (logs/label-near-new.log)
-- pnpm test: 185 of 185 in node (174 before round 4, 11 added), Workers 15, 16, 14. pnpm lint exit 0
-  (1 info). pnpm typecheck exit 0. (logs/pnpm-*.log)
+   THE SAME TAP, THE SAME STAR?
+     1440x900: 1188 grid points, 1182 the same answer; the 6 that differ are points my script did not tap
+       because the words of the tap before stood there (a different place now), 3 each way. The three that
+       had a label before, tapped alone on a fresh page: the same star (logs/probe3-desk.log). Stars
+       offered: 137 before, 137 now, the same 137.
+     390x844: 648 grid points, 608 the same; 40 differ, and NONE is a star changed. The first run's "34
+       taps that gave no label" (label-near.mjs prints 34 now, 53 before) is the script's, not the page's:
+       its test for an open panel does not match this site's panel, so a tap that opened the panel was
+       counted as "no label". With the test put right (my-labels.mjs, tools/my-panels.mjs):
+         now    34 panels: 17 touches within a star's own touch target, 17 touches on or within 10 px of
+                the words still standing from the tap before (a touch on the words picks their star: right)
+         before 53 panels: the same 17 on a star, 18 by the standing words, and 18 TOUCHES ON EMPTY SKY THAT
+                OPENED THE PANEL BY THEMSELVES: a touch 20 to 38 px under a star, the words written under
+                the finger, and the same touch's click taken as a click on the words (a still sky only).
+       So the build as it stood had a fault nobody had listed, and round 4 mended it (answer.ts: a click on
+       the words counts only if the press began after they were written). All 18 now give the words. The 14
+       taps that gave a label before and a panel or an untapped point in my grid run, each made alone on a
+       fresh page of the new build: 14 of 14 offer the star they offered before (logs/probe3-phone.log).
+       Stars offered: 113 before, 117 now; none lost; the four "new" ones (Virgo slot-52, Sagittarius
+       slot-90 and slot-21, Taurus slot-69) are stars whose taps opened the panel outright before.
+     No tap that gave a label before gives none now. No star is no longer offered in the empty sky.
+
+   WHAT I SAW (every label, both sizes: labels/desk-moved-1..2, desk-under-1..2, phone-moved-1..3,
+   phone-under-1..2; the doubtful ones at twice the size: zoom-phone-1.jpg)
+     1440x900: all 37 that moved read as their own star's: tight beside it, clear of every disc, level
+       with it or centred over it. The three corner ones (Scorpius 15, Sagittarius 80, Taurus 54) hang a
+       little, in knots where nothing better is to be had. Nothing the owner would call wrong.
+     390x844: 51 of the 53 that moved read as their own star's. TWO DO NOT (finding 1 below):
+       - VIRGO slot-53 (the first station): the words stand above it slid 24 px left, box 38,343, and that is
+         level with slot-34, 9 px from ITS disc: they read "claim yours o" as slot-34's. slot-34's own label
+         (left of it) stands at 39,342: the two stars' labels are in the same place to a pixel, and only
+         the pulse says which star is meant. A place 24 px further left is free and 33 px from slot-34.
+       - TAURUS slot-77 (one of the two small feet, 14 px across): the words stand above it, box 286,419,
+         level with slot-56 (26 px across) 10 px to their left, and read as slot-56's "right" label, which
+         stands 15 px from the same place.
+     Seen and not counted: phone Capricornus slot-108, above: the words stand 25 px under the logo's
+       "studio", the same type and brass, at the same left edge. Clear of the logo by the rule; a little
+       like a second line of it. Thin lines of a figure pass under several labels (not a finding, by the brief).

@@ -50,13 +50,24 @@ for (let k = 0; k < 12; k++) {
 		const hit = await o.page.evaluate(([x, y]) => { const el = document.elementFromPoint(x, y); return el ? (el.closest('button, a, .sky-claim') ? 'a control' : 'sky') : 'nothing'; }, pt);
 		const rec = { k, fig: c.name, n, pt };
 		if (hit !== 'sky') { rec.what = hit; taps.push(rec); continue; }
+		// The second run: were the words still on the page from the tap before (Escape does not always take them off)?
+		rec.wordsBefore = await o.page.evaluate(() => { const e = document.querySelector('[data-claim-words]'); return e && !e.hidden && getComputedStyle(e).visibility !== 'hidden' ? { slot: e.dataset.slot, box: (({ x, y, width, height }) => ({ x, y, w: width, h: height }))(e.getBoundingClientRect()) } : null; });
 		await o.pressAt(...pt);
 		await sleep(180);
-		if (await o.page.evaluate(() => !!document.querySelector('dialog[open], [data-panel]:not([hidden])')).catch(() => false)) {
+		// The second run of this look: on the phone a touch's answer is sometimes not yet on the page 180 ms
+		// after it (the count of "none" was the script's, not the page's): wait for the words or a panel, up to 900 ms more.
+		for (let w = 0; w < 18; w++) {
+			const there = await o.page.evaluate(() => { const e = document.querySelector('[data-claim-words]'); return !!document.querySelector('dialog[open], [data-panel]:not([hidden]), [data-sky-panel]:not([hidden])') || (!!e && !e.hidden && getComputedStyle(e).visibility !== 'hidden'); }).catch(() => false);
+			if (there) { rec.waited = 180 + w * 50; break; }
+			await sleep(50);
+		}
+		if (await o.page.evaluate(() => !!document.querySelector('dialog[open], [data-panel]:not([hidden]), [data-sky-panel]:not([hidden])')).catch(() => false)) {
 			rec.what = 'panel';
 			rec.panelSlot = await o.page.evaluate(() => document.querySelector('[data-claim-words]')?.dataset.slot ?? null);
 			taps.push(rec);
-			await o.page.keyboard.press('Escape'); await sleep(150); continue;
+			await o.page.keyboard.press('Escape'); await sleep(250);
+			// The second run: a panel takes the first Escape; the words, if any still stand, the next.
+			await o.page.keyboard.press('Escape'); await sleep(100); continue;
 		}
 		const r = await o.page.evaluate(([all]) => {
 			const w = document.querySelector('[data-claim-words]');

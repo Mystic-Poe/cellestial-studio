@@ -3,7 +3,13 @@ NEW build, phone (390x844): 117 distinct labels (station, star, place); by place
   on Cellestial's core: 0; inside the reach of its rings: 0; the nearest to the rings' reach 5.0 px
   letters nearer a side than 16 px: 0 (the least 16.0 px); outside the screen 0; on the logo, the menu or the exit button 0
   the box from its own star's disc: 7.6 to 8.9 px; the nearest to a meaning Infinity px
-  taps: 648; a label 544; no label 34; a panel opened 0; on a control 70
+  taps: 648; a label 544; no label 0; a panel opened 34; on a control 70
+OLD build, phone: 113 distinct labels (station, star, place); by place {"under":113}
+  across another STAR's disc (r > 3 px): 43; within 4 px of one, not on it: 5; over far POINTS (r <= 3 px): 13 (most on one label: 15)
+  on Cellestial's core: 2; inside the reach of its rings: 5; the nearest to the rings' reach -25.8 px
+  letters nearer a side than 16 px: 28 (the least 8.0 px); outside the screen 0; on the logo, the menu or the exit button 0
+  the box from its own star's disc: 7.6 to 8.6 px; the nearest to a meaning Infinity px
+  taps: 648; a label 535; no label 0; a panel opened 53
 
 NEW build, every label that breaks a rule by my measure:
   Sagittarius slot-39 left slid 12 (star 353,422 r 13.0; box 236,422): across slot-24 (r 13.3, 0.9 px in)
@@ -68,3 +74,47 @@ NEW build, every label NOT under its star: what took the place under it, and wha
 
 NEW build, the 64 labels under their star: centred on it (within 0.6 px) 47; held in from a side of the screen 17: Virgo slot-28 (19.0 px, star at x 37), Libra slot-25 (-18.4 px, star at x 352), Libra slot-88 (12.8 px, star at x 43), Libra slot-70 (18.7 px, star at x 37), Scorpius slot-31 (-17.1 px, star at x 351), Sagittarius slot-133 (19.1 px, star at x 37), Sagittarius slot-118 (15.5 px, star at x 41), Capricornus slot-103 (-19.1 px, star at x 353), Aquarius slot-93 (-7.2 px, star at x 341), Aries slot-68 (19.1 px, star at x 37), Taurus slot-40 (19.1 px, star at x 37), Taurus slot-64 (-19.1 px, star at x 353), Gemini slot-46 (-19.1 px, star at x 353), Cancer slot-109 (18.3 px, star at x 38), Cancer slot-58 (-18.3 px, star at x 352), Leo slot-86 (8.6 px, star at x 47), Leo slot-5 (-5.5 px, star at x 340)
   of them, under although my measure finds something within the rule's reach there: 0
+
+THE SAME TAP ON THE TWO BUILDS (phone): 648 taps; the same answer 608; different 40 (a label before and none now 14; none before and a label now 23)
+  Virgo tap 15 at 228,284: was slot-87, now panel
+  Virgo tap 24 at 30,437: was panel, now slot-28
+  Virgo tap 25 at 96,437: was slot-53, now a control
+  Virgo tap 26 at 162,437: was panel, now slot-52
+  Virgo tap 32 at 162,514: was panel, now slot-52
+  Libra tap 44 at 162,667: was slot-62, now a control
+  Libra tap 48 at 30,744: was panel, now slot-70
+  Libra tap 49 at 96,744: was slot-70, now a control
+  Scorpius tap 22 at 294,360: was panel, now slot-32
+  Scorpius tap 25 at 96,437: was slot-7, now panel
+  Sagittarius tap 8 at 162,207: was slot-127, now panel
+  Sagittarius tap 13 at 96,284: was panel, now slot-90
+  Sagittarius tap 26 at 162,437: was panel, now slot-21
+  Sagittarius tap 27 at 228,437: was panel, now slot-21
+  Capricornus tap 1 at 96,130: was slot-43, now a control
+  Capricornus tap 6 at 30,207: was panel, now slot-108
+  Capricornus tap 22 at 294,360: was a control, now slot-106
+  Aquarius tap 4 at 294,130: was slot-81, now panel
+  Aquarius tap 27 at 228,437: was panel, now slot-112
+  Aquarius tap 30 at 30,514: was panel, now slot-96
+  Aquarius tap 31 at 96,514: was panel, now a control
+  Pisces tap 22 at 294,360: was a control, now slot-95
+  Pisces tap 38 at 162,591: was panel, now slot-67
+  Pisces tap 39 at 228,591: was slot-111, now a control
+  Taurus tap 22 at 294,360: was slot-56, now a control
+  Taurus tap 26 at 162,437: was a control, now slot-1
+  Taurus tap 27 at 228,437: was panel, now slot-69
+  Taurus tap 29 at 360,437: was slot-77, now a control
+  Taurus tap 40 at 294,591: was panel, now slot-116
+  Taurus tap 41 at 360,591: was panel, now a control
+  Gemini tap 18 at 30,360: was panel, now slot-4
+  Gemini tap 22 at 294,360: was slot-37, now a control
+  Gemini tap 23 at 360,360: was slot-46, now a control
+  Gemini tap 25 at 96,437: was panel, now slot-61
+  Gemini tap 28 at 294,437: was panel, now a control
+  Gemini tap 29 at 360,437: was panel, now slot-46
+  Cancer tap 19 at 96,360: was panel, now slot-132
+  Cancer tap 42 at 30,667: was panel, now slot-109
+  Cancer tap 43 at 96,667: was slot-109, now a control
+  Leo tap 52 at 294,744: was panel, now slot-14
+  stars offered: before 113, now 117; offered before and not now: none; offered now and not before: Virgo slot-52, Sagittarius slot-90, Sagittarius slot-21, Taurus slot-69
+  labels under their star on both builds: in the same place to 0.6 px 46; moved 17: Virgo slot-28 8.0,0.0 | Libra slot-25 -8.0,0.0 | Libra slot-88 8.0,0.0 | Libra slot-70 8.0,0.0 | Scorpius slot-31 -8.0,0.0 | Sagittarius slot-133 8.0,0.0 | Sagittarius slot-118 8.0,0.0 | Capricornus slot-103 -8.0,0.0 | Aquarius slot-93 -7.2,0.0 | Aries slot-68 8.0,0.0 | Taurus slot-40 8.0,0.0 | Taurus slot-64 -8.0,0.0 | Gemini slot-46 -8.0,0.0 | Cancer slot-109 8.0,0.0 | Cancer slot-58 -8.0,0.0 | Leo slot-86 8.0,0.0 | Leo slot-5 -5.5,0.0

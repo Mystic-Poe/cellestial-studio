@@ -1,0 +1,29 @@
+$ astro build
+14:15:20 [types] Generated 42ms
+14:15:20 [build] output: "static"
+14:15:20 [build] mode: "static"
+14:15:20 [build] directory: /home/poe/cellestial-studio/dist/
+14:15:20 [build] Collecting build info...
+14:15:20 [build] ✓ Completed in 57ms.
+14:15:20 [build] Building static entrypoints...
+14:15:20 [assets] Copying fonts (1 file)...
+14:15:20 [vite] ✓ built in 397ms
+14:15:20 [WARN] [vite] [plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+14:15:20 [vite] ✓ built in 160ms
+14:15:20 [build] Rearranging server assets...
+
+ generating static routes 
+14:15:20   ├─ /contact/index.html (+9ms) 
+14:15:20   ├─ /start/new/index.html (+2ms) 
+14:15:20   ├─ /start/index.html (+1ms) 
+14:15:20   ├─ /index.html (+6ms) 
+14:15:20 ✓ Completed in 24ms.
+
+14:15:20 [build] ✓ Completed in 621ms.
+14:15:20 [build] 4 page(s) built in 682ms
+14:15:20 [build] Complete!
+exit 0

@@ -4,6 +4,12 @@ NEW build, desk (1440x900): 137 distinct labels (station, star, place); by place
   letters nearer a side than 16 px: 0 (the least 51.1 px); outside the screen 0; on the logo, the menu or the exit button 0
   the box from its own star's disc: 8.2 to 9.7 px; the nearest to a meaning Infinity px
   taps: 1188; a label 1151; no label 0; a panel opened 0; on a control 37
+OLD build, desk: 137 distinct labels (station, star, place); by place {"under":137}
+  across another STAR's disc (r > 3 px): 32; within 4 px of one, not on it: 3; over far POINTS (r <= 3 px): 8 (most on one label: 24)
+  on Cellestial's core: 2; inside the reach of its rings: 4; the nearest to the rings' reach -14.3 px
+  letters nearer a side than 16 px: 0 (the least 51.1 px); outside the screen 0; on the logo, the menu or the exit button 0
+  the box from its own star's disc: 8.2 to 9.6 px; the nearest to a meaning Infinity px
+  taps: 1188; a label 1151; no label 0; a panel opened 0
 
 NEW build, every label that breaks a rule by my measure:
   Taurus slot-54 under-left (star 725,422 r 19.7; box 608,442): across slot-61 (r 6.4, 6.4 px in), slot-82 (r 6.2, 1.1 px in)
@@ -50,3 +56,13 @@ NEW build, every label NOT under its star: what took the place under it, and wha
 
 NEW build, the 100 labels under their star: centred on it (within 0.6 px) 100; held in from a side of the screen 0
   of them, under although my measure finds something within the rule's reach there: 0
+
+THE SAME TAP ON THE TWO BUILDS (desk): 1188 taps; the same answer 1182; different 6 (a label before and none now 3; none before and a label now 3)
+  Scorpius tap 80 at 444,713: was a control, now slot-41
+  Sagittarius tap 62 at 996,538: was slot-39, now a control
+  Aquarius tap 53 at 1272,450: was a control, now slot-134
+  Pisces tap 15 at 582,188: was slot-129, now a control
+  Taurus tap 49 at 720,450: was a control, now slot-54
+  Cancer tap 38 at 720,363: was slot-132, now a control
+  stars offered: before 137, now 137; offered before and not now: none; offered now and not before: none
+  labels under their star on both builds: in the same place to 0.6 px 100; moved 0
