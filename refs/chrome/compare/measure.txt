@@ -42,7 +42,7 @@ ok   phone: Tab walks the items: What we build, Claim your star, Contact me
 ok   phone: Escape closes it and focus is back on the button
 ok   phone: a tap outside closes it
 ok   phone: while the scene is "loading" the chrome is hidden and cannot take focus
-ok   phone: when the loader ends the chrome fades in: fully there 413 ms after the scene changes (21 frames in between)
+ok   phone: when the loader ends the chrome fades in: fully there 412 ms after the scene changes (21 frames in between)
 ok   phone: reduced motion: no breathing (none), no fade (0s), no drop (0s)
 ok   phone: with script off the button opens the menu (164x206 px) and its links go to /, #roots, /contact, /contact
 ok   phone: with script off "Claim your star" goes to /contact; the chrome heads the page (position absolute)
