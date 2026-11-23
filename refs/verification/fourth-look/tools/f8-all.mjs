@@ -28,6 +28,8 @@ for (const size of values.sizes.split(',')) {
 	const sides = { under: 0, above: 0, right: 0, left: 0 };
 	let taps = 0, shown = 0, least = Infinity, leastAt = '', moved = 0, bad = 0;
 	const cells = [];
+	const every = new Set();
+	let starLeast = Infinity;
 	for (let k = 0; k < CONSTELLATIONS.length; k++) {
 		const c = CONSTELLATIONS[k];
 		const figures = values.pair ? [c, CONSTELLATIONS[(k + 1) % CONSTELLATIONS.length]] : [c];
@@ -75,6 +77,11 @@ for (const size of values.sizes.split(',')) {
 				sides[r.side] = (sides[r.side] ?? 0) + 1;
 				if (r.toMeaning < least) { least = r.toMeaning; leastAt = `${c.name}, tap at ${pt.map(Math.round)}, ${r.slot}, ${r.side}`; }
 				const wrong = [];
+				// the fourth look: asked of EVERY label, also the ones under their star
+				if (!r.inside) every.add(`${c.name} ${r.slot} ${r.side}: outside the screen (box ${Math.round(r.box.x)},${Math.round(r.box.y)} ${Math.round(r.box.w)}x${Math.round(r.box.h)})`);
+				if (r.chrome.length) every.add(`${c.name} ${r.slot} ${r.side}: on ${r.chrome.join(', ')}`);
+				if (r.onStars) every.add(`${c.name} ${r.slot} ${r.side}: on ${r.onStars} other star(s) (box ${Math.round(r.box.x)},${Math.round(r.box.y)}; nearest other star's disc ${r.starGap.toFixed(1)} px)`);
+				if (r.starGap < starLeast) starLeast = r.starGap;
 				if (r.toMeaning < 40) wrong.push(`${r.toMeaning.toFixed(0)} px from the meaning (${r.nearestMeaning})`);
 				// Off the screen, the chrome and the other stars: asked of the words that left their place under the star.
 				if (r.side !== 'under') {
@@ -94,6 +101,7 @@ for (const size of values.sizes.split(',')) {
 		await o.context.close();
 	}
 	say(`${bad ? 'FAIL' : 'PASS'}  ${size} (${W}x${H})${values.pair ? ', two figures complete' : ''}: ${taps} taps on empty sky at twelve stations, "claim yours" shown ${shown} times: under its star ${sides.under}, above ${sides.above}, right ${sides.right}, left ${sides.left}; the nearest to a meaning ${Number.isFinite(least) ? `${least.toFixed(0)} px (${leastAt})` : 'none'}; within 40 px: ${bad}`);
+	say(`fourth look, ${size}: of ALL ${shown} labels (under their star too): outside the screen, on the logo, the menu or the exit button, or on another star: ${every.size ? `${every.size} distinct: ${[...every].join(' | ')}` : 'none'}; the nearest any label's box comes to another star's disc ${starLeast.toFixed(1)} px`);
 	if (cells.length) await sheet(join(dir, `claim-yours-moved-${size}${values.pair ? '-pair' : ''}.jpg`), cells, W > H ? { cols: 4, cellW: 390, cellH: Math.round((390 * H) / W) } : { cols: 8, cellW: 190, cellH: Math.round((190 * H) / W) });
 }
 writeFileSync(join(dir, `f8-all${values.pair ? '-pair' : ''}${values.sizes === 'desk,phone,small,short,side' ? '' : `-${values.sizes.replaceAll(',', '-')}`}.txt`), `${log.join('\n')}\n`);

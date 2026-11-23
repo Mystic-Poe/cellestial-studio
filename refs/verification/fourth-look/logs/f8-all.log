@@ -24,3 +24,25 @@
       desk Taurus complete, tap at 1065,800: "claim yours" RIGHT slot-51 (star at 757,551 r 6.6), box 771,539 96x24; 60 px from the meaning; 19 px from the nearest other star
 PASS  desk (1440x900): 849 taps on empty sky at twelve stations, "claim yours" shown 849 times: under its star 825, above 0, right 24, left 0; the nearest to a meaning 42 px (Aries, tap at 1410,100, slot-64, under); within 40 px: 0
   wrote /home/poe/cellestial-studio/refs/verification/fourth-look/b7/claim-yours-moved-desk.jpg
+PASS  phone (390x844): 444 taps on empty sky at twelve stations, "claim yours" shown 419 times: under its star 419, above 0, right 0, left 0; the nearest to a meaning 40 px (Pisces, tap at 30,130, slot-99, under); within 40 px: 0
+      side932 Libra complete, tap at 466,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,130: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,180: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 575,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,230: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 684,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,280: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 793,330: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+      side932 Libra complete, tap at 902,330: "claim yours" ABOVE slot-19 (star at 517,148 r 5.4), box 469,111 96x24; 83 px from the meaning; 3 px from the nearest other star
+PASS  side932 (932x430): 503 taps on empty sky at twelve stations, "claim yours" shown 479 times: under its star 461, above 18, right 0, left 0; the nearest to a meaning 43 px (Capricornus, tap at 575,130, slot-134, under); within 40 px: 0
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/b7/claim-yours-moved-side932.jpg
+exit 0

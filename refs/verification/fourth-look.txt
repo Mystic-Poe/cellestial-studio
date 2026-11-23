@@ -247,3 +247,48 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   picture for ever, and neither build's sky hangs on it.
   A RETURN (the same tab, loaded again): the short version, the sky at 3.50 to 3.58 s on a fast line
   (4 of 4) and 4.18 to 4.35 s on slow 4G; never the unlit C's picture first (mode "short").
+
+1e. "CLAIM YOURS" BESIDE THE WORDS (third look: MINOR, new with round 2) — RESOLVED
+  The third look's own two taps, in real time (tools/f8.mjs, f8-close.mjs): Aries complete, the sky to
+  its right tapped: "claim yours" now stands to the RIGHT of its star, its letters 67 px from the end
+  of "the Lamb" (it was 5 px); Taurus: 68 px from "He comes to judge" (it was 6). All 30 taps of that
+  script: the nearest "claim yours" to a meaning 49 px. (logs/f8.log, f8-close.log, b7/claim-yours-
+  close-desk.jpg.)
+  Everywhere (tools/f8-all.mjs, a fixer's; it reads the label's and the meanings' boxes from the page,
+  which is the right measure; one figure complete at a time, the visitor at its station, the sky
+  tapped on a grid of 72 points on the desktop and 40 on the phone, so on every side of the words):
+    1440x900  849 taps, "claim yours" shown 849 times: under its star 825, to its right 24 (Aries 14,
+              Taurus 10); the nearest to a meaning 42 px; within 40 px: none
+    390x844   444 taps, shown 419 times, all under their star; the nearest to a meaning 40 px;
+              within 40 px: none
+  (logs/f8-all.log; b7/claim-yours-moved-desk.jpg looked at: the 24 labels that moved stand right of
+  a small star of the next figure, clear of everything.) That script asks "on a star, off the screen,
+  on the logo, the menu or the button" only of the labels that MOVED; I made my copy ask it of every
+  label: see the line added under this item when that run is in (logs/f8-all-every.log).
+  The fixers left (piece 2, "LEFT"): at 932x430, Libra complete, "claim yours" above slot-19 lies
+  across one of Libra's lines. Seen in my run too: its box 3 px from the nearest other star, above its
+  own. A phone on its side, a label that shows for the moment of a tap: not counted.
+
+1f. THE KNOT ON THE DESKTOP (third look: MINOR) — RESOLVED
+  At 1440x900 Taurus's closest pair now stands 17% into each other (it was 46%); the deepest any two
+  stars stand into each other anywhere on the desktop is 24% (Sagittarius), on the phone 31% (my
+  pairs.mjs, every pair at every station: knots/pairs-desk.txt). The two thinned stars are 25 px
+  across (the others 31 to 53). A real click at the centre of every star of every figure: 146 of 146
+  took the star under the pointer, Taurus 12 of 12, none took two (logs/all-taps-desk.log). Taurus
+  beside src/content/constellations.ts (knots/pairs-desk.jpg looked at): Aldebaran and the Hyades'
+  wedge in the middle, the two horns up to the left (Elnath, zeta), lambda and the two feet down to
+  the right: the real pattern, nothing moved, two discs drawn smaller.
+
+1g. THE CONSOLE (third look: MINOR, housekeeping) — RESOLVED
+  The three preload warnings are gone because the three preloads are gone: the built page's markup
+  asks for one picture (the unlit C, an <img>) and one font; the loader's other three pictures are
+  asked for by script, and only where a loader plays. Every console message of any kind (the console
+  API and the browser's own log), each page left open 7 s after it settled, at 1440x900 and 390x844
+  (the third look's preload-console.mjs, with the early skip added by round 3): a first visit played
+  through, a same-session return, a skip, an early skip on slow 4G, ?scene=sky, ?scene=roots, reduced
+  motion (the device's setting and ?rm=1), /contact: 18 of 18 paths, 0 messages (Turnstile's own set
+  aside, as the brief has it). (loader/preload-console.txt, logs/preload-console.log.) My own
+  recorder keeps the console too (console API, the browser's log, exceptions): 245 visits of items 1c
+  and 1d, on a fast line, slow 4G, 1 Mbit/s, the CPU slowed, skipped at every moment, returned to:
+  nothing in any. The only messages I could raise are the two that a picture answered 404 by my own
+  script raises (the browser's and the loader's "could not start"), as on the old build.

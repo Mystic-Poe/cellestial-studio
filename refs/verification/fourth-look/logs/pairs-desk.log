@@ -1,0 +1,30 @@
+THE KNOTS at 1440x900 (desk): http://localhost:4615
+ 1 Virgo        radius 17.5..26.0 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 18.4..21.8 px; pairs that meet 0, deepest 0%
+ 3 Scorpius     radius 19.2..26.0 px; pairs that meet 1, deepest 5%
+ 4 Sagittarius  radius 15.6..23.7 px; pairs that meet 2, deepest 24%
+ 5 Capricornus  radius 16.2..21.1 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 16.1..21.0 px; pairs that meet 0, deepest 0%
+ 7 Pisces       radius 15.6..19.2 px; pairs that meet 0, deepest 0%
+ 8 Aries        radius 18.1..23.3 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 12.5..26.3 px; pairs that meet 2, deepest 17%
+10 Gemini       radius 17.1..25.6 px; pairs that meet 0, deepest 0%
+11 Cancer       radius 16.5..19.4 px; pairs that meet 0, deepest 0%
+12 Leo          radius 18.5..25.0 px; pairs that meet 0, deepest 0%
+desk: the deepest any two stars stand into each other 24%; the smallest star's radius 12.5 px (25 px across)
+THE KNOTS at 390x844 (phone): http://localhost:4615
+ 1 Virgo        radius 13.0..13.1 px; pairs that meet 0, deepest 0%
+ 2 Libra        radius 13.0..13.4 px; pairs that meet 0, deepest 0%
+ 3 Scorpius     radius 13.0..16.0 px; pairs that meet 2, deepest 20%
+ 4 Sagittarius  radius 13.0..14.6 px; pairs that meet 5, deepest 30%
+ 5 Capricornus  radius 13.0..13.0 px; pairs that meet 0, deepest 0%
+ 6 Aquarius     radius 13.0..13.0 px; pairs that meet 3, deepest 23%
+ 7 Pisces       radius 13.0..13.0 px; pairs that meet 2, deepest 9%
+ 8 Aries        radius 13.0..14.4 px; pairs that meet 0, deepest 0%
+ 9 Taurus       radius 6.8..14.9 px; pairs that meet 6, deepest 31%
+10 Gemini       radius 13.0..15.7 px; pairs that meet 0, deepest 0%
+11 Cancer       radius 13.0..13.0 px; pairs that meet 0, deepest 0%
+12 Leo          radius 13.0..15.4 px; pairs that meet 0, deepest 0%
+phone: the deepest any two stars stand into each other 31%; the smallest star's radius 6.8 px (14 px across)
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/knots/pairs-desk.jpg
+exit 0
