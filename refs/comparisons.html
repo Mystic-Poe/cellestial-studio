@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin:0">
+<title>Cellestial Proof Sheets</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap">
+<style>
+/* One column of plates on the site's own night: each plate a wide sheet under a brass-ruled label. */
+:root {
+	color-scheme: dark;
+	--night: #000;
+	--card: #0c0a09;
+	--soil: #1d1817;
+	--brass: #74573f;
+	--brass-text: #ae8a68;
+	--brass-hi: #d5ae88;
+	--blue: #6480ce;
+	--text: rgb(255 255 255 / 0.9);
+	--muted: rgb(255 255 255 / 0.68);
+	--hairline: rgb(116 87 63 / 0.4);
+	--face: "Quicksand", "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--text); font-family: var(--face); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 96px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 56px; }
+header { display: flex; flex-direction: column; gap: 14px; }
+h1 { margin: 0; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; font-weight: 600; color: var(--brass-hi); letter-spacing: 0.01em; text-wrap: balance; }
+.lede { margin: 0; max-width: 62ch; color: var(--text); font-size: 18px; }
+.asof { margin: 0; color: var(--muted); font-size: 14px; }
+h2 { margin: 0; font-size: 26px; font-weight: 600; color: var(--brass-hi); text-wrap: balance; }
+h3 { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass-text); }
+p { margin: 0; }
+a { color: var(--brass-hi); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.rail { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.rail a { text-decoration: none; padding: 6px 14px; border: 1px solid var(--hairline); border-radius: 999px; color: var(--brass-text); font-weight: 600; font-size: 15px; }
+.rail a:hover { border-color: var(--brass-text); color: var(--brass-hi); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 32px 48px; }
+.facts > section { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.facts ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.facts li { padding-left: 16px; border-left: 1px solid var(--hairline); color: var(--text); }
+.facts li b { color: var(--brass-hi); font-weight: 600; }
+.checks { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 20px; font-variant-numeric: tabular-nums; }
+.checks dt { color: var(--text); min-width: 0; }
+.checks dd { margin: 0; color: var(--brass-hi); font-weight: 600; text-align: right; }
+.scene { display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 16px; }
+.scene > .match { max-width: 68ch; color: var(--muted); }
+.plate { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.plate figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-top: 12px; border-top: 1px solid var(--hairline); }
+.size { flex: none; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--blue); font-variant-numeric: tabular-nums; min-width: 78px; }
+.what { flex: 1 1 320px; min-width: 0; color: var(--muted); }
+.what b { color: var(--text); font-weight: 600; }
+.zoom { flex: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--brass-text); background: none; border: 1px solid var(--hairline); border-radius: 999px; padding: 3px 12px; cursor: pointer; }
+.zoom:hover, .zoom[aria-pressed="true"] { color: var(--brass-hi); border-color: var(--brass-text); }
+.sheet { overflow-x: auto; background: var(--card); border-radius: 4px; }
+.sheet img { display: block; width: 100%; height: auto; max-width: 100%; }
+.sheet.full img { width: auto; max-width: none; }
+footer { color: var(--muted); font-size: 14px; max-width: 70ch; border-top: 1px solid var(--hairline); padding-top: 20px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<div class="wrap">
+<header>
+<h1>Cellestial Studio, scene by scene</h1>
+<p class="lede">Every scene of the redesign, screenshotted at 1440×900 and 390×844 and set beside the asset or the line of the spec it has to match.</p>
+<p class="asof">As of 23 November 2026. Published: cellestialstudio.com serves this build.</p>
+<nav class="rail" aria-label="Scenes"><a href="#loading">Loading</a><a href="#sky">The Sky</a><a href="#fall">The fall</a><a href="#roots">The Roots</a><a href="#close">Close and chrome</a><a href="#live">Live, 23 November</a><a href="#still">Reduced motion</a></nav>
+</header>
+<div class="facts">
+<section><h3>Where it stands</h3><ul><li><b>Built and live.</b> The loader, the sky, the fall, the Roots, the close and the logo and menu, on top of the contact form, /admin and /start.</li><li><b>Inspected five times by inspectors who built none of it.</b> The last full look ruled every scene done at both sizes, with no blocker and nothing major. The fifth, a narrow look at the "claim yours" label, ruled the same and left three minors in the tightest knots of stars.</li><li><b>Changed the same afternoon, on the owner's word:</b> the sky is shared (a claimed star is lit for every visitor; its text only after he approves it), a second tap sends more beads, no two stars touch, and stars 100 to 146 are named in his email.</li></ul></section>
+<section><h3>Checks</h3><dl class="checks"><dt>Build, lint, type-check</dt><dd>pass</dd><dt>Tests</dt><dd>198 of 198</dd><dt>Workers' own tests (contact, auth, onboard)</dt><dd>27, 16, 14</dd><dt>Loader, first sight of the C to the sky</dt><dd>7.0 to 7.5 s</dd><dt>Sky suite</dt><dd>201 of 201</dd><dt>Roots, every word against the addendum</dt><dd>197 of 197</dd><dt>Roots suite</dt><dd>245 of 245</dd><dt>Transitions suite</dt><dd>148 of 148</dd><dt>Chrome suite</dt><dd>48 of 48</dd><dt>Least gap between two stars, 390×844 and 1440×900</dt><dd>4 px</dd><dt>Live pages against the tested build</dt><dd>the same</dd><dt>/, /contact/, /start/, /start/new/, /admin/ on the live site</dt><dd>200</dd></dl></section>
+<section><h3>Waiting on the owner</h3><ul><li><b>One real message through the live form.</b> It needs a person past the spam check, and it is also the first real test of the shared sky and of the approve link in the email.</li><li><b>The logo and menu are hidden while the loader plays.</b> The brief says "present throughout".</li><li><b>Three minors from the fifth look,</b> all about where "claim yours" stands in the tightest knots. Not looked at again since the stars there were drawn smaller and apart.</li></ul></section>
+</div>
+<section class="scene" id="loading">
+<h2>Loading</h2>
+<p class="match">It has to feel like the reference video in the asset pack: the C lights, the bolt strikes, the wordmark is written and cools to brass. 6 to 8 seconds, never under 6.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The first half, 0 to 3.3 s.</b> Seven moments. In each pair the left frame is the reference video and the right is the build at the same moment of its script.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/desk-1.jpg" alt="The first half, 0 to 3.3 s: Seven moments. In each pair the left frame is the reference video and the right is the build at the same moment of its script." width="1596" height="1040"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The second half, 3.7 to 6.2 s.</b> The wordmark is written by the lightning and cools to brass.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/desk-2.jpg" alt="The second half, 3.7 to 6.2 s: The wordmark is written by the lightning and cools to brass." width="1596" height="1040" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The first half on a phone.</b> Top row: the reference frames. Bottom row: the build.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/phone-1.jpg" alt="The first half on a phone: Top row: the reference frames. Bottom row: the build." width="1592" height="635" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The second half on a phone.</b> Top row: the reference frames. Bottom row: the build.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/phone-2.jpg" alt="The second half on a phone: Top row: the reference frames. Bottom row: the build." width="1592" height="635" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The hand-off to the sky.</b> The wordmark's small star breaks into pieces of its own brass. They fly out and become the three rings of Cellestial's star while the sky comes up behind.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/a5-desk.jpg" alt="The hand-off to the sky: The wordmark's small star breaks into pieces of its own brass. They fly out and become the three rings of Cellestial's star while the sky comes up behind." width="1604" height="819" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The hand-off on a phone.</b> The same eleven steps.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/a5-phone.jpg" alt="The hand-off on a phone: The same eleven steps." width="1364" height="1018" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>The short version.</b> What a visitor sees on coming back in the same session: about two seconds. Desktop above, phone below.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="loading/compare/short.jpg" alt="The short version: What a visitor sees on coming back in the same session: about two seconds. Desktop above, phone below." width="1592" height="649" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="sky">
+<h2>The Sky</h2>
+<p class="match">Twelve constellations in the spec's order, each the real star pattern, on a faint brass honeycomb. The sky starts empty except for Cellestial's own star.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>Constellations 1 to 6.</b> In each pair the left is the real pattern from the star catalogue and the right is the build at that station.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/stations-desk-1.jpg" alt="Constellations 1 to 6: In each pair the left is the real pattern from the star catalogue and the right is the build at that station." width="1594" height="1014" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>Constellations 7 to 12.</b> Real pattern left, build right.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/stations-desk-2.jpg" alt="Constellations 7 to 12: Real pattern left, build right." width="1594" height="1014" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>All twelve on a phone.</b> Six wide figures are drawn turned a quarter so that they fill a tall screen and Cellestial's star stands clear. The pattern itself is unchanged. The spec is silent on which way up; one switch turns it off.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/stations-phone.jpg" alt="All twelve on a phone: Six wide figures are drawn turned a quarter so that they fill a tall screen and Cellestial's star stands clear. The pattern itself is unchanged. The spec is silent on which way up; one switch turns it off." width="1534" height="1284" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>Cellestial's star.</b> Three moments of its turning rings, desktop above and phone below, beside the pack's core and ring (B3).</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/b3.jpg" alt="Cellestial's star: Three moments of its turning rings, desktop above and phone below, beside the pack's core and ring (B3)." width="1230" height="658" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>An empty star and a lit star.</b> As they appear and enlarged, beside the pack's B4 (empty, brass traces) and B5 (lit).</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/stars.jpg" alt="An empty star and a lit star: As they appear and enlarged, beside the pack's B4 (empty, brass traces) and B5 (lit)." width="1560" height="518" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>A tap, and the beads.</b> Beads of light run along the honeycomb to the star that was picked, and &quot;claim yours&quot; appears when they arrive. The last column is the route they took, drawn in green by the test.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/beads-desk.jpg" alt="A tap, and the beads: Beads of light run along the honeycomb to the star that was picked, and &quot;claim yours&quot; appears when they arrive. The last column is the route they took, drawn in green by the test." width="1590" height="910" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>An empty star's panel.</b> The five offers in a line each, and &quot;Claim your star&quot;. A star is claimed only when the request is sent.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/panel.jpg" alt="An empty star's panel: The five offers in a line each, and &quot;Claim your star&quot;. A star is claimed only when the request is sent." width="1560" height="708" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>A lit star shows what was asked.</b> A short ask, a long one that scrolls, and one with markup in it, which is shown as plain text.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/lit.jpg" alt="A lit star shows what was asked: A short ask, a long one that scrolls, and one with markup in it, which is shown as plain text." width="1560" height="708" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The meaning beside each completed figure.</b> Written in brass when a constellation is complete. &quot;Jesus is King.&quot; follows Leo's.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/b7-all-desk.jpg" alt="The meaning beside each completed figure: Written in brass when a constellation is complete. &quot;Jesus is King.&quot; follows Leo's." width="1600" height="842" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The meanings on a phone.</b> Each stands by its figure, clear of stars, lines, the logo and the exit button.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/b7-all-phone.jpg" alt="The meanings on a phone: Each stands by its figure, clear of stars, lines, the logo and the exit button." width="1600" height="1189" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="fall">
+<h2>The fall</h2>
+<p class="match">The owner's words: all the stars fall out of the sky, speeding faster and faster, crashing into the ground, sinking in, and exploding into the mycelium.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>&quot;See what holds up the sky&quot;.</b> Sixteen frames across 3.2 s. Every star strikes the ground with its own burst, and the bursts' light becomes the roots.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="transitions/compare/fall-desk.jpg" alt="&quot;See what holds up the sky&quot;: Sixteen frames across 3.2 s. Every star strikes the ground with its own burst, and the bursts' light becomes the roots." width="1600" height="1120" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The fall on a phone.</b> From a figure drawn turned a quarter.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="transitions/compare/fall-phone.jpg" alt="The fall on a phone: From a figure drawn turned a quarter." width="1600" height="903" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="roots">
+<h2>The Roots</h2>
+<p class="match">Five nodes in the spec's order, one tile open at a time, the prices inside the tiles, the wording character for character as the addendum has it.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The ground and the first two nodes.</b> The first two screens of the way down: soil, the trunk of light, the mycelium.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="roots/compare/descent-desk-1.jpg" alt="The ground and the first two nodes: The first two screens of the way down: soil, the trunk of light, the mycelium." width="1242" height="1600" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The five tiles.</b> Site, Site + Systems, Site + App, Add-ons, Care. The build's own suite compares every word with the addendum.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="roots/compare/tiles-desk.jpg" alt="The five tiles: Site, Site + Systems, Site + App, Add-ons, Care. The build's own suite compares every word with the addendum." width="1600" height="1588" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>The five tiles on a phone.</b> Each opens under its node.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="roots/compare/tiles-phone.jpg" alt="The five tiles on a phone: Each opens under its node." width="1598" height="713" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>With scripts switched off.</b> The logo, five readable tiles and the two closing buttons are still there.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="roots/compare/nojs-phone.jpg" alt="With scripts switched off: The logo, five readable tiles and the two closing buttons are still there." width="1600" height="600" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="close">
+<h2>Close and chrome</h2>
+<p class="match">&quot;Claim your star&quot; big, &quot;Contact me&quot; smaller under it. The logo and the three-bar menu throughout; the menu teleports to four places.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The close.</b> The last screen of the Roots.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="roots/compare/descent-desk-3.jpg" alt="The close: The last screen of the Roots." width="1456" height="942" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>The menu.</b> Over the sky and over the soil, at desktop, phone and 320 px wide: The Sky, What we build, Claim your star, Contact me.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="chrome/compare/menu.jpg" alt="The menu: Over the sky and over the soil, at desktop, phone and 320 px wide: The Sky, What we build, Claim your star, Contact me." width="1592" height="876" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>The logo.</b> At its real sizes, enlarged, between the pack's emblem unlit and lit (A1).</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="chrome/compare/logo.jpg" alt="The logo: At its real sizes, enlarged, between the pack's emblem unlit and lit (A1)." width="1600" height="562" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The four teleports.</b> From the sky and from the Roots: three frames of the flash, then where each one lands.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="transitions/compare/teleport-desk.jpg" alt="The four teleports: From the sky and from the Roots: three frames of the flash, then where each one lands." width="1600" height="621" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The way back up.</b> The warp from the Roots to the sky, 1.5 s.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="transitions/compare/warp-desk.jpg" alt="The way back up: The warp from the Roots to the sky, 1.5 s." width="1600" height="1120" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="live">
+<h2>Live, 23 November</h2>
+<p class="match">What cellestialstudio.com served after publishing, and the two things the owner asked for that afternoon.</p>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>One visitor's pass over the live site.</b> Desktop above, phone below: the loader, the sky, &quot;claim yours&quot;, a star's panel, the request form with the real spam check, the menu, the Roots, /contact, /start/new and a client link opening. Nothing was sent.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="verification/live/live-sheet.jpg" alt="One visitor's pass over the live site: Desktop above, phone below: the loader, the sky, &quot;claim yours&quot;, a star's panel, the request form with the real spam check, the menu, the Roots, /contact, /start/new and a client link opening. Nothing was sent." width="1600" height="746" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">390×844</span><span class="what"><b>Clean spacing.</b> The crowded figures on a phone, as first published (left of each pair) and with the new rule (right): no two stars touch. The pattern is the true one; only Taurus's closest pair is moved, by 3 px each.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="verification/live/spacing-phone-before-after.jpg" alt="Clean spacing: The crowded figures on a phone, as first published (left of each pair) and with the new rule (right): no two stars touch. The pattern is the true one; only Taurus's closest pair is moved, by 3 px each." width="1556" height="1230" loading="lazy"></div>
+</figure>
+<figure class="plate">
+<figcaption><span class="size">both</span><span class="what"><b>A second tap sends more beads.</b> Three quick taps: three runs of beads at once, each finishing its course.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="verification/live/beads-three-runs.jpg" alt="A second tap sends more beads: Three quick taps: three runs of beads at once, each finishing its course." width="1340" height="650" loading="lazy"></div>
+</figure>
+</section>
+<section class="scene" id="still">
+<h2>Reduced motion</h2>
+<p class="match">A still sky with the exit button already there. No flight, no loader.</p>
+<figure class="plate">
+<figcaption><span class="size">1440×900</span><span class="what"><b>The sky for a visitor who asks for less motion.</b> Nothing moves; the button to the Roots is there from the start.</span><button type="button" class="zoom" aria-pressed="false">Full size</button></figcaption>
+<div class="sheet"><img src="sky/compare/meaning-still.jpg" alt="The sky for a visitor who asks for less motion: Nothing moves; the button to the Roots is there from the start." width="1216" height="792" loading="lazy"></div>
+</figure>
+</section>
+<footer>The sheets are made by the build's own tools from the page as it runs in headless Chromium on a real GPU, and are kept in the repository under refs/&lt;scene&gt;/compare/. No real phone was used.</footer>
+</div>
+<script>
+document.querySelectorAll('.zoom').forEach(function (b) {
+	b.addEventListener('click', function () {
+		var sheet = b.closest('.plate').querySelector('.sheet');
+		var on = sheet.classList.toggle('full');
+		b.setAttribute('aria-pressed', on ? 'true' : 'false');
+		b.textContent = on ? 'Fit width' : 'Full size';
+	});
+});
+</script>
+</body>
+</html>

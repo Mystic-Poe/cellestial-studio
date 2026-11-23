@@ -23,6 +23,11 @@ blocker, nothing major, three minors about where "claim yours" stands in the tig
 form (which is also the first real test of the shared sky end to end), the logo and menu
 during the loader (item 2, code 5), and whether he wants the three minors worked on.**
 
+The comparison page (every scene beside what it has to match, the checks, what waits on the
+owner): https://claude.ai/artifact/W2h3HCSaKFpxWvYs25PXgq (private to the owner), and the same
+page in the repo, `refs/comparisons.html` (made by `tools/proof-page.mjs <out dir> --status
+<status.json>`; copy its `local.html` there).
+
 **PUBLISHED (23 Nov, 14:14), on the owner's word: `main` was fast-forwarded from `052f82a` to
 `c66bb73` and pushed, and cellestialstudio.com has served the redesign since 14:15 (item 3:
 what was checked on the live site, and how to roll back). The fourth look is done (23 Nov,
