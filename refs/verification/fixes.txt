@@ -2579,3 +2579,19 @@ this round's). "Before" is the build at f7d5ea4, served beside the new one on po
   gates; this record written out in full (the rule as settled: the order of places, what counts
   as free, what covers least, the slack); PROGRESS.md. The preview server it left on 4615 was
   stopped; the build as it stood is still at the scratchpad path the brief gives.
+
+  (CHECKPOINT 4, 23 Nov, a second fixer going on from the note above. What the note says was
+  checked first: git log, the code, pnpm test 184 of 184, the build.)
+  THE STEP THAT WAS BUILT AND NOT MEASURED, MEASURED (r4-sheet.mjs --complete; it would not run as
+  left: a name declared twice in its page script, "front"; renamed, nothing else changed):
+  labels/desk-complete.txt and phone-complete.txt, with their sheets. With the station's own
+  figure complete, at every point 10 px apart (12,960 a station on the desktop, 3,276 on the
+  phone) the star a touch offers is the star it offered on the build as it stood, at every
+  station at both sizes, but for ONE station: Virgo complete at 1440x900, where slot-88, slot-25
+  and slot-47 of Libra are no longer offered (they stand behind Cellestial's star, inside the
+  reach of its rings: every place by them crosses it), and the touches that offered them offer
+  the nearest of the three that are left (slot-22, slot-62, slot-70). No point that offered a
+  star offers none. On the phone all six are still offered at Virgo and none of their labels
+  is inside the rings' reach (16 were, over the twelve stations; 20 on the desktop).
+  The empty sky run again on this build (labels/desk.txt, phone.txt): the numbers of the note
+  above, unchanged (146 and 146 the same star; on a star of its own figure 31 to 0 and 67 to 9).

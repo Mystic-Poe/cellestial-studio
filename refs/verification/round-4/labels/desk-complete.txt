@@ -1,0 +1,134 @@
+desk 1 Virgo complete: of 12960 points 10 px apart, the star offered differs at 7777; a star before and none now at 0; stars offered before 6, now 3; no longer offered: slot-88, slot-25, slot-47
+  Virgo slot-22 (before slot-88, now slot-22) (layer +1, r 8.2): under -> right, box 727,319; before: on 4 point(s) of the figures behind (39 px2); 78.6 px inside the reach of Cellestial's rings; now: touches nothing
+  Virgo slot-62 (before slot-88, now slot-62) (layer +1, r 7.3): under -> under-right, box 671,560; before: on 4 point(s) of the figures behind (39 px2); 78.6 px inside the reach of Cellestial's rings; now: on 1 star(s) of the figure in front of its own (0.8 px in)
+  Virgo slot-70 (before slot-88, now slot-70) (layer +1, r 7.2): under -> under-right, box 667,580; before: on 4 point(s) of the figures behind (39 px2); 78.6 px inside the reach of Cellestial's rings; now: touches nothing
+  Virgo was slot-88 (before slot-88, now slot-22) (layer +1, r 8.2): under -> right, box 727,319; before: on 4 point(s) of the figures behind (39 px2); 78.6 px inside the reach of Cellestial's rings; now: touches nothing
+  Virgo was slot-25 (before slot-25, now slot-22) (layer +1, r 8.2): under -> right, box 727,319; before: on 9 point(s) of the figures behind (105 px2); 84.7 px inside the reach of Cellestial's rings; now: touches nothing
+  Virgo was slot-47 (before slot-47, now slot-62) (layer +1, r 7.3): under -> under-right, box 671,560; before: 19.6 px inside the reach of Cellestial's rings; now: on 1 star(s) of the figure in front of its own (0.8 px in)
+desk 2 Libra complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 14, now 14
+  Libra slot-7 (layer +1, r 8.3): under -> above-left, box 532,463; before: on 2 star(s) of its own figure (7.6 px in, 300 px2); now: touches nothing
+  Libra slot-2 (layer +1, r 8.9): under -> above, box 711,358; before: on 1 star(s) of its own figure (6.2 px in, 67 px2); on 13 point(s) of the figures behind (284 px2); now: touches nothing
+  Libra slot-19 (layer +1, r 7.5): under -> left, box 702,328; before: on 1 star(s) of its own figure (7.7 px in, 185 px2); now: touches nothing
+  Libra slot-18 (layer +1, r 7.6): under -> above-left, box 518,483; before: on 2 star(s) of its own figure (8.1 px in, 186 px2); now: touches nothing
+  Libra slot-41 (layer +1, r 7.1): under -> left, box 506,517; before: on 1 star(s) of its own figure (8.1 px in, 205 px2); now: touches nothing
+  Libra slot-27 (layer +1, r 7.2): under -> right+12, box 760,414; before: on 27 point(s) of the figures behind (419 px2); now: on 2 point(s) of the figures behind (19 px2)
+  Libra slot-17 (layer +1, r 7.7): under -> left, box 711,355; before: on 2 star(s) of its own figure (7.2 px in, 265 px2); now: touches nothing
+  Libra slot-32 (layer +1, r 7.2): under -> above-24, box 704,353; before: on 3 star(s) of its own figure (7.2 px in, 170 px2); on 8 point(s) of the figures behind (145 px2); now: touches nothing
+  Libra slot-31 (layer +1, r 7.2): under -> right, box 836,388; before: touched nothing; now: touches nothing
+  Libra slot-15 (layer +1, r 7.7): under -> left-12, box 606,444; before: on 1 star(s) of its own figure (7.0 px in, 144 px2); on 2 point(s) of the figures behind (82 px2); now: on 11 point(s) of the figures behind (48 px2)
+  Libra slot-42 (layer +1, r 7.0): under -> right, box 729,490; before: on 1 star(s) of its own figure (5.4 px in, 52 px2); now: touches nothing
+  Libra slot-66 (layer +1, r 6.5): under -> right, box 724,529; before: on 1 star(s) of its own figure (2.1 px in, 14 px2); now: touches nothing
+desk 3 Scorpius complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 20, now 20
+  Scorpius slot-126 (layer +1, r 5.5): under -> under-48, box 566,421; before: on 2 star(s) of its own figure (5.4 px in, 93 px2); on 10 point(s) of the figures behind (96 px2); now: on 1 star(s) of its own figure (5.4 px in, 48 px2); on 1 point(s) of the figures behind (24 px2)
+  Scorpius slot-57 (layer +1, r 6.5): under -> right+12, box 741,378; before: on 6 star(s) of its own figure (7.1 px in, 325 px2); now: on 1 star(s) of its own figure (6.2 px in, 93 px2)
+  Scorpius slot-84 (layer +1, r 6.2): under -> right, box 817,369; before: on 1 star(s) of its own figure (7.1 px in, 155 px2); on 2 point(s) of the figures behind (24 px2); now: touches nothing
+  Scorpius slot-143 (layer +1, r 5.2): under -> under-48, box 585,417; before: on 4 star(s) of its own figure (6.6 px in, 279 px2); on 14 point(s) of the figures behind (130 px2); now: on 1 star(s) of its own figure (5.4 px in, 87 px2); on 2 point(s) of the figures behind (43 px2)
+  Scorpius slot-138 (layer +1, r 5.3): under -> right, box 746,378; before: on 6 star(s) of its own figure (7.7 px in, 626 px2); on 6 point(s) of the figures behind (37 px2); now: on 1 star(s) of its own figure (6.2 px in, 91 px2)
+  Scorpius slot-39 (layer +1, r 6.9): under -> right, box 823,440; before: on 2 star(s) of its own figure (7.9 px in, 197 px2); now: touches nothing
+  Scorpius slot-26 (layer +1, r 7.1): under -> right, box 791,400; before: on 3 star(s) of its own figure (7.2 px in, 210 px2); on 5 point(s) of the figures behind (39 px2); now: touches nothing
+  Scorpius slot-140 (layer +1, r 5.3): under -> under-48, box 601,422; before: on 4 star(s) of its own figure (7.2 px in, 324 px2); on 18 point(s) of the figures behind (152 px2); now: on 1 star(s) of its own figure (4.6 px in, 37 px2); on 5 point(s) of the figures behind (64 px2)
+  Scorpius slot-13 (layer +1, r 7.7): under -> above-right, box 742,382; before: on 3 star(s) of its own figure (7.2 px in, 175 px2); on 14 point(s) of the figures behind (84 px2); now: on 2 star(s) of its own figure (5.6 px in, 54 px2); on 1 point(s) of the figures behind (5 px2)
+  Scorpius slot-45 (layer +1, r 6.8): under -> above+48, box 746,384; before: on 2 star(s) of its own figure (7.2 px in, 320 px2); on 14 point(s) of the figures behind (64 px2); now: on 2 star(s) of its own figure (3.7 px in, 47 px2); on 1 point(s) of the figures behind (14 px2)
+  Scorpius slot-48 (layer +1, r 6.6): under -> under-left, box 605,437; before: on 1 star(s) of its own figure (7.2 px in, 108 px2); on 19 point(s) of the figures behind (103 px2); now: on 4 point(s) of the figures behind (22 px2)
+  Scorpius slot-24 (layer +1, r 7.2): under -> above-right, box 795,411; before: on 1 star(s) of its own figure (7.9 px in, 177 px2); on 11 point(s) of the figures behind (64 px2); now: touches nothing
+  Scorpius slot-21 (layer +1, r 7.2): under -> left, box 608,431; before: on 1 star(s) of the figure in front of its own (3.9 px in); on 24 point(s) of the figures behind (144 px2); now: on 7 point(s) of the figures behind (35 px2)
+  Scorpius slot-118 (layer +1, r 5.7): under -> left, box 523,476; before: touched nothing; now: touches nothing
+  Scorpius slot-9 (layer +1, r 7.9): under -> right, box 792,466; before: on 1 star(s) of its own figure (6.8 px in, 112 px2); on 1 star(s) of the figure in front of its own (5.5 px in); now: touches nothing
+  Scorpius slot-92 (layer +1, r 6.1): under -> left-12, box 579,499; before: on 2 star(s) of its own figure (6.0 px in, 178 px2); now: touches nothing
+  Scorpius slot-104 (layer +1, r 5.9): under -> left, box 536,525; before: on 1 star(s) of its own figure (6.0 px in, 73 px2); now: touches nothing
+  Scorpius slot-94 (layer +1, r 6.0): under -> right, box 706,540; before: on 1 star(s) of the figure in front of its own (10.5 px in); now: touches nothing
+desk 4 Sagittarius complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 10, now 10
+  Sagittarius slot-29 (layer +1, r 4.6): under -> left, box 504,401; before: touched nothing; now: touches nothing
+  Sagittarius slot-108 (layer +1, r 3.8): under -> right, box 837,364; before: on 1 star(s) of its own figure (4.5 px in, 63 px2); now: touches nothing
+  Sagittarius slot-113 (layer +1, r 3.8): under -> under-48, box 575,428; before: on 1 star(s) of the figure in front of its own (21.7 px in); on 10 point(s) of the figures behind (86 px2); now: on 1 point(s) of the figures behind (2 px2)
+  Sagittarius slot-101 (layer +1, r 3.9): under -> above-right, box 718,388; before: on 1 star(s) of the figure in front of its own (18.2 px in); on 15 point(s) of the figures behind (140 px2); now: on 1 star(s) of its own figure (1.7 px in, 8 px2); on 1 star(s) of the figure in front of its own (5.3 px in)
+  Sagittarius slot-72 (layer +1, r 4.1): under -> under, box 581,428; before: on 1 point(s) of the figures behind (10 px2); now: on 1 point(s) of the figures behind (10 px2)
+  Sagittarius slot-43 (layer +1, r 4.5): under -> right, box 828,387; before: on 1 star(s) of its own figure (3.5 px in, 39 px2); now: touches nothing
+  Sagittarius slot-136 (layer +1, r 3.5): under -> under+24, box 772,439; before: on 5 point(s) of the figures behind (32 px2); now: on 2 point(s) of the figures behind (22 px2)
+  Sagittarius slot-75 (layer +1, r 4.1): under -> under, box 615,483; before: on 1 point(s) of the figures behind (0 px2); now: on 1 point(s) of the figures behind (0 px2)
+  Sagittarius slot-106 (layer +1, r 3.9): under -> right, box 765,487; before: on 1 star(s) of its own figure (3.9 px in, 48 px2); now: touches nothing
+desk 5 Capricornus complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 15, now 15
+  Capricornus slot-119 (layer +1, r 3.4): under -> left, box 525,432; before: on 3 point(s) of the figures behind (39 px2); now: touches nothing
+  Capricornus slot-96 (layer +1, r 3.6): under -> left, box 583,379; before: on 7 point(s) of the figures behind (95 px2); now: touches nothing
+  Capricornus slot-130 (layer +1, r 3.3): under -> above, box 656,348; before: on 4 star(s) of its own figure (3.7 px in, 73 px2); on 4 point(s) of the figures behind (49 px2); now: touches nothing
+  Capricornus slot-36 (layer +1, r 4.2): under -> right, box 743,381; before: on 1 star(s) of its own figure (4.2 px in, 35 px2); on 6 point(s) of the figures behind (87 px2); now: touches nothing
+  Capricornus slot-134 (layer +1, r 3.3): under -> above-right, box 842,412; before: touched nothing; now: touches nothing
+  Capricornus slot-137 (layer +1, r 3.2): under -> left, box 493,484; before: on 2 star(s) of its own figure (3.8 px in, 48 px2); now: touches nothing
+  Capricornus slot-35 (layer +1, r 4.2): under -> right, box 790,410; before: on 5 point(s) of the figures behind (55 px2); now: touches nothing
+  Capricornus slot-78 (layer +1, r 3.8): under -> above-left, box 596,359; before: on 1 star(s) of its own figure (0.3 px in, 1 px2); on 7 point(s) of the figures behind (93 px2); now: touches nothing
+  Capricornus slot-76 (layer +1, r 3.8): under -> above-left, box 563,402; before: on 1 star(s) of its own figure (2.4 px in, 12 px2); on 6 point(s) of the figures behind (60 px2); now: touches nothing
+  Capricornus slot-83 (layer +1, r 3.7): under -> above+48, box 709,364; before: on 2 star(s) of its own figure (3.7 px in, 38 px2); on 9 point(s) of the figures behind (119 px2); now: touches nothing
+  Capricornus slot-107 (layer +1, r 3.6): under -> right+12, box 727,434; before: on 1 star(s) of its own figure (3.5 px in, 28 px2); on 18 point(s) of the figures behind (171 px2); now: on 6 point(s) of the figures behind (62 px2)
+  Capricornus slot-112 (layer +1, r 3.5): under -> under-24, box 658,478; before: on 9 point(s) of the figures behind (88 px2); now: on 6 point(s) of the figures behind (34 px2)
+  Capricornus slot-93 (layer +1, r 3.7): under -> under-left, box 524,514; before: touched nothing; now: touches nothing
+desk 6 Aquarius complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 22, now 22
+  Aquarius slot-135 (layer +1, r 4.0): under -> left, box 556,371; before: on 2 star(s) of its own figure (4.1 px in, 78 px2); on 3 point(s) of the figures behind (82 px2); now: touches nothing
+  Aquarius slot-124 (layer +1, r 4.1): under -> above-left, box 570,336; before: on 2 star(s) of its own figure (4.1 px in, 101 px2); on 1 star(s) of the figure in front of its own (8.8 px in); on 2 point(s) of the figures behind (16 px2); now: touches nothing
+  Aquarius slot-125 (layer +1, r 4.1): under -> right, box 858,498; before: on 1 star(s) of its own figure (3.9 px in, 47 px2); now: touches nothing
+  Aquarius slot-115 (layer +1, r 4.3): under -> above-right, box 817,464; before: on 5 star(s) of its own figure (4.7 px in, 259 px2); on 1 star(s) of the figure in front of its own (12.5 px in); now: touches nothing
+  Aquarius slot-111 (layer +1, r 4.3): under -> left, box 514,468; before: on 5 star(s) of its own figure (4.2 px in, 174 px2); now: touches nothing
+  Aquarius slot-67 (layer +1, r 4.7): under -> left, box 536,435; before: on 1 star(s) of its own figure (4.3 px in, 51 px2); now: touches nothing
+  Aquarius slot-145 (layer +1, r 3.8): under -> above-right, box 829,470; before: on 5 star(s) of its own figure (4.7 px in, 175 px2); on 1 star(s) of the figure in front of its own (10.4 px in); now: touches nothing
+  Aquarius slot-95 (layer +1, r 4.5): under -> above-right, box 773,463; before: on 3 star(s) of its own figure (4.1 px in, 125 px2); on 1 star(s) of the figure in front of its own (11.1 px in); now: on 1 point(s) of the figures behind (28 px2)
+  Aquarius slot-129 (layer +1, r 4.1): under -> under-left, box 566,407; before: on 1 star(s) of its own figure (4.0 px in, 51 px2); on 6 point(s) of the figures behind (111 px2); now: on 1 point(s) of the figures behind (0 px2)
+  Aquarius slot-131 (layer +1, r 4.0): under -> left, box 564,406; before: on 1 star(s) of its own figure (4.7 px in, 70 px2); on 9 point(s) of the figures behind (108 px2); now: on 1 point(s) of the figures behind (2 px2)
+  Aquarius slot-114 (layer +1, r 4.3): under -> under, box 632,501; before: on 1 star(s) of its own figure (1.0 px in, 3 px2); now: on 1 star(s) of its own figure (1.0 px in, 3 px2)
+  Aquarius slot-144 (layer +1, r 3.8): under -> under+24, box 641,502; before: on 2 star(s) of its own figure (3.6 px in, 22 px2); now: on 1 star(s) of its own figure (0.1 px in, 0 px2)
+  Aquarius slot-139 (layer +1, r 3.9): under -> under+48, box 642,510; before: on 2 star(s) of its own figure (4.1 px in, 70 px2); now: touches nothing
+  Aquarius slot-105 (layer +1, r 4.4): under -> above+48, box 792,465; before: on 4 star(s) of its own figure (4.7 px in, 170 px2); on 1 star(s) of the figure in front of its own (17.3 px in); now: touches nothing
+  Aquarius slot-122 (layer +1, r 4.2): under -> under-right, box 634,510; before: on 2 star(s) of its own figure (4.3 px in, 91 px2); now: touches nothing
+  Aquarius slot-146 (layer +1, r 3.8): under -> under+48, box 784,525; before: on 2 star(s) of its own figure (3.9 px in, 49 px2); on 1 star(s) of the figure in front of its own (17.5 px in); now: on 2 star(s) of its own figure (3.9 px in, 49 px2)
+  Aquarius slot-73 (layer +1, r 4.7): under -> under-right, box 835,523; before: on 2 star(s) of its own figure (3.8 px in, 28 px2); on 1 star(s) of the figure in front of its own (4.5 px in); now: touches nothing
+  Aquarius slot-123 (layer +1, r 4.1): under -> under+48, box 791,535; before: on 1 star(s) of the figure in front of its own (17.5 px in); now: touches nothing
+  Aquarius slot-141 (layer +1, r 3.9): under -> under-right, box 821,534; before: on 1 star(s) of the figure in front of its own (17.0 px in); now: touches nothing
+desk 7 Pisces complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 4, now 4
+  Pisces slot-12 (layer +1, r 5.6): under -> right, box 793,434; before: on 6 point(s) of the figures behind (97 px2); now: touches nothing
+  Pisces slot-23 (layer +1, r 5.2): under -> right, box 849,482; before: on 1 star(s) of its own figure (4.3 px in, 58 px2); now: touches nothing
+desk 8 Aries complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 11, now 11
+  Aries slot-8 (layer +1, r 8.5): under -> right, box 639,325; before: touched nothing; now: touches nothing
+  Aries slot-60 (layer +1, r 6.8): under -> above-right, box 732,381; before: on 4 star(s) of its own figure (9.2 px in, 557 px2); on 19 point(s) of the figures behind (187 px2); 6.5 px inside the reach of Cellestial's rings; now: touches nothing
+  Aries slot-77 (layer +1, r 4.4): under -> above-right, box 846,451; before: touched nothing; now: touches nothing
+  Aries slot-40 (layer +1, r 7.3): under -> left, box 487,382; before: on 1 point(s) of the figures behind (1 px2); now: touches nothing
+  Aries slot-79 (layer +1, r 6.6): under -> above-right, box 742,393; before: on 4 star(s) of its own figure (6.8 px in, 230 px2); on 15 point(s) of the figures behind (233 px2); 6.5 px inside the reach of Cellestial's rings; now: touches nothing
+  Aries slot-56 (layer +1, r 6.8): under -> right, box 787,453; before: on 2 point(s) of the figures behind (104 px2); now: touches nothing
+  Aries slot-1 (layer +1, r 9.2): under -> left, box 595,423; before: on 8 point(s) of the figures behind (118 px2); 3.5 px inside the reach of Cellestial's rings; now: on 1 point(s) of the figures behind (5 px2)
+  Aries slot-69 (layer +1, r 6.7): under -> above-right, box 748,408; before: on 1 star(s) of its own figure (6.8 px in, 147 px2); on 5 point(s) of the figures behind (67 px2); now: on 2 point(s) of the figures behind (4 px2)
+  Aries slot-54 (layer +1, r 6.9): under -> under-left, box 615,450; before: on 1 star(s) of its own figure (3.6 px in, 31 px2); on 8 point(s) of the figures behind (88 px2); 1.2 px inside the reach of Cellestial's rings; now: on 7 point(s) of the figures behind (78 px2)
+  Aries slot-116 (layer +1, r 6.1): right -> right, box 837,546; before: touched nothing; now: touches nothing
+desk 9 Taurus complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 10, now 10
+  Taurus slot-4 (layer +1, r 8.5): under -> left, box 498,372; before: on 1 star(s) of its own figure (3.8 px in, 31 px2); now: touches nothing
+  Taurus slot-6 (layer +1, r 8.1): under -> left, box 527,332; before: on 1 star(s) of its own figure (7.9 px in, 103 px2); on 1 star(s) of the figure in front of its own (1.8 px in); now: touches nothing
+  Taurus slot-120 (layer +1, r 5.7): under -> left, box 583,353; before: on 2 star(s) of the figure in front of its own (20.2 px in); on 1 point(s) of the figures behind (44 px2); now: on 1 star(s) of its own figure (1.0 px in, 5 px2)
+  Taurus slot-46 (layer +1, r 6.6): under -> right, box 845,432; before: on 1 star(s) of the figure in front of its own (10.1 px in); now: touches nothing
+  Taurus slot-37 (layer +1, r 6.9): under -> above-right, box 768,385; before: on 1 star(s) of its own figure (2.1 px in, 14 px2); on 2 star(s) of the figure in front of its own (11.1 px in); on 13 point(s) of the figures behind (100 px2); 7.8 px inside the reach of Cellestial's rings; now: on 2 star(s) of the figure in front of its own (5.0 px in)
+  Taurus slot-100 (layer +1, r 6.0): under -> under-left, box 527,408; before: on 1 star(s) of the figure in front of its own (18.0 px in); now: touches nothing
+  Taurus slot-30 (layer +1, r 7.0): under -> under-24, box 738,460; before: on 1 star(s) of the figure in front of its own (4.6 px in); now: on 1 point(s) of the figures behind (11 px2)
+  Taurus slot-61 (layer +1, r 6.4): under -> left, box 558,441; before: on 1 star(s) of its own figure (6.2 px in, 82 px2); on 2 point(s) of the figures behind (20 px2); now: touches nothing
+  Taurus slot-82 (layer +1, r 6.2): under -> right+12, box 722,469; before: on 1 star(s) of its own figure (1.1 px in, 5 px2); on 1 point(s) of the figures behind (41 px2); now: on 1 point(s) of the figures behind (11 px2)
+  Taurus slot-51 (layer +1, r 6.6): right -> right, box 771,539; before: touched nothing; now: touches nothing
+desk 10 Gemini complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 5, now 5
+  Gemini slot-132 (layer +1, r 5.6): under -> left, box 597,408; before: on 1 star(s) of its own figure (6.3 px in, 66 px2); on 17 point(s) of the figures behind (197 px2); 9.9 px inside the reach of Cellestial's rings; now: touches nothing
+  Gemini slot-91 (layer +1, r 6.3): under -> above-left, box 596,423; before: on 1 star(s) of the figure in front of its own (7.5 px in); on 8 point(s) of the figures behind (81 px2); now: on 1 point(s) of the figures behind (11 px2)
+desk 11 Cancer complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 9, now 9
+  Cancer slot-20 (layer +1, r 3.7): under -> above-left, box 574,405; before: on 1 star(s) of its own figure (1.3 px in, 5 px2); on 1 star(s) of the figure in front of its own (18.3 px in); on 10 point(s) of the figures behind (160 px2); 13.0 px inside the reach of Cellestial's rings; now: on 1 point(s) of the figures behind (20 px2)
+  Cancer slot-86 (layer +1, r 3.1): under -> right+12, box 823,393; before: on 2 star(s) of its own figure (3.5 px in, 74 px2); on 2 point(s) of the figures behind (29 px2); now: on 1 star(s) of its own figure (3.5 px in, 38 px2)
+  Cancer slot-38 (layer +1, r 3.5): under -> right, box 837,396; before: on 1 point(s) of the figures behind (1 px2); now: touches nothing
+  Cancer slot-55 (layer +1, r 3.3): under -> under-right, box 781,423; before: on 1 star(s) of its own figure (3.8 px in, 46 px2); on 13 point(s) of the figures behind (220 px2); 7.8 px inside the reach of Cellestial's rings; now: touches nothing
+  Cancer slot-16 (layer +1, r 3.8): under -> right, box 781,430; before: on 1 star(s) of its own figure (3.3 px in, 34 px2); on 4 point(s) of the figures behind (53 px2); 8.1 px inside the reach of Cellestial's rings; now: touches nothing
+  Cancer slot-59 (layer +1, r 3.3): under -> right, box 803,451; before: on 1 star(s) of its own figure (3.1 px in, 19 px2); now: touches nothing
+  Cancer slot-50 (layer +1, r 3.4): under -> under-48, box 580,485; before: on 4 point(s) of the figures behind (58 px2); now: touches nothing
+desk 12 Leo complete: of 12960 points 10 px apart, the star offered differs at 0; a star before and none now at 0; stars offered before 12, now 12
+  Leo slot-74 (layer +1, r 5.2): under -> above, box 536,369; before: touched nothing; now: touches nothing
+  Leo slot-28 (layer +1, r 5.8): under -> right, box 744,345; before: on 1 star(s) of its own figure (1.1 px in, 5 px2); on 1 point(s) of the figures behind (76 px2); now: touches nothing
+  Leo slot-98 (layer +1, r 5.0): under -> right, box 853,367; before: on 1 star(s) of its own figure (5.3 px in, 87 px2); now: touches nothing
+  Leo slot-110 (layer +1, r 4.8): under -> above, box 602,372; before: on 1 star(s) of its own figure (4.9 px in, 40 px2); on 4 point(s) of the figures behind (23 px2); 5.1 px inside the reach of Cellestial's rings; now: touches nothing
+  Leo slot-52 (layer +1, r 5.4): under -> left+12, box 578,420; before: on 15 point(s) of the figures behind (176 px2); 27.5 px inside the reach of Cellestial's rings; now: touches nothing
+  Leo slot-53 (layer +1, r 5.4): under -> above+48, box 740,361; before: on 3 star(s) of its own figure (5.8 px in, 133 px2); on 20 point(s) of the figures behind (375 px2); 15.8 px inside the reach of Cellestial's rings; now: on 1 star(s) of its own figure (0.6 px in, 2 px2)
+  Leo slot-87 (layer +1, r 5.1): under -> under-right, box 798,429; before: on 5 point(s) of the figures behind (53 px2); 6.6 px inside the reach of Cellestial's rings; now: touches nothing
+  Leo slot-65 (layer +1, r 5.3): under -> right, box 845,395; before: on 1 star(s) of its own figure (5.1 px in, 51 px2); now: touches nothing
+  Leo slot-34 (layer +1, r 5.8): under -> under+48, box 759,438; before: on 11 point(s) of the figures behind (183 px2); 27.5 px inside the reach of Cellestial's rings; now: touches nothing
+  Leo slot-102 (layer +1, r 4.9): under -> under-left, box 525,459; before: on 2 point(s) of the figures behind (41 px2); now: touches nothing
+  Leo slot-3 (layer +1, r 7.1): under -> under+48, box 700,493; before: on 5 point(s) of the figures behind (153 px2); now: on 2 point(s) of the figures behind (44 px2)
+desk (1440x900), the figure of each station complete: 138 stars offered at the twelve stations; the same star's label on both builds 132; not simply under its star now 116
+  BEFORE: {"under":136,"right":2}; on a star of its own figure 73 (deepest 9.2 px); on a star of the figure in front of its own 22; on points of the figures behind 67; inside the reach of Cellestial's rings 20; on the logo, the menu or the exit button 0; outside the screen 0; letters nearer a side than 16 px 0; within 40 px of a meaning 0; no label 0
+  AFTER:  {"right":31,"under-right":8,"above-left":7,"above":4,"left":21,"right+12":5,"above-24":1,"left-12":2,"under":22,"under-48":5,"above-right":12,"above+48":4,"under-left":6,"under+24":2,"under-24":2,"under+48":5,"left+12":1}; on a star of its own figure 14 (deepest 6.2 px); on a star of the figure in front of its own 4; on points of the figures behind 26; inside the reach of Cellestial's rings 0; on the logo, the menu or the exit button 0; outside the screen 0; letters nearer a side than 16 px 0; within 40 px of a meaning 0; no label 0

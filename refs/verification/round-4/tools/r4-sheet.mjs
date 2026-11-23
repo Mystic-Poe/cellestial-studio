@@ -54,7 +54,7 @@ const READ = () => {
 			discs.push({ x, y, r, off: layer - front, rings });
 		});
 	}
-	const near = discs.filter((s) => !s.rings && s.off === ownOff), far = discs.filter((s) => !s.rings && s.off > ownOff), front = discs.filter((s) => !s.rings && s.off < ownOff), rings = discs.filter((s) => s.rings);
+	const near = discs.filter((s) => !s.rings && s.off === ownOff), far = discs.filter((s) => !s.rings && s.off > ownOff), ahead = discs.filter((s) => !s.rings && s.off < ownOff), rings = discs.filter((s) => s.rings);
 	const deepest = (l) => l.length ? Math.max(...l.map((s) => -gap(s))) : -Infinity;
 	const rect = (e) => { if (!e || e.hidden) return null; const q = e.getBoundingClientRect(); return q.width ? { x0: q.left, y0: q.top, x1: q.right, y1: q.bottom } : null; };
 	const bgap = (a, q) => Math.hypot(Math.max(a.x0 - q.x1, 0, q.x0 - a.x1), Math.max(a.y0 - q.y1, 0, q.y0 - a.y1));
@@ -65,7 +65,7 @@ const READ = () => {
 		letters: { x0: t.left, x1: t.right },
 		nearOn: near.filter((s) => gap(s) < 0).length, nearDeep: deepest(near), nearAir: near.length ? Math.min(...near.map(gap)) : Infinity,
 		farOn: far.filter((s) => gap(s) < 0).length, farCover: far.reduce((a, s) => a + cover(s), 0), nearCover: near.reduce((a, s) => a + cover(s), 0),
-		frontOn: front.filter((s) => gap(s) < 0).length, frontDeep: deepest(front),
+		frontOn: ahead.filter((s) => gap(s) < 0).length, frontDeep: deepest(ahead),
 		rings: rings.length ? Math.min(...rings.map(gap)) : Infinity,
 		chrome, toMeaning: meanings.length ? Math.min(...meanings.map((q) => bgap(box, q))) : Infinity,
 		inside: box.x0 >= 0 && box.y0 >= 0 && box.x1 <= innerWidth && box.y1 <= innerHeight,
