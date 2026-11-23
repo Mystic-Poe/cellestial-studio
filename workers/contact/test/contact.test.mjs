@@ -169,6 +169,25 @@ await t('star: an invalid value is ignored, not reflected', async () => {
 	assert.ok(!bodies[0].text.includes('Claimed'));
 	assert.ok(!bodies[0].text.includes('<img'));
 });
+await t('star: every star of the sky is named, 1 to 146', async () => {
+	for (const n of [1, 9, 10, 99, 100, 120, 146]) {
+		stub();
+		const r = await post(body({ star: `slot-${n}` }));
+		assert.equal(r.status, 200);
+		assert.ok(
+			bodies[0].text.endsWith(`\n\nClaimed: open star ${n}`),
+			`slot-${n}: ${bodies[0].text}`,
+		);
+	}
+});
+await t('star: a number the sky does not have is ignored', async () => {
+	for (const bad of ['slot-0', 'slot-147', 'slot-200', 'slot-1000', 'slot-01', 'slot-']) {
+		stub();
+		const r = await post(body({ star: bad }));
+		assert.equal(r.status, 200);
+		assert.ok(!bodies[0].text.includes('Claimed'), `${bad}: ${bodies[0].text}`);
+	}
+});
 await t('star: absent field leaves the email unchanged', async () => {
 	stub();
 	await post();

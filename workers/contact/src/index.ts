@@ -85,9 +85,10 @@ export default {
 		const email = String(form.get('email') ?? '').trim();
 		const message = String(form.get('message') ?? '').trim();
 		// From the homepage's claim-your-star flow. Strictly validated: anything
-		// but slot-N is dropped, so the field can never inject into the email.
+		// but slot-N, N from 1 to 146 (every star the sky has), is dropped, so the
+		// field can never inject into the email.
 		const starRaw = String(form.get('star') ?? '');
-		const starLine = /^slot-[1-9]\d?$/.test(starRaw)
+		const starLine = /^slot-(?:[1-9]\d?|1[0-3]\d|14[0-6])$/.test(starRaw)
 			? `\n\nClaimed: open star ${starRaw.slice(5)}`
 			: '';
 
