@@ -169,9 +169,41 @@ pushed.
      `sky-same.mjs` (a size before and after, pixel for pixel, twelve stations),
      `side-scenes.mjs`, `side-knots.mjs`. Not brought up to date here, for the close-out: the
      older parts of this file that describe the knots as the upright phone's only.
-   - [ ] 2. **Where the meanings stand.** B7 on a phone on its side (type capped, placed as on
-     the phone); on a short phone (rows before the band, 18 px at least, never across a
-     star); "claim yours" never within 40 px of the words.
+   - [x] 2. **Where the meanings stand** `44a3032` (the code: `a0ed6a6`, `d165f03`,
+     `d361ce6`; done in two runs, the first cut off by the usage limit with its code in). B7
+     with every star lit, `src/experience/sky/meaning.ts`. A phone on its side: the search by
+     the figure was chosen by the screen's width alone, and between 720 and 1024 px there was
+     none; a screen under 450 px high now has its own placing (the phone's type and scoring,
+     the far figures' points counted as stars, the words free to stand beside the figure):
+     48 of 48 touch nothing at 844x390, 667x375, 740x360, 932x430, no far point on any words,
+     45 px or more above the exit button, 24 px type but Leo's (18 and 21 px at the two
+     narrowest). A short phone: Leo left one and two rows no place with 10 px of air, and the
+     band that followed is one size in one row; the search now tries three rows at every size,
+     then the roomiest place that touches nothing, and the band itself tries smaller type and
+     more rows: 36 of 36 at 375x667, 360x640, 320x568, nothing under 18 px. "claim yours": the
+     label gives way, not the meaning (`sky/claim-label.ts`, new, tested: under its star unless
+     a meaning is within 40 px of that place, then above, right or left of it, inside the
+     screen, off the chrome and every other star): none within 40 px of a meaning in a grid of
+     taps at all twelve stations at ten sizes (Aries and Taurus on the desktop: 59 to 69 px,
+     the letters 67 and 68 px apart; they were 5 and 6). A fourth fault, found on the way and
+     put right: on a phone on its side the NEXT figure's words, once written, stood at half
+     strength against the station's own (Libra's 1 px from Virgo's); under 450 px of height
+     words are first seen at 0.58 of their station size (`seenAt`, tested). **The owner's two
+     sizes:** all twelve at 1440x900, 390x844 and 360x740 are the third look's lines, box for
+     box; 0 pixels differ in 36 captures at 1440x900 and 0 in 36 at 390x844, every meaning
+     shown. One thing differs at 390x844 and is what 2c asks: with Pisces complete, six taps in
+     the upper left now light the star 16 px from the one they lit, whose label was 39 px from
+     "His people". `pnpm test` is 156 of 156 now; `tools/sky/meaning.mjs` 38, `meaning-all.mjs`
+     24, `measure.mjs` 201; the sheets in `refs/sky/compare/` were not rebuilt (no place at the
+     two sizes moved). **Left, for the fourth look or the owner:** at 360x740 Taurus's words
+     further on stand faint (0.19) 31 px from "the Lamb" when both figures are complete (as
+     before; the upright phone's rule would have to change); at 320x568 Leo's three rows begin
+     8 px under the top of the screen; at 932x430 one "claim yours" lies across one of Libra's
+     lines. Record: `refs/verification/fixes.txt`, "ROUND 3", piece 2; evidence in
+     `refs/verification/round-3/b7/` (`before-2/b7/` is the build as piece 1 left it); new
+     scripts in `refs/verification/round-3/tools/`: `f8-all.mjs` (taps everywhere),
+     `rm-words.mjs` (reduced motion, and the words of figures further on), `far-words.mjs` (a
+     real flight on a phone on its side).
    - [ ] 3. **The loader on a slow line.** A skip pressed before the script has arrived is
      kept; the unlit C arrives first and whole; the visitor's clock starts when it is seen;
      nothing changes on a fast line. A line here about the debug hooks' console warnings.
