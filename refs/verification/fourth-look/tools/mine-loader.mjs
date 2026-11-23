@@ -9,7 +9,8 @@
 //              just before the loader's canvas begins the power-up)
 //   partly     the frames between "seen" and "whole" whose light is under 90% of the still C's, or whose
 //              share of light in the lower half is more than 0.08 off the still C's (a C drawn top first)
-//   without    once the C has been seen, the frames before the sky with under 60% of the still C's light
+//   without    once the C has been seen, the frames up to a second after the canvas has taken the picture
+//              over with under 60% of the still C's light
 // From the page (a MutationObserver, performance.now()): the browser's first-contentful-paint, the frame the
 // page says it showed the C in (window.__loaderEarly.seenAt, if the build has it), .has-poster, .is-drawn
 // and .is-live on #loader, and the scene becoming "sky". THE CLOCK counted here is FIRST SEEN IN THE
@@ -133,13 +134,16 @@ for (const size of values.sizes.split(',')) {
 		const rows = [];
 		if (rec && t) {
 			const end = t.sky ? t.origin + t.sky : Date.now();
-			for (const f of rec.frames.filter((x) => x.ts >= t.origin - 50 && x.ts <= end)) {
-				const img = sharp(f.img);
-				const meta = await img.metadata();
-				const top = await sharp(f.img).extract({ left: 0, top: 0, width: meta.width, height: Math.floor(meta.height / 2) }).stats();
-				const bot = await sharp(f.img).extract({ left: 0, top: Math.floor(meta.height / 2), width: meta.width, height: meta.height - Math.floor(meta.height / 2) }).stats();
-				const m = (s) => (s.channels[0].mean + s.channels[1].mean + s.channels[2].mean) / 3;
-				const a = m(top), b = m(bot);
+			// every frame up to a second and a half after the canvas has taken the picture over (the first seconds are
+			// the question; the clock needs only "seen" and the page's own time of the sky); each frame decoded once, small
+			const upto = t.origin + Math.max(t['is-drawn'] ?? 0, t['is-live'] ?? 0, 2500) + 1500;
+			for (const f of rec.frames.filter((x) => x.ts >= t.origin - 50 && x.ts <= Math.min(end, upto))) {
+				const w = 160, h = 100;
+				const raw = await sharp(f.img).resize(w, h, { fit: 'fill', kernel: 'cubic' }).removeAlpha().raw().toBuffer();
+				let a = 0, b = 0;
+				const half = (h / 2) * w * 3;
+				for (let i = 0; i < raw.length; i++) { if (i < half) a += raw[i]; else b += raw[i]; }
+				a /= half; b /= raw.length - half;
 				rows.push({ t: f.ts - t.origin, L: (a + b) / 2, low: a + b > 0 ? b / (a + b) : 0.5, f });
 			}
 			let start = 0;
@@ -149,12 +153,15 @@ for (const size of values.sizes.split(',')) {
 			seen = site.find((r) => r.L > 0.4) ?? null;
 			const live = t['is-live'] ?? null;
 			// the still C: the last frame before the canvas begins to change the picture (live + 120 ms), or 900 ms after it is seen
-			const before = site.filter((r) => seen && r.t >= seen.t && r.t <= Math.max((live ?? 0) + 120, seen.t + 900));
+			// (on a fast line the canvas draws within a tenth of a second and the power-up has begun 0.9 s after: there the still C is the frame a tenth of a second after the canvas's first drawing)
+			const stillBy = t['is-drawn'] ? Math.max(seen?.t ?? 0, t['is-drawn'] + 100) : Math.max((live ?? 0) + 120, (seen?.t ?? 0) + 900);
+			const before = site.filter((r) => seen && r.t >= seen.t && r.t <= stillBy);
 			const ref = before.at(-1) ?? null;
 			still = ref?.L ?? 0;
 			whole = seen ? site.find((r) => r.t >= seen.t && r.L >= 0.95 * still) : null;
 			if (seen && whole && ref) partly = site.filter((r) => r.t >= seen.t && r.t < whole.t && (r.L < 0.9 * still || Math.abs(r.low - ref.low) > 0.08));
-			if (seen) without = site.filter((r) => r.t > seen.t && r.L < 0.6 * still);
+			// only up to a second after the canvas has taken the picture over: the loader's own end (the wordmark cooling into the one star) is darker than the still C and is not this question
+			if (seen) without = site.filter((r) => r.t > seen.t && r.t < Math.max(t['is-drawn'] ?? 0, live ?? 0, seen.t) + 1000 && r.L < 0.6 * still);
 		}
 		// the hand-off's probe
 		let probe = '';

@@ -141,3 +141,36 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   top of the screen, level with the menu (clear of it by 60 px; the fixers knew: piece 2, "LEFT");
   and Leo's words are smaller on the larger of the three phones (18 px at 375x667, 20 px at 320x568).
   (b7/b7-short-short640-short568.txt.)
+
+1c. A SKIP BEFORE THE SCRIPT HAS ARRIVED (third look: MINOR, slow lines) — RESOLVED
+  The order of things on slow 4G is no longer the third look's. From my own recordings (tools/mine-
+  loader.mjs: every frame the compositor presents, and the page's class changes; ten first visits,
+  loader/mine-slow4g-nothing.txt): the screen turns black at 0.67 to 0.70 s after the navigation; the
+  loader goes LIVE at 1.58 to 1.63 s, on that black screen; the unlit C is first seen, whole, at 1.78
+  to 1.80 s; the canvas takes the picture over at 3.17 to 3.27 s. (It was: the C's first rows at 0.8 s,
+  the loader live at 1.9 s.) So a press "between the C's appearing and the loader going live" can no
+  longer be made on this line: the loader is live before the C is there. A press before the loader is
+  live now falls on the black screen; a press while the C stands and the script is not there has to
+  be forced by holding the page's script back. Both were tried, with the reference beside them.
+  Slow 4G, a tap on the phone (390x844) and the key "a" on the desktop (1440x900); the sky's time is
+  ms after the navigation (logs/mine-skip-*.log, loader/mine-skip-*.txt):
+    a skip the moment the loader is live (the reference)   sky at 5.92 to 6.16 s            6 of 6
+    a press at 1.0 s, 0.6 s BEFORE the loader is live      sky at 5.94 to 6.15 s            8 of 8
+    a press at 1.4 s, 0.2 s before it is live              sky at 5.93 to 6.21 s            6 of 6
+    a press 0.3 s after the C is first seen (live by then) sky at 5.94 to 6.16 s            6 of 6
+    the page's script held back 1.5 s more: the reference  sky at 6.08 to 6.49 s            6 of 6
+    the same, a press 0.3 s after the C is first seen,
+      the C standing, 0.83 s BEFORE the loader is live     sky at 6.09 to 6.41 s            8 of 8
+  Every early press gave the sky as soon as a skip at the mount gives it: 28 of 28, none lost (it was
+  4 of 4 lost). (A skip on this line gives the sky about 4.4 s after the loader is live because the
+  sky's own script is still coming down the line; that was so at the third look too.)
+  Tab, Shift, Control, Alt, Meta and CapsLock at 1.0 s, before the loader is live: no skip, the sky at
+  9.14 s as when nothing is pressed (4 of 4). A press BEFORE the navigation is not taken for a skip:
+  the click (the tap) on a link to the page, and Enter held 350 ms on a link to it: the full loader,
+  the sky at 9.13 to 9.16 s (8 of 8). Nothing is carried to the next page load: after an early skip, a
+  reload in the same tab plays the short version of a return, the sky at 4.10 to 4.30 s, exactly as a
+  return that follows an unskipped visit on that line does (4.18 and 4.35 s). The end of the hand-off
+  after an early skip (the second look's probe of the sky canvas's middle, every frame): no dip in 40
+  of 40 skipped visits, the lowest frame round the scene change 99% of the usual: no frame without
+  Cellestial's star. Console: nothing, in every one of these visits. When nothing is pressed the run
+  is what it was (item 1d).

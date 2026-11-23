@@ -1,0 +1,20 @@
+desk slow4g nothing run 1: RECORDING: black 700, C first seen 1790, whole 1790 (still light 8.29), partly drawn frames 0, frames without the C after it was seen 33 [8598: 58%, 8615: 50%, 8631: 45%, 8648: 43%, 8664: 41%, 8681: 38%]. PAGE: first paint 1788, the page's own "seen" 1777, has-poster 1768, canvas drew 3274, live 1612, mode full; nothing pressed; THE SKY AT 9132 ms, 7.52 s after live; CLOCK first seen (recording) to the sky 7.34 s; first paint to the sky 7.34 s; console: nothing
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/loader/mine-slow4g-nothing-desk.jpg
+desk slow4g nothing run 2: RECORDING: black 677, C first seen 1801, whole 1801 (still light 8.29), partly drawn frames 0, frames without the C after it was seen 33 [8574: 58%, 8591: 50%, 8607: 45%, 8624: 43%, 8641: 41%, 8657: 38%]. PAGE: first paint 1804, the page's own "seen" 1787, has-poster 1780, canvas drew 3273, live 1582, mode full; nothing pressed; THE SKY AT 9108 ms, 7.53 s after live; CLOCK first seen (recording) to the sky 7.31 s; first paint to the sky 7.30 s; console: nothing
+desk slow4g nothing run 3: RECORDING: black 691, C first seen 1784, whole 1784 (still light 8.29), partly drawn frames 0, frames without the C after it was seen 32 [8605: 58%, 8622: 50%, 8639: 45%, 8655: 43%, 8672: 41%, 8689: 38%]. PAGE: first paint 1784, the page's own "seen" 1768, has-poster 1767, canvas drew 3273, live 1611, mode full; nothing pressed; THE SKY AT 9139 ms, 7.53 s after live; CLOCK first seen (recording) to the sky 7.36 s; first paint to the sky 7.36 s; console: nothing
+desk slow4g nothing run 4: RECORDING: black 691, C first seen 1778, whole 1778 (still light 8.29), partly drawn frames 0, frames without the C after it was seen 32 [8605: 58%, 8622: 50%, 8639: 45%, 8655: 43%, 8672: 41%, 8689: 38%]. PAGE: first paint 1780, the page's own "seen" 1767, has-poster 1767, canvas drew 3274, live 1612, mode full; nothing pressed; THE SKY AT 9138 ms, 7.53 s after live; CLOCK first seen (recording) to the sky 7.36 s; first paint to the sky 7.36 s; console: nothing
+desk slow4g nothing run 5: RECORDING: black 693, C first seen 1780, whole 1780 (still light 8.29), partly drawn frames 0, frames without the C after it was seen 33 [8607: 58%, 8623: 50%, 8640: 45%, 8657: 43%, 8674: 41%, 8690: 38%]. PAGE: first paint 1780, the page's own "seen" 1769, has-poster 1767, canvas drew 3273, live 1612, mode full; nothing pressed; THE SKY AT 9140 ms, 7.53 s after live; CLOCK first seen (recording) to the sky 7.36 s; first paint to the sky 7.36 s; console: nothing
+phone slow4g nothing run 1: RECORDING: black 680, C first seen 1785, whole 1785 (still light 4.84), partly drawn frames 0, frames without the C after it was seen 18 [7913: 59%, 7930: 58%, 7944: 57%, 7963: 56%, 7979: 55%, 7995: 55%]. PAGE: first paint 1788, the page's own "seen" 1776, has-poster 1766, canvas drew 3171, live 1611, mode full; nothing pressed; THE SKY AT 9130 ms, 7.52 s after live; CLOCK first seen (recording) to the sky 7.35 s; first paint to the sky 7.34 s; console: nothing
+  wrote /home/poe/cellestial-studio/refs/verification/fourth-look/loader/mine-slow4g-nothing-phone.jpg
+phone slow4g nothing run 2: RECORDING: black ?, C first seen ?, whole ? (still light 0.00), partly drawn frames 0, frames without the C after it was seen 0. PAGE: first paint ?, the page's own "seen" ?, has-poster ?, canvas drew ?, live ?, mode undefined; nothing pressed; NO SKY within 90000 ms (scene undefined); CLOCK first seen (recording) to the sky ? s; first paint to the sky ? s; console: nothing
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browser.newContext: Target page, context or browser has been closed
+    at async open (/home/poe/cellestial-studio/refs/verification/fourth-look/tools/lib.mjs:36:18)
+    at async file:///home/poe/cellestial-studio/refs/verification/fourth-look/tools/mine-loader.mjs:86:13 {
+  log: []
+}
+
+Node.js v26.8.1
