@@ -14,9 +14,11 @@
 
 ## Exact next step
 
-**Round 3 is done (23 Nov): all four boxes are ticked. The fourth, narrow look is running
-(item 1c: if no inspector is at work, launch its brief again); then the owner's decisions
-(item 2) and the question of publishing (item 3).** The third look (22 Nov; `refs/verification/third-look.txt`; its
+**The fourth look is done (23 Nov, `f7d5ea4`): no blocker, nothing major, every scene done at
+the owner's two sizes; two minors. Round 4, ONE bounded fix for the first of them, is running
+(item 1d: "claim yours" kept off the neighbouring stars; if no fixer is at work, launch its
+brief again). Then one narrow look at that one thing (its brief is ready), the final report,
+the owner's decisions (item 2) and the question of publishing (item 3).** The third look (22 Nov; `refs/verification/third-look.txt`; its
 evidence and scripts under `refs/verification/third-look/`) ruled that at the owner's two
 sizes, 390×844 and 1440×900, every scene is done, with no blocker and nothing major; outside
 them it found one major (a phone held on its side) and six minors. Round 3 put those right,
@@ -262,17 +264,43 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
    other at the rule's floor) and Cellestial's star is 67 to 80 px; at 375×667 the star is 77
    px; three small things of B7 off the owner's sizes (360×740, 320×568, 932×430); on slow 4G
    the sky comes 9.1 s after navigation where it came at 8.3 s.
-1c. **A fourth, narrow look: RUNNING (launched 23 Nov).** At what round 3 changed, by an
-   inspector who built none of it: the phone on its side, the short phone, the slow line,
-   "claim yours", and that the owner's two sizes are what the third look ruled done. The brief
-   is `refs/briefs/fourth-look.js` (one inspector; it changes no file of the site). Its own
-   copy of the measuring scripts is `refs/verification/fourth-look/tools/` (round 3's, as its
-   fixers left them; they write under `refs/verification/fourth-look/`). It writes
-   `refs/verification/fourth-look.txt` as it goes and commits it. If it is cut off, launch the
-   same brief again: it reads its own report and goes on from where it stopped. When it is
-   done: a blocker or a major in its closing list is put right (one bounded fix, then that
-   item looked at again) before the build is called finished; otherwise the final report to
-   the owner.
+1c. **The fourth, narrow look: done (23 Nov), `f7d5ea4`.** One inspector who built none of it,
+   on the production build, at what round 3 changed and at the owner's two sizes. Its report
+   is `refs/verification/fourth-look.txt` (the closing list and the verdict are at its end);
+   its evidence and its own scripts are under `refs/verification/fourth-look/`; the brief was
+   `refs/briefs/fourth-look.js`. (It was cut off twice, by a server error and by the usage
+   limit, and took up again from its own report each time.) **Its ruling: no blocker and
+   nothing major, at 390×844, at 1440×900 or anywhere it looked. All seven things the third
+   look left are resolved, and the owner's two sizes are what the third look ruled done** (the
+   numbers are under "Final verification", part "The fourth look"). Two minors stand:
+   1. "claim yours" (B9) is often written across a neighbouring star, on the phone at Virgo
+      into the rings of Cellestial's star, and four labels begin at the screen's left edge.
+      Older than every round of fixes, the same on the build the third look judged, never
+      measured before. Both of the owner's sizes, on every visitor's path. ROUND 4 PUTS IT
+      RIGHT (item 1d).
+   2. On a phone held on its side only, two stars of Taurus (slot-77 and slot-64) stand 35 to
+      49% into each other, both at the least size a star is drawn, both taking their own
+      touch. LEFT, for the owner to be told: the build's rule has been to draw a crowded star
+      smaller and never to move one out of its real place; the inspector's fix would move
+      each 1 to 1.5 px (`src/experience/sky/layout.ts`, and the exception written into
+      `sky-layout.test.ts`).
+1d. **Round 4: ONE bounded fix, RUNNING (launched 23 Nov).** One fixer, one thing: "claim
+   yours" keeps off every other star's disc and off Cellestial's star, and its letters stay 16
+   px inside the screen; under its star wherever that place is free (the spec's B9 says
+   "underneath"), beside it only where it is not. Nothing else moves. The brief is
+   `refs/briefs/fix-round-4.js`; the fourth look's scripts, copied for running again, are
+   `refs/verification/round-4/tools/` (they write under `refs/verification/round-4/`); the
+   record goes in `refs/verification/fixes.txt` under "ROUND 4". The build as it stood is
+   commit `f7d5ea4` (a built copy is kept outside the repo for the before pictures; the brief
+   says how to make it again). If the fixer is cut off, launch the same brief again: it reads
+   its own record and goes on from where it stopped.
+   - [ ] The fix: "claim yours" off the stars at both of the owner's sizes, nothing else moved
+   - [ ] One narrow look at that one thing by an inspector who did not build it: the brief is
+     `refs/briefs/fifth-look.js` (it changes no file of the site; its own copy of the fourth
+     look's scripts is `refs/verification/fifth-look/tools/`; it writes
+     `refs/verification/fifth-look.txt`). The orchestrator launches it when the first box is
+     ticked, and ticks this one when it has ruled. A blocker or a major in its list is put
+     right before the build is called finished; otherwise the final report to the owner.
 2. **Six things only the owner can decide** (the first five are the first inspector's
    findings, by number, in `refs/verification/business-and-code.txt`; the sixth came out of
    the close-out):
@@ -607,8 +635,38 @@ Four fixers then worked one after another, one piece each. The record of every p
   five lines, each a `class` value; `src/pages/start/index.astro` not at all; round 3
   touched none of the four. On the production build `/`, `/contact`, `/start`, `/start/new`
   and `/admin/` answer 200.
-- **Not done by anyone:** an inspector's look at what round 3 changed (the fourth look); a
-  real phone.
+- **Not done by anyone at the close-out:** an inspector's look at what round 3 changed (it
+  was done later that day: the next part); a real phone.
+
+### The fourth look (23 Nov 2026)
+
+One inspector who built none of it, on the production build. The report is
+`refs/verification/fourth-look.txt`, its evidence `refs/verification/fourth-look/`.
+- **The verdict:** no blocker, nothing major. Loading, the Sky, the Fall, the Roots, the
+  Close, the Chrome, the Warp, reduced motion and the page without script are done at the
+  owner's two sizes, as the third look ruled, and round 3 undid none of it.
+- **The seven things the third look left: all resolved.** A phone on its side (584 of 584
+  touches take their star at four sizes; no star nearer the exit button than 12 px; all twelve
+  meanings touch nothing); B7 on short phones (36 of 36 touch nothing, the type never under
+  18 px); the early skip (22 of 22 presses made before the loader was live are kept); the
+  unlit C (never half-drawn in 26 slow visits; from the first sight of the C to the sky 7.01
+  to 7.51 s in 46 of 46 first visits on every line and device tried); "claim yours" beside
+  the words (none within 40 px of a meaning in 849 desktop and 444 phone taps); the knot on
+  the desktop (Taurus's closest pair 17% into each other; 146 of 146 clicks take their star);
+  the console (nothing on 18 of 18 paths, nothing in 245 recorded visits).
+- **The owner's two sizes:** the loader's sheets the same to the byte as the third look's; the
+  standing sky at 390×844 the same to the pixel in 36 captures, and at 1440×900 differing only
+  in Taurus's two thinned stars; thirteen suites exit 0 with the third look's counts; the
+  hand-off never loses the star (24 first visits, 60 skips, 20 returns); the fall 16.7 ms a
+  frame with no light switched off; 292 of 292 touches on the phone's sky; one whole visit at
+  each size, frame for frame what it was. Build, tests (174 of 174), lint and type-check
+  pass; the protected-systems diff prints nothing; `/`, `/contact`, `/start`, `/start/new`
+  and `/admin/` answer 200.
+- **What stands:** two minors ("Exact next step", item 1c): "claim yours" across
+  neighbouring stars (round 4 puts it right) and Taurus's close pair on a phone on its side
+  (left for the owner). **For the owner to be told:** on slow 4G the sky comes 9.1 s after
+  the tap on the link (it was 8.3): the cost of counting the 6 to 8 s from the moment the C is
+  seen.
 
 ## Where things stand
 
@@ -630,7 +688,7 @@ Four fixers then worked one after another, one piece each. The record of every p
 | Transitions: the teleport (C4) | **Round 2, 22 Nov (fixes.txt, "ROUND 2", piece 2): the flash no longer dips at its peak from the sky to the ground (a dip in 0 of 16 on the production build; with the CPU slowed 4× it dipped in 9 of 9 before); 80 of 80; both strips rebuilt on 22 Nov and looked at.** **walked and measured; the director needed no change. The flash's light was changed on 21 Nov (see the Effects row); the 80 checks pass again and both strips were rebuilt.** `go()` in the director calls `fx.teleportFlash(swap, dir)`; the swap is `arriveInSky` or `arriveInRoots(at)`. | The menu opened and each item pressed with a real click, from the sky and from the middle of the Roots (scrollY 1500), both sizes, real GPU. `node tools/transitions/measure.mjs --only teleport` (80 checks, all passing): **The Sky** lands on scene `sky`, scrollY 0, Virgo's stars there, focus on `#sky-ui`; **What we build** on the top of the ground (scrollY 0, ground at the top), focus on `#roots`; **Claim your star** on the closing buttons, F1 and F2 both whole on screen (scrollY 3304 desktop, 3125 phone), focus on "Claim your star", no dialog; **Contact me** on the closing buttons and then `contact-dialog` open with focus in its first field. The direction asked of the flash: from the sky to anything on the ground `down`; from the Roots to the sky `up`; inside the Roots `up` to the top and `down` to the closing buttons; sky to sky `none`. The menu closes. The flash with the swap in it: 430–447 ms, except arriving on the ground from the sky: 581 ms on the desktop and 497 ms on the phone (the frame in which the whole network is drawn is held at the peak, about 150 and 65 ms). Looked at: `refs/transitions/compare/teleport-desk.jpg`, `teleport-phone.jpg` (`node tools/transitions/strip.mjs --only teleport`): for each of the eight walks at each size, the flash before, at and after its peak, and the landing. At the peak nothing of the old or the new section shows. |
 | B7, the meaning written in light | **Round 3, 22 Nov (fixes.txt, "ROUND 3", piece 2): a screen under 450 px high (a phone on its side) has its own placing: the phone's type and scoring, the far figures' points counted as stars, the words free to stand beside the figure; all twelve touch nothing at 844×390, 667×375, 740×360, 932×430, at 24 px but Leo's at the two narrowest. On a short upright phone the search tries three rows at every size and smaller type before it takes a place that touches anything: Leo's meaning at 375×667 is three rows at 18 px, touching nothing (it lay across two stars and three lines). Under 450 px of height the next figure's words are first seen at 0.58 of their station size (`seenAt`), so they no longer stand faint against the station's own. At 1440×900 and 390×844 every meaning is where it was, box for box (`b7-all.txt` and `meaning.txt` the same to the byte). `b7.mjs` 60 of 60 at five sizes, `meaning.mjs` 38 of 38, `meaning-all.mjs` 24 of 24; `b7-all-desk.jpg` and `b7-all-phone.jpg` rebuilt on 23 Nov and both looked at.** **Round 2, 22 Nov (fixes.txt, "ROUND 2", pieces 3 and 4): on the phone the words stand by their figure, all twelve, at 24 px, a long line in two rows (they stood under it at 21 px); on the desktop the search also counts the points of the four figures further on: 0 points on the words at all twelve (31 before), all still 54 px. `b7.mjs` 24 of 24, `meaning.mjs` 38 of 38, `meaning-all.mjs` 24 of 24; `b7-all-desk.jpg` and `b7-all-phone.jpg` rebuilt on 22 Nov, the phone's looked at.** **built.** `src/experience/sky/meaning.ts` (new), its styles in `src/components/scenes/Sky.astro`, three lines in `src/experience/sky/index.ts` and one field in `hooks.ts` to mount it and show it to the tools (`sky.meaning.state()`); it reuses `src/experience/loader/lightning.ts`. **What happens:** when every star of a figure is lit (the sky's own lit set, watched live through the claims store and the `ignite` event) the figure gets one element in `#sky-ui` holding its `meaning` from `src/content/constellations.ts`; Leo's also holds `FINAL_LINE` on a second line. It is written the first time the visitor is at that figure's station with it complete (or when it completes while they are there, once the camera has let the star go): a jagged bolt runs from the figure's nearest star to each letter in turn, the letter's outline burns white-blue on a canvas, and the live letter appears white-hot and cools in 1 s to brass lit from above with a thin blue line inside it (the same letter in the regular weight, pared to a line). A line takes about 1.5 s (0.05 to 0.11 s a letter); the final line has its own beat, 1.15 s later. Afterwards, in that visit, the words are simply there, and they stay with the figure: they stand at a point of its plane and are drawn at the plane's scale, coming up out of the distance with it. Where they stand is chosen at the station pose. From 1024 px wide the line is set at 54 px (smaller only if the figure leaves no room) and placed by its figure: in the freest room inside or beside the figure's own bounds that covers no star, no star's button and no line of the figure, clear of the logo and well above B11; only if there is none, in the band under the figure. Narrower: the free band nearest the figure's foot, 34 px, or 21 px at or under 720 px wide; shrunk to fit the width if it must. (Rebuilt by the fixer on 21 Nov: fixes.txt, look 2 and look 8.) Reduced motion: no writing, the words are there. The sky starts empty, so at launch nothing is written. | `node tools/sky/meaning.mjs` (claims seeded in `localStorage` for all 4 stars of Aries and all 9 of Leo; the camera stood at the figure with `sky.debug.setCoord`; real GPU, real time, both sizes): 38 checks, all passing (`refs/sky/compare/meaning.txt`): no star lit, no meaning anywhere; with both figures seeded nothing is written or shown at launch on Virgo; on arriving the meaning is being written; the words are exactly "the Lamb", and "the Lion of the tribe of Judah" then "Jesus is King."; a screen reader gets each line once (the letters that are seen are `aria-hidden`); whole on screen (Aries 262×70 px desktop, 102×27 px phone; Leo 816×163 px and 318×63 px); they cover none of the 4 and 9 star buttons, nor B11, nor the chrome, and take no pointer; once written the lightning's canvas is gone; flying on and coming back writes nothing twice; with three of Aries' four stars lit there is nothing, and lighting the fourth while there writes it; reduced motion with Virgo complete: "the virgin birth" is simply there. Sheets in `refs/sky/compare/`: `meaning-aries-desk.jpg`, `-phone.jpg`, `meaning-leo-desk.jpg`, `-phone.jpg` (twelve moments of the writing each), `meaning-settled.jpg` (written, both sizes, and the words enlarged), `meaning-still.jpg` (reduced motion). Looked at: `meaning-leo-desk.jpg` and `meaning-aries-phone.jpg` in their final form; `meaning-leo-phone.jpg` one round earlier (when the bolt still went to the first letter only); `meaning-settled.jpg` before the last change to the blue line's colour. `meaning-aries-desk.jpg` and `meaning-still.jpg` were not looked at. The sky's own 201 checks were run again with B7 and the transitions in (`node tools/sky/measure.mjs`; one check's wait was lengthened: pressing B11 now takes 2.2 s to reach the Roots, not a 0.5 s fade). **Different from the spec:** the lightning runs along each glyph's outline as a burning stroke of the letter itself and a bolt to it, not as a jagged path traced round the outline; the blue line set in a cooled letter is about a pixel wide at 54 px and under a pixel at the phone's 21 px, where it reads as a cool glint in the brass. The cooled letters are the site's brass (sampled #9e8473 to #a18675 from screenshots at every figure, both sizes; "studio" samples #a38264 the same way). **All twelve figures** were photographed with every star seeded and looked at at both sizes on 21 Nov (`node tools/sky/meaning-all.mjs`: `b7-all-desk.jpg`, `b7-all-phone.jpg`, `b7-all.txt`; 24 of 24: every meaning whole on screen, touching no star's button, not the logo, not B11). **Not done:** a real send completing a figure was not walked end to end (the store's `recordSent` was called from the page); not seen on a real phone; a screen reader was not run (the accessibility tree was read by script). |
 | The star-data credit | **done**: `public/credits.txt`, served at `/credits.txt`: the credit sentence (the `credit` field of `scripts/data/sky.json`, word for word) and d3-celestial's BSD 3-Clause notice. Nothing on the page links to it (the site has no footer and no words in the sky). | The notice was fetched on 20 Nov 2026 from that project's own file, `https://raw.githubusercontent.com/ofrohn/d3-celestial/master/LICENSE` (HTTP 200, 1480 bytes, "Copyright (c) 2015, Olaf Frohn"), and `diff` shows the file's lines 5 to the end identical to it but for a newline added at the very end. `pnpm build` copies it to `dist/credits.txt`; the dev server answers `/credits.txt` with 200, `text/plain`. |
-| Final verification | **done on 21 Nov** (two inspectors' reports, the fixer's pass, every suite run again); **the second look that evening, and round 2 of fixes on 21 and 22 Nov, done; the third look on 22 Nov (every scene done at the owner's two sizes) and round 3 of fixes on 22 and 23 Nov, done; a fourth, narrow look is next** | See the section "Final verification" above (its part "Round 3" has every number as of 23 Nov), and `refs/verification/fixes.txt`. The protected-systems diff prints nothing at the head of round 3; `pnpm build`, `pnpm test` (174 of 174), `pnpm lint`, `pnpm typecheck` pass. |
+| Final verification | **done on 21 Nov** (two inspectors' reports, the fixer's pass, every suite run again); **the second look that evening, and round 2 of fixes on 21 and 22 Nov, done; the third look on 22 Nov (every scene done at the owner's two sizes) and round 3 of fixes on 22 and 23 Nov, done; the fourth, narrow look on 23 Nov (no blocker, nothing major, two minors); round 4, one bounded fix for the first of them, is running** | See the section "Final verification" above (its part "Round 3" has every number as of 23 Nov), and `refs/verification/fixes.txt`. The protected-systems diff prints nothing at the head of round 3; `pnpm build`, `pnpm test` (174 of 174), `pnpm lint`, `pnpm typecheck` pass. |
 
 Nothing is parked any more: every piece in this table is in `src/` and runs on the page. The sections below the table are the builders' own accounts, written on 19 and 20 Nov; where the fixer changed something on 21 Nov the table above and `refs/verification/fixes.txt` say so, and they win (so too for rounds 2 and 3: where those sections say a landscape phone was not looked at, or describe the knots' rule as the upright phone's, the Sky and B7 rows above are the present state). The
 "walk-through" some rows cite (`refs/foundation/walk/`) was made over the placeholder scenes
@@ -1582,3 +1640,9 @@ than two tries. All four were reached.
   for line; the rebuilt sheets differing only by the two thinned stars of Taurus in three
   desktop sheets); the protected-systems diff 0 bytes. Next: a fourth, narrow look, then the
   owner's decisions and the question of publishing.
+- **23 Nov — the fourth look (02:28 to 06:18; cut off twice, taken up again each time).** One
+  inspector on the production build: all seven things the third look left are resolved, the
+  owner's two sizes are what the third look ruled done, no blocker, nothing major
+  (`f7d5ea4`). Two minors: "claim yours" written across neighbouring stars (older than every
+  round; round 4 puts it right) and Taurus's close pair on a phone on its side (left for the
+  owner). Next: round 4's one fix, a narrow look at it, the final report.
