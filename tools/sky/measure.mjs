@@ -1165,6 +1165,9 @@ const WORDS = () => {
 		px: Number.parseFloat(style.fontSize),
 		dx: c ? box.left + box.width / 2 - c.x : null,
 		under: c ? box.top - (c.y + c.r) : null,
+		// Round 4: how far the words' box is from their star's disc, on whichever side they stand.
+		gap: c ? Math.hypot(Math.max(box.left - c.x, 0, c.x - box.right), Math.max(box.top - c.y, 0, c.y - box.bottom)) - c.r : null,
+		side: el.dataset.side ?? 'under',
 		inside: box.left >= 0 && box.right <= innerWidth && box.top >= 0 && box.bottom <= innerHeight,
 		brass: getComputedStyle(document.documentElement).getPropertyValue('--color-brass-text').trim(),
 	};
@@ -1221,7 +1224,13 @@ if (only.has('words')) {
 		// What ends it.
 		const other = await send([0.85, 0.3]);
 		const moved = await page.evaluate(WORDS);
-		check('a touch elsewhere moves it to the star nearest that touch', moved.slot === other.slot && other.slot !== r.slot && moved.shown && Math.abs(moved.dx) < 0.5, `${r.slot} then ${other.slot}`);
+		// Round 4 (fixes.txt, "ROUND 4"): this check asked that the words be centred on the star
+		// (|dx| < 0.5: exactly under it). At 390x844 the touch at 0.85, 0.3 is answered with Virgo's
+		// slot-87, and a star of the figure stands under that star: the words now stand to its
+		// right, as the rule is (under where that place is free, else beside: claim-label.ts). So
+		// it asks what the rule is: the words by THAT star, tight to it (their box 7 px from its
+		// disc drawn large, r x 1.1: 8 to 10 px from the disc itself), whole on the screen.
+		check('a touch elsewhere moves it to the star nearest that touch, the words tight by that star', moved.slot === other.slot && other.slot !== r.slot && moved.shown && moved.gap > 7 && moved.gap < 11 && moved.inside, `${r.slot} then ${other.slot}; the words ${moved.side}, ${f2(moved.gap)} px from its disc`);
 		await nudge(page);
 		await sleep(120);
 		let gone = await page.evaluate(WORDS);

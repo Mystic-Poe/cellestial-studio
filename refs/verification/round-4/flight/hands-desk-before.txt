@@ -1,0 +1,6 @@
+desk (1440x900), CPU x1, http://localhost:4616
+  Aquarius, a real tap at 950,504: the words by slot-112 (under); then a wheel notch or a swipe: the flight is in "thrust", the words are put out
+  Aquarius, a real tap at 950,504: the words by slot-112 (under); then ArrowDown: the flight is in "thrust", the words are put out
+  Aquarius, a real tap at 950,504: the words by slot-112 (under); then a wheel notch or a swipe back: the flight is in "thrust", the words are put out
+  a press at 950,504 during a flight (the flight in "thrust" at 31.10): straight after it "halt" at 31.096, 60 ms on at 31.096; the words come by slot-125 (under) with the flight in "halt" at 31.096: the sky has not moved since the press
+  console errors 0

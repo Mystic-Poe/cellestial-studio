@@ -1,0 +1,3 @@
+desk (1440x900), CPU x1, http://localhost:4615, no tap: the same flights without the words
+desk, CPU x1, THE FRAMES (no words): 1091 frames, avg 16.7 ms, p95 16.8, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +12898 ms, over 17.5 ms 0
+  console errors 0

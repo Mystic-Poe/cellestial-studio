@@ -1,0 +1,5 @@
+desk (1440x900), CPU x4, http://localhost:4616
+  the wheel or swipes forward 9 s and back 9 s from Scorpius, sky.answer.touch() about every 0.9 s (19 times): flown from 8.9 to 72.9 and back to 11.6 (a station is 6): 1082 frames, the words showing in 150; they changed place 0 time(s); there and back within a second 0; frames in which they stood off their star (not 7 px from it) 0; across a star (more than one point's worth, 30 px2) 122, a nick of one 2 (deepest 23.5 px); across more than a point's worth of far points 54; inside the reach of Cellestial's rings 50; letters nearer a side than 16 px 0; off the screen 0
+  the words were written by 7 different stars
+desk, CPU x4, THE FRAMES (the words written again and again): 1081 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +10462 ms, over 17.5 ms 0
+  console errors 0

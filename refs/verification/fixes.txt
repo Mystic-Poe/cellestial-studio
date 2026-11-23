@@ -2679,3 +2679,233 @@ this round's). "Before" is the build at f7d5ea4, served beside the new one on po
     The frame times with the words showing, unslowed: 16.7 ms a frame, none over 17.5 ms, in
     all 2,733 and 2,757 frames. (Without the words, the build as it stood, and both with the
     CPU slowed 4x: being measured; added below.)
+
+  ROUND 4, THE RECORD WHOLE (23 Nov; the checkpoints above are how it was come to: where they
+  and this differ, this is right. In checkpoint 6, "6 of 6 at each size" should read 3 of 3 at
+  each size on each build.)
+  THE FINDING (the fourth look, 1e): "claim yours" (96x24 px, 13 px type) was written across the
+  neighbouring stars of its figure, into Cellestial's rings, and with its letters at the
+  screen's edge. Reproduced on the build as it stood (f7d5ea4), the fourth look's numbers to
+  the byte (before/b7/label-near.txt).
+  THE CAUSE: src/experience/sky/claim-label.ts, placeLabel(), asked ONE thing of the place under
+  the star, that it be 40 px from every meaning; the stars, the screen, the logo, the menu and
+  the exit button were asked about only for the places the words went to when they left it.
+  labelAt() held the box's middle 48 px from a side of the screen: the box (96 px) AT the side.
+  Nothing marked Cellestial's star among the discs, and at more than five stations off it was
+  not among them at all.
+  THE RULE CHOSEN (the header of claim-label.ts says it in full):
+    FREE is a place where the box stands 4 px clear of the disc of every other star drawn, and
+      which breaks none of the NEVERS. NEVER, in any place: across Cellestial's star or inside
+      the reach of its turning rings (B3.ring x layout.b3 x the scale: 100 px at Virgo on the
+      desktop, 48.5 on the phone; the same reach the layout keeps Virgo's stars clear of;
+      wherever the star is drawn, to nine stations off); within 40 px of a meaning; outside
+      the screen, or with the letters nearer than 16 px to its left or right side (the box 8);
+      on the logo, the menu or the exit button. A star with no place that keeps the nevers is
+      not offered by a tap.
+    THE ORDER: under; right, left, above; under right, under left, above right, above left;
+      then the places between (under or above slid 24 or 48 px to a side; right or left slid
+      12 px up or down). Every place is tight to the star: the box 7 px from the disc drawn
+      large (r x 1.1), the gap the words always had. Right and left before above, on the
+      pictures: beside its star at the star's own height a label is read with it at once, as a
+      caption is; above, in these figures, is where the next star of the line most often
+      stands. The corners and the places between were needed: in the empty sky 5 labels at
+      1440x900 and 15 at 390x844 stand at a corner, and 3 and 16 at a place between, because
+      no side was free for them (Virgo's slot-53 on the phone, by Cellestial's star: no side
+      and no corner is clear of the rings and inside the screen; it stands above, slid left).
+      One order serves a meaning and a star (round 3 tried above first for a meaning).
+    A FAR FIGURE'S POINT (a disc 6 px across or less: the figures three and more stations on)
+      is counted by what the words cover of it, and a place may cover as much as ONE such
+      point (30 px2) and still be free: a dim dot behind a letter does not send the words from
+      under their star (Cancer slot-91 at 1440x900). A disc of 7 px or more is a star.
+    WHERE NO PLACE IS FREE: the place that takes least of the stars by area, each star's disc
+      counted with its 4 px of air (so a far point counts for little, a near star's disc for
+      much, and words jammed against a star for something); under the star is forgiven one
+      point's worth there too, so that it wins a near tie.
+    STEADY: a place is taken with 4 px of air and left only when the words there cover more
+      than one point's worth of the stars, or break a never; where none is free, only for a
+      place that takes less than half as much. And WHILE THE SKY MOVES the words keep the
+      place they have whatever star passes, leaving it only for a never; when the sky comes
+      to rest they are placed again by the whole rule (checkpoint 6 has why).
+    WHICH STAR A TOUCH OFFERS is asked as round 3 asked it (hadPlace(): that question kept
+      word for word), and then that the words have a place now: so the same touch offers the
+      same star, but for a star whose words would cross Cellestial's star.
+  WHAT WAS CHANGED: src/experience/sky/claim-label.ts (the rule; pure geometry) and
+    src/experience/sky/answer.ts (drawn() marks Cellestial's star and lists it wherever it is
+    drawn; nearestIn() asks hadPlace() and placeLabel(); placeWords() keeps the place and
+    hands the rule the flight's mode; the words carry data-side and data-slide for the tools).
+    One thing more in answer.ts, the first fixer's, needed because the words now often stand
+    beside the star and so under the finger that asked for them: in a STILL sky on a touch
+    screen the words are written the moment the sky is touched, and the browser sent that
+    same touch's click to them, which picked the star and opened its panel. A click on the
+    words now counts only if its press began after they were written. (On the build as it
+    stood the same thing happened wherever the words came up under the finger: 31 of 585
+    taps of the grid at 390x844, reduced motion, opened a panel instead of showing the words;
+    labels/taps-phone.txt. With motion on the words come after the beads, and it could not.)
+    No other file of the site. tools/sky/measure.mjs: one check (below).
+  THE TESTS (src/experience/sky-meaning-place.test.ts; pnpm test 185 of 185 in node, it was
+    174; the Workers' 15, 16 and 14): under blocked by a star's disc gives the next free place,
+    in the order above; the places between; 4 px of air; Cellestial's star never crossed, to
+    the reach of its rings, near or far off, nor by the least cover; the letters 16 px inside
+    on every side; never on the logo, the menu, the exit button or off the screen, under the
+    star too; the least cover in a knot, checked against an independent count; a far point
+    does not move the words, two do, a 7 px disc does; steady at rest; steady in flight; which
+    star a touch offers. Round 3's cases hold (Aries and Taurus as the third look measured
+    them; a meaning under the star; once in a place they stay). EXPECTATIONS THAT ENCODED THE
+    OLD RULE AND WERE CHANGED: (1) "nor does any star": the words under a star with a star of
+    12 px 30 px beneath it were expected UNDER; now a star they stand 4 px clear of leaves
+    them under, and one in the way moves them. (2) the box's middle 48 px from the screen's
+    side is now 56 (the letters 16 px in), and a place beside the star 8 px inside, not 4.
+    (3) the order for a meaning was above, right, left; it is right, left, above. (4) "stars
+    on every side: no words" is now a corner or the least cover; that such a star is still
+    not OFFERED is hadPlace()'s test.
+  THE NUMBERS, production build (the final build unless said), the fourth look's own scripts:
+    label-near.mjs, the empty sky tapped on a grid at all twelve stations (b7/label-near.txt;
+    before: before/b7/label-near.txt):
+                                         1440x900            390x844
+                                         before   now        before   now
+      distinct labels                    137      137        113      117
+      across another star of the figure  25       0          38       2
+      touching Cellestial's core         2        0          2        0
+      on the logo, menu, button; outside 0        0          0        0
+      a tap that gave no label           0        0          53       34
+      under / beside                     137/0    100/37     113/0    64/53
+      The two left at 390x844: Sagittarius slot-39 (0.9 px into a disc) and Gemini slot-4
+      (4.5 px: the box's corner; the letters are clear). b7/label-near-phone.jpg, looked at:
+      both read cleanly. (The phone's taps that "gave no label" are taps that opened a star's
+      panel, which that script does not tell apart; 19 fewer do, see the click above.)
+    tools/r4-sheet.mjs, EVERY one of the 146 stars at each size, both builds side by side
+    (labels/desk.txt, phone.txt and the sheets):
+                                              1440x900          390x844
+                                              before   now      before   now
+      on a star of its own figure             31       0        67       9
+        deepest                               21.8 px  -        14.6 px  10.1 px
+      on points of the figures behind         13       4        23       8
+      inside the reach of Cellestial's rings  5        0        6        0
+      letters nearer a side than 16 px        0        0        34       0
+      within 40 px of a meaning; on the logo, menu, button; off the screen; no label: 0 in all
+      under its star / beside it              146/0    101/45   146/0    66/80
+      the same star offered, of points 10 px apart at twelve stations: all 155,520 and 39,312
+    THE NINE LEFT AT 390x844 (labels/phone-on-stars.jpg; the old place on the left):
+      Scorpius slot-41 (right, 2.8 px into one star; it was 14.6), Sagittarius slot-13 (above
+      right, 5.0; was 13.4), Sagittarius slot-39 (left, 0.9; was 13.4), Aquarius slot-130
+      (above, 4.0; was 13.0), Pisces slot-73 (left, 0.8; was 13.0 into three), Pisces slot-141
+      (under left, 10.1 into three; was 13.0), Pisces slot-123 (under, 6.6; was 5.8), Pisces
+      slot-139 (above left, 5.2; was 13.0), Gemini slot-4 (right, 4.5; was 8.8).
+      WHY NO PLACE IS FREE: these stars stand in knots where the discs touch (13 px discs 26 to
+      30 px apart). Measured in node over the page's own discs, every box tangent to the star
+      at the words' gap, every 4 px round it: for seven of the nine NO tight place at all
+      stands off every disc of the figure, at any angle (slot-41, 13, 130, 141, 123, 139, 4);
+      for slot-39 one exists but not 4 px clear; slot-73 has one between the places tried
+      (it is 0.8 px into a disc: not to be seen). The words take the place that covers least.
+      Pisces slot-141 is the worst of them (motion/phone.jpg: the words lie in the ring of
+      Pisces across the edges of three stars, their own star lit beside them).
+    f8-all.mjs, a figure complete at each station (b7/f8-all-desk-phone.txt on the final
+    build; b7/f8-all.txt, all five sizes, on the build of checkpoint 5; the fourth look's
+    question of every label):
+                                    1440x900        390x844       360x740  375x667  844x390
+      nearest to a meaning          41 px (was 42)  42 (40)       42       42       41
+      within 40 px of a meaning; off the screen; on the logo, the menu or the button: none
+      across Cellestial's star      none (r4-sheet --complete: inside the rings' reach 22
+                                    and 21 labels before, 0 and 0 now)
+      distinct labels on other
+      discs (the fourth look's)     19 (was 66)     22 (was 75)   20       19       25
+      THE SCRIPT EXITS 1, and why that is not a fault: it has round 3's check that a label
+      which LEFT its place under the star touches no star at all, and prints FAIL for each
+      (62 lines at the two sizes: every one "on N other star(s)", none of any other kind; its
+      summary's "within 40 px: 34" counts those lines, not meanings). In round 3 a label left
+      only for a meaning; now it leaves for stars, and beside a small far figure in the middle
+      of the screen no place is free of every point: the words take the least. The count
+      that matters is the fourth look's own, above: 66 to 19 and 75 to 22.
+      tools/r4-sheet.mjs --complete, every star offered (labels/desk-complete.txt,
+      phone-complete.txt): on a star of its own figure 73 to 14 and 117 to 23; on a lit star
+      of the figure in front 22 to 4 and 55 to 9; on far points 67 to 26 and 100 to 35.
+    WHICH STARS ARE NO LONGER OFFERED: three, in one state at one size. Virgo complete at
+      1440x900: slot-88, slot-25 and slot-47 of Libra, which stand behind Cellestial's star
+      inside the reach of its rings (their words lay 79, 85 and 20 px inside it). The touches
+      that offered them offer slot-22, slot-62 or slot-70. Nowhere else, at either size,
+      empty or complete, does any point offer another star than before, and no point that
+      offered a star offers none. Tap for tap with real touches at 390x844 (r4-taps.mjs,
+      labels/taps-phone.txt): 554 taps gave a label before; all 554 give one now, for the
+      same star.
+    label-on-stars.mjs (b7/label-on-stars.jpg, looked at; build of checkpoint 5): Libra
+      complete, slot-27: under and across the figure's points before, to the right of its
+      star in the clear now, at both sizes. Aries complete, slot-60: across the Hyades before,
+      above right in the clear now. Virgo complete, 1440x900, slot-25: across Cellestial's
+      star before; not offered now. Virgo complete, 390x844, slot-88: across Cellestial's
+      star before; now above left of its star, clear of the rings, but across the edges of
+      two LIT stars of Virgo (8.8 px into one). See WHAT IS LEFT.
+    f8.mjs (b7/f8.txt, final build): Aries taps 1 and 3 59 px from the meaning, Taurus tap 3
+      60 px: the fourth look's numbers. Taurus tap 1 95 px (69). NOT "all 30 taps 49 px or
+      more": the least is now 41 px. The three taps at Cancer complete stand 45, 41 and 45 px
+      from "the sheepfold" line (68, 52, 68 before): the words left a place across the far
+      figure's stars for one beside their star that is nearer the meaning, and still outside
+      the 40 px the rule keeps. The other 27 taps are 59 px or more.
+    f8-close.mjs (b7/f8-close.txt, final build): Aries 67 px, Taurus 68 px between the letters:
+      the fourth look's numbers.
+    label-near.mjs at the other sizes (other-sizes/b7/ and before/other-sizes/b7/; build of
+      checkpoint 5):                   360x740        375x667        844x390
+                                       before  now    before  now    before  now
+      across another star              47      3      55      9      35      1
+      touching Cellestial's core       3       0      3       0      4       0
+      on the logo, menu or button      0       0      0       0      14      0
+      outside the screen               0       0      0       0      0       0
+  WITH MOTION ON (tools/r4-motion.mjs, motion/motion.txt, motion/desk.jpg and phone.jpg, final
+    build): ten stars at each size, eight of them with their words beside the star: a REAL
+    click or tap on empty sky, the beads run to that star, the words come when they arrive
+    (0.4 to 1.5 s) where the still sky has them, 7 px from their star's disc; the pulse 2.00 s
+    from peak to peak; one place in 4.4 s at rest; a REAL click or tap on the words picks
+    that star and opens its panel, nothing claimed. 20 of 20. motion/phone.jpg looked at: the
+    lit star and its words are read together in all ten.
+  IN FLIGHT: checkpoint 6, and its numbers on the final build with both builds measured by the
+    same script (flight/*.txt): the Home glides, the words showing: 16.7 ms a frame, none over
+    17.5 ms, at 1440x900 and 390x844, unslowed and with the CPU slowed 4x, on this build and
+    on the build as it stood; the same glides with no words the same. In those glides the
+    build as it stood never changed place and had the words inside the rings' reach in 148
+    and 297 frames, nearer a side than 16 px in 10 and 34, off the screen in 2 and 1; this
+    build 0, 0 and 0, with 9 and 17 changes of place (10 and 17 slowed 4x), none there and
+    back. --case thrust (not a visitor's case: the wheel or swipes forward ten stations and
+    back while the debug hook writes the words again and again, 19 and 13 times): 1 and 2
+    changes of place, none there and back, frames 16.7 ms with none over 17.5 on both builds.
+  NOTHING ELSE MOVED: sky-same.mjs before (4616) / after / again, the clock held, twelve
+    stations empty and seeded: 0 pixels differ at 1440x900 and at 390x844 (same/*/sky-same.txt).
+    all-taps.mjs: 146 of 146 take their star at both sizes (desk-sky/, phone-sky/).
+    tools/run-all.sh (logs/status.txt): thirteen tools; twelve exit 0 at the first run and
+    tools/sky/measure.mjs 200 of 201. THE ONE CHECK CHANGED, and why: "a touch elsewhere moves
+    it to the star nearest that touch" asked |dx| < 0.5, the words centred on the star; at
+    390x844 that touch (0.85, 0.3 of the screen at Virgo) is answered with slot-87, a star
+    stands under it, and the words now stand to its right. The check now asks what the rule
+    is: the words by that star, tight to it (7 to 11 px from its disc), whole on the screen.
+    Run again by itself: 201 of 201. sky/meaning.mjs 38, meaning-all.mjs exit 0, roots/words
+    197, roots/measure 245, transitions/measure 148, chrome/compare 48, the loader's two exit
+    0. The sheets: refs/sky/compare/beads-desk.jpg and beads-phone.jpg show the words and
+    changed for this reason (desk, "all lit": the words to the right of the far star, no
+    longer under a lit star's foot; phone, Sagittarius: above the star, off the exit button's
+    room); both looked at beside the old and committed. refs/sky/measure.txt is the suite's
+    own record. Every other sheet restored.
+    pnpm build, pnpm test, pnpm lint, pnpm typecheck pass. The protected-systems diff prints
+    nothing.
+  WHAT IS LEFT, plainly:
+    1. 390x844, the empty sky: nine labels of 146 still touch a star of their figure (named
+       above, with why); two of them by less than 1 px, one (Pisces slot-141) by 10 px.
+    2. 1440x900: two labels (Sagittarius slot-140, Taurus slot-54) stand at the corner under
+       their star and so UNDER the neighbour to its left, 4 and 8 px from that neighbour's
+       disc; they touch nothing, their own star is the lit one, but they could be read as the
+       neighbour's. On the phone the knots have more such. I did not add a rule for it: any
+       test I could state ("no nearer another star than its own") leaves no place at all in
+       the knots, and the lit star does tell them apart in the pictures.
+    3. A figure complete: labels still lie on discs of the far figure (19 and 22 distinct by
+       the fourth look's count; they were 66 and 75), and at Virgo complete on the phone
+       slot-88's words lie across the edges of two lit stars of Virgo. No place by that star
+       is free: Cellestial's rings are under it and to its right, Virgo's stars above and to
+       its left. The brief keeps "not offered" for the nevers only, so it is still offered.
+    4. f8.mjs: three taps at Cancer complete are 41 to 45 px from the meaning, where the
+       fourth look had 52 to 68. Inside the rule (40), under the fourth look's least (49).
+    5. In flight (the Home key only) the words are crossed by the stars that pass, as on the
+       build as it stood. That is the price of their not jumping.
+    6. The runs at 360x740, 375x667 and 844x390, label-on-stars.mjs, the five-size f8-all.mjs
+       and r4-taps.mjs were made on the build of checkpoint 5 (9f0c58a). The final build
+       differs from it in one line of behaviour, in flight only; label-near.mjs at the two
+       sizes, r4-sheet.mjs (all four runs), f8.mjs, f8-close.mjs, f8-all.mjs at the two sizes,
+       r4-motion.mjs, sky-same.mjs, all-taps.mjs and the flights were run on the final build
+       and the first four gave the numbers they gave on checkpoint 5's.
+    7. The second minor (two stars of Taurus on a phone on its side): not touched.

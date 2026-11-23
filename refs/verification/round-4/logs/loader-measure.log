@@ -1,0 +1,15 @@
+full                   7.41 s (visitor's clock 7.44 s; from the browser's first paint 7.44 s)  mode=full  frames avg 17.9 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (6.0 to 8.0 s on the visitor's clock)
+short (reload)         3.54 s (visitor's clock 3.48 s; from the browser's first paint 3.51 s)  mode=short  frames avg 17.4 ms, p95 16.7 ms  → scene=sky, overlay=none  OK (short version, ends)
+skip at 1 s (tap)      2.71 s (visitor's clock 2.72 s; from the browser's first paint 2.72 s)  mode=full  frames avg 18.1 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (the hand-off only; the sky was ready at 1.26 s)
+skip at 1 s (key a)    2.76 s (visitor's clock 2.77 s; from the browser's first paint 2.77 s)  mode=full  frames avg 17.4 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (the hand-off only; the sky was ready at 1.20 s)
+Tab and modifiers      7.29 s (visitor's clock 7.31 s; from the browser's first paint 7.31 s)  mode=full  frames avg 17.4 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (no skip: 6.0 to 8.0 s on the visitor's clock)
+404 c-unlit.webp       0.01 s (visitor's clock 0.01 s; from the browser's first paint 0.01 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 c-lit.webp         0.01 s (visitor's clock 0.02 s; from the browser's first paint 0.02 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 wordmark.webp      0.00 s (visitor's clock 0.03 s; from the browser's first paint 0.03 s)  mode=full  frames avg 0.0 ms, p95 0.0 ms  → scene=sky, overlay=none  OK (still ends)
+404 wordmark-matte.webp 0.01 s (visitor's clock 0.03 s; from the browser's first paint 0.03 s)  mode=full  frames avg 16.7 ms, p95 16.7 ms  → scene=sky, overlay=none  OK (still ends)
+resize twice mid-run   7.20 s (visitor's clock 7.22 s; from the browser's first paint 7.22 s)  mode=full  frames avg 17.3 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (keeps the time: 6.0 to 8.0 s on the visitor's clock)
+sessionStorage blocked 7.10 s (visitor's clock 7.12 s; from the browser's first paint 7.12 s)  mode=full  frames avg 16.9 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (full version, ends)
+sky fails to load      6.06 s (visitor's clock 6.09 s; from the browser's first paint 6.09 s)  mode=full  frames avg 16.9 ms, p95 16.8 ms  → scene=roots, overlay=none  OK (ends by itself)
+sky 30 s late          11.98 s (visitor's clock 12.00 s; from the browser's first paint 12.00 s)  mode=full  frames avg 16.7 ms, p95 16.8 ms  → scene=sky, overlay=none  OK (holds at most 6 s, then goes)
+
+full version, mount to done: 7.41 s; first seen to done (the visitor's clock): 7.44 s

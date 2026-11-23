@@ -1,0 +1,34 @@
+  phone Virgo 30,437: under the finger before: a panel opened; after: sky slot-28 under
+  phone Virgo 162,514: under the finger before: a panel opened; after: sky slot-52 under
+  phone Libra 30,744: under the finger before: a panel opened; after: sky slot-70 under
+  phone Scorpius 294,360: under the finger before: a panel opened; after: sky slot-32 above
+  phone Sagittarius 96,284: under the finger before: a panel opened; after: sky slot-90 left
+  phone Sagittarius 162,437: under the finger before: a panel opened; after: sky slot-21 left
+  phone Sagittarius 228,437: under the finger before: a panel opened; after: sky slot-21 left
+  phone Capricornus 30,207: under the finger before: a panel opened; after: sky slot-108 above
+  phone Capricornus 294,360: under the finger before: a panel opened; after: sky slot-106 left
+  phone Aquarius 30,514: under the finger before: a panel opened; after: sky slot-96 under
+  phone Aquarius 96,514: under the finger before: a panel opened; after: sky slot-96 under
+  phone Aquarius 162,667: under the finger before: a panel opened; after: sky slot-119 under
+  phone Aquarius 228,667: under the finger before: a panel opened; after: sky slot-119 under
+  phone Aquarius 294,744: under the finger before: a panel opened; after: sky slot-137 under
+  phone Aquarius 360,744: under the finger before: a panel opened; after: sky slot-137 under
+  phone Pisces 294,360: under the finger before: a panel opened; after: sky slot-95 left
+  phone Pisces 162,591: under the finger before: a panel opened; after: sky slot-67 under
+  phone Aries 294,207: under the finger before: a panel opened; after: sky slot-23 under
+  phone Taurus 162,437: under the finger before: a panel opened; after: sky slot-1 left
+  phone Taurus 228,437: under the finger before: a panel opened; after: sky slot-69 above-right
+  phone Taurus 294,591: under the finger before: a panel opened; after: sky slot-116 under
+  phone Taurus 360,591: under the finger before: a panel opened; after: sky slot-116 under
+  phone Gemini 30,360: under the finger before: a panel opened; after: sky slot-4 right
+  phone Gemini 294,437: under the finger before: a panel opened; after: sky slot-30 under
+  phone Gemini 360,437: under the finger before: a panel opened; after: sky slot-46 under
+  phone Gemini 228,591: under the finger before: a panel opened; after: sky slot-51 under
+  phone Gemini 294,591: under the finger before: a panel opened; after: sky slot-51 under
+  phone Cancer 30,667: under the finger before: a panel opened; after: sky slot-109 under
+  phone Cancer 294,744: under the finger before: a panel opened; after: sky slot-58 under
+  phone Cancer 360,744: under the finger before: a panel opened; after: sky slot-58 under
+  phone Leo 294,744: under the finger before: a panel opened; after: sky slot-14 under
+phone: taps on the sky before 554, after 585; a label before 554, after 585; none before 0, after 0
+  a label on both builds 554: for the same star 554, another star 0 
+  a label before and none now 0 ; none before and a label now 0; what was under the finger differs 31

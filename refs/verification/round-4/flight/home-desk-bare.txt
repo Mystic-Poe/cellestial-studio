@@ -1,0 +1,9 @@
+desk (1440x900), CPU x1, http://localhost:4615, no tap: the same flights without the words
+  Capricornus, Home: station 5 to 1 in 2529 ms; 151 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +111 ms
+  Aquarius, Home: station 6 to 1 in 2930 ms; 175 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +627 ms
+  Pisces, Home: station 7 to 1 in 3217 ms; 192 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +75 ms
+  Aries, Home: station 8 to 1 in 2927 ms; 175 frames, avg 16.7 ms, p95 16.8, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +102 ms
+  Taurus, Home: station 9 to 1 in 2525 ms; 151 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +571 ms
+  Gemini, Home: station 10 to 1 in 2109 ms; 126 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +58 ms
+desk, CPU x1, THE FRAMES OF ALL THE GLIDES (no words): 970 frames, avg 16.7 ms, over 17.5 ms 0, over 34 ms 0, over 50 ms 0, worst 17 ms
+  console errors 0

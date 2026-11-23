@@ -1,0 +1,34 @@
+  fall-desk: 95 pictures in 3300 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/fall-desk.jpg
+  fall-phone: 100 pictures in 3300 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/fall-phone.jpg
+  warp-desk: 60 pictures in 2100 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-desk.jpg
+  warp-deep-desk: 62 pictures in 2100 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-deep-desk.jpg
+  warp-phone: 64 pictures in 2100 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-phone.jpg
+  warp-deep-phone: 64 pictures in 2100 ms
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/warp-deep-phone.jpg
+  desk sky → The Sky: {"scene":"sky","y":0,"focus":"claim yoursSite A custom","dialog":null}
+  desk sky → What we build: {"scene":"roots","y":0,"focus":"SiteSite A custom site b","dialog":null}
+  desk sky → Claim your star: {"scene":"roots","y":3304,"focus":"Claim your star","dialog":null}
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+  desk sky → Contact me: {"scene":"roots","y":3304,"focus":"contact-box-form-name","dialog":"contact-dialog"}
+  desk roots → The Sky: {"scene":"sky","y":0,"focus":"claim yoursSite A custom","dialog":null}
+  desk roots → What we build: {"scene":"roots","y":0,"focus":"SiteSite A custom site b","dialog":null}
+  desk roots → Claim your star: {"scene":"roots","y":3304,"focus":"Claim your star","dialog":null}
+  [console desk] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+  desk roots → Contact me: {"scene":"roots","y":3304,"focus":"contact-box-form-name","dialog":"contact-dialog"}
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/teleport-desk.jpg
+  phone sky → The Sky: {"scene":"sky","y":0,"focus":"claim yoursSite A custom","dialog":null}
+  phone sky → What we build: {"scene":"roots","y":0,"focus":"SiteSite A custom site b","dialog":null}
+  phone sky → Claim your star: {"scene":"roots","y":3125,"focus":"Claim your star","dialog":null}
+  [console phone] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+  phone sky → Contact me: {"scene":"roots","y":3125,"focus":"contact-box-form-name","dialog":"contact-dialog"}
+  phone roots → The Sky: {"scene":"sky","y":0,"focus":"claim yoursSite A custom","dialog":null}
+  phone roots → What we build: {"scene":"roots","y":0,"focus":"SiteSite A custom site b","dialog":null}
+  phone roots → Claim your star: {"scene":"roots","y":3125,"focus":"Claim your star","dialog":null}
+  [console phone] Blocked script execution in 'about:blank' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.
+  phone roots → Contact me: {"scene":"roots","y":3125,"focus":"contact-box-form-name","dialog":"contact-dialog"}
+  wrote /home/poe/cellestial-studio/refs/transitions/compare/teleport-phone.jpg

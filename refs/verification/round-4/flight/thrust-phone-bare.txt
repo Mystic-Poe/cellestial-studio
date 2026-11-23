@@ -1,0 +1,3 @@
+phone (390x844), CPU x1, http://localhost:4615, no tap: the same flights without the words
+phone, CPU x1, THE FRAMES (no words): 1143 frames, avg 16.7 ms, p95 16.7, >34 ms 0, >50 ms 0, >100 ms 0, worst 17 ms at +13077 ms, over 17.5 ms 0
+  console errors 0
