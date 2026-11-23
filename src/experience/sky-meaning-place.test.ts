@@ -1,14 +1,19 @@
 // B7 and B9, where the words stand: which placing a screen gets (meaning.ts) and where
-// "claim yours" goes when a meaning's words are near (claim-label.ts). The search itself
-// measures the words in the page; its proof is refs/verification/round-3/tools/b7.mjs.
+// "claim yours" goes when a meaning's words are near, or another star, or Cellestial's
+// (claim-label.ts). The search itself measures the words in the page; its proof is
+// refs/verification/round-3/tools/b7.mjs, and for the stars refs/verification/round-4/tools/.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
 	type Box,
 	boxGap,
 	type Disc,
+	discCover,
+	discGap,
 	LABEL,
+	LABEL_SPOTS,
 	type LabelScene,
+	type LabelSide,
 	labelAt,
 	placeLabel,
 } from './sky/claim-label.ts';
@@ -122,19 +127,22 @@ test("on a phone on its side the next figure's words wait until their figure is 
 	}
 });
 
-test('with no meaning near, the words stand under their star, where they always stood', () => {
+test('with nothing near, the words stand under their star, where they always stood', () => {
 	const star = { x: 700, y: 400, r: 10 };
 	const place = placeLabel(star, scene([]));
 	assert.equal(place?.side, 'under');
+	assert.equal(place?.slide, 0);
 	assert.equal(place?.x, 700);
 	assert.equal(place?.y, 400 + 10 * 1.1 + 7);
-	// A meaning 40 px away or more changes nothing; nor does any star, the exit button or the chrome.
+	// A meaning 40 px away or more changes nothing; nor does a star that the words stand 4 px clear of.
 	const far: Box = { x0: 700 - 48 - 40 - 300, y0: 418, x1: 700 - 48 - 40, y1: 488 };
-	const crowd = [{ x: 700, y: 430, r: 12 }];
-	assert.equal(placeLabel(star, scene([far], crowd))?.side, 'under');
-	// Beside a screen edge they are held in, as before.
-	assert.equal(placeLabel({ x: 10, y: 400, r: 10 }, scene([]))?.x, 48);
-	assert.equal(placeLabel({ x: 1435, y: 400, r: 10 }, scene([]))?.x, 1440 - 48);
+	const beside = [star, { x: 700, y: 418 + 24 + 4 + 12, r: 12 }];
+	assert.equal(placeLabel(star, scene([far], beside))?.side, 'under');
+	// Beside a screen edge they are held in: the box 8 px inside, so that the letters are 16.
+	// (Round 4: it was the box AT the edge, its middle 48 px in.)
+	assert.equal(placeLabel({ x: 10, y: 400, r: 10 }, scene([]))?.x, 56);
+	assert.equal(placeLabel({ x: 1435, y: 400, r: 10 }, scene([]))?.x, 1440 - 56);
+	assert.equal(LABEL.hold - LABEL.half, 8);
 });
 
 test('Aries and Taurus on the desktop, as the third look measured them: the words leave the line', () => {
@@ -170,27 +178,26 @@ test('Aries and Taurus on the desktop, as the third look measured them: the word
 	}
 });
 
-test('the other sides in order; each inside the screen, off the chrome, the exit button and every star', () => {
+test('a meaning under the star: the other places in order, each off every star', () => {
 	const star = { x: 700, y: 400, r: 10 };
-	// A meaning just under the star: above is clear.
+	// A meaning just under the star: to the right is clear. (Round 3 tried above first; round 4
+	// has one order for a meaning and for a star: right, left, above, then the corners.)
 	const below: Box = { x0: 500, y0: 455, x1: 900, y1: 525 };
-	assert.equal(placeLabel(star, scene([below]))?.side, 'above');
-	// A star where the words would stand above: then to the right.
-	const over = [star, { x: 700, y: 366, r: 6 }];
-	assert.equal(placeLabel(star, scene([below], over))?.side, 'right');
-	// And one to the right as well: to the left.
-	const both = [...over, { x: 760, y: 400, r: 6 }];
-	assert.equal(placeLabel(star, scene([below], both))?.side, 'left');
-	// Stars on every side: no words (the star is not offered).
-	assert.equal(placeLabel(star, scene([below], [...both, { x: 640, y: 400, r: 6 }])), null);
-	// Meanings round every side: none.
+	assert.equal(placeLabel(star, scene([below]))?.side, 'right');
+	// A star where the words would stand on the right: then to the left.
+	const right = [star, { x: 760, y: 400, r: 6 }];
+	assert.equal(placeLabel(star, scene([below], right))?.side, 'left');
+	// And one to the left as well: above.
+	const both = [...right, { x: 640, y: 400, r: 6 }];
+	assert.equal(placeLabel(star, scene([below], both))?.side, 'above');
+	// Meanings round every side: no words (the star is not offered).
 	assert.equal(placeLabel(star, scene([{ x0: 600, y0: 300, x1: 800, y1: 500 }])), null);
 	// Above would leave the screen's top; right would leave its side.
 	const top = { x: 1400, y: 20, r: 10 };
 	const under: Box = { x0: 1200, y0: 80, x1: 1440, y1: 150 };
 	const place = placeLabel(top, scene([under]));
 	assert.equal(place?.side, 'left');
-	assert.ok(place && place.box.x0 >= 4 && place.box.y0 >= 4);
+	assert.ok(place && place.box.x0 >= 8 && place.box.y0 >= 4);
 	// The logo and the menu.
 	const nearLogo = { x: 150, y: 110, r: 8 };
 	const m: Box = { x0: 100, y0: 165, x1: 400, y1: 215 };
@@ -206,17 +213,272 @@ test('the other sides in order; each inside the screen, off the chrome, the exit
 	assert.ok(gapTo(q, beside) >= LABEL.clear);
 });
 
-test('once on a side, the words stay there while it will do', () => {
+test('once in a place, the words stay there while it will do', () => {
 	const star = { x: 700, y: 400, r: 10 };
 	const below: Box = { x0: 500, y0: 455, x1: 900, y1: 525 };
 	assert.equal(placeLabel(star, scene([below]), 'right')?.side, 'right');
 	// The meaning gone: still to the right, not back and forth.
 	assert.equal(placeLabel(star, scene([]), 'right')?.side, 'right');
-	// The side no longer free: the first that is.
+	// The place no longer free (a star stands in it): the first that is.
 	assert.equal(
 		placeLabel(star, scene([below], [star, { x: 760, y: 400, r: 6 }]), 'right')?.side,
-		'above',
+		'left',
 	);
 	// Under, with a meaning come near: it moves.
-	assert.equal(placeLabel(star, scene([below]), 'under')?.side, 'above');
+	assert.equal(placeLabel(star, scene([below]), 'under')?.side, 'right');
+	// A place between the sides is held the same way.
+	const held = placeLabel(star, scene([]), { side: 'under', slide: 24 });
+	assert.deepEqual([held?.side, held?.slide, held?.x], ['under', 24, 724]);
+});
+
+// ── round 4: "claim yours" and the stars ──
+
+/** The words' box under a star at 700,400 of radius 10: x 652..748, y 418..442. */
+const STAR = { x: 700, y: 400, r: 10 };
+/** A knot round that star: twelve neighbours on a ring 46 px out, of 4 to 10 px, and six on one 100 px out. */
+const KNOT: Disc[] = [
+	...[7, 5, 9, 4, 8, 6, 10, 5, 7, 4, 9, 6].map((r, i) => ({
+		x: 700 + 46 * Math.cos((i * Math.PI) / 6),
+		y: 400 + 46 * Math.sin((i * Math.PI) / 6),
+		r,
+	})),
+	...[8, 6, 9, 7, 5, 8].map((r, i) => ({
+		x: 700 + 100 * Math.cos((i * Math.PI) / 3 + 0.4),
+		y: 400 + 34 * Math.sin((i * Math.PI) / 3 + 0.4),
+		r,
+	})),
+];
+const touches = (place: { box: Box }, s: Disc) => discGap(place.box, s) < 0;
+
+test("under its star is another star's disc: the words go to the first free place beside it", () => {
+	// A neighbour straight under the star, as in a real figure: the old rule wrote across it.
+	const under = { x: 700, y: 440, r: 6 };
+	assert.ok(
+		touches(labelAt(STAR, 'under', 1440), under),
+		'the fault: under the star is on the disc',
+	);
+	const order: string[] = [];
+	const crowd: Disc[] = [STAR, under];
+	// Each place taken is then filled with a star, and the next is asked for.
+	for (let n = 0; n < LABEL_SPOTS.length - 1; n++) {
+		const place = placeLabel(STAR, scene([], crowd));
+		assert.ok(place);
+		for (const s of crowd) {
+			if (s !== STAR) assert.ok(discGap(place.box, s) >= LABEL.star, `${place.side}: 4 px of air`);
+		}
+		order.push(place.slide ? `${place.side} ${place.slide}` : place.side);
+		if (order.length === 7) break;
+		crowd.push({ x: place.x, y: place.y + 12, r: 3 });
+	}
+	assert.deepEqual(order, [
+		'right',
+		'left',
+		'above',
+		'under-right',
+		'under-left',
+		'above-right',
+		'above-left',
+	]);
+	// Every place is tight to its own star: the box 7 px from the disc as drawn large (r * 1.1).
+	for (const spot of LABEL_SPOTS) {
+		const { box } = labelAt(STAR, spot.side, 1440, spot.slide);
+		assert.ok(Math.abs(discGap(box, { ...STAR, r: STAR.r * 1.1 }) - LABEL.gap) < 1e-9, spot.side);
+	}
+});
+
+test('the places between the sides, when no side or corner is free', () => {
+	// A star at the right of the phone, its neighbour above it (Virgo at 390x844, slot-53 by
+	// Cellestial's star): the side and the corners on the right are off the screen.
+	const star = { x: 110, y: 388, r: 13 };
+	const rings = { x: 195, y: 422, r: 48.5, rings: true };
+	const neighbour = { x: 156, y: 355, r: 13 };
+	const place = placeLabel(star, scene([], [star, rings, neighbour], 390, 844));
+	assert.ok(place);
+	assert.equal(discGap(place.box, rings) >= LABEL.star, true);
+	assert.equal(discGap(place.box, neighbour) >= LABEL.star, true);
+	assert.ok(place.box.x0 >= 8);
+	// It is under its star still, slid to the left off the rings.
+	assert.deepEqual([place.side, place.slide], ['under', -24]);
+});
+
+test('4 px of air round a disc to take a place', () => {
+	const box = labelAt(STAR, 'under', 1440).box;
+	// A disc of radius 6 whose edge is 3 px under the box, then 4.5 px.
+	const near = { x: 700, y: box.y1 + 3 + 6, r: 6 };
+	const clear = { x: 700, y: box.y1 + 4.5 + 6, r: 6 };
+	assert.equal(placeLabel(STAR, scene([], [STAR, near]))?.side, 'right');
+	assert.equal(placeLabel(STAR, scene([], [STAR, clear]))?.side, 'under');
+	assert.equal(LABEL.star, 4);
+});
+
+test("Cellestial's star is never crossed, to the full reach of its rings", () => {
+	// Virgo at 1440x900: the rings reach 100 px from 720,450. A star just outside them, above.
+	const rings = { x: 720, y: 450, r: 100, rings: true };
+	const star = { x: 720, y: 330, r: 12 };
+	assert.ok(
+		touches(labelAt(star, 'under', 1440), rings),
+		'the fault: under the star is in the rings',
+	);
+	const place = placeLabel(star, scene([], [star, rings]));
+	assert.ok(place);
+	assert.ok(discGap(place.box, rings) >= LABEL.star, `${place.side}`);
+	// A far star BEHIND Cellestial's star (Virgo complete, slot-25): every place is in the
+	// rings' reach: no words, so the star is not offered.
+	const behind = { x: 783, y: 415, r: 4 };
+	assert.equal(placeLabel(behind, scene([], [behind, rings])), null);
+	// Not where the words are already, either.
+	assert.equal(placeLabel(behind, scene([], [behind, rings]), 'under'), null);
+	// Where no place is free of every star, the least cover is never a place in the rings:
+	// a crowd on every side but under, where only the rings are.
+	const edge = { x: 720, y: 338, r: 4 };
+	const crowd: Disc[] = [edge, rings];
+	for (const spot of LABEL_SPOTS) {
+		const { box, x, y } = labelAt(edge, spot.side, 1440, spot.slide);
+		if (discGap(box, rings) >= 0) crowd.push({ x, y: y + 12, r: 5 });
+	}
+	const least = placeLabel(edge, scene([], crowd));
+	assert.ok(least);
+	assert.ok(discGap(least.box, rings) >= 0);
+	// The rings shown far off (Taurus: 8 px in the middle of the screen) are kept off the same way.
+	const far = { x: 720, y: 449, r: 7.8, rings: true };
+	const by = { x: 722, y: 420, r: 20 };
+	const p = placeLabel(by, scene([], [by, far]));
+	assert.ok(p && discGap(p.box, far) >= LABEL.star);
+	assert.notEqual(p.side, 'under');
+});
+
+test('the letters 16 px inside the screen, on every side', () => {
+	// 390x844. The letters are 8 px inside the box (the stylesheet's padding).
+	for (const x of [4, 20, 60, 100, 195, 290, 330, 370, 386]) {
+		for (const now of [null, ...LABEL_SPOTS]) {
+			const star = { x, y: 400, r: 13 };
+			const place = placeLabel(star, scene([], [star], 390, 844), now);
+			assert.ok(place, `${x}`);
+			assert.ok(place.box.x0 + 8 >= 16 && place.box.x1 - 8 <= 390 - 16, `${x} ${place.side}`);
+		}
+	}
+	// A star at the left edge with a neighbour under it: not to its left.
+	const star = { x: 30, y: 400, r: 13 };
+	const place = placeLabel(star, scene([], [star, { x: 40, y: 440, r: 13 }], 390, 844));
+	assert.equal(place?.side, 'right');
+});
+
+test('never off the screen, on the logo, the menu or the exit button: under the star too', () => {
+	// Under this star the words would lie on the logo (16..118 by 12..90).
+	const byLogo = { x: 150, y: 60, r: 10 };
+	assert.ok(
+		labelAt(byLogo, 'under', 1440).box.x0 < 118 && labelAt(byLogo, 'under', 1440).box.y0 < 90,
+	);
+	const p = placeLabel(byLogo, scene([]));
+	assert.ok(p && (p.box.x0 >= 126 || p.box.y0 >= 98), `${p?.side}`);
+	// And on the exit button (1440x900: x 584..856, y 816..868).
+	const byExit = { x: 720, y: 790, r: 10 };
+	const q = placeLabel(byExit, scene([]));
+	assert.ok(q && (q.box.y1 <= 900 - 84 - 4 || q.box.x1 <= 576 || q.box.x0 >= 864), `${q?.side}`);
+	// At the foot of the screen: not below it.
+	const low = { x: 300, y: 880, r: 10 };
+	const r = placeLabel(low, scene([]));
+	assert.ok(r && r.box.y1 <= 900 - 4, `${r?.side}`);
+});
+
+test('no place free of every star: the place that covers least', () => {
+	// discCover: nothing when clear, the whole disc when inside, half when the edge runs through its centre.
+	const box: Box = { x0: 0, y0: 0, x1: 96, y1: 24 };
+	assert.equal(discCover(box, { x: 48, y: 40, r: 10 }), 0);
+	assert.ok(Math.abs(discCover(box, { x: 48, y: 12, r: 3 }) - Math.PI * 9) < 1e-9);
+	assert.ok(Math.abs(discCover(box, { x: 48, y: 24, r: 10 }) - Math.PI * 50) < 1e-9);
+	// A star in a knot of its figure: its neighbours stand all round it and no place is free.
+	// What is chosen is what an independent count of the cover gives.
+	const knot: Disc[] = [STAR, ...KNOT];
+	const covers = LABEL_SPOTS.map((spot) => {
+		const { box } = labelAt(STAR, spot.side, 1440, spot.slide);
+		assert.ok(
+			KNOT.some((s) => discGap(box, s) < LABEL.star),
+			'the knot leaves no place free',
+		);
+		return KNOT.reduce((sum, s) => sum + discCover(box, s), 0);
+	});
+	const least = LABEL_SPOTS[covers.indexOf(Math.min(...covers))];
+	const place = placeLabel(STAR, scene([], knot));
+	assert.deepEqual([place?.side, place?.slide], [least?.side, least?.slide]);
+	// Under the star is a near star's disc there (the old rule's place): the words are not under it.
+	assert.ok((covers[0] as number) > 100 && place?.side !== 'under');
+	// One far point, 3 px across, under the star, and a larger star in every other place:
+	// the words stay under their star.
+	const round = (r: number, left = r): Disc[] => [
+		{ x: 760, y: 430, r },
+		{ x: 640, y: 430, r },
+		{ x: 776, y: 400, r },
+		{ x: 624, y: 400, r: left },
+		{ x: 760, y: 370, r },
+		{ x: 640, y: 370, r },
+		{ x: 700, y: 370, r },
+	];
+	const point = { x: 700, y: 430, r: 1.5 };
+	const stays = (crowd: Disc[]) => {
+		for (const spot of LABEL_SPOTS) {
+			const { box } = labelAt(STAR, spot.side, 1440, spot.slide);
+			assert.ok(
+				crowd.some((s) => s !== STAR && discGap(box, s) < 0),
+				`${spot.side} ${spot.slide}`,
+			);
+		}
+		const at = placeLabel(STAR, scene([], crowd));
+		return at ? `${at.side} ${at.slide}` : null;
+	};
+	assert.equal(stays([STAR, point, ...round(3)]), 'under 0');
+	// And one far point does not by itself drive them from under it when a point lies in
+	// every other place too, though one of those is a hair smaller.
+	assert.equal(stays([STAR, point, ...round(1.5, 1.25)]), 'under 0');
+	// A near star's disc under it does.
+	assert.notEqual(stays([STAR, { x: 700, y: 436, r: 12 }, ...round(3)]), 'under 0');
+	assert.ok(Math.PI * 1.5 * 1.5 <= LABEL.point, 'a point 3 px across is within what is forgiven');
+});
+
+test('steady: a place is taken with 4 px of air and left only when a star is covered', () => {
+	const box = labelAt(STAR, 'right', 1440).box;
+	// The words stand to the right. A disc comes to 2 px from them, touches them, then
+	// reaches 1 px into them: they stay (a place is not left for a nick).
+	for (const gap of [2, 0, -1]) {
+		const s = { x: box.x1 + gap + 8, y: 400, r: 8 };
+		assert.equal(placeLabel(STAR, scene([], [STAR, s]), 'right')?.side, 'right', `${gap}`);
+		// Words with no place yet would not take that one.
+		assert.notEqual(placeLabel(STAR, scene([], [STAR, s]))?.side, gap < LABEL.star ? 'right' : '');
+	}
+	// The disc well into them: they leave, for the first free place.
+	const deep = { x: box.x1 - 6, y: 400, r: 8 };
+	assert.equal(placeLabel(STAR, scene([], [STAR, deep]), 'right')?.side, 'under');
+	// A far point 2.5 px across drifting through the words never moves them.
+	for (let x = box.x0 - 6; x <= box.x1 + 6; x += 3) {
+		assert.equal(
+			placeLabel(STAR, scene([], [STAR, { x, y: 400, r: 1.25 }]), 'right')?.side,
+			'right',
+		);
+	}
+	// Where no place is free (the knot): the words keep the place they have unless another
+	// covers less than half as much; they never go there and back.
+	const knot: Disc[] = [STAR, ...KNOT];
+	const cover = (spot: { side: LabelSide; slide: number }) =>
+		KNOT.reduce((sum, s) => sum + discCover(labelAt(STAR, spot.side, 1440, spot.slide).box, s), 0);
+	const first = placeLabel(STAR, scene([], knot));
+	assert.ok(first);
+	const best = cover(first);
+	let kept = 0;
+	let left = 0;
+	for (const spot of LABEL_SPOTS) {
+		const after = placeLabel(STAR, scene([], knot), spot);
+		assert.ok(after);
+		if (cover(spot) / 2 <= best) {
+			// Not twice as bad as the best: they stay.
+			assert.deepEqual([after.side, after.slide], [spot.side, spot.slide]);
+			if (spot.side !== first.side || spot.slide !== first.slide) kept++;
+		} else {
+			assert.deepEqual([after.side, after.slide], [first.side, first.slide]);
+			left++;
+		}
+		// And wherever they went, they stay there at the next frame.
+		const again = placeLabel(STAR, scene([], knot), after);
+		assert.deepEqual([again?.side, again?.slide], [after.side, after.slide]);
+	}
+	assert.ok(kept > 0 && left > 0, `${kept} places kept beside the best, ${left} left`);
 });

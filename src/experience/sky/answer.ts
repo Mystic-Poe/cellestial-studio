@@ -4,9 +4,11 @@
 // shows the visitor a star that can be theirs.
 //
 // The beads themselves are beads.ts. This file chooses the star, plans the
-// route, runs the pulse and keeps the words with the star: exactly under it,
-// or on another side of it where under it would bring them within 40 px of a
-// meaning's words (claim-label.ts).
+// route, runs the pulse and keeps the words with the star: exactly under it
+// where that place is free, and beside it where under it they would be
+// written across another star, into Cellestial's rings, within 40 px of a
+// meaning's words or to the screen's edge (claim-label.ts has the rule; this
+// file measures the page for it).
 //
 // With an ask waiting for a star (a request was sent with none chosen), the
 // beads also go by themselves, from the middle of the screen, on entering
@@ -14,7 +16,7 @@
 
 import type { ClaimsStore, SlotId } from '../contracts.ts';
 import { type BeadRun, type Beads, createBeads, planRoute, type Route } from './beads.ts';
-import { type Box, type Disc, type LabelScene, type LabelSide, placeLabel } from './claim-label.ts';
+import { type Box, type Disc, type LabelScene, type LabelSpot, placeLabel } from './claim-label.ts';
 import { B3, FIGURES, SPACING } from './config.ts';
 import type { SkyHooks } from './hooks.ts';
 import { mod, type PlanStar } from './layout.ts';
@@ -27,7 +29,7 @@ const WORDS = { half: 44, height: 26, gap: 7 } as const;
 const CHROME = { w: 110, h: 80 } as const;
 /** A plane nearer the lens than this is being flown through: the touch is answered in the next. */
 const TOO_NEAR = 0.6;
-/** The stars of this many layers from the nearest are drawn: the words stand on none of them. */
+/** The stars of this many layers from the nearest are drawn: the words keep off them. */
 const LAYERS_SEEN = 5;
 /** How long after the sky is entered, or the flight rests, the beads go by themselves. Milliseconds. */
 const AUTO_MS = { enter: 900, rest: 350 } as const;
@@ -63,8 +65,10 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		t0: number;
 		steady: boolean;
 		release: (() => void) | null;
-		/** The side of the star the words stand on, once they have a place. */
-		side: LabelSide | null;
+		/** The place by the star the words stand in, once they have one. */
+		spot: LabelSpot | null;
+		/** True once a press has begun while the words stand: only then is a click on them the visitor's. */
+		pressed: boolean;
 	} | null = null;
 	let wordsAt = { x: Number.NaN, y: Number.NaN };
 	let autoTimer = 0;
@@ -82,7 +86,11 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		return boxes;
 	};
 
-	/** Every star that is drawn on screen now, the far figures' points too. */
+	/**
+	 * Every star that is drawn on screen now, the far figures' points too. Cellestial's star
+	 * is the full reach of its turning rings (the outer band's long half-axis, which the
+	 * layout keeps every star of Virgo clear of): the words are never written across it.
+	 */
 	const drawn = (): Disc[] => {
 		const layout = hooks.layout();
 		const front = hooks.lattice.layer();
@@ -95,18 +103,18 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			for (const [i, star] of plan.stars.entries()) {
 				const p = hooks.project(star.x, star.y, -layer * SPACING);
 				if (p.scale <= 0 || p.depth < 0.25) continue;
-				const r =
-					i === plan.epicentre
-						? B3.ring * layout.b3 * p.scale
-						: Math.max(fit.starR * layout.sizeOf(star) * p.scale, 1.25);
+				const rings = i === plan.epicentre;
+				const r = rings
+					? B3.ring * layout.b3 * p.scale
+					: Math.max(fit.starR * layout.sizeOf(star) * p.scale, 1.25);
 				if (p.x < -r || p.x > layout.w + r || p.y < -r || p.y > layout.h + r) continue;
-				discs.push({ x: p.x, y: p.y, r });
+				discs.push(rings ? { x: p.x, y: p.y, r, rings } : { x: p.x, y: p.y, r });
 			}
 		}
 		return discs;
 	};
 
-	/** What the words are placed among, as the screen is now. The stars are counted only if asked for. */
+	/** What the words are placed among, as the screen is now. The stars are counted once, when first asked for. */
 	const scene = (): LabelScene => {
 		const layout = hooks.layout();
 		let stars: Disc[] | null = null;
@@ -139,7 +147,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (p.x < r || p.x > layout.w - r) continue;
 			if (p.y - r < 6 || p.y + r + WORDS.gap + WORDS.height > layout.h - 6) continue;
 			if (p.x - WORDS.half < CHROME.w && p.y - r < CHROME.h) continue;
-			// The words need a place by it that is clear of every meaning.
+			// The words need a place by it: clear of every meaning and of Cellestial's star.
 			view ??= scene();
 			if (!placeLabel({ x: p.x, y: p.y, r }, view)) continue;
 			const d = Math.hypot(p.x - x, p.y - y);
@@ -181,17 +189,20 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			words.style.visibility = 'hidden';
 			return;
 		}
-		// Under the star; on another side of it if a meaning's words are within 40 px of that
-		// place. Never by a meaning: if the flight has carried them to one and no side is clear, they wait.
-		const place = placeLabel(c, scene(), pulse.side);
+		// Under the star where that place is free; beside it where another star, Cellestial's
+		// rings, a meaning's words or the screen's edge is in the way; and they keep the place
+		// they have while it will do. Never by a meaning or across Cellestial's star: if the
+		// flight has carried them there and no place is clear, they wait.
+		const place = placeLabel(c, scene(), pulse.spot);
 		if (!place) {
 			words.style.visibility = 'hidden';
 			return;
 		}
 		const { x, y } = place;
-		if (place.side !== pulse.side) {
-			pulse.side = place.side;
+		if (place.side !== pulse.spot?.side || place.slide !== pulse.spot.slide) {
+			pulse.spot = { side: place.side, slide: place.slide };
 			words.dataset.side = place.side;
+			words.dataset.slide = String(place.slide);
 		}
 		// Written so that words with no place yet (NaN) are given one.
 		if (!(Math.abs(x - wordsAt.x) <= 0.05 && Math.abs(y - wordsAt.y) <= 0.05)) {
@@ -211,6 +222,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			words.hidden = true;
 			delete words.dataset.slot;
 			delete words.dataset.side;
+			delete words.dataset.slide;
 			words.style.removeProperty('--pulse');
 		}
 	};
@@ -223,7 +235,8 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			t0: hooks.time(),
 			steady,
 			release: steady ? null : hooks.keepAwake(),
-			side: null,
+			spot: null,
+			pressed: false,
 		};
 		hooks.setStarGlow(slot, steady ? PULSE.steady : PULSE.high);
 		if (words) {
@@ -276,11 +289,22 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		touch(x, y);
 	});
 
-	// The words belong to the star: a click on them is a click on it.
+	// The words belong to the star: a click on them is a click on it. Only a press that began
+	// after they were written counts. In a still sky the words are written the moment the sky
+	// is touched, and beside a star they often stand under that very finger: the browser then
+	// sends that touch's own click to them, and the tap that asked "which star?" would pick
+	// the star as well.
+	document.addEventListener(
+		'pointerdown',
+		() => {
+			if (pulse) pulse.pressed = true;
+		},
+		true,
+	);
 	words?.addEventListener('click', (e) => {
 		e.preventDefault();
-		const slot = pulse?.slot;
-		if (slot) hooks.pick(slot);
+		if (!pulse?.pressed) return;
+		hooks.pick(pulse.slot);
 	});
 
 	// ── what ends it ──

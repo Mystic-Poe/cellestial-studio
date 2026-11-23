@@ -2513,3 +2513,29 @@ PIECE 4 — THE CLOSE-OUT (round 3)
   BEFORE THE LAST COMMIT (23 Nov, 02:25): pnpm build (4 pages), pnpm test (174 of 174; 15, 16, 14),
   pnpm lint (108 files), pnpm typecheck: all pass. Both servers stopped (nothing listens on 4615 or
   4500); git status clean but for claude-vault/.
+
+ROUND 4 (after the fourth look)
+===============================
+One piece, one fixer: the fourth look's first minor, "claim yours" written across neighbouring stars
+(refs/verification/fourth-look.txt, item 1e and item 1 of its closing list). The second minor (two
+stars of Taurus on a phone held on its side) is the owner's and was not touched. Tools and runs:
+refs/verification/round-4/ (tools/ is the fourth look's own, copied; the scripts named r4-*.mjs are
+this round's). "Before" is the build at f7d5ea4, served beside the new one on port 4616.
+
+  (CHECKPOINT 1, 23 Nov: the rule, its tests and what the page hands it are in; the full runs,
+  the pictures, the flight and the suites are still to come and are added below as they are made.)
+
+  REPRODUCED on the build as it stood (before/b7/label-near.txt: the same file, byte for byte, as
+  the fourth look's b7/label-near.txt): 1440x900, 137 distinct labels, all under their star, 25
+  across another star of the figure (deepest 21.8 px), 2 on Cellestial's core far off (Taurus);
+  390x844, 113 distinct labels, all under, 38 across another star (deepest 13.9 px), 2 on the
+  core; four begin at x = 0.
+  THE CAUSE, confirmed in the code (src/experience/sky/claim-label.ts as it was): placeLabel()
+  asked ONE thing of the place under the star, that it be 40 px from every meaning; the stars, the
+  screen, the logo, the menu and the exit button were asked about only in fits(), which was run
+  only for the places the words went to when they LEFT that place. And labelAt() held the middle
+  of the box 48 px from a side of the screen: the box is 96 px wide, so that is the box AT the edge.
+  Cellestial's star was in the list of discs answer.ts made (drawn(): its radius there is already
+  the full reach of the rings, B3.ring x layout.b3 x the scale: 100 px at Virgo on the desktop,
+  48.5 on the phone, the same radius the layout keeps every star of Virgo clear of), but nothing
+  marked it, and nothing under a star was ever compared with it.
