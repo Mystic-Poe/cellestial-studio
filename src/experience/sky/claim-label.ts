@@ -20,17 +20,23 @@
 // that is shown without the words, and is not offered by a tap.
 //
 // FREE is a place that keeps all of that and whose box stands 4 px clear of
-// the disc of every other star that is drawn. The words take the first free
-// place. Where no place is free of every star (a star in a knot of its
-// figure; a far figure, small in the middle of the screen, which is a crowd
-// of points) they take the place that covers least of the stars, by area: a
-// far point 2 or 3 px across counts for little and a near star's disc for
-// much, and one such point does not by itself drive the words from under
-// their star.
+// the disc of every other star that is drawn. The far figures' POINTS (a
+// disc 6 px across or less: the figures three and more stations on, and the
+// faintest stars of the two before them) are counted by what the words cover
+// of them, and a place may cover as much as ONE such point: a dim dot behind
+// a letter does not by itself drive the words from under their star, where a
+// visitor expects them; a star's disc does. The words take the first free
+// place. Where no place is free (a star in a knot of its figure; a far
+// figure, small in the middle of the screen, which is a crowd of points) they
+// take the place that takes least of the stars, by area: of each star, what
+// the words would cover of its disc and of the 4 px of air round it, so that
+// a far point counts for little and a near star's disc for much, and words
+// jammed against a star count for something; under the star is forgiven one
+// point there too.
 //
 // Once in a place the words stay there while it will still do, so that a
 // flight does not flick them from side to side: a place is TAKEN with 4 px of
-// air round every disc and LEFT only when the words there cover more of the
+// air round every star and LEFT only when the words there cover more of the
 // stars than one far point, or a rule above is broken; and where no place is
 // free, only for a place that covers less than half as much.
 //
@@ -101,10 +107,12 @@ export const LABEL_SPOTS: readonly LabelSpot[] = [
  * how far the box stays from a meaning's words; the air kept from the screen's top and
  * bottom; how far the box stays from the screen's left and right sides (its letters are
  * 8 px inside it: 16 px from the side); the air round another star's disc when a place is
- * taken; how much of the stars (px²) words that have a place may come to cover before
- * they leave it, which is also what the place under the star is forgiven when no place is
- * free (a far point 3 px across is 7 px²); and how far in the middle of the words is held
- * from a side of the screen when they stand under or above their star.
+ * taken; the radius of the largest disc that is a far figure's point and not a star; what
+ * a place may cover of such points and still be free, px² (one whole point: 28 px²), which
+ * is also how much of the stars words that have a place may come to cover before they
+ * leave it, and what the place under the star is forgiven when no place is free; and how
+ * far in the middle of the words is held from a side of the screen when they stand under
+ * or above their star.
  */
 export const LABEL = {
 	half: 48,
@@ -114,7 +122,8 @@ export const LABEL = {
 	edge: 4,
 	inset: 8,
 	star: 4,
-	point: 8,
+	dot: 3,
+	point: 30,
 	hold: 56,
 } as const;
 
@@ -230,12 +239,21 @@ function allowed(box: Box, star: Disc, scene: LabelScene): boolean {
 	return true;
 }
 
-/** True if the box stands `LABEL.star` clear of every other star's disc. */
-function free(box: Box, star: Disc, scene: LabelScene): boolean {
+/**
+ * What the words in a place take of the other stars, px²: of a star, what the box covers of
+ * its disc and of the 4 px of air round it; of a far figure's point, what it covers of the
+ * point. A place that takes nothing of the stars and no more than one point is free.
+ */
+function taken(box: Box, star: Disc, scene: LabelScene): { stars: number; points: number } {
+	let stars = 0;
+	let points = 0;
 	for (const s of scene.stars()) {
-		if (!own(s, star) && discGap(box, s) < LABEL.star) return false;
+		if (own(s, star)) continue;
+		if (s.rings || s.r > LABEL.dot) {
+			stars += discCover(box, { x: s.x, y: s.y, r: s.r + LABEL.star });
+		} else points += discCover(box, s);
 	}
-	return true;
+	return { stars, points };
 }
 
 /** How much of the other stars the box covers, px². */
@@ -266,20 +284,21 @@ export function placeLabel(
 		}
 	}
 	// The first place that is free.
-	const open: LabelPlace[] = [];
+	const open: { place: LabelPlace; cost: number }[] = [];
 	for (const spot of LABEL_SPOTS) {
 		const place = labelAt(star, spot.side, scene.w, spot.slide);
 		if (!allowed(place.box, star, scene)) continue;
-		if (free(place.box, star, scene)) return place;
-		open.push(place);
+		const t = taken(place.box, star, scene);
+		if (t.stars === 0 && t.points <= LABEL.point) return place;
+		open.push({ place, cost: t.stars + t.points });
 	}
-	// None is: the one that covers least. Under the star is forgiven a far point; the place
-	// the words have is left only for one that covers less than half as much.
+	// None is: the one that takes least. Under the star is forgiven a far point; the place
+	// the words have is left only for one that takes less than half as much.
 	let best: LabelPlace | null = null;
 	let least = Number.POSITIVE_INFINITY;
-	for (const place of open) {
+	for (const { place, cost: full } of open) {
 		const stays = held !== null && place.side === held.side && place.slide === held.slide;
-		let cost = stays ? heldCover / 2 : covered(place.box, star, scene);
+		let cost = stays ? full / 2 : full;
 		if (place.side === 'under' && place.slide === 0) cost -= LABEL.point;
 		if (cost < least) {
 			least = cost;

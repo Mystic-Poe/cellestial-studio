@@ -249,6 +249,9 @@ const KNOT: Disc[] = [
 	})),
 ];
 const touches = (place: { box: Box }, s: Disc) => discGap(place.box, s) < 0;
+/** What a box takes of some stars, counted apart from the rule: each disc with 4 px of air round it. */
+const took = (box: Box, stars: Disc[]) =>
+	stars.reduce((sum, s) => sum + discCover(box, { ...s, r: s.r + LABEL.star }), 0);
 
 test("under its star is another star's disc: the words go to the first free place beside it", () => {
 	// A neighbour straight under the star, as in a real figure: the old rule wrote across it.
@@ -268,7 +271,7 @@ test("under its star is another star's disc: the words go to the first free plac
 		}
 		order.push(place.slide ? `${place.side} ${place.slide}` : place.side);
 		if (order.length === 7) break;
-		crowd.push({ x: place.x, y: place.y + 12, r: 3 });
+		crowd.push({ x: place.x, y: place.y + 12, r: 4 });
 	}
 	assert.deepEqual(order, [
 		'right',
@@ -388,51 +391,90 @@ test('no place free of every star: the place that covers least', () => {
 	assert.ok(Math.abs(discCover(box, { x: 48, y: 12, r: 3 }) - Math.PI * 9) < 1e-9);
 	assert.ok(Math.abs(discCover(box, { x: 48, y: 24, r: 10 }) - Math.PI * 50) < 1e-9);
 	// A star in a knot of its figure: its neighbours stand all round it and no place is free.
-	// What is chosen is what an independent count of the cover gives.
+	// What is chosen is what an independent count gives: the place that takes least of the
+	// stars, each star's disc counted with the 4 px of air round it.
 	const knot: Disc[] = [STAR, ...KNOT];
-	const covers = LABEL_SPOTS.map((spot) => {
+	const takes = LABEL_SPOTS.map((spot) => {
 		const { box } = labelAt(STAR, spot.side, 1440, spot.slide);
 		assert.ok(
 			KNOT.some((s) => discGap(box, s) < LABEL.star),
 			'the knot leaves no place free',
 		);
-		return KNOT.reduce((sum, s) => sum + discCover(box, s), 0);
+		return took(box, KNOT);
 	});
-	const least = LABEL_SPOTS[covers.indexOf(Math.min(...covers))];
+	// (Under the star is forgiven one point's worth; it takes far more than that here.)
+	const costs = takes.map((c, i) => (i === 0 ? c - LABEL.point : c));
+	const least = LABEL_SPOTS[costs.indexOf(Math.min(...costs))];
 	const place = placeLabel(STAR, scene([], knot));
 	assert.deepEqual([place?.side, place?.slide], [least?.side, least?.slide]);
 	// Under the star is a near star's disc there (the old rule's place): the words are not under it.
-	assert.ok((covers[0] as number) > 100 && place?.side !== 'under');
-	// One far point, 3 px across, under the star, and a larger star in every other place:
-	// the words stay under their star.
-	const round = (r: number, left = r): Disc[] => [
+	assert.ok((takes[0] as number) > 100 && place?.side !== 'under');
+	// Of two places that touch nothing, the one with more room, whatever their order: to the
+	// right the words would be jammed against a star (1 px from it); to the left they are 3 px
+	// from one.
+	const jam = [
+		STAR,
+		{ x: 776, y: 412 + 1 + 9, r: 9 },
+		{ x: 624, y: 412 + 3 + 9, r: 9 },
+		...[
+			[700, 430],
+			[700, 370],
+			[650, 436],
+			[750, 436],
+			[650, 364],
+			[750, 364],
+		].map(([x, y]) => ({ x: x as number, y: y as number, r: 9 })),
+	];
+	const right = labelAt(STAR, 'right', 1440).box;
+	const left = labelAt(STAR, 'left', 1440).box;
+	assert.ok(jam.every((q) => q === STAR || (discGap(right, q) >= 0 && discGap(left, q) >= 0)));
+	assert.equal(placeLabel(STAR, scene([], jam))?.side, 'left');
+});
+
+test("the far figures' points: one does not drive the words from under their star", () => {
+	// Cancer at 1440x900, slot-91: a point 5.6 px across of a figure three stations on lies
+	// under the star, where the words go. It is behind a letter; the words stay.
+	const dot = { x: 690, y: 430, r: 2.8 };
+	assert.ok(discCover(labelAt(STAR, 'under', 1440).box, dot) > 24);
+	assert.equal(placeLabel(STAR, scene([], [STAR, dot]))?.side, 'under');
+	// A point is counted by what is covered of it: one beside the words is nothing.
+	assert.equal(placeLabel(STAR, scene([], [STAR, { x: 700, y: 444, r: 1.5 }]))?.side, 'under');
+	// Two such points under the star are more than one point's worth: the words go beside it.
+	const two = [dot, { x: 720, y: 430, r: 2.8 }];
+	assert.equal(placeLabel(STAR, scene([], [STAR, ...two]))?.side, 'right');
+	// A disc 7 px across is a star, not a point: 4 px of air.
+	assert.equal(placeLabel(STAR, scene([], [STAR, { x: 690, y: 430, r: 3.5 }]))?.side, 'right');
+	assert.ok(Math.PI * LABEL.dot * LABEL.dot <= LABEL.point, 'one whole point is forgiven');
+	// Where no place is free: a larger star in every place but under the star, where two
+	// points lie. The words stay under it: it covers least. A star's disc there, and they do not.
+	const round = (r: number): Disc[] => [
 		{ x: 760, y: 430, r },
 		{ x: 640, y: 430, r },
 		{ x: 776, y: 400, r },
-		{ x: 624, y: 400, r: left },
+		{ x: 624, y: 400, r },
 		{ x: 760, y: 370, r },
 		{ x: 640, y: 370, r },
 		{ x: 700, y: 370, r },
 	];
-	const point = { x: 700, y: 430, r: 1.5 };
-	const stays = (crowd: Disc[]) => {
+	const at = (crowd: Disc[]) => {
 		for (const spot of LABEL_SPOTS) {
 			const { box } = labelAt(STAR, spot.side, 1440, spot.slide);
+			const points = crowd.filter((q) => q.r <= LABEL.dot);
 			assert.ok(
-				crowd.some((s) => s !== STAR && discGap(box, s) < 0),
-				`${spot.side} ${spot.slide}`,
+				crowd.some((q) => q.r > LABEL.dot && discGap(box, q) < LABEL.star) ||
+					points.reduce((sum, q) => sum + discCover(box, q), 0) > LABEL.point,
+				`${spot.side} ${spot.slide} is not free`,
 			);
 		}
-		const at = placeLabel(STAR, scene([], crowd));
-		return at ? `${at.side} ${at.slide}` : null;
+		const place = placeLabel(STAR, scene([], [STAR, ...crowd]));
+		return place ? `${place.side} ${place.slide}` : null;
 	};
-	assert.equal(stays([STAR, point, ...round(3)]), 'under 0');
-	// And one far point does not by itself drive them from under it when a point lies in
-	// every other place too, though one of those is a hair smaller.
-	assert.equal(stays([STAR, point, ...round(1.5, 1.25)]), 'under 0');
-	// A near star's disc under it does.
-	assert.notEqual(stays([STAR, { x: 700, y: 436, r: 12 }, ...round(3)]), 'under 0');
-	assert.ok(Math.PI * 1.5 * 1.5 <= LABEL.point, 'a point 3 px across is within what is forgiven');
+	const under = [
+		{ x: 690, y: 430, r: 2.8 },
+		{ x: 710, y: 430, r: 2.8 },
+	];
+	assert.equal(at([...under, ...round(5)]), 'under 0');
+	assert.notEqual(at([{ x: 700, y: 436, r: 12 }, ...round(5)]), 'under 0');
 });
 
 test('steady: a place is taken with 4 px of air and left only when a star is covered', () => {
@@ -456,29 +498,34 @@ test('steady: a place is taken with 4 px of air and left only when a star is cov
 		);
 	}
 	// Where no place is free (the knot): the words keep the place they have unless another
-	// covers less than half as much; they never go there and back.
+	// takes less than half as much; they never go there and back.
 	const knot: Disc[] = [STAR, ...KNOT];
-	const cover = (spot: { side: LabelSide; slide: number }) =>
-		KNOT.reduce((sum, s) => sum + discCover(labelAt(STAR, spot.side, 1440, spot.slide).box, s), 0);
+	const boxOf = (spot: { side: LabelSide; slide: number }) =>
+		labelAt(STAR, spot.side, 1440, spot.slide).box;
+	const same = (a: { side: LabelSide; slide: number }, b: { side: LabelSide; slide: number }) =>
+		a.side === b.side && a.slide === b.slide;
 	const first = placeLabel(STAR, scene([], knot));
 	assert.ok(first);
-	const best = cover(first);
+	const best = took(boxOf(first), KNOT);
 	let kept = 0;
 	let left = 0;
 	for (const spot of LABEL_SPOTS) {
 		const after = placeLabel(STAR, scene([], knot), spot);
 		assert.ok(after);
-		if (cover(spot) / 2 <= best) {
-			// Not twice as bad as the best: they stay.
-			assert.deepEqual([after.side, after.slide], [spot.side, spot.slide]);
-			if (spot.side !== first.side || spot.slide !== first.slide) kept++;
-		} else {
-			assert.deepEqual([after.side, after.slide], [first.side, first.slide]);
+		const covers = KNOT.reduce((sum, s) => sum + discCover(boxOf(spot), s), 0);
+		const half =
+			took(boxOf(spot), KNOT) / 2 - (spot.side === 'under' && !spot.slide ? LABEL.point : 0);
+		if (same(spot, first) || covers <= LABEL.point || half < best) {
+			// It covers no more than a point, or the best place does not take half as little: they stay.
+			assert.ok(same(after, spot), `${spot.side} ${spot.slide}: stays`);
+			if (!same(spot, first)) kept++;
+		} else if (half > best) {
+			assert.ok(same(after, first), `${spot.side} ${spot.slide}: leaves for the best`);
 			left++;
 		}
 		// And wherever they went, they stay there at the next frame.
 		const again = placeLabel(STAR, scene([], knot), after);
-		assert.deepEqual([again?.side, again?.slide], [after.side, after.slide]);
+		assert.ok(again && same(again, after));
 	}
 	assert.ok(kept > 0 && left > 0, `${kept} places kept beside the best, ${left} left`);
 });
