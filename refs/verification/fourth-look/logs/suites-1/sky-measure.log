@@ -1,0 +1,26 @@
+INPUT, 1440x900 (wheel and keys)
+  wheel turned for 7.3 s: speed (world units a second) 0.3s 1.46, 1s 3.50, 2s 6.48, 3s 7.92, 4s 8.00, 5s 8.00, 6s 8.00, 7s 8.00
+  ok    the first turn of the wheel starts a medium cruise: 1.46
+  ok    speed builds with continued scrolling
+  ok    and has a ceiling: 8.00 to 8.00 over the last three seconds
+  ok    input stops: it glides and comes to rest on a station: layer 10.00 after 2.50 s
+  ok    wheel up flies backward: speed -5.09
+  ok    and rests on a station behind: layer 8.00
+  ok    a click on empty sky stops it dead: speed 4.07 before, 0 on the press; 0.07 units travelled between the two readings; still at layer 8.506 1.2 s later
+  ok    where it was, not on a station
+  ok    ArrowDown flies forward and rests on a station: layer 8.51 to 10.00
+  ok    ArrowUp flies backward and rests on a station: layer 10.00 to 9.00
+  ok    PageDown flies forward and rests on a station: layer 9.00 to 10.00
+  ok    PageUp flies backward and rests on a station: layer 10.00 to 9.00
+  ok    Space flies forward and rests on a station: layer 9.00 to 10.00
+  ok    Home returns to the opening pose (the nearest Virgo, its star in the middle of the screen): from layer 14.00 to layer 12.00 in 1.71 s
+INPUT, 390x844 (touch)
+  ok    a swipe up flies forward: speed 2.43
+  ok    swipe after swipe builds speed, up to the ceiling: 2.43 after one, then 4.73, 7.10, 7.94, 8.00, 8.00, 8.00, 8.00
+  ok    and it rests on a station: layer 9.00 after 2.33 s
+  ok    a swipe down flies backward: speed -2.43
+  ok    and rests on a station behind: layer 8.00
+  ok    a tap on empty sky stops it dead: speed 4.42 before, 0 after; still at layer 8.595
+  ok    the document did not scroll
+
+ENDLESS, 1440x900

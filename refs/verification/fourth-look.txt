@@ -39,4 +39,24 @@ built; node_modules is a link to the checkout's). If that folder is still there,
 port 4616 with tools/static.mjs and do not build it again; if it is gone, make it again as the brief
 says. No server was left running: start the production build on 4615 again.
 
+ORCHESTRATOR'S NOTE, CONTINUED (23 Nov, 03:45). THE SECOND RUN WAS CUT OFF TOO, by the usage limit,
+before it had written anything here. What it did, from its own record:
+  - It read the first run's captures listed above and opened side/fall-side.jpg,
+    side/reduced-motion-side667.jpg, b7/write-leo-side.jpg, b7/all-short.jpg and b7/all-short568.jpg.
+    It wrote down no ruling on any of them: item 1a and item 1b are still to be ruled on, from those
+    captures and whatever more you need.
+  - THE GATES, run once: logs/gate-build.log, gate-test.log, gate-lint.log, gate-typecheck.log, each
+    ending "exit 0" (the test log: the node tests, then the Workers' 15, 16 and 14). They are part
+    3's and may be cited; run them again at the end if anything about the checkout has changed.
+  - THE SUITES (tools/run-all.sh, logs/suites-1/) were cut off in the third tool: loader-measure and
+    loader-measure-phone-4x had ended "exit 0"; sky-measure was interrupted. Run the whole of it
+    again into a new folder (logs/suites-2/); nothing in refs/<scene>/compare/ was left rewritten.
+  - It wrote tools/mine-loader.mjs (its own measure of the loader's first seconds and its clock from
+    the recorded frames alone) and had not yet run it.
+  - The servers it left (4500, 4615, 4617) are stopped.
+ABOUT THE OLD BUILD: do not run pnpm inside the folder scratchpad/old. Its node_modules is a link to
+the checkout's, and pnpm, run there, re-checks and rewrites the shared install's state (the first
+run's build did; the checkout's own install was unharmed, and its gates passed afterwards). Its
+dist/ is already built: serve it with tools/static.mjs and leave it at that.
+
 (The inspector's report begins here.)

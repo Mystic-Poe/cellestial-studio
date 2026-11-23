@@ -1,0 +1,5 @@
+=== loader-measure: node tools/loader/measure.mjs --gpu
+exit 0 (loader-measure)
+=== loader-measure-phone-4x: node tools/loader/measure.mjs --gpu --throttle 4 --size phone
+exit 0 (loader-measure-phone-4x)
+=== sky-measure: node tools/sky/measure.mjs
