@@ -1,0 +1,10 @@
+desk run 1: the press at 1163 ms, the loader live at 1604 ms (BEFORE the loader is live), the sky at 6154 ms; skipped loader: no dip; short loader (reload): no dip
+desk run 2: the press at 1162 ms, the loader live at 1605 ms (BEFORE the loader is live), the sky at 6042 ms; skipped loader: no dip; short loader (reload): no dip
+desk run 3: the press at 1163 ms, the loader live at 1612 ms (BEFORE the loader is live), the sky at 6050 ms; skipped loader: no dip; short loader (reload): no dip
+desk run 4: the press at 1163 ms, the loader live at 1604 ms (BEFORE the loader is live), the sky at 6042 ms; skipped loader: no dip; short loader (reload): no dip
+desk: a frame without the star at the scene change in 0 of 4 skipped loaders and 0 of 4 short loaders
+phone run 1: the press at 1162 ms, the loader live at 1612 ms (BEFORE the loader is live), the sky at 5949 ms; skipped loader: no dip; short loader (reload): no dip
+phone run 2: the press at 1162 ms, the loader live at 1613 ms (BEFORE the loader is live), the sky at 5945 ms; skipped loader: no dip; short loader (reload): no dip
+phone run 3: the press at 1162 ms, the loader live at 1583 ms (BEFORE the loader is live), the sky at 5941 ms; skipped loader: no dip; short loader (reload): no dip
+phone run 4: the press at 1162 ms, the loader live at 1612 ms (BEFORE the loader is live), the sky at 5946 ms; skipped loader: no dip; short loader (reload): no dip
+phone: a frame without the star at the scene change in 0 of 4 skipped loaders and 0 of 4 short loaders

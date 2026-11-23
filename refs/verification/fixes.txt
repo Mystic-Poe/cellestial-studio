@@ -2413,4 +2413,43 @@ PIECE 4 — THE CLOSE-OUT (round 3)
      desktop). Aries on the desktop 59, 130 and 59 px, Taurus 69, 136 and 60 px: the third look's
      same taps gave 11 px, 130 and "OVER THE MEANING" (the boxes; the letters stood 5 px apart)
      at Aries and 10 px, 136 and "OVER THE MEANING" (6 px) at Taurus.
-     (Parts 3 (the loader's runs), 6 and 7 are written below as they are done.)
+     THE LOADER'S CLOCK (clock-all.mjs; loader/clock-all.txt), five first visits in each of four
+     conditions at each size, the loader's picture on screen from the first sight of the C to the sky:
+                              390x844                          1440x900
+       a fast line            7.34 7.13 7.09 7.09 7.10         7.16 7.17 7.11 7.11 7.11
+       CPU slowed 4x          7.41 7.39 7.39 7.38 7.41         7.40 7.41 7.41 7.43 7.41
+       slow 4G                7.34 7.36 7.36 7.36 7.36         7.36 7.34 7.36 7.31 7.36
+       CPU 4x and slow 4G     7.36 7.36 7.36 7.35 7.36         7.30 7.27 7.33 7.32 7.29
+     40 of 40 between 6 and 8 s, the least 7.09, the most 7.43 (piece 3: 7.09 to 7.43; the third
+     look, from the browser's first paint: 7.1 to 7.6). On slow 4G the C is first seen at 1.78 to
+     1.84 s after navigation, the loader's script live at 1.58 to 1.64 s, the sky at 9.11 to 9.16 s
+     (piece 3's "to be told": it was 8.3 s). A same-session return: 3.37 to 3.52 s on screen, the
+     server's unlit C shown never (8 of 8). A skip one second after the first sight: the sky 1.69 to
+     1.73 s after it on a fast line with or without the CPU slowed, 3.12 to 3.31 s after it on slow
+     4G (the sky's own script is still on the line).
+     WHEN THE C IS REALLY SEEN ON SLOW 4G (loader-seen.mjs, recorded frame by frame;
+     loader/loader-seen.txt): anything of the C first seen and the unlit C whole in THE SAME
+     recorded frame in 6 of 6 first visits (1786 to 1799 ms on the desktop, 1780 to 1797 on the
+     phone), half-drawn for 0 ms (the third look: something of it at 1.8 s, whole at 2.3 s). First
+     seen to the sky 7.31 to 7.36 s. Its two fast-line runs for comparison read as they did before
+     the round (the tool's "whole" is a level of light the canvas only reaches a second in on a
+     fast line: 1012 ms now, 997 to 1036 in the third look's own run).
+     WHAT THE VISITOR SEES, AND A SKIP, ON SLOW 4G (loader-slow.mjs; loader/loader-slow.txt, the
+     strips slow-desk.jpg, slow-phone.jpg, fast-desk.jpg, fast-phone.jpg): a key or a tap 300 ms
+     after the first paint brings the sky at 5.92 to 6.05 s after navigation in 4 of 4, and one
+     300 ms after the loader goes live at 5.92 to 6.06 s in 4 of 4; no press lost (the third look:
+     lost in 4 of 4 before the script). As piece 3 says, this script's label "the script not yet
+     there" is no longer true of its first case on this build (the C is now first painted after the
+     script is live); the press BEFORE the script is the next run but one, and early-skip.mjs.
+     A5, THE HAND-OFF (a5-probe.mjs --runs 20; a5/blink-probe-summary.txt): a frame without
+     Cellestial's star in 0 of 20 first visits on the desktop and 0 of 20 on the phone; the lowest
+     frame round the change 100% of the usual light in every run.
+     The same with the CPU slowed 4x (--runs 12 --throttle 4; blink-probe-cpu4x-summary.txt): 0 of
+     12 and 0 of 12, the lowest frame 99% of the usual. A return and a skip (a5-probe-return.mjs;
+     blink-probe-return.txt): 0 of 12 skipped loaders and 0 of 12 short loaders at each size.
+     AN EARLY SKIP ON SLOW 4G (a5-probe-return.mjs 4 slow4g; blink-probe-return-slow4g.txt): the
+     press 1.16 s after navigation, BEFORE the loader is live (1.58 to 1.61 s), in 8 of 8; the sky
+     at 6.04 to 6.15 s on the desktop and 5.94 to 5.95 s on the phone; no frame without the star in
+     8 of 8, nor in the 8 short loaders after them. (The third look: such a press was lost, 4 of 4,
+     and the loader played through to 8.3 s.)
+     (The rest of part 3, and parts 6 and 7, are written below as they are done.)

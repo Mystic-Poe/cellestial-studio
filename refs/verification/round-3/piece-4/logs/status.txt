@@ -21,3 +21,17 @@ exit 0 (b7-small-short-side)
 === f8: node refs/verification/round-3/tools/f8.mjs
 exit 0 (f8)
 === clock-all: node refs/verification/round-3/tools/clock-all.mjs
+exit 0 (clock-all)
+=== loader-seen: node refs/verification/round-3/tools/loader-seen.mjs
+exit 0 (loader-seen)
+=== loader-slow: node refs/verification/round-3/tools/loader-slow.mjs
+exit 0 (loader-slow)
+=== a5-probe: node refs/verification/round-3/tools/a5-probe.mjs --runs 20
+exit 0 (a5-probe)
+=== a5-probe-cpu4x: node refs/verification/round-3/tools/a5-probe.mjs --runs 12 --throttle 4
+exit 0 (a5-probe-cpu4x)
+=== a5-probe-return: node refs/verification/round-3/tools/a5-probe-return.mjs
+exit 0 (a5-probe-return)
+=== a5-probe-return-slow4g: node refs/verification/round-3/tools/a5-probe-return.mjs 4 slow4g
+exit 0 (a5-probe-return-slow4g)
+=== preload-console: node refs/verification/round-3/tools/preload-console.mjs

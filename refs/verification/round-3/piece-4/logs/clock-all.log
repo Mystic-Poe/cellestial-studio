@@ -2,3 +2,32 @@ phone, a fast line: FIRST VISITS: first paint at 204, 76, 88, 88, 76 ms; the C f
    FIRST SEEN TO THE SKY: 7.34, 7.13, 7.09, 7.09, 7.10 s   (from the browser's first paint: 7.34, 7.13, 7.09, 7.09, 7.10 s; from the loader going live: 7.50, 7.14, 7.14, 7.14, 7.14 s; from navigation: 7.54, 7.20, 7.18, 7.17, 7.17 s)
    same-session reload (the short version): first paint at 92 ms, the sky at 3483 ms: 3.39 s on screen; the server's unlit C shown: never
    a skip (tap) at 1153 ms (first paint 72, loader live 38): the sky at 2861 ms, 1.71 s after the tap
+phone, CPU 4x: FIRST VISITS: first paint at 192, 188, 188, 200, 188 ms; the C first seen at 192, 188, 188, 200, 188 ms; loader live at 202, 198, 204, 197, 199 ms; the sky at 7603, 7581, 7581, 7577, 7597 ms after navigation
+   FIRST SEEN TO THE SKY: 7.41, 7.39, 7.39, 7.38, 7.41 s   (from the browser's first paint: 7.41, 7.39, 7.39, 7.38, 7.41 s; from the loader going live: 7.40, 7.38, 7.38, 7.38, 7.40 s; from navigation: 7.60, 7.58, 7.58, 7.58, 7.60 s)
+   same-session reload (the short version): first paint at 240 ms, the sky at 3670 ms: 3.43 s on screen; the server's unlit C shown: never
+   a skip (tap) at 1520 ms (first paint 204, loader live 201): the sky at 3247 ms, 1.73 s after the tap
+phone, slow 4G: FIRST VISITS: first paint at 1792, 1784, 1780, 1784, 1784 ms; the C first seen at 1792, 1784, 1780, 1784, 1784 ms; loader live at 1612, 1612, 1612, 1612, 1613 ms; the sky at 9137, 9144, 9143, 9144, 9144 ms after navigation
+   FIRST SEEN TO THE SKY: 7.34, 7.36, 7.36, 7.36, 7.36 s   (from the browser's first paint: 7.34, 7.36, 7.36, 7.36, 7.36 s; from the loader going live: 7.52, 7.53, 7.53, 7.53, 7.53 s; from navigation: 9.14, 9.14, 9.14, 9.14, 9.14 s)
+   same-session reload (the short version): first paint at 696 ms, the sky at 4099 ms: 3.40 s on screen; the server's unlit C shown: never
+   a skip (tap) at 2823 ms (first paint 1796, loader live 1584): the sky at 5942 ms, 3.12 s after the tap
+phone, CPU 4x and slow 4G: FIRST VISITS: first paint at 1808, 1804, 1800, 1804, 1800 ms; the C first seen at 1808, 1804, 1800, 1804, 1800 ms; loader live at 1636, 1635, 1620, 1621, 1621 ms; the sky at 9164, 9161, 9157, 9158, 9157 ms after navigation
+   FIRST SEEN TO THE SKY: 7.36, 7.36, 7.36, 7.35, 7.36 s   (from the browser's first paint: 7.36, 7.36, 7.36, 7.35, 7.36 s; from the loader going live: 7.53, 7.53, 7.54, 7.54, 7.54 s; from navigation: 9.16, 9.16, 9.16, 9.16, 9.16 s)
+   same-session reload (the short version): first paint at 728 ms, the sky at 4187 ms: 3.46 s on screen; the server's unlit C shown: never
+   a skip (tap) at 2832 ms (first paint 1808, loader live 1636): the sky at 6061 ms, 3.23 s after the tap
+desk, a fast line: FIRST VISITS: first paint at 80, 72, 72, 76, 68 ms; the C first seen at 80, 72, 72, 76, 68 ms; loader live at 58, 37, 57, 38, 38 ms; the sky at 7236, 7243, 7178, 7181, 7176 ms after navigation
+   FIRST SEEN TO THE SKY: 7.16, 7.17, 7.11, 7.11, 7.11 s   (from the browser's first paint: 7.16, 7.17, 7.11, 7.11, 7.11 s; from the loader going live: 7.18, 7.21, 7.12, 7.14, 7.14 s; from navigation: 7.24, 7.24, 7.18, 7.18, 7.18 s)
+   same-session reload (the short version): first paint at 104 ms, the sky at 3500 ms: 3.40 s on screen; the server's unlit C shown: never
+   a skip (key) at 1157 ms (first paint 80, loader live 38): the sky at 2843 ms, 1.69 s after the key
+desk, CPU 4x: FIRST VISITS: first paint at 188, 204, 188, 200, 200 ms; the C first seen at 188, 204, 188, 200, 200 ms; loader live at 195, 202, 194, 193, 193 ms; the sky at 7585, 7614, 7596, 7627, 7612 ms after navigation
+   FIRST SEEN TO THE SKY: 7.40, 7.41, 7.41, 7.43, 7.41 s   (from the browser's first paint: 7.40, 7.41, 7.41, 7.43, 7.41 s; from the loader going live: 7.39, 7.41, 7.40, 7.43, 7.42 s; from navigation: 7.59, 7.61, 7.60, 7.63, 7.61 s)
+   same-session reload (the short version): first paint at 300 ms, the sky at 3671 ms: 3.37 s on screen; the server's unlit C shown: never
+   a skip (key) at 1555 ms (first paint 200, loader live 193): the sky at 3243 ms, 1.69 s after the key
+desk, slow 4G: FIRST VISITS: first paint at 1784, 1796, 1780, 1796, 1780 ms; the C first seen at 1784, 1796, 1780, 1796, 1780 ms; loader live at 1612, 1612, 1612, 1583, 1613 ms; the sky at 9141, 9138, 9139, 9106, 9138 ms after navigation
+   FIRST SEEN TO THE SKY: 7.36, 7.34, 7.36, 7.31, 7.36 s   (from the browser's first paint: 7.36, 7.34, 7.36, 7.31, 7.36 s; from the loader going live: 7.53, 7.53, 7.53, 7.52, 7.53 s; from navigation: 9.14, 9.14, 9.14, 9.11, 9.14 s)
+   same-session reload (the short version): first paint at 696 ms, the sky at 4100 ms: 3.40 s on screen; the server's unlit C shown: never
+   a skip (key) at 2807 ms (first paint 1780, loader live 1590): the sky at 6025 ms, 3.22 s after the key
+desk, CPU 4x and slow 4G: FIRST VISITS: first paint at 1824, 1836, 1804, 1800, 1820 ms; the C first seen at 1824, 1836, 1804, 1800, 1820 ms; loader live at 1592, 1577, 1614, 1593, 1584 ms; the sky at 9128, 9106, 9139, 9121, 9107 ms after navigation
+   FIRST SEEN TO THE SKY: 7.30, 7.27, 7.33, 7.32, 7.29 s   (from the browser's first paint: 7.30, 7.27, 7.33, 7.32, 7.29 s; from the loader going live: 7.54, 7.53, 7.53, 7.53, 7.52 s; from navigation: 9.13, 9.11, 9.14, 9.12, 9.11 s)
+   same-session reload (the short version): first paint at 736 ms, the sky at 4255 ms: 3.52 s on screen; the server's unlit C shown: never
+   a skip (key) at 2844 ms (first paint 1820, loader live 1592): the sky at 6155 ms, 3.31 s after the key
+ALL FIRST VISITS: 40; first seen to the sky under 6 s in 0, over 8 s in 0.
