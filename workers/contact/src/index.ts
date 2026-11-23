@@ -22,6 +22,7 @@ export interface StarsKV {
 	get(key: string): Promise<string | null>;
 	put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
 	delete(key: string): Promise<void>;
+	list(options: { prefix: string }): Promise<{ keys: { name: string }[] }>;
 }
 
 export interface Env {
@@ -38,7 +39,6 @@ interface Lit {
 	at: string;
 	approved: boolean;
 }
-type Sky = Record<string, Lit>;
 
 /** A sent request that has no star yet: kept until its sender chooses one. */
 interface Pending {
@@ -49,31 +49,33 @@ interface Pending {
 
 const SLOT = /^slot-(?:[1-9]\d?|1[0-3]\d|14[0-6])$/;
 const CLAIM_KEY = /^[A-Za-z0-9-]{20,64}$/;
-const LIT_KEY = 'lit';
+/**
+ * Every star has a record of its own, `star:slot-N`, so that no write can undo another:
+ * a claim of one star, and the owner approving or taking back another, never meet.
+ * (KV has no compare-and-set: two requests for the SAME star within the same instant
+ * can both be told it was free, and the later text stands. Both messages reach the owner.)
+ */
+const STAR_PREFIX = 'star:';
 const PENDING_TTL = 60 * 60 * 24 * 30;
 const ORIGIN = 'https://cellestialstudio.com';
 
-async function readSky(kv: StarsKV): Promise<Sky> {
+async function readStar(kv: StarsKV, slot: string): Promise<Lit | null> {
 	try {
-		const raw = JSON.parse((await kv.get(LIT_KEY)) ?? '{}') as unknown;
-		if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return {};
-		const sky: Sky = {};
-		for (const [slot, v] of Object.entries(raw as Record<string, Partial<Lit>>)) {
-			if (!SLOT.test(slot) || typeof v?.ask !== 'string' || typeof v.at !== 'string') continue;
-			sky[slot] = { ask: v.ask, at: v.at, approved: v.approved === true };
-		}
-		return sky;
+		const v = JSON.parse((await kv.get(STAR_PREFIX + slot)) ?? 'null') as Partial<Lit> | null;
+		if (!v || typeof v.ask !== 'string' || typeof v.at !== 'string') return null;
+		return { ask: v.ask, at: v.at, approved: v.approved === true };
 	} catch {
-		return {};
+		return null;
 	}
 }
 
+const writeStar = (kv: StarsKV, slot: string, lit: Lit) =>
+	kv.put(STAR_PREFIX + slot, JSON.stringify(lit));
+
 /** Light a star for everyone. False if it is lit already: the first claim stands. */
 async function lightStar(kv: StarsKV, slot: string, ask: string, at: string): Promise<boolean> {
-	const sky = await readSky(kv);
-	if (sky[slot]) return false;
-	sky[slot] = { ask, at, approved: false };
-	await kv.put(LIT_KEY, JSON.stringify(sky));
+	if (await readStar(kv, slot)) return false;
+	await writeStar(kv, slot, { ask, at, approved: false });
 	return true;
 }
 
@@ -124,11 +126,18 @@ const safe = (text: string) => text.replace(/[<>&"]/g, (c) => `&#${c.charCodeAt(
 
 /** GET /api/contact/stars.json: every lit star, and what was asked where the owner approved it. */
 async function listStars(env: Env): Promise<Response> {
-	const sky = env.STARS ? await readSky(env.STARS) : {};
-	const stars = Object.entries(sky).map(([slot, lit]) => ({
-		slot,
-		ask: lit.approved ? lit.ask : null,
-	}));
+	const stars: { slot: string; ask: string | null }[] = [];
+	if (env.STARS) {
+		const kv = env.STARS;
+		const { keys } = await kv.list({ prefix: STAR_PREFIX });
+		const slots = keys
+			.map((k) => k.name.slice(STAR_PREFIX.length))
+			.filter((slot) => SLOT.test(slot));
+		const all = await Promise.all(slots.map((slot) => readStar(kv, slot)));
+		for (const [i, lit] of all.entries()) {
+			if (lit) stars.push({ slot: slots[i] as string, ask: lit.approved ? lit.ask : null });
+		}
+	}
 	return json(200, { stars }, 'public, max-age=30');
 }
 
@@ -159,11 +168,15 @@ async function placeStar(request: Request, env: Env): Promise<Response> {
 	if (!pending || typeof pending.ask !== 'string') {
 		return json(404, { error: 'Nothing is waiting for a star.' });
 	}
+	if (await readStar(env.STARS, slot)) return json(409, { error: 'That star is already lit.' });
+	// One request, one star: the waiting record is spent BEFORE the star is lit, so the same
+	// key shown twice at once cannot light two. If the star was taken meanwhile it is put back.
+	await env.STARS.delete(pendingKey);
 	const at = new Date().toISOString();
 	if (!(await lightStar(env.STARS, slot, pending.ask, at))) {
+		await env.STARS.put(pendingKey, JSON.stringify(pending), { expirationTtl: PENDING_TTL });
 		return json(409, { error: 'That star is already lit.' });
 	}
-	await env.STARS.delete(pendingKey);
 	// Tell the owner which star the request took. A mail that fails changes nothing here.
 	if (env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM) {
 		const link = await ownerLink(env.RESEND_API_KEY, slot, at);
@@ -198,8 +211,7 @@ async function ownerStar(request: Request, env: Env): Promise<Response> {
 		return page(403, '<p>This link is not valid.</p>');
 	}
 	const n = slot.slice(5);
-	const sky = await readSky(env.STARS);
-	let lit = sky[slot];
+	let lit = await readStar(env.STARS, slot);
 	if (!lit || lit.at !== at) {
 		return page(404, `<p>Star ${n} is not lit by this request any more.</p>`);
 	}
@@ -209,15 +221,13 @@ async function ownerStar(request: Request, env: Env): Promise<Response> {
 		const what = String(form.get('do') ?? '');
 		if (what === 'approve' || what === 'hide') {
 			lit = { ...lit, approved: what === 'approve' };
-			sky[slot] = lit;
-			await env.STARS.put(LIT_KEY, JSON.stringify(sky));
+			await writeStar(env.STARS, slot, lit);
 			done =
 				what === 'approve'
 					? '<p><b>Done.</b> Every visitor can now read this on the star.</p>'
 					: '<p><b>Done.</b> The text is hidden again. The star stays lit.</p>';
 		} else if (what === 'remove') {
-			delete sky[slot];
-			await env.STARS.put(LIT_KEY, JSON.stringify(sky));
+			await env.STARS.delete(STAR_PREFIX + slot);
 			return page(200, `<p><b>Done.</b> Star ${n} is empty again for everyone.</p>`);
 		}
 	} else if (request.method !== 'GET') {
@@ -347,7 +357,7 @@ export default {
 		let free = false;
 		if (star && env.STARS) {
 			try {
-				free = !(await readSky(env.STARS))[star];
+				free = !(await readStar(env.STARS, star));
 				starLine += free
 					? starNote(await ownerLink(env.RESEND_API_KEY, star, at))
 					: '\n\n(Another request lit this star first: it is not lit again for this one.)';

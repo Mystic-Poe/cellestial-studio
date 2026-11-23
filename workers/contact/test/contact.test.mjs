@@ -207,6 +207,9 @@ const fakeKV = ({ failPut = false } = {}) => {
 		delete: async (k) => {
 			items.delete(k);
 		},
+		list: async ({ prefix }) => ({
+			keys: [...items.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name })),
+		}),
 	};
 };
 const get = (path, env) =>
@@ -260,7 +263,7 @@ await t(
 		assert.equal(r.status, 200, 'the second message is still delivered');
 		assert.ok(bodies[0].text.includes('Another request lit this star first'));
 		assert.ok(!linkIn(bodies[0].text));
-		assert.equal(JSON.parse(env.STARS.items.get('lit'))['slot-7'].ask, 'first');
+		assert.equal(JSON.parse(env.STARS.items.get('star:slot-7')).ask, 'first');
 	},
 );
 await t(
@@ -376,6 +379,33 @@ await t('shared sky: a star already lit cannot be taken by a waiting request', a
 	);
 	assert.equal(again.status, 200, 'the request still waits, and takes another');
 });
+await t(
+	'shared sky: every star has its own record, so the owner and a new claim never undo each other',
+	async () => {
+		const env = { ...fullEnv, STARS: fakeKV() };
+		stub();
+		await post(body({ star: 'slot-20', message: 'twenty' }), { env });
+		const link = linkIn(bodies[0].text).replace('https://cellestialstudio.com', '');
+		// The owner's page was opened (it read star 20), then another visitor claims star 21,
+		// then the owner presses "approve": star 21 must still be there, and star 20 approved.
+		stub();
+		await post(body({ star: 'slot-21', message: 'twenty-one' }), { env });
+		const f = new FormData();
+		f.set('do', 'approve');
+		await worker.fetch(
+			new Request(`https://cellestialstudio.com${link}`, { method: 'POST', body: f }),
+			env,
+		);
+		assert.deepEqual(
+			(await list(env)).sort((a, b) => a.slot.localeCompare(b.slot)),
+			[
+				{ slot: 'slot-20', ask: 'twenty' },
+				{ slot: 'slot-21', ask: null },
+			],
+		);
+		assert.deepEqual([...env.STARS.items.keys()].sort(), ['star:slot-20', 'star:slot-21']);
+	},
+);
 await t('shared sky: a store that fails never turns a sent message into a failure', async () => {
 	const env = { ...fullEnv, STARS: fakeKV({ failPut: true }) };
 	stub();
