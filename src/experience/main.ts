@@ -91,11 +91,19 @@ function boot(): void {
 	}
 	// The sky is the one heavy start (about half a second of work on the main
 	// thread: the context, the geometry, the shaders). Its script and its four
-	// pictures are fetched from the first moment, so the line is used while the
-	// loader plays; it is mounted at the loader's one still moment, after the
-	// power-up, so the stall holds a picture that was standing still, and it is
-	// ready long before the hand-off.
-	const skyChunk = import('./sky/index.ts');
+	// pictures are fetched as soon as the loader has its own, so the line is
+	// used while the loader plays; it is mounted at the loader's one still
+	// moment, after the power-up, so the stall holds a picture that was
+	// standing still, and it is ready long before the hand-off.
+	//
+	// The loader's pictures go first because the loader is what the visitor is
+	// looking at: on a slow line the sky's script, asked for with them, shares
+	// the line with them and the unlit C stands still most of a second longer
+	// before the loader can begin (slow 4G: it began 3.7 s after navigation;
+	// with the line to itself, as soon as round 2 had it). On a fast line the
+	// pictures are in a tenth of a second after the mount and the sky is not
+	// mounted until the still moment, three seconds on.
+	const skyChunk = (loader.loaded ?? Promise.resolve()).then(() => import('./sky/index.ts'));
 	const warm: HTMLImageElement[] = [];
 	skyChunk
 		.then(() => {

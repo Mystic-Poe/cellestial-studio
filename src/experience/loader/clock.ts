@@ -3,11 +3,15 @@
 // index.ts counts the frames and draws.
 //
 // The clock is the visitor's. It starts when the loader's picture is first
-// painted. On a fast line that is the canvas's own first frame, a moment
-// after the mount. On a slow line it is the unlit C of the server's markup,
-// which stands there until the script has arrived (about a second on slow 4G)
-// and then until the pictures have (another second): all of that is time the
-// visitor has spent looking at the loader, and all of it counts.
+// SEEN. On a fast line that is the canvas's own first frame, a moment after
+// the mount. On a slow line it is the unlit C of the server's markup, which
+// stands there until the script has arrived and then until the other pictures
+// have: all of that is time the visitor has spent looking at the loader, and
+// all of it counts. What does not count is the time before there was anything
+// to look at: the browser reports its first paint when the page's first
+// content is painted, and on a slow line that can be a second before the
+// unlit C is on screen (the page shows it only when its file is whole, never
+// half-drawn). So the clock takes the later of the two: firstSeen().
 //
 // The owner's rule is "6 to 8 s, never under 6". The plan is 7.1 s. A run that
 // is behind its plan may end up to LATE past it (7.5 s); to get there it
@@ -27,6 +31,32 @@ export const WAIT_CREDIT = 4;
 export const LEAD_MAX = 2;
 /** The floor is kept with this much to spare, for the frame the run ends on. */
 export const FLOOR_SPARE = 0.05;
+
+const known = (v: number | null): v is number => v !== null && Number.isFinite(v);
+
+/**
+ * When the loader's picture was first seen, in ms on performance.now()'s
+ * clock, or null if nothing of it has been seen yet. `posterAt` is when the
+ * page showed the server's unlit C (the markup's script notes the frame),
+ * `canvasAt` when the canvas first drew: the earlier of the two is the first
+ * sight of it. `paintAt` is the browser's first-contentful-paint: nothing can
+ * have been seen before that, so where it is the later, it is the answer
+ * (on a fast line it is the same frame, reported when it reached the glass).
+ * Until the browser has reported a paint nothing counts as seen, as before
+ * round 3: at the mount on a fast line that is the usual case, and a browser
+ * that never reports one gets the run from its mount.
+ */
+export function firstSeen(
+	paintAt: number | null,
+	posterAt: number | null,
+	canvasAt: number | null,
+): number | null {
+	let shown: number | null = null;
+	if (known(posterAt)) shown = posterAt;
+	if (known(canvasAt) && (shown === null || canvasAt < shown)) shown = canvasAt;
+	if (shown === null || !known(paintAt)) return null;
+	return Math.max(paintAt, shown);
+}
 
 /**
  * Seconds the loader's picture had been on screen when the script mounted:

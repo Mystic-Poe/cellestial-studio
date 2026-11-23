@@ -14,18 +14,21 @@
 //   fade      only if there is no sky to hand over to: the overlay fades
 //   done      the overlay is off the page, everything is let go of
 //
-// The clock is the visitor's: it starts at the first paint of the loader's
-// picture, which on a slow line is the unlit C of the server's own markup,
-// standing there before this script has arrived. The full version is planned
+// The clock is the visitor's: it starts when the loader's picture is first
+// SEEN, which on a slow line is the unlit C of the server's own markup, shown
+// whole by the markup's own script (Loader.astro) once its file has arrived,
+// and standing there before this script has. The full version is planned
 // to take `script.end / tempo` seconds and the hand-off after it: 7.1 s.
 // `wall` is the time the picture has really been on screen (clock.ts); it
 // says how late the run is. A run that is behind (the script or the pictures
 // were slow to arrive, a frame stalled, the sky was not ready) may end up to
 // LATE seconds past the plan; if that is not enough it plays its hand-off
 // faster, down to HANDOFF_MIN, and past that hurries the script itself by at
-// most HURRY_MAX. It never ends under FLOOR seconds after the first paint.
-// (The three pictures besides the unlit C are asked for by the markup too,
-// Loader.astro, so that they are not a second and a half behind the script.)
+// most HURRY_MAX. It never ends under FLOOR seconds after the first sight.
+// (The three pictures besides the unlit C are asked for by the markup's
+// script too, the moment the unlit C is in, so that they are not a second and
+// a half behind this script. And a tap or a key made before this script had
+// arrived is not lost: the markup's script wrote it down, skip.ts judges it.)
 //
 // Whatever happens (a picture that will not load, an exception in a frame, a
 // sky that never comes) the run ends and `done` resolves. The loader may
@@ -37,10 +40,18 @@
 
 import { ASSETS } from '../assets.ts';
 import type { LoaderScene, MountLoader, SkyScene } from '../contracts.ts';
-import { FLOOR_SPARE, handoffLength, paceAt, paintedAfter, waitedBefore } from './clock.ts';
+import {
+	FLOOR_SPARE,
+	firstSeen,
+	handoffLength,
+	paceAt,
+	paintedAfter,
+	waitedBefore,
+} from './clock.ts';
 import { WORDMARK_MATTE } from './geometry.ts';
 import { layoutFor } from './layout.ts';
 import { createPainter, type Images, type Painter } from './painter.ts';
+import { anySkip, type Early, isSkip } from './skip.ts';
 import {
 	FADE_OUT,
 	FLOOR,
@@ -68,28 +79,6 @@ const PICTURES_MAX = 8;
 const DPR_STEPS = [2, 1.5, 1];
 /** Over this many milliseconds a frame, averaged over the first second, the canvas gets coarser. */
 const SLOW_FRAME = 22;
-/** Keys that are not a wish to skip: moving focus, and modifiers pressed alone. */
-const QUIET_KEYS = new Set([
-	'Tab',
-	'Shift',
-	'Control',
-	'Alt',
-	'AltGraph',
-	'Meta',
-	'OS',
-	'CapsLock',
-	'NumLock',
-	'ScrollLock',
-	'Fn',
-	'FnLock',
-	'Hyper',
-	'Super',
-	'Symbol',
-	'SymbolLock',
-	'Dead',
-	'Unidentified',
-]);
-
 function seenBefore(): boolean {
 	try {
 		return sessionStorage.getItem(SEEN_KEY) !== null;
@@ -124,7 +113,7 @@ function load(url: string): Promise<HTMLImageElement> {
 
 type Phase = 'loading' | 'intro' | 'handoff' | 'fade' | 'done';
 
-/** When the page's first picture was painted, in ms on performance.now()'s clock, if the browser will say. */
+/** When the browser first painted anything of the page, in ms on performance.now()'s clock, if it will say. */
 function firstPaint(): number | null {
 	try {
 		const paint = performance.getEntriesByName('first-contentful-paint')[0];
@@ -134,12 +123,35 @@ function firstPaint(): number | null {
 	}
 }
 
+/** What the markup's own script did before this one arrived (Loader.astro), if it ran. */
+function earlier(): Early | null {
+	return (window as unknown as { __loaderEarly?: Early }).__loaderEarly ?? null;
+}
+
 export const mount: MountLoader = (ctx, opts) => {
 	let finish = () => {};
 	const done = new Promise<void>((resolve) => {
 		finish = resolve;
 	});
-	const idle: LoaderScene = { done, skip() {}, seek() {}, quiet: Promise.resolve() };
+	// The pictures are in, or are not waited for any longer: the line is free
+	// for what the page needs next (main.ts holds the sky's script back for it).
+	let fed = () => {};
+	const loaded = new Promise<void>((resolve) => {
+		fed = resolve;
+	});
+	const idle: LoaderScene = {
+		done,
+		skip() {},
+		seek() {},
+		quiet: Promise.resolve(),
+		loaded: Promise.resolve(),
+	};
+
+	// What was pressed on this page before this script was here to hear it
+	// (skip.ts). Taken before anything else: taking it is also what stops the
+	// markup's listening, whatever becomes of this mount.
+	const early = earlier();
+	const skippedEarly = early ? anySkip(early.take()) : false;
 
 	const overlay = document.getElementById('loader');
 	const canvas = overlay?.querySelector('canvas') ?? null;
@@ -169,16 +181,25 @@ export const mount: MountLoader = (ctx, opts) => {
 	/** Seconds this page has been on screen since the mount (the clock, clamped like the rest). */
 	let shown = 0;
 	const mountedAt = performance.now();
+	/** When the canvas first drew the loader's picture, in ms on the same clock. */
+	let drawnAt: number | null = null;
+	/**
+	 * When the visitor first SAW the loader's picture: the server's unlit C,
+	 * shown whole by the markup's script, or the canvas's first frame if that
+	 * came first; and not before the browser says it painted. Null until then.
+	 */
+	const seenAt = () => firstSeen(firstPaint(), early ? early.seenAt : null, drawnAt);
 	/** What the visitor had already waited before the mount: the unlit C, standing. Full version only. */
-	const credit = script.mode === 'full' ? waitedBefore(mountedAt, firstPaint()) : 0;
+	const credit = script.mode === 'full' ? waitedBefore(mountedAt, seenAt()) : 0;
 	/** Seconds the loader's picture has really been on screen: the measure of how late the run is. */
 	let wall = credit;
 	/**
 	 * Seconds on the visitor's clock: `wall`, less the moment between the mount
-	 * and the first paint where the script was there first (a fast line).
+	 * and the first sight of the picture where the script was there first (a
+	 * fast line; or a slow one on which the script outran the unlit C).
 	 */
 	const seen = () =>
-		wall - (script.mode === 'full' && credit === 0 ? paintedAfter(mountedAt, firstPaint()) : 0);
+		wall - (script.mode === 'full' && credit === 0 ? paintedAfter(mountedAt, seenAt()) : 0);
 	/** How long this run's hand-off takes; a late run's is shorter. */
 	let handoffFor = HANDOFF;
 	/** `wall` at the skip, or -1. */
@@ -262,6 +283,7 @@ export const mount: MountLoader = (ctx, opts) => {
 			if (settleFrom) painter.dissolve(settleFrom, settle / SETTLE);
 			if (is('fade')) overlay.style.opacity = String(Math.max(0, 1 - u / FADE_OUT));
 		}
+		if (drawnAt === null) drawnAt = performance.now();
 		overlay.classList.add('is-drawn');
 	}
 
@@ -294,6 +316,7 @@ export const mount: MountLoader = (ctx, opts) => {
 		skipped = true;
 		skippedAt = wall;
 		calm();
+		fed(); // a skip waits for the sky and for nothing else: its script is not held back
 		remember();
 		if (is('loading') || !painter) return; // the pictures are not here yet: start() carries on
 		if (t >= script.end) return; // already on the finished wordmark
@@ -310,7 +333,7 @@ export const mount: MountLoader = (ctx, opts) => {
 		skip();
 	}
 	function onKey(event: KeyboardEvent): void {
-		if (QUIET_KEYS.has(event.key)) return;
+		if (!isSkip(event.key)) return;
 		skip();
 	}
 	function onResize(): void {
@@ -330,6 +353,8 @@ export const mount: MountLoader = (ctx, opts) => {
 	window.addEventListener('orientationchange', onResize);
 	const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
 	observer?.observe(overlay);
+	// A tap or a key before this script had arrived: a skip made now, at the first moment.
+	if (skippedEarly) skip();
 
 	// A frame loop that has died cannot end the run; this can. It counts only
 	// while the page is on screen, as the clock does.
@@ -350,6 +375,7 @@ export const mount: MountLoader = (ctx, opts) => {
 		clearInterval(watch);
 		clearTimeout(quietTimer);
 		calm();
+		fed();
 		window.removeEventListener('pointerdown', onPointer, true);
 		window.removeEventListener('keydown', onKey, true);
 		window.removeEventListener('resize', onResize);
@@ -463,6 +489,7 @@ export const mount: MountLoader = (ctx, opts) => {
 	// ───────────────────────────────────────────────────── starting ──
 
 	function start(images: Images): void {
+		fed();
 		if (!is('loading') || !canvas) return;
 		painter = createPainter(canvas, images, script);
 		fit();
@@ -491,6 +518,7 @@ export const mount: MountLoader = (ctx, opts) => {
 	return {
 		done,
 		quiet,
+		loaded,
 		skip,
 		seek(to) {
 			if (is('done') || !Number.isFinite(to)) return;

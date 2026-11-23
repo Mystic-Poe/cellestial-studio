@@ -1,0 +1,33 @@
+phone, a fast line: FIRST VISITS: first paint at 208, 68, 72, 72, 72 ms; loader live at 38, 62, 38, 37, 38 ms; the sky at 7498, 7205, 7177, 7173, 7175 ms after navigation
+   FIRST PAINT TO THE SKY: 7.29, 7.14, 7.10, 7.10, 7.10 s   (from the loader going live: 7.46, 7.14, 7.14, 7.14, 7.14 s; from navigation: 7.50, 7.21, 7.18, 7.17, 7.17 s)
+   same-session reload (the short version): first paint at 72 ms, the sky at 3515 ms: 3.44 s on screen
+   a skip (tap) at 1111 ms (first paint 76, loader live 37): the sky at 2830 ms, 1.72 s after the tap
+phone, CPU 4x: FIRST VISITS: first paint at 180, 172, 164, 164, 172 ms; loader live at 192, 198, 196, 195, 193 ms; the sky at 7590, 7599, 7595, 7543, 7583 ms after navigation
+   FIRST PAINT TO THE SKY: 7.41, 7.43, 7.43, 7.38, 7.41 s   (from the loader going live: 7.40, 7.40, 7.40, 7.35, 7.39 s; from navigation: 7.59, 7.60, 7.59, 7.54, 7.58 s)
+   same-session reload (the short version): first paint at 228 ms, the sky at 3669 ms: 3.44 s on screen
+   a skip (tap) at 1220 ms (first paint 188, loader live 196): the sky at 2947 ms, 1.73 s after the tap
+phone, slow 4G: FIRST VISITS: first paint at 788, 784, 784, 784, 780 ms; loader live at 1913, 1913, 1913, 1920, 1927 ms; the sky at 8311, 8310, 8309, 8293, 8307 ms after navigation
+   FIRST PAINT TO THE SKY: 7.52, 7.53, 7.53, 7.51, 7.53 s   (from the loader going live: 6.40, 6.40, 6.40, 6.37, 6.38 s; from navigation: 8.31, 8.31, 8.31, 8.29, 8.31 s)
+   same-session reload (the short version): first paint at 728 ms, the sky at 4117 ms: 3.39 s on screen
+   a skip (tap) at 1809 ms (first paint 784, loader live 1927): the sky at 8313 ms, 6.50 s after the tap
+phone, CPU 4x and slow 4G: FIRST VISITS: first paint at 784, 792, 788, 772, 788 ms; loader live at 1944, 1922, 1950, 1951, 1944 ms; the sky at 8300, 8323, 8341, 8305, 8321 ms after navigation
+   FIRST PAINT TO THE SKY: 7.52, 7.53, 7.55, 7.53, 7.53 s   (from the loader going live: 6.36, 6.40, 6.39, 6.35, 6.38 s; from navigation: 8.30, 8.32, 8.34, 8.30, 8.32 s)
+   same-session reload (the short version): first paint at 744 ms, the sky at 4220 ms: 3.48 s on screen
+   a skip (tap) at 1809 ms (first paint 788, loader live 1950): the sky at 8305 ms, 6.50 s after the tap
+desk, a fast line: FIRST VISITS: first paint at 60, 76, 76, 80, 76 ms; loader live at 58, 36, 37, 37, 36 ms; the sky at 7248, 7260, 7161, 7175, 7175 ms after navigation
+   FIRST PAINT TO THE SKY: 7.19, 7.18, 7.08, 7.10, 7.10 s   (from the loader going live: 7.19, 7.22, 7.12, 7.14, 7.14 s; from navigation: 7.25, 7.26, 7.16, 7.18, 7.18 s)
+   same-session reload (the short version): first paint at 116 ms, the sky at 3632 ms: 3.52 s on screen
+   a skip (key) at 1164 ms (first paint 76, loader live 36): the sky at 2844 ms, 1.68 s after the key
+desk, CPU 4x: FIRST VISITS: first paint at 176, 184, 180, 172, 180 ms; loader live at 190, 187, 196, 189, 195 ms; the sky at 7587, 7610, 7625, 7578, 7608 ms after navigation
+   FIRST PAINT TO THE SKY: 7.41, 7.43, 7.44, 7.41, 7.43 s   (from the loader going live: 7.40, 7.42, 7.43, 7.39, 7.41 s; from navigation: 7.59, 7.61, 7.62, 7.58, 7.61 s)
+   same-session reload (the short version): first paint at 312 ms, the sky at 3674 ms: 3.36 s on screen
+   a skip (key) at 1378 ms (first paint 180, loader live 195): the sky at 3073 ms, 1.69 s after the key
+desk, slow 4G: FIRST VISITS: first paint at 804, 792, 808, 796, 804 ms; loader live at 1913, 1913, 1913, 1927, 1913 ms; the sky at 8319, 8309, 8323, 8327, 8321 ms after navigation
+   FIRST PAINT TO THE SKY: 7.51, 7.52, 7.52, 7.53, 7.52 s   (from the loader going live: 6.41, 6.40, 6.41, 6.40, 6.41 s; from navigation: 8.32, 8.31, 8.32, 8.33, 8.32 s)
+   same-session reload (the short version): first paint at 720 ms, the sky at 4100 ms: 3.38 s on screen
+   a skip (key) at 1824 ms (first paint 792, loader live 1913): the sky at 8310 ms, 6.49 s after the key
+desk, CPU 4x and slow 4G: FIRST VISITS: first paint at 784, 780, 780, 792, 796 ms; loader live at 1948, 1950, 1958, 1942, 1964 ms; the sky at 8312, 8289, 8306, 8320, 8320 ms after navigation
+   FIRST PAINT TO THE SKY: 7.53, 7.51, 7.53, 7.53, 7.52 s   (from the loader going live: 6.36, 6.34, 6.35, 6.38, 6.36 s; from navigation: 8.31, 8.29, 8.31, 8.32, 8.32 s)
+   same-session reload (the short version): first paint at 412 ms, the sky at 4202 ms: 3.79 s on screen
+   a skip (key) at 1812 ms (first paint 784, loader live 1964): the sky at 8342 ms, 6.53 s after the key
+ALL FIRST VISITS: 40; first paint to the sky under 6 s in 0, over 8 s in 0.

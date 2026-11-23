@@ -88,6 +88,14 @@ export interface LoaderScene {
 	 * does not play the power-up: the short version, a skip, a freeze, no loader.
 	 */
 	readonly quiet?: Promise<void>;
+	/**
+	 * Optional. Resolves once the loader has the pictures it cannot begin
+	 * without, or no longer waits for them (a skip, a picture that will not
+	 * load, the end). Until then the line is the loader's: what the page needs
+	 * later (the sky's script) is not asked for. Resolved from the start when
+	 * no loader plays.
+	 */
+	readonly loaded?: Promise<void>;
 }
 
 export interface SkyScene {

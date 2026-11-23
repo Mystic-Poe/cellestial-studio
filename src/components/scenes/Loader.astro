@@ -6,10 +6,37 @@
 // The <img> is the same picture the canvas opens on, put by CSS exactly where
 // the canvas draws it (framing A: the numbers below are FRAME in
 // src/experience/loader/layout.ts and the C's box in src/experience/assets.ts;
-// change one, change both). So the emblem is on screen before any script has
-// run, and the canvas takes over without a jump. A return visit in the same
-// session opens on the short version, where the C is somewhere else: the
-// inline script takes the picture away before it is painted.
+// change one, change both). So the emblem is on screen before the page's
+// script has arrived, and the canvas takes over without a jump.
+//
+// THE INLINE SCRIPT runs as soon as the <img> is in the document. It is
+// explained here and not inside it, because an inline script reaches every
+// visitor as written. (src/experience/loader-markup.test.ts runs it, as it is
+// written here, against a stand-in page.)
+//   1. A return visit in the same session opens on the short version, where
+//      the C is somewhere else: the picture is taken away before it is painted.
+//   The rest only where the loader is going to play (the script in the head
+//   of index.astro has chosen the scene by now), and it leaves what it learns
+//   on window.__loaderEarly for the loader (src/experience/loader/skip.ts):
+//   2. The picture is kept unseen until its file is whole and decoded, and
+//      then shown in one piece. On a slow line a picture shown as it arrives
+//      is seen half-drawn, top first, for half a second. The frame it is
+//      first shown in is noted: that, and not the browser's first paint a
+//      second earlier, is when the visitor's clock starts (loader/clock.ts).
+//   3. The other three pictures the scene cannot begin without are asked for
+//      the moment the unlit C is in: after it, because it is the one picture
+//      the visitor is waiting to see and on a slow line they would share the
+//      line with it; from here, and not a second and a half later when the
+//      page's script has arrived and asks for them itself, because that wait
+//      was the time the unlit C stood still. Not asked for where the loader
+//      does not play.
+//   4. A tap, a click or a key made before the page's script has arrived is
+//      written down (the key's name, or null for a pointer) and judged by the
+//      loader when it mounts, by the one rule in skip.ts. The listening stops
+//      when the loader takes the list, and at DOMContentLoaded whatever
+//      happened: the page's script has run by then if it ever will, so where
+//      it never arrives nothing is kept and nothing is done. Nothing is
+//      listened for where no loader plays.
 //
 // The scene has no words and nothing to focus: all of it is aria-hidden.
 // Beside it, for a screen reader only and only while the loader plays, one
@@ -22,10 +49,7 @@ import { ASSETS } from '../../experience/assets.ts';
 import { WORDMARK_MATTE } from '../../experience/loader/geometry.ts';
 
 const c = ASSETS.loader.cUnlit;
-// The other three pictures the scene cannot begin without. Asked for from the
-// markup, with the unlit C, and not a second and a half later when the script
-// has arrived and asks for them itself: on a slow line that wait was the time
-// the unlit C stood still. Not asked for where the loader does not play.
+// The other three pictures the scene cannot begin without (3, above).
 const pictures = [ASSETS.loader.cLit.url, ASSETS.loader.wordmark.url, WORDMARK_MATTE.url];
 /** Framing A, as in layout.ts. */
 const FRAME = { cHeight: 0.806, cWidthMax: 0.62, middle: 0.47 };
@@ -41,19 +65,8 @@ const vars = [
 ].join('; ');
 ---
 
-{
-	pictures.map((url) => (
-		<link
-			rel="preload"
-			as="image"
-			href={url}
-			fetchpriority="high"
-			media="(prefers-reduced-motion: no-preference)"
-		/>
-	))
-}
 <p id="loader-status" class="sr-only" role="status">Loading. Press any key to skip.</p>
-<div id="loader" aria-hidden="true" style={vars}>
+<div id="loader" aria-hidden="true" style={vars} data-pictures={pictures.join(' ')}>
 	<img
 		class="loader-poster"
 		src={c.url}
@@ -66,10 +79,49 @@ const vars = [
 	<canvas class="loader-canvas"></canvas>
 </div>
 <script is:inline>
-	try {
-		if (sessionStorage.getItem('cellestial:loader') !== null)
-			document.getElementById('loader').classList.add('is-return');
-	} catch {}
+	(() => {
+		const loader = document.getElementById('loader');
+		try {
+			if (sessionStorage.getItem('cellestial:loader') !== null) loader.classList.add('is-return');
+		} catch {}
+		if (document.documentElement.dataset.scene !== 'loading') return;
+
+		const img = loader.querySelector('img');
+		const pressed = [];
+		const note = (event) => pressed.push(event.type === 'keydown' ? event.key : null);
+		const take = () => {
+			removeEventListener('pointerdown', note, true);
+			removeEventListener('keydown', note, true);
+			return pressed.splice(0);
+		};
+		const early = { seenAt: null, take };
+		window.__loaderEarly = early;
+
+		const show = () => {
+			if (loader.matches('.is-drawn, .is-return')) return;
+			loader.classList.add('has-poster');
+			requestAnimationFrame((now) => {
+				early.seenAt = now;
+			});
+		};
+		const arrived = () => {
+			for (const href of loader.dataset.pictures.split(' ')) {
+				const link = document.createElement('link');
+				link.rel = 'preload';
+				link.as = 'image';
+				link.fetchPriority = 'high';
+				link.href = href;
+				document.head.append(link);
+			}
+			img.decode().then(show, show);
+		};
+		if (img.complete && img.naturalWidth) arrived();
+		else img.addEventListener('load', arrived, { once: true });
+
+		addEventListener('pointerdown', note, true);
+		addEventListener('keydown', note, true);
+		addEventListener('DOMContentLoaded', take, { once: true });
+	})();
 </script>
 
 <style is:global>
@@ -108,6 +160,10 @@ const vars = [
 		width: var(--side);
 		height: var(--side);
 		max-width: none;
+	}
+	/* Unseen until its file is whole (the inline script): never half-drawn. */
+	#loader:not(.has-poster) .loader-poster {
+		visibility: hidden;
 	}
 	#loader:is(.is-drawn, .is-return) .loader-poster {
 		display: none;

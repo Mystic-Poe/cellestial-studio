@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
 	FLOOR_SPARE,
+	firstSeen,
 	handoffLength,
 	paceAt,
 	paintedAfter,
@@ -160,4 +161,40 @@ test("the floor is the visitor's: where the script came first, the moment before
 	assert.equal(paintedAfter(1000, 900), 0);
 	assert.ok(Math.abs(paintedAfter(1000, 1170) - 0.17) < 1e-12);
 	assert.equal(waitedBefore(Number.NaN, 1000), 0);
+});
+
+test("the clock starts when the unlit C is first SEEN: the later of the browser's first paint and the frame the page showed it in", () => {
+	// Slow 4G as the third look measured it: the browser's first paint at 0.8 s (nothing of the C
+	// yet), the C on screen a second later. The visitor's clock starts at the second, not the first.
+	assert.equal(firstSeen(800, 1800, null), 1800);
+	// A fast line: the page shows the C in the frame the browser then reports as its first paint.
+	assert.equal(firstSeen(88, 74, null), 88);
+	// The canvas drew before the server's picture was shown (the script was there first).
+	assert.equal(firstSeen(88, null, 80), 88);
+	assert.equal(firstSeen(88, 120, 80), 88);
+	assert.equal(firstSeen(60, 300, 200), 200);
+	// Painted, but nothing of the loader's picture shown yet: nothing has been seen.
+	assert.equal(firstSeen(800, null, null), null);
+	assert.equal(firstSeen(null, null, null), null);
+	// The browser has not reported a paint (yet, or ever): nothing counts as seen, as before round 3.
+	assert.equal(firstSeen(null, 1800, null), null);
+	assert.equal(firstSeen(null, 1800, 1700), null);
+	assert.equal(firstSeen(Number.NaN, 1800, null), null);
+	assert.equal(firstSeen(800, Number.NaN, null), null);
+});
+
+test('a slow line on the new clock: the wait counted is the wait since the C was seen, and the run is 6 to 8 s from there', () => {
+	// The mount 0.3 s after the C was first seen, the pictures 1.2 s after the mount.
+	const paint = 800;
+	const poster = 1500;
+	const mount = 1800;
+	assert.equal(waitedBefore(mount, firstSeen(paint, poster, null)), 0.3);
+	// Before round 3 the black second before the C counted too.
+	assert.equal(waitedBefore(mount, paint), 1);
+	const r = visit({ wait: 0.3, pictures: 1.2 });
+	assert.ok(r.seen >= FLOOR && r.seen <= planFor(FULL) + LATE + 0.05, `${r.seen}`);
+	// The script outran the unlit C: nothing had been seen at the mount, and the moment until it is
+	// seen is not on the visitor's clock.
+	assert.equal(waitedBefore(mount, firstSeen(paint, null, null)), 0);
+	assert.ok(Math.abs(paintedAfter(mount, firstSeen(paint, 2100, null)) - 0.3) < 1e-12);
 });
