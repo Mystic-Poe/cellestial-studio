@@ -1645,7 +1645,8 @@ PIECE 1 — THE SKY ON A PHONE HELD ON ITS SIDE (third look: closing list 1, the
 
 PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7), 2 and 5; parts 1c, 2)
 
-  (CHECKPOINT: 2a and 2b are in; 2c, the tests, the suites and the full record follow.)
+  (CHECKPOINT: 2a, 2b and 2c are in, with their tests; the wider runs, the suites and the full
+  record follow.)
 
   REPRODUCED first, on the production build as piece 1 left it (db9112b; served beside the new one,
   R3_BASE; refs/verification/round-3/before-2/b7/): b7.mjs --only all, every star lit.
@@ -1698,3 +1699,24 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
       and place). 375x667: eleven lines the same; Leo's is the one that moved.
     sky-same.mjs --all (every star lit, reduced motion, the words there): 0 pixels differ in 36
       captures at 390x844 and 0 in 36 at 1440x900 (round-3/piece-2/same/).
+
+  2c, "CLAIM YOURS" BESIDE THE WORDS (checkpoint)
+  REPRODUCED on the build as it stood (before-2/b7/f8.txt, f8-close.txt, claim-yours-desk.jpg):
+  Aries complete, tap 3: the label's box at 775,571 on the meaning's box (516,563 262x70), the
+  letters 5 px apart; tap 1: 11 px. Taurus, tap 3: over it, the letters 6 px apart; tap 1: 10 px.
+  THE CAUSE (src/experience/sky/answer.ts): the words stood under their star and nowhere else, and
+  the one thing asked of that place was that a box 88 px wide (the label is 96) did not OVERLAP a
+  meaning's box: 1 px clear was clear.
+  WHAT WAS CHANGED: the label gives way, not the meaning (the meaning stays where the third look
+  measured it; to keep 40 px from every empty star's label the words at Aries and Taurus would
+  have had to leave their place). src/experience/sky/claim-label.ts (new, pure, tested in node):
+  under the star as before whenever that place is 40 px from every meaning that is showing;
+  otherwise above the star, then to its right, then to its left, the first that is inside the
+  screen, off the logo, the menu and the exit button, 2 px off every other star drawn, and 40 px
+  from every meaning; if none, the star is not offered (as before for a star whose words would lie
+  on a meaning). Once on a side the words stay there while it will do. answer.ts measures the
+  page and asks that file; the label carries data-side for the tools.
+  FIRST NUMBERS (production build): f8.mjs desk: Aries tap 1 and tap 3 59 px (to the right of
+  its star), Taurus tap 1 69 px, tap 3 60 px; the other 26 lines of f8.txt as before. f8-close:
+  the letters 67 and 68 px apart, the star between them (b7/claim-yours-close-desk.jpg, looked at).
+  pnpm test 155 of 155 (it was 148): src/experience/sky-meaning-place.test.ts, 7 new.

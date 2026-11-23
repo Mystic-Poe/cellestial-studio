@@ -45,7 +45,7 @@ const TYPE = { phone: 21, desktop: 34, min: 12, narrow: 720, margin: 16 } as con
  */
 const SHORT = 450;
 /** How the words are placed by their figure on one kind of screen. */
-interface Placing {
+export interface Placing {
 	/** The sizes tried, largest first. */
 	sizes: readonly number[];
 	step: number;
@@ -150,6 +150,21 @@ const SIDE: Placing = {
 	breakPx: 200,
 	far: 4,
 };
+/**
+ * How the words are placed on a screen of this size: by their figure as on a phone held on
+ * its side, as on a wide screen or as on a narrow one; or, between the two widths, in the band.
+ */
+export function placingFor(
+	w: number,
+	h: number,
+): { kind: 'side' | 'wide' | 'tall' | 'band'; by: Readonly<Placing> | null } {
+	// A phone on its side first: it is as wide as a small desktop and is not one.
+	if (h < SHORT) return { kind: 'side', by: SIDE };
+	if (w >= WIDE.from) return { kind: 'wide', by: WIDE };
+	if (w <= TYPE.narrow) return { kind: 'tall', by: TALL };
+	return { kind: 'band', by: null };
+}
+
 /** The writing, seconds. */
 const WRITE = {
 	/** One line is written in about this long, however many letters it has… */
@@ -381,12 +396,10 @@ export function createMeaning(hooks: SkyHooks): Meaning {
 			}
 			return { w: el.offsetWidth, h: el.offsetHeight };
 		};
-		// A phone on its side first: it is as wide as a small desktop and is not one.
-		const short = layout.h < SHORT;
-		const wide = !short && layout.w >= WIDE.from;
+		const { kind, by } = placingFor(layout.w, layout.h);
+		const wide = kind === 'wide';
 		/** Set and scored for the hand. */
-		const hand = short || layout.w <= TYPE.narrow;
-		const by = short ? SIDE : wide ? WIDE : layout.w <= TYPE.narrow ? TALL : null;
+		const hand = kind === 'side' || kind === 'tall';
 
 		// The figure as it stands at its station.
 		const cam = layout.cameraAt(layout.station(figure));

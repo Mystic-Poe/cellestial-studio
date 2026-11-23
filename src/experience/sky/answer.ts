@@ -4,7 +4,9 @@
 // shows the visitor a star that can be theirs.
 //
 // The beads themselves are beads.ts. This file chooses the star, plans the
-// route, runs the pulse and keeps the words exactly under the star.
+// route, runs the pulse and keeps the words with the star: exactly under it,
+// or on another side of it where under it would bring them within 40 px of a
+// meaning's words (claim-label.ts).
 //
 // With an ask waiting for a star (a request was sent with none chosen), the
 // beads also go by themselves, from the middle of the screen, on entering
@@ -12,7 +14,8 @@
 
 import type { ClaimsStore, SlotId } from '../contracts.ts';
 import { type BeadRun, type Beads, createBeads, planRoute, type Route } from './beads.ts';
-import { FIGURES, SPACING } from './config.ts';
+import { type Box, type Disc, type LabelScene, type LabelSide, placeLabel } from './claim-label.ts';
+import { B3, FIGURES, SPACING } from './config.ts';
 import type { SkyHooks } from './hooks.ts';
 import { mod, type PlanStar } from './layout.ts';
 
@@ -24,6 +27,8 @@ const WORDS = { half: 44, height: 26, gap: 7 } as const;
 const CHROME = { w: 110, h: 80 } as const;
 /** A plane nearer the lens than this is being flown through: the touch is answered in the next. */
 const TOO_NEAR = 0.6;
+/** The stars of this many layers from the nearest are drawn: the words stand on none of them. */
+const LAYERS_SEEN = 5;
 /** How long after the sky is entered, or the flight rests, the beads go by themselves. Milliseconds. */
 const AUTO_MS = { enter: 900, rest: 350 } as const;
 
@@ -53,24 +58,71 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	const words = hooks.ui.querySelector<HTMLElement>('[data-claim-words]');
 
 	let claims: ClaimsStore | null = null;
-	let pulse: { slot: SlotId; t0: number; steady: boolean; release: (() => void) | null } | null =
-		null;
+	let pulse: {
+		slot: SlotId;
+		t0: number;
+		steady: boolean;
+		release: (() => void) | null;
+		/** The side of the star the words stand on, once they have a place. */
+		side: LabelSide | null;
+	} | null = null;
 	let wordsAt = { x: Number.NaN, y: Number.NaN };
 	let autoTimer = 0;
 
 	// ── choosing the star ──
 	const chosen = { slot: null as SlotId | null, layer: 0, star: null as PlanStar | null };
 
-	/** True if a box on screen lies on the words of a meaning that is showing (B7): nothing is written over those. */
-	const overMeaning = (x0: number, y0: number, x1: number, y1: number): boolean => {
+	/** The words of the meanings that are showing (B7): "claim yours" keeps 40 px from them. */
+	const meanings = (): Box[] => {
+		const boxes: Box[] = [];
 		for (const el of hooks.ui.querySelectorAll<HTMLElement>('.sky-meaning:not([hidden])')) {
 			const r = el.getBoundingClientRect();
-			if (r.width > 0 && x0 < r.right && x1 > r.left && y0 < r.bottom && y1 > r.top) return true;
+			if (r.width > 0) boxes.push({ x0: r.left, y0: r.top, x1: r.right, y1: r.bottom });
 		}
-		return false;
+		return boxes;
 	};
 
-	/** The empty star nearest a point among those of one layer that can be shown with the words under them. */
+	/** Every star that is drawn on screen now, the far figures' points too. */
+	const drawn = (): Disc[] => {
+		const layout = hooks.layout();
+		const front = hooks.lattice.layer();
+		const discs: Disc[] = [];
+		for (let layer = front; layer <= front + LAYERS_SEEN; layer++) {
+			const figure = mod(layer, FIGURES);
+			const plan = layout.plans[figure];
+			const fit = layout.fits[figure];
+			if (!plan || !fit) continue;
+			for (const [i, star] of plan.stars.entries()) {
+				const p = hooks.project(star.x, star.y, -layer * SPACING);
+				if (p.scale <= 0 || p.depth < 0.25) continue;
+				const r =
+					i === plan.epicentre
+						? B3.ring * layout.b3 * p.scale
+						: Math.max(fit.starR * layout.sizeOf(star) * p.scale, 1.25);
+				if (p.x < -r || p.x > layout.w + r || p.y < -r || p.y > layout.h + r) continue;
+				discs.push({ x: p.x, y: p.y, r });
+			}
+		}
+		return discs;
+	};
+
+	/** What the words are placed among, as the screen is now. The stars are counted only if asked for. */
+	const scene = (): LabelScene => {
+		const layout = hooks.layout();
+		let stars: Disc[] | null = null;
+		return {
+			w: layout.w,
+			h: layout.h,
+			meanings: meanings(),
+			stars: () => {
+				stars ??= drawn();
+				return stars;
+			},
+		};
+	};
+	let view: LabelScene | null = null;
+
+	/** The empty star nearest a point among those of one layer that can be shown with the words by them. */
 	const nearestIn = (layer: number, x: number, y: number) => {
 		const layout = hooks.layout();
 		const figure = mod(layer, FIGURES);
@@ -87,8 +139,9 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (p.x < r || p.x > layout.w - r) continue;
 			if (p.y - r < 6 || p.y + r + WORDS.gap + WORDS.height > layout.h - 6) continue;
 			if (p.x - WORDS.half < CHROME.w && p.y - r < CHROME.h) continue;
-			const under = p.y + r * 1.1 + WORDS.gap;
-			if (overMeaning(p.x - WORDS.half, under, p.x + WORDS.half, under + WORDS.height)) continue;
+			// The words need a place by it that is clear of every meaning.
+			view ??= scene();
+			if (!placeLabel({ x: p.x, y: p.y, r }, view)) continue;
 			const d = Math.hypot(p.x - x, p.y - y);
 			if (d < best) {
 				best = d;
@@ -106,7 +159,10 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		let from = hooks.lattice.layer();
 		if (cam.z + from * SPACING < TOO_NEAR) from++;
 		// The layer the visitor is closest to; only if it has no empty star to show, the one behind it.
-		if (!nearestIn(from, x, y) && !nearestIn(from + 1, x, y)) return null;
+		view = null;
+		const found = nearestIn(from, x, y) || nearestIn(from + 1, x, y);
+		view = null;
+		if (!found) return null;
 		const { slot, layer, star } = chosen;
 		if (!slot || !star) return null;
 		const scale = layout.focal / Math.max(1e-3, cam.z + from * SPACING);
@@ -125,14 +181,17 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			words.style.visibility = 'hidden';
 			return;
 		}
-		const y = c.y + c.r * 1.1 + WORDS.gap;
-		// Under the star's centre; beside a screen edge, only as far in as keeps them whole.
-		const w = hooks.layout().w;
-		const x = Math.min(Math.max(c.x, WORDS.half + 4), w - WORDS.half - 4);
-		// Never over a meaning: if the flight has carried the star's words onto one, they wait.
-		if (overMeaning(x - WORDS.half, y, x + WORDS.half, y + WORDS.height)) {
+		// Under the star; on another side of it if a meaning's words are within 40 px of that
+		// place. Never by a meaning: if the flight has carried them to one and no side is clear, they wait.
+		const place = placeLabel(c, scene(), pulse.side);
+		if (!place) {
 			words.style.visibility = 'hidden';
 			return;
+		}
+		const { x, y } = place;
+		if (place.side !== pulse.side) {
+			pulse.side = place.side;
+			words.dataset.side = place.side;
 		}
 		// Written so that words with no place yet (NaN) are given one.
 		if (!(Math.abs(x - wordsAt.x) <= 0.05 && Math.abs(y - wordsAt.y) <= 0.05)) {
@@ -151,6 +210,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		if (words) {
 			words.hidden = true;
 			delete words.dataset.slot;
+			delete words.dataset.side;
 			words.style.removeProperty('--pulse');
 		}
 	};
@@ -158,7 +218,13 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	const startPulse = (slot: SlotId) => {
 		endPulse();
 		const steady = hooks.isStill();
-		pulse = { slot, t0: hooks.time(), steady, release: steady ? null : hooks.keepAwake() };
+		pulse = {
+			slot,
+			t0: hooks.time(),
+			steady,
+			release: steady ? null : hooks.keepAwake(),
+			side: null,
+		};
 		hooks.setStarGlow(slot, steady ? PULSE.steady : PULSE.high);
 		if (words) {
 			wordsAt = { x: Number.NaN, y: Number.NaN };
