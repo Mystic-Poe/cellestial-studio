@@ -43,3 +43,29 @@
 
 ## Menu
 - Three brass bars next to the top-left logo. Items: The Sky / What we build / Claim your star / Contact me.
+
+## Constellation meanings (B7) — LOCKED VERBATIM (the owner's 18 Nov sheet; added here 23 Nov on his word)
+A meaning appears ONLY once its constellation is filled: every star of the figure claimed. Until then nothing is written. The sky starts empty, so it will be a while.
+
+1. Virgo: the virgin birth
+2. Libra: the price paid
+3. Scorpius: the conflict
+4. Sagittarius: the victor
+5. Capricornus: sacrifice and life
+6. Aquarius: living water poured out
+7. Pisces: His people
+8. Aries: the Lamb
+9. Taurus: He comes to judge
+10. Gemini: His twofold nature
+11. Cancer: His people held safe
+12. Leo: the Lion of the tribe of Judah
+
+After Leo's meaning, a second line: Jesus is King.
+
+## Decisions of 23 Nov 2026 (the owner, after the redesign went live)
+- **Stars 1 to 146 are all named in the owner's email.** (The contact Worker named only 1 to 99.)
+- **The sky is shared.** A star claimed by a sent request is lit for every visitor at once. What was asked is shown to other visitors only after the owner approves it, from a link in the email he is sent; the person who claimed it always reads their own. He can hide a text again or take a star back from the same link. Names and emails are never shown.
+- **The spam check is not retried** if Cloudflare's script fails to arrive. Left as it is.
+- **/admin stays as it is.** Copy is changed in the code.
+- **The beads never start over.** A second tap sends more beads; the beads of the tap before finish their course.
+- **Clean spacing.** Stars may stand close, as the true pattern has them, but never touch or overlap: every pair keeps a clear gap. Crowded stars are drawn smaller; only where that is not enough are two moved apart by a few pixels.
