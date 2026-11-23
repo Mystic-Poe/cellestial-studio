@@ -19,6 +19,7 @@
 import { isSlotId } from '../content/constellations.ts';
 import { wireContactForm } from '../scripts/contact-submit.ts';
 import type { ClaimFlow, ClaimsStore, Director, SlotId } from './contracts.ts';
+import { keepClaimKey, newClaimKey } from './shared-sky.ts';
 
 /** How long "Sent." stays up before the dialog closes. */
 const SENT_BEAT_MS = 1400;
@@ -133,8 +134,20 @@ export function createClaimFlow(claims: ClaimsStore, director: Director): ClaimF
 	const starInput = claimBox?.form.querySelector<HTMLInputElement>('[data-star-input]') ?? null;
 	const askField = claimBox?.form.querySelector<HTMLTextAreaElement>('[name="message"]') ?? null;
 
-	/** The build request now being sent: what was asked, and for which star. */
-	let asked: { ask: string; slot: SlotId | null } | null = null;
+	/** The build request now being sent: what was asked, for which star, and its key. */
+	let asked: { ask: string; slot: SlotId | null; key: string } | null = null;
+
+	/**
+	 * Every build request is sent with a key of its own (a hidden field, made here so the
+	 * form's markup is as it was). The Worker keeps a request that has no star under it,
+	 * and the star its sender chooses later is lit for everyone by showing the key again.
+	 */
+	const keyInput = claimBox ? document.createElement('input') : null;
+	if (claimBox && keyInput) {
+		keyInput.type = 'hidden';
+		keyInput.name = 'claim-key';
+		claimBox.form.append(keyInput);
+	}
 
 	function open(box: Box): void {
 		if (box.dialog.open) return;
@@ -240,13 +253,17 @@ export function createClaimFlow(claims: ClaimsStore, director: Director): ClaimF
 		wire(claimBox, {
 			started() {
 				const star = starInput?.value;
-				asked = { ask: askField?.value ?? '', slot: isSlotId(star) ? star : null };
+				const key = newClaimKey();
+				if (keyInput) keyInput.value = key;
+				asked = { ask: askField?.value ?? '', slot: isSlotId(star) ? star : null, key };
 			},
 			sent() {
 				const sent = asked;
 				asked = null;
 				if (!sent) return;
 				const star = record(sent.ask, sent.slot);
+				// The ask waits for a star: its key waits with it.
+				if (!star) keepClaimKey(sent.key);
 				// To the sky either way: to watch the star light, or to choose one for the ask.
 				claimBox.next = star ? () => void director.showStar(star) : () => void director.go('sky');
 			},

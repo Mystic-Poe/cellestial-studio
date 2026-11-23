@@ -1,10 +1,15 @@
 // The ClaimsStore: which stars are lit, which empty star this visitor has
 // picked, and an ask that is waiting for a star.
 //
-// A lit star comes from one of two places (BLUEPRINT §9.1):
+// A lit star comes from one of three places (BLUEPRINT §9.1; the shared sky
+// since 23 Nov, on the owner's word):
 //   the registry   src/content/stars.json: lit for everyone
 //   this device    localStorage: lit by a request this visitor sent
-// Where both name the same star, the registry wins.
+//   the shared sky the stars other visitors lit, as the contact Worker's store
+//                  lists them: lit for everyone at once, their text shown only
+//                  once the owner has approved it (until then `ask` is empty)
+// Where two name the same star, the registry wins, then this device (a visitor
+// always reads their own ask), then the shared sky.
 //
 // The one rule: a claim exists only because a request was SENT. Nothing in
 // here runs before /api/contact has answered OK (claim-flow.ts sees to that).
@@ -34,6 +39,8 @@ export interface ClaimsState {
 	readonly registry: ReadonlyMap<SlotId, Claim>;
 	/** Lit by requests sent from this device. */
 	readonly device: ReadonlyMap<SlotId, Claim>;
+	/** Lit by other visitors: the shared sky. Empty until it has been fetched. */
+	readonly shared: ReadonlyMap<SlotId, Claim>;
 	/** Always an empty star, or null. */
 	readonly picked: SlotId | null;
 	readonly unplaced: string | null;
@@ -65,14 +72,33 @@ export function parseClaims(raw: unknown): Map<SlotId, Claim> {
 }
 
 export function isLit(state: ClaimsState, slot: SlotId): boolean {
-	return state.registry.has(slot) || state.device.has(slot);
+	return state.registry.has(slot) || state.device.has(slot) || state.shared.has(slot);
 }
 
-/** Every lit star: this device's, then the registry's over them. */
+/** Every lit star: the shared sky's, this device's over them, then the registry's over both. */
 export function litStars(state: ClaimsState): Map<SlotId, Claim> {
-	const lit = new Map(state.device);
+	const lit = new Map(state.shared);
+	for (const [slot, claim] of state.device) lit.set(slot, claim);
 	for (const [slot, claim] of state.registry) lit.set(slot, claim);
 	return lit;
+}
+
+/**
+ * The shared sky out of anything at all: `{ stars: [{ slot, ask }] }` as the
+ * Worker answers, or the bare list. An `ask` that is not a string (the owner
+ * has not approved it) is an empty one: the star is lit, with nothing to read.
+ */
+export function parseShared(raw: unknown): Map<SlotId, Claim> {
+	const claims = new Map<SlotId, Claim>();
+	const list = Array.isArray(raw) ? raw : (raw as { stars?: unknown } | null)?.stars;
+	if (!Array.isArray(list)) return claims;
+	for (const entry of list) {
+		if (typeof entry !== 'object' || entry === null) continue;
+		const { slot, ask } = entry as { slot?: unknown; ask?: unknown };
+		if (!isSlotId(slot) || claims.has(slot)) continue;
+		claims.set(slot, { slot, ask: typeof ask === 'string' ? ask : '' });
+	}
+	return claims;
 }
 
 /** The state a visit starts from. Each argument is whatever was found: nothing is trusted. */
@@ -85,6 +111,7 @@ export function initialState(
 	const state: ClaimsState = {
 		registry: parseClaims(registry),
 		device: parseClaims(device),
+		shared: new Map(),
 		picked: null,
 		unplaced: typeof unplaced === 'string' ? unplaced : null,
 	};
@@ -125,7 +152,34 @@ export function reduceSent(state: ClaimsState, ask: string, slot: SlotId | null)
 export function reducePlace(state: ClaimsState, slot: SlotId): Step {
 	if (state.unplaced === null || !isSlotId(slot) || isLit(state, slot)) return unchanged(state);
 	const step = light(state, slot, state.unplaced);
-	return { state: { ...step.state, unplaced: null }, events: step.events };
+	return {
+		state: { ...step.state, unplaced: null },
+		events: [{ type: 'placed', slot }, ...step.events],
+	};
+}
+
+/**
+ * Take in the shared sky. Stars it names are lit; a text the owner has since
+ * approved replaces an empty one. Within a visit nothing is ever put out by it:
+ * a star the owner took back is empty again on the next visit.
+ */
+export function reduceShare(state: ClaimsState, incoming: ReadonlyMap<SlotId, Claim>): Step {
+	let shared: Map<SlotId, Claim> | null = null;
+	const events: ClaimsEvent[] = [];
+	for (const [slot, claim] of incoming) {
+		const held = state.shared.get(slot);
+		if (held && held.ask === claim.ask) continue;
+		shared ??= new Map(state.shared);
+		shared.set(slot, claim);
+		if (!isLit(state, slot)) events.push({ type: 'claimed', slot });
+	}
+	if (!shared) return unchanged(state);
+	let { picked } = state;
+	if (picked !== null && shared.has(picked)) {
+		picked = null;
+		events.push({ type: 'picked', slot: null });
+	}
+	return { state: { ...state, shared, picked }, events };
 }
 
 /**
@@ -227,9 +281,11 @@ export function createClaimsStore(registry: unknown, storage: ClaimsStorage = {}
 		const before = state;
 		state = step.state;
 		if (state.device !== before.device) {
+			write(local, CLAIMS_KEY, JSON.stringify([...state.device.values()]));
+		}
+		if (state.device !== before.device || state.shared !== before.shared) {
 			// A new map each time, so one handed out by all() never changes under its reader.
 			lit = litStars(state);
-			write(local, CLAIMS_KEY, JSON.stringify([...state.device.values()]));
 		}
 		if (state.picked !== before.picked) write(session, PICKED_KEY, state.picked);
 		if (state.unplaced !== before.unplaced) write(local, UNPLACED_KEY, state.unplaced);
@@ -270,6 +326,9 @@ export function createClaimsStore(registry: unknown, storage: ClaimsStorage = {}
 		place(slot) {
 			refresh();
 			apply(reducePlace(state, slot));
+		},
+		share(raw) {
+			apply(reduceShare(state, parseShared(raw)));
 		},
 		subscribe(fn) {
 			subscribers.add(fn);

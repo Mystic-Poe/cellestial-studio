@@ -184,7 +184,7 @@ test('with storage blocked, everything still works for the visit', () => {
 
 	assert.deepEqual(
 		events.map((e) => e.type),
-		['picked', 'claimed', 'picked', 'unplaced', 'claimed'],
+		['picked', 'claimed', 'picked', 'unplaced', 'placed', 'claimed'],
 	);
 });
 
@@ -311,7 +311,10 @@ test('place moves the waiting ask onto an empty star', () => {
 
 	assert.deepEqual(store.all().get('slot-20'), { slot: 'slot-20', ask: 'Waiting' });
 	assert.equal(store.unplaced(), null);
-	assert.deepEqual(events, [{ type: 'claimed', slot: 'slot-20' }]);
+	assert.deepEqual(events, [
+		{ type: 'placed', slot: 'slot-20' },
+		{ type: 'claimed', slot: 'slot-20' },
+	]);
 	assert.deepEqual(stored(local), [{ slot: 'slot-20', ask: 'Waiting' }]);
 	assert.equal(local.items.has(UNPLACED_KEY), false, 'nothing is left waiting on disk');
 });
@@ -611,4 +614,112 @@ test('adopting a claim the registry already shows makes no noise', () => {
 	const step = reduceAdopt(start, parseClaims([{ slot: 'slot-3', ask: 'device copy' }]));
 	assert.deepEqual(step.events, []);
 	assert.equal(litStars(step.state).get('slot-3')?.ask, 'published');
+});
+
+// ── the shared sky (23 Nov): the stars other visitors lit ──
+
+const S1 = 'slot-1' as SlotId;
+const S2 = 'slot-2' as SlotId;
+const S3 = 'slot-3' as SlotId;
+
+test('the shared sky lights its stars, and tells whoever is listening once each', () => {
+	const store = createClaimsStore([]);
+	const seen: ClaimsEvent[] = [];
+	store.subscribe((e) => seen.push(e));
+	store.share({
+		stars: [
+			{ slot: S1, ask: null },
+			{ slot: S2, ask: 'A shop.' },
+		],
+	});
+	assert.equal(store.isLit(S1), true);
+	assert.equal(store.all().get(S1)?.ask, '', 'not approved: lit, with nothing to read');
+	assert.equal(store.all().get(S2)?.ask, 'A shop.');
+	assert.deepEqual(seen, [
+		{ type: 'claimed', slot: S1 },
+		{ type: 'claimed', slot: S2 },
+	]);
+	store.share({
+		stars: [
+			{ slot: S1, ask: null },
+			{ slot: S2, ask: 'A shop.' },
+		],
+	});
+	assert.equal(seen.length, 2, 'the same list again says nothing');
+});
+
+test('a text the owner has since approved is taken in without lighting the star twice', () => {
+	const store = createClaimsStore([]);
+	store.share([{ slot: S1, ask: null }]);
+	const seen: ClaimsEvent[] = [];
+	store.subscribe((e) => seen.push(e));
+	store.share([{ slot: S1, ask: 'Now approved.' }]);
+	assert.equal(store.all().get(S1)?.ask, 'Now approved.');
+	assert.deepEqual(seen, []);
+});
+
+test('nothing in the shared sky is trusted', () => {
+	const store = createClaimsStore([]);
+	for (const junk of [
+		null,
+		7,
+		'x',
+		{},
+		{ stars: 'no' },
+		{ stars: [null, 3, { slot: 'slot-999' }, { ask: 'no slot' }] },
+	]) {
+		store.share(junk);
+	}
+	assert.equal(store.all().size, 0);
+});
+
+test('a visitor reads their own ask on their own star, whatever the shared sky says', () => {
+	const local = memory();
+	const store = createClaimsStore([], { local });
+	store.recordSent('My own words.', S1);
+	store.share([{ slot: S1, ask: null }]);
+	assert.equal(store.all().get(S1)?.ask, 'My own words.');
+	// And the registry still wins over both.
+	const other = createClaimsStore([{ slot: S1, ask: 'Published.' }], { local });
+	other.share([{ slot: S1, ask: 'Shared.' }]);
+	assert.equal(other.all().get(S1)?.ask, 'Published.');
+});
+
+test('a star another visitor lit cannot be picked or claimed again from here', () => {
+	const store = createClaimsStore([]);
+	store.pick(S2);
+	assert.equal(store.picked(), S2);
+	const seen: ClaimsEvent[] = [];
+	store.subscribe((e) => seen.push(e));
+	store.share([{ slot: S2, ask: null }]);
+	assert.equal(store.picked(), null, 'the star was taken while it was being looked at');
+	assert.deepEqual(seen, [
+		{ type: 'claimed', slot: S2 },
+		{ type: 'picked', slot: null },
+	]);
+	store.recordSent('Too late for that one.', S2);
+	assert.equal(store.unplaced(), 'Too late for that one.', 'the ask waits for another star');
+	store.pick(S2);
+	assert.equal(store.picked(), null);
+});
+
+test('the shared sky is never written to this device', () => {
+	const local = memory();
+	const store = createClaimsStore([], { local });
+	store.share([{ slot: S1, ask: 'Theirs.' }]);
+	assert.equal(local.items.get(CLAIMS_KEY), undefined);
+	store.recordSent('Mine.', S3);
+	assert.deepEqual(JSON.parse(local.items.get(CLAIMS_KEY) ?? '[]'), [{ slot: S3, ask: 'Mine.' }]);
+});
+
+test('placing the waiting ask says which star it took, before the star is lit', () => {
+	const store = createClaimsStore([]);
+	store.recordSent('An app.', null);
+	const seen: ClaimsEvent[] = [];
+	store.subscribe((e) => seen.push(e));
+	store.place(S3);
+	assert.deepEqual(seen, [
+		{ type: 'placed', slot: S3 },
+		{ type: 'claimed', slot: S3 },
+	]);
 });
