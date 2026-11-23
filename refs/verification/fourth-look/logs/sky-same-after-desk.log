@@ -1,0 +1,42 @@
+THE SKY AT 1440x900 (desk), after: twelve stations, the clock held, empty and seeded
+empty-station-1.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-2.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-3.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-4.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-5.png: 36 pixels differ from desk-before (of 1296000), all inside x 753..759, y 457..463 css px
+empty-station-6.png: 75 pixels differ from desk-before (of 1296000), all inside x 763..772, y 459..468 css px
+empty-station-7.png: 170 pixels differ from desk-before (of 1296000), all inside x 781..795, y 463..477 css px
+empty-station-8.png: 542 pixels differ from desk-before (of 1296000), all inside x 827..853, y 472..499 css px
+empty-station-9.png: 4585 pixels differ from desk-before (of 1296000), all inside x 1024..1102, y 513..591 css px
+empty-station-10.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-11.png: 0 pixels differ from desk-before (of 1296000)
+empty-station-12.png: 0 pixels differ from desk-before (of 1296000)
+empty: console errors none
+lit-station-1.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-2.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-3.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-4.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-5.png: 36 pixels differ from desk-before (of 1296000), all inside x 753..759, y 457..463 css px
+lit-station-6.png: 75 pixels differ from desk-before (of 1296000), all inside x 763..772, y 459..468 css px
+lit-station-7.png: 170 pixels differ from desk-before (of 1296000), all inside x 781..795, y 463..477 css px
+lit-station-8.png: 542 pixels differ from desk-before (of 1296000), all inside x 827..853, y 472..499 css px
+lit-station-9.png: 4585 pixels differ from desk-before (of 1296000), all inside x 1024..1102, y 513..591 css px
+lit-station-10.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-11.png: 0 pixels differ from desk-before (of 1296000)
+lit-station-12.png: 0 pixels differ from desk-before (of 1296000)
+lit: console errors none
+all-station-1.png: 0 pixels differ from desk-before (of 1296000)
+all-station-2.png: 0 pixels differ from desk-before (of 1296000)
+all-station-3.png: 0 pixels differ from desk-before (of 1296000)
+all-station-4.png: 0 pixels differ from desk-before (of 1296000)
+all-station-5.png: 38 pixels differ from desk-before (of 1296000), all inside x 753..759, y 457..464 css px
+all-station-6.png: 80 pixels differ from desk-before (of 1296000), all inside x 763..772, y 459..469 css px
+all-station-7.png: 168 pixels differ from desk-before (of 1296000), all inside x 781..795, y 463..477 css px
+all-station-8.png: 532 pixels differ from desk-before (of 1296000), all inside x 827..853, y 472..499 css px
+all-station-9.png: 4343 pixels differ from desk-before (of 1296000), all inside x 1025..1102, y 514..591 css px
+all-station-10.png: 0 pixels differ from desk-before (of 1296000)
+all-station-11.png: 0 pixels differ from desk-before (of 1296000)
+all-station-12.png: 0 pixels differ from desk-before (of 1296000)
+all: console errors none
+TOTAL: 15977 pixels differ; captures that differ: empty-station-5.png, empty-station-6.png, empty-station-7.png, empty-station-8.png, empty-station-9.png, lit-station-5.png, lit-station-6.png, lit-station-7.png, lit-station-8.png, lit-station-9.png, all-station-5.png, all-station-6.png, all-station-7.png, all-station-8.png, all-station-9.png
+exit 0

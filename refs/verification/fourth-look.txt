@@ -89,7 +89,9 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   844, 740 and 932 and 14 px at 667 (it was 3 to 11 px INSIDE it); the nearest to the logo is 107 px,
   to the menu 59 px, to a side of the screen 35 px. A real touch at the centre of every star of every
   figure: 146 of 146 took the star under the finger at each of the four sizes (584 touches), none
-  picked a second star, none left the sky, no console error. Libra's lowest and Cancer's lowest are
+  picked a second star, no console error; run again at 844x390 and 740x360 with my copy also asking
+  what scene stands after each touch: the sky, 292 of 292, the fall never begun (logs/all-taps-again-
+  *.log). Libra's lowest and Cancer's lowest are
   whole and are taken. (phone-sky/all-taps-side*.txt, taps-side.jpg, 844|667|740|932/phone-sky-
   stations.txt, stations-empty.jpg.)
   Nothing jumps when the button first appears: all 147 stars at the twelve stations stand in the same
@@ -248,7 +250,8 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
   A RETURN (the same tab, loaded again): the short version, the sky at 3.50 to 3.58 s on a fast line
   (4 of 4) and 4.18 to 4.35 s on slow 4G; never the unlit C's picture first (mode "short").
 
-1e. "CLAIM YOURS" BESIDE THE WORDS (third look: MINOR, new with round 2) — RESOLVED
+1e. "CLAIM YOURS" BESIDE THE WORDS (third look: MINOR, new with round 2) — RESOLVED as the third look
+    found it; the brief's wider question finds "claim yours" written across other stars (MINOR, older)
   The third look's own two taps, in real time (tools/f8.mjs, f8-close.mjs): Aries complete, the sky to
   its right tapped: "claim yours" now stands to the RIGHT of its star, its letters 67 px from the end
   of "the Lamb" (it was 5 px); Taurus: 68 px from "He comes to judge" (it was 6). All 30 taps of that
@@ -262,9 +265,44 @@ PART 1 — THE SEVEN ITEMS OF THE THIRD LOOK'S CLOSING LIST
     390x844   444 taps, shown 419 times, all under their star; the nearest to a meaning 40 px;
               within 40 px: none
   (logs/f8-all.log; b7/claim-yours-moved-desk.jpg looked at: the 24 labels that moved stand right of
-  a small star of the next figure, clear of everything.) That script asks "on a star, off the screen,
-  on the logo, the menu or the button" only of the labels that MOVED; I made my copy ask it of every
-  label: see the line added under this item when that run is in (logs/f8-all-every.log).
+  a small star of the next figure, clear of everything.)
+  THE REST OF THE BRIEF'S QUESTION, AND WHAT IT TURNED UP. That script asks "on a star, off the
+  screen, on the logo, the menu or the button" only of the labels that MOVED from under their star. I
+  made my copy ask it of every label and ran it again (logs/f8-all-every.log). Off the screen, on the
+  logo, on the menu, on the exit button: none of 849 and none of 419. ON A STAR: yes. When the
+  station's own figure is complete, a tap on empty sky offers a star of the NEXT figure, which stands
+  small and far in the middle of the screen, and "claim yours" (96x24 px, 13 px type) is written
+  under that star straight across its neighbours: 66 of the distinct labels on the desktop and 75 on
+  the phone lie on 1 to 38 other stars' discs, at every one of the twelve stations. Most of those
+  are the far figure's own dim points and the label reads over them. Two are not: at VIRGO, the
+  figure complete, the far star offered lies behind Cellestial's star and "claim yours" is written
+  ACROSS CELLESTIAL'S STAR, its letters over the rings and the core (slot-25 on the desktop, box
+  735,425; slot-88 on the phone, box 113,401). b7/label-on-stars.jpg, looked at: Libra, Aries and
+  Virgo complete on the desktop, Libra and Virgo on the phone, each on this build and on the build at
+  8724ef5: THE SAME ON BOTH. It is not round 3's, round 3 did not make it worse, and the third look
+  did not ask it. It needs a whole figure claimed in the visitor's own browser (Virgo: twelve build
+  requests sent from it), then a tap on empty sky at that station, and it shows while the offer
+  stands.
+  THE COMMON CASE, which nobody had measured: the sky EMPTY, as every visitor finds it, and the sky
+  tapped (my tools/label-near.mjs: a grid of 99 points on the desktop and 54 on the phone at each of
+  the twelve stations; a tap on the sky marks the nearest empty star of the figure and writes "claim
+  yours" under it, as the spec's B9 has it). Every label is under its star, inside the screen, off
+  the logo, the menu and the button. But the figures are real patterns and their stars stand close:
+    1440x900  137 distinct labels: 25 are written across another star of the figure (up to 22 px
+              into its disc): Pisces 7, Sagittarius 7, Scorpius 5, Taurus 3, Aquarius 2, Libra 1;
+              at Virgo two labels stand 5 and 14 px inside the reach of Cellestial's rings
+    390x844   113 distinct labels: 38 are written across another star of the figure (up to 14 px
+              in, which on the phone is through a star's centre), at eleven of the twelve stations;
+              at VIRGO, the visitor's first station, the label under slot-34 stands 23 px from the
+              centre of Cellestial's star and its last letters are lost in the star's rings; four
+              labels (Libra, Capricornus, Pisces, Gemini) begin 6 px from the screen's left edge
+  b7/label-near-desk.jpg and label-near-phone.jpg, looked at: 13 px brass words with their glow lying
+  over a neighbouring star's dark disc: they can still be read except at Cellestial's rings, and they
+  look written over the star. The same script on the build at 8724ef5: the same 25 and the same 38
+  (old-label/b7/label-near.txt). So it is as the build was when the third look ruled the sky done,
+  round 3 neither made it nor touched it, and no look before this one set the label beside the stars.
+  MINOR (polish, and the label is where the spec puts it), but it is on the common path at both of
+  the owner's sizes and is the first thing I would put right. In the list at the end with its fix.
   The fixers left (piece 2, "LEFT"): at 932x430, Libra complete, "claim yours" above slot-19 lies
   across one of Libra's lines. Seen in my run too: its box 3 px from the nearest other star, above its
   own. A phone on its side, a label that shows for the moment of a tap: not counted.
@@ -396,6 +434,19 @@ THE BUILDERS' SHEETS, MADE FRESH (tools/run-all.sh on the dev server, 4500; logs
       the control.
   Nothing at 1440x900 or 390x844 differs from what the third look judged but Taurus's two stars on
   the desktop. The builders' folders are restored (git status: only this look's own files).
+  THE SKY, PIXEL FOR PIXEL, ON THE PRODUCTION BUILDS (tools/sky-same.mjs, a fixer's; I ran it with
+  the build at 8724ef5 as "before" (4616), that build once more as the control, and this build as
+  "after": the sky's clock held, twelve stations, three skies each: empty, eight stars lit, and every
+  star lit with all twelve meanings standing; 36 PNG captures a size; sky-same/*.txt):
+    390x844   the control 0 pixels; THIS BUILD 0 PIXELS DIFFERENT in 36 captures
+    1440x900  the control 0 pixels; this build differs in 15 of 36 captures, every differing pixel
+              inside one small box: at Taurus's station 78x78 px at x 1024..1102, y 513..591 (the
+              two thinned stars, 4343 to 4585 pixels), and the same pair seen far off from stations
+              5 to 8 (boxes of 7 to 27 px, 36 to 542 pixels). Stations 1 to 4 and 10 to 12: 0.
+  So at the owner's two sizes round 3 changed, in the standing sky, exactly the two stars it was
+  told it might, and no meaning moved by a pixel. ("Claim yours" moves only at Aries and Taurus on
+  the desktop with the figure complete: item 1e. The loader on a fast line: its sheets are byte-
+  identical and its clock is 7.0 to 7.3 s as it was.)
 
 THE SUITES (run-all.sh: 13 of 13 exit 0, logs/suites-2/status.txt; the control's 7 runs also exit 0)
   tools/loader/measure.mjs 13 of 13 at 1440x900 and 13 of 13 at 390x844 with the CPU slowed 4x;
@@ -445,3 +496,96 @@ PART 3 — THE GATES
   check's token present and lit its star (part 2).
   (Kept: builders-tools/run-a/, the fresh sheets. Not kept, for their size: the control's set, run-b,
   whose every number is in sheets/control-run-a-vs-run-b.txt, and nojs-same.mjs's full-page PNGs.)
+
+THE SEVEN ITEMS IN ONE TABLE
+item                              third look         now            evidence                    what is left, and the fix
+a  a phone held on its side       MAJOR (there)      RESOLVED but   phone-sky/all-taps-side*,   Taurus's two closest stars 35 to
+                                                     for one knot   side/, side-a5/, b7/*side*, 49% into each other at their 6 px
+                                                     (PARTLY)       knots/pairs-sides.*         floor (MINOR, that screen only):
+                                                                                                move the pair 2 to 3 px apart
+b  B7 at Leo on a short phone     MINOR              RESOLVED       b7/b7-short-*.txt,          nothing
+                                                                    all-short*.jpg
+c  a skip before the script       MINOR              RESOLVED       logs/mine-skip-*,           nothing
+                                                                    mine-quiet*, mine-link*
+d  the unlit C on a slow line     MINOR              RESOLVED       logs/mine-*-nothing,        nothing to fix; the owner to be
+                                                                    mine-gz-*, mine-block-*,    told: the sky 9.1 s after the tap
+                                                                    loader/*.jpg, measure-*     on slow 4G (it was 8.3)
+e  "claim yours" by the words     MINOR              RESOLVED       logs/f8*.log, b7/claim-     as found: nothing. Found under
+                                                                    yours-*.jpg, label-*.jpg,   it, older than round 3: "claim
+                                                                    label-near.txt              yours" across other stars (MINOR)
+f  the knot on the desktop        MINOR              RESOLVED       knots/pairs-desk.*,         nothing
+                                                                    logs/all-taps-desk.log
+g  the console                    MINOR              RESOLVED       loader/preload-console.txt  nothing
+                                                                    and 245 recorded visits
+
+EVERYTHING STILL STANDING BETWEEN THIS BUILD AND THE OWNER'S BAR, WORST FIRST
+No blocker. Nothing major, at the owner's two sizes or anywhere I looked. Two minors.
+
+1. MINOR, both of the owner's sizes, older than round 3 and the same on the build the third look
+   judged — "claim yours" is written across neighbouring stars. A tap on the empty sky marks the
+   nearest empty star and writes "claim yours" under it (spec B9). In the empty sky that every visitor
+   finds, 25 of the 137 distinct labels at 1440x900 and 38 of the 113 at 390x844 lie across another
+   star of the same figure; on the phone at Virgo, the first station, one stands 23 px from the centre
+   of Cellestial's star with its last letters lost in the rings, and four begin 6 px from the screen's
+   left edge. With a whole figure claimed in the visitor's own browser the label goes to a star of
+   the next figure, far and small, and lies across that figure's points; at Virgo complete it lies
+   across Cellestial's star itself. It reads, except at the rings; it looks written over the star.
+   Evidence: b7/label-near.txt, label-near-desk.jpg, label-near-phone.jpg, label-on-stars.jpg,
+   logs/f8-all-every.log, old-label/b7/label-near.txt (the old build: the same counts). Fix:
+   src/experience/sky/claim-label.ts already moves the label to another side of its star when a
+   meaning is within 40 px (round 3). Give it two more things to keep off: the disc of every other
+   star on screen plus 4 px, and Cellestial's star to the full reach of its rings; try under, right,
+   left, above in that order and take the first whose box touches none (if none is free, the one
+   that covers least); and keep the words 16 px inside the screen. src/experience/sky/answer.ts
+   already measures the page for it. Check: tools/label-near.mjs (0 on another star at both sizes),
+   my copy of tools/f8-all.mjs (its "fourth look" line), then sky-same.mjs to show nothing else moved.
+2. MINOR, a phone held on its side only — two stars of Taurus (slot-77 and slot-64, its two feet)
+   stand 41% into each other at 844x390, 47% at 667x375, 49% at 740x360 and 35% at 932x430, both at
+   the build's least size (12 px across), both taking their own touch. The fixers knew and kept the
+   floor; a test now writes the exception into the rule. knots/pairs-sides.txt, pairs-sides.jpg. Fix:
+   src/experience/sky/layout.ts, where the knots are thinned: when both stars are at the floor and
+   still over a third, move each 1 to 1.5 px away from the other along the line between them (and
+   drop the "unless both are at the least size" from the test in sky-layout.test.ts). Check:
+   tools/pairs.mjs --sizes side,side667,side740,side932.
+
+FOR THE OWNER TO BE TOLD (not faults)
+- On slow 4G the sky now comes 9.1 s after the tap on the link; it was 8.3. The loader is now 7.3 s
+  to the eye on that line (it was 6.5 with a half-drawn C); the 0.7 to 0.8 s is what that costs.
+  LATE in src/experience/loader/timeline.ts is the place if he would sooner have the sky earlier.
+- Cellestial's star is 67 to 80 px across on a phone on its side, under the build's own floor of 84
+  (as on the short phone, already on his list); it stands clear and is the chief light.
+SEEN AND NOT COUNTED (specks of polish off the owner's sizes; the fixers named each): at 320x568
+Leo's three rows begin 8 px under the top of the screen; at 360x740 with Aries and Taurus both
+complete, Taurus's words can be made out far off, faint and 13 px high, 31 px from "the Lamb"
+(b7/rm-words-small-small.jpg); at 932x430 with Libra complete "claim yours" above slot-19 touches one
+of Libra's lines; a skip made 4.5 s into the loader on slow 4G on the phone gives the sky 0.2 s
+later than it used to. A key held down from before the page and repeating into it is taken for a
+skip (the fixers say; not tried here).
+Already on the owner's list or left on purpose, and not reported again: as the brief has them.
+
+VERDICT
+Round 3 put right what it set out to. Of the seven things the third look left, six are resolved as
+found: B7 on the short phones, the skip made before the script has arrived (28 of 28 early presses
+taken, none carried, none mistaken), the unlit C on a slow line (never half-drawn in 26 slow visits,
+the loader 7.0 to 7.5 s from the moment the C is seen in 46 of 46 first visits on every line and
+device tried, never under 6), "claim yours" beside the words, the knot on the desktop, and the
+console (nothing, on every path). The seventh, the phone held on its side, the one major, is
+resolved in everything that made it major: no star under the button at any of four sizes, 584 of 584
+touches taking their star, nothing jumping, the fall, reduced motion and the turn all right, B7 clear
+at all twelve figures; one pair of Taurus's stars still overlaps by more than a third there, a
+minor. And the owner's two sizes are what the third look ruled done: the loader's sheets are the
+same to the byte; the standing sky at 390x844 is the same to the pixel in 36 captures, and at
+1440x900 differs only in the two stars of Taurus that round 3 was told to thin; every suite passes
+with the third look's counts, the 36 new tests test what was built; the hand-off never loses the
+star (24 first visits, 40 skips, 24 returns), the fall has no cut, every star on the phone and the
+desktop takes its touch; the whole visit runs as it ran, frame for frame; the build, the tests, the
+lint and the type-check pass, the protected-systems diff prints nothing, the contact form, /admin
+and the /start links work. No rule on assets, copy, sound, social icons or sections is touched by
+round 3. So, by the owner's definition, at his two sizes: LOADING, THE SKY, THE FALL, THE ROOTS, THE
+CLOSE, THE CHROME, THE WARP, REDUCED MOTION and the page without script are done, as the third look
+ruled, and nothing in round 3 undid any of it. NOTHING MAJOR IS LEFT. What this look adds is one
+thing older than all three rounds that no look had measured: "claim yours" is often written across
+a neighbouring star (a quarter of the labels on the desktop, a third on the phone), and at Virgo on
+the phone into the rings of Cellestial's star. It is polish, it is where the spec puts the label,
+and it does not unmake a scene; it is also on every visitor's path, so I would give it the half day
+it needs before the owner looks, or name it to him. The site is ready for him.
