@@ -1,0 +1,52 @@
+desk, slow 4G, run 1: first contentful paint 1788 ms; the page showed the unlit C at 1778 ms; the loader live at 1611; its canvas first drawn at 3273; the sky at 9131 ms
+      asked  first byte  last byte   KB   priority   what
+          0    156        190      7  VeryHigh   the page
+        162    950        949     28  High       the font
+        163    327        441      5  VeryHigh   css index
+        174    350        548      8  VeryHigh   css Base
+        190    378       1757     60  High       c-unlit.webp
+        191   1422       1420     32  High       the page script
+       1611   1779       3223    102  Low        c-lit.webp
+       1611   1787       2801     52  Low        wordmark.webp
+       1611   2236       2694     25  Low        wordmark-matte.webp
+       3273   4199       4196    158  High       the sky script
+      THE UNLIT C's file is complete at 1757 ms; of the other three, complete BEFORE it: none
+desk, slow 4G, run 2: first contentful paint 1788 ms; the page showed the unlit C at 1776 ms; the loader live at 1613; its canvas first drawn at 3274; the sky at 9130 ms
+      asked  first byte  last byte   KB   priority   what
+          0    157        192      7  VeryHigh   the page
+        163    951        950     28  High       the font
+        163    328        443      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1422     32  High       the page script
+       1612   1780       3224    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2238       2695     25  Low        wordmark-matte.webp
+       3274   4199       4197    158  High       the sky script
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none
+phone, slow 4G, run 1: first contentful paint 1780 ms; the page showed the unlit C at 1771 ms; the loader live at 1612; its canvas first drawn at 3175; the sky at 9141 ms
+      asked  first byte  last byte   KB   priority   what
+          0    157        191      7  VeryHigh   the page
+        163    951        950     28  High       the font
+        164    329        442      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1422     32  High       the page script
+       1612   1780       3124    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2231       2688     25  Low        wordmark-matte.webp
+       3175   4099       4096    158  High       the sky script
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none
+phone, slow 4G, run 2: first contentful paint 1792 ms; the page showed the unlit C at 1784 ms; the loader live at 1613; its canvas first drawn at 3174; the sky at 9138 ms
+      asked  first byte  last byte   KB   priority   what
+          0    157        191      7  VeryHigh   the page
+        163    950        949     28  High       the font
+        163    329        442      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1421     32  High       the page script
+       1612   1780       3124    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2238       2695     25  Low        wordmark-matte.webp
+       3174   4099       4096    158  High       the sky script
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none

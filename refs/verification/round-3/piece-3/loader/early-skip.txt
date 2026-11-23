@@ -1,33 +1,55 @@
-phone, nothing, run 1: first paint 1784, the C shown 1770, the loader live 1610, nothing pressed; THE SKY AT 9140 ms
-phone, nothing, run 2: first paint 1788, the C shown 1778, the loader live 1612, nothing pressed; THE SKY AT 9131 ms
-phone, at-mount, run 1: first paint 1792, the C shown 1782, the loader live 1612, the tap at 1617 (4 ms after the loader is live); THE SKY AT 5952 ms, 4.34 s after the press
-phone, at-mount, run 2: first paint 1776, the C shown 1769, the loader live 1612, the tap at 1620 (8 ms after the loader is live); THE SKY AT 5939 ms, 4.32 s after the press
-phone, early, run 1: first paint 1780, the C shown 1771, the loader live 1612, the tap at 1006 (606 ms BEFORE the loader is live); THE SKY AT 5941 ms, 4.93 s after the press
-      the window's listeners: before the loader is live keydown 1, pointerdown 2; just after keydown 1, pointerdown 2; with the sky on keydown 1, pointerdown 2. Left on window.__loaderEarly for a second taker: []
-phone, early, run 2: first paint 1792, the C shown 1783, the loader live 1612, the tap at 1018 (594 ms BEFORE the loader is live); THE SKY AT 5937 ms, 4.92 s after the press
-      the window's listeners: before the loader is live keydown 1, pointerdown 2; just after keydown 1, pointerdown 2; with the sky on keydown 1, pointerdown 2. Left on window.__loaderEarly for a second taker: []
-phone, seen, run 1: first paint 1792, the C shown 1784, the loader live 1584, the tap at 2123 (539 ms after the loader is live); THE SKY AT 5938 ms, 3.81 s after the press
-phone, seen, run 2: first paint 1780, the C shown 1771, the loader live 1612, the tap at 2088 (477 ms after the loader is live); THE SKY AT 5941 ms, 3.85 s after the press
-phone, seen-late, run 1: first paint 1636, the C shown 1627, the loader live 2749, the tap at 1944 (804 ms BEFORE the loader is live); THE SKY AT 6097 ms, 4.15 s after the press
-phone, seen-late, run 2: first paint 1640, the C shown 1633, the loader live 2749, the tap at 1950 (799 ms BEFORE the loader is live); THE SKY AT 6103 ms, 4.15 s after the press
-phone, quiet, run 1: first paint 1056, the C shown 1780, the loader live 1612, the quiet keys at 1014 (598 ms BEFORE the loader is live); THE SKY AT 9133 ms, 8.12 s after the press
-phone, quiet, run 2: first paint 1032, the C shown 1768, the loader live 1613, the quiet keys at 1003 (610 ms BEFORE the loader is live); THE SKY AT 9139 ms, 8.14 s after the press
-phone: THE SKY, ms after navigation: nothing pressed 9131 to 9140; a skip at the mount 5939 to 5952; A SKIP BEFORE THE SCRIPT (1.0 s) 5937 to 5941; 0.3 s after the C is seen 5938 to 5941; the same with the script held back 6097 to 6103; Tab and modifiers before the script 9133 to 9139
-desk, nothing, run 1: first paint 1788, the C shown 1771, the loader live 1591, nothing pressed; THE SKY AT 9125 ms
-desk, nothing, run 2: first paint 1780, the C shown 1770, the loader live 1613, nothing pressed; THE SKY AT 9140 ms
-desk, at-mount, run 1: first paint 1780, the C shown 1769, the loader live 1613, the key at 1620 (8 ms after the loader is live); THE SKY AT 6039 ms, 4.42 s after the press
-desk, at-mount, run 2: first paint 1780, the C shown 1767, the loader live 1612, the key at 1619 (7 ms after the loader is live); THE SKY AT 6054 ms, 4.44 s after the press
-desk, early, run 1: first paint 1796, the C shown 1783, the loader live 1612, the key at 1018 (595 ms BEFORE the loader is live); THE SKY AT 6053 ms, 5.04 s after the press
-      the window's listeners: before the loader is live keydown 1, pointerdown 2; just after keydown 1, pointerdown 2; with the sky on keydown 1, pointerdown 2. Left on window.__loaderEarly for a second taker: []
-desk, early, run 2: first paint 1780, the C shown 1768, the loader live 1612, the key at 1004 (609 ms BEFORE the loader is live); THE SKY AT 6038 ms, 5.03 s after the press
-      the window's listeners: before the loader is live keydown 1, pointerdown 2; just after keydown 1, pointerdown 2; with the sky on keydown 1, pointerdown 2. Left on window.__loaderEarly for a second taker: []
-desk, seen, run 1: first paint 1796, the C shown 1783, the loader live 1612, the key at 2131 (520 ms after the loader is live); THE SKY AT 6053 ms, 3.92 s after the press
-desk, seen, run 2: first paint 1800, the C shown 1784, the loader live 1613, the key at 2102 (489 ms after the loader is live); THE SKY AT 6054 ms, 3.95 s after the press
-desk, seen-late, run 1: first paint 1636, the C shown 1621, the loader live 2756, the key at 1939 (817 ms BEFORE the loader is live); THE SKY AT 6208 ms, 4.27 s after the press
-desk, seen-late, run 2: first paint 1632, the C shown 1617, the loader live 2756, the key at 1935 (821 ms BEFORE the loader is live); THE SKY AT 6171 ms, 4.24 s after the press
-desk, quiet, run 1: first paint 1036, the C shown 1769, the loader live 1590, the quiet keys at 1004 (586 ms BEFORE the loader is live); THE SKY AT 9123 ms, 8.12 s after the press
-desk, quiet, run 2: first paint 1036, the C shown 1771, the loader live 1612, the quiet keys at 1006 (607 ms BEFORE the loader is live); THE SKY AT 9141 ms, 8.14 s after the press
-desk: THE SKY, ms after navigation: nothing pressed 9125 to 9140; a skip at the mount 6039 to 6054; A SKIP BEFORE THE SCRIPT (1.0 s) 6038 to 6053; 0.3 s after the C is seen 6053 to 6054; the same with the script held back 6171 to 6208; Tab and modifiers before the script 9123 to 9141
-reduced motion (the device setting): 0.7 s after navigation (the page's script not yet there) the window's listeners: keydown 0, pointerdown 1; window.__loaderEarly is undefined
-?scene=sky: 0.7 s after navigation (the page's script not yet there) the window's listeners: keydown 0, pointerdown 1; window.__loaderEarly is undefined
-the page's script never arrives (its request fails), a key pressed while the cover stood: after the load event the window's listeners: keydown 0, pointerdown 1; left to take: []; the scene: (none: the page without script); the cover's display: none
+phone, nothing, run 1: first paint 1788, the C shown 1776, the loader live 1611, nothing pressed; THE SKY AT 9129 ms
+phone, nothing, run 2: first paint 1792, the C shown 1783, the loader live 1613, nothing pressed; THE SKY AT 9137 ms
+phone, at-mount, run 1: first paint 1780, the C shown 1773, the loader live 1612, the tap at 1624 (11 ms after the loader is live); THE SKY AT 5943 ms, 4.32 s after the press
+phone, at-mount, run 2: first paint 1792, the C shown 1782, the loader live 1612, the tap at 1617 (4 ms after the loader is live); THE SKY AT 5919 ms, 4.30 s after the press
+phone, at-mount, run 3: first paint 1792, the C shown 1785, the loader live 1584, the tap at 1588 (4 ms after the loader is live); THE SKY AT 5922 ms, 4.33 s after the press
+phone, at-mount, run 4: first paint 1776, the C shown 1769, the loader live 1612, the tap at 1620 (8 ms after the loader is live); THE SKY AT 5939 ms, 4.32 s after the press
+phone, early, run 1: first paint 1792, the C shown 1783, the loader live 1612, the tap at 1018 (594 ms BEFORE the loader is live); THE SKY AT 5953 ms, 4.94 s after the press
+phone, early, run 2: first paint 1784, the C shown 1773, the loader live 1613, the tap at 1008 (605 ms BEFORE the loader is live); THE SKY AT 5944 ms, 4.94 s after the press
+phone, early, run 3: first paint 1784, the C shown 1774, the loader live 1613, the tap at 1008 (605 ms BEFORE the loader is live); THE SKY AT 5928 ms, 4.92 s after the press
+phone, early, run 4: first paint 1780, the C shown 1772, the loader live 1613, the tap at 1006 (607 ms BEFORE the loader is live); THE SKY AT 5942 ms, 4.94 s after the press
+phone, seen, run 1: first paint 1780, the C shown 1770, the loader live 1620, the tap at 2089 (469 ms after the loader is live); THE SKY AT 5957 ms, 3.87 s after the press
+phone, seen, run 2: first paint 1780, the C shown 1771, the loader live 1612, the tap at 2115 (502 ms after the loader is live); THE SKY AT 5924 ms, 3.81 s after the press
+phone, seen, run 3: first paint 1780, the C shown 1769, the loader live 1612, the tap at 2086 (474 ms after the loader is live); THE SKY AT 5939 ms, 3.85 s after the press
+phone, seen, run 4: first paint 1784, the C shown 1775, the loader live 1612, the tap at 2094 (481 ms after the loader is live); THE SKY AT 5928 ms, 3.83 s after the press
+phone, seen-late, run 1: first paint 1632, the C shown 1623, the loader live 2749, the tap at 1942 (807 ms BEFORE the loader is live); THE SKY AT 6093 ms, 4.15 s after the press
+phone, seen-late, run 2: first paint 1632, the C shown 1624, the loader live 2750, the tap at 1943 (807 ms BEFORE the loader is live); THE SKY AT 6094 ms, 4.15 s after the press
+phone, seen-late, run 3: first paint 1632, the C shown 1622, the loader live 2749, the tap at 1941 (808 ms BEFORE the loader is live); THE SKY AT 6109 ms, 4.17 s after the press
+phone, seen-late, run 4: first paint 1632, the C shown 1624, the loader live 2749, the tap at 1941 (808 ms BEFORE the loader is live); THE SKY AT 6111 ms, 4.17 s after the press
+phone, mount-late, run 1: first paint 1632, the C shown 1623, the loader live 2749, the tap at 2757 (8 ms after the loader is live); THE SKY AT 6093 ms, 3.34 s after the press
+phone, mount-late, run 2: first paint 1628, the C shown 1618, the loader live 2749, the tap at 2755 (6 ms after the loader is live); THE SKY AT 6088 ms, 3.33 s after the press
+phone, mount-late, run 3: first paint 1632, the C shown 1621, the loader live 2750, the tap at 2756 (6 ms after the loader is live); THE SKY AT 6109 ms, 3.35 s after the press
+phone, mount-late, run 4: first paint 1628, the C shown 1618, the loader live 2749, the tap at 2755 (6 ms after the loader is live); THE SKY AT 6105 ms, 3.35 s after the press
+phone, quiet, run 1: first paint 1060, the C shown 1768, the loader live 1613, the quiet keys at 1002 (611 ms BEFORE the loader is live); THE SKY AT 9138 ms, 8.14 s after the press
+phone, quiet, run 2: first paint 1036, the C shown 1772, the loader live 1613, the quiet keys at 1006 (606 ms BEFORE the loader is live); THE SKY AT 9142 ms, 8.14 s after the press
+phone, THE WINDOW'S LISTENERS in one early skip. Before the loader is live: keydown: the markup's script; pointerdown: not the page's + the markup's script. Just after it is live: keydown: index; pointerdown: not the page's + index. With the sky on: keydown: sky; pointerdown: not the page's + sky. Left on window.__loaderEarly for a second taker: []
+phone: THE SKY, ms after navigation: nothing pressed 9129 to 9137; a skip at the mount 5919 to 5943; A SKIP BEFORE THE SCRIPT (1.0 s) 5928 to 5953; 0.3 s after the C is seen 5924 to 5957; the same with the script held back 1.5 s 6093 to 6111 (a skip at THAT mount 6088 to 6109); Tab and modifiers before the script 9138 to 9142
+desk, nothing, run 1: first paint 1784, the C shown 1772, the loader live 1612, nothing pressed; THE SKY AT 9143 ms
+desk, nothing, run 2: first paint 1788, the C shown 1770, the loader live 1613, nothing pressed; THE SKY AT 9141 ms
+desk, at-mount, run 1: first paint 1796, the C shown 1784, the loader live 1583, the key at 1587 (4 ms after the loader is live); THE SKY AT 6021 ms, 4.43 s after the press
+desk, at-mount, run 2: first paint 1792, the C shown 1780, the loader live 1611, the key at 1614 (4 ms after the loader is live); THE SKY AT 6050 ms, 4.44 s after the press
+desk, at-mount, run 3: first paint 1780, the C shown 1769, the loader live 1612, the key at 1620 (7 ms after the loader is live); THE SKY AT 6056 ms, 4.44 s after the press
+desk, at-mount, run 4: first paint 1792, the C shown 1776, the loader live 1612, the key at 1615 (3 ms after the loader is live); THE SKY AT 6046 ms, 4.43 s after the press
+desk, early, run 1: first paint 1796, the C shown 1784, the loader live 1613, the key at 1002 (611 ms BEFORE the loader is live); THE SKY AT 6054 ms, 5.05 s after the press
+desk, early, run 2: first paint 1780, the C shown 1771, the loader live 1612, the key at 1005 (608 ms BEFORE the loader is live); THE SKY AT 6041 ms, 5.04 s after the press
+desk, early, run 3: first paint 1784, the C shown 1774, the loader live 1612, the key at 1008 (604 ms BEFORE the loader is live); THE SKY AT 6044 ms, 5.04 s after the press
+desk, early, run 4: first paint 1780, the C shown 1770, the loader live 1612, the key at 1004 (608 ms BEFORE the loader is live); THE SKY AT 6040 ms, 5.04 s after the press
+desk, seen, run 1: first paint 1800, the C shown 1789, the loader live 1583, the key at 2138 (555 ms after the loader is live); THE SKY AT 6043 ms, 3.90 s after the press
+desk, seen, run 2: first paint 1796, the C shown 1787, the loader live 1583, the key at 2138 (555 ms after the loader is live); THE SKY AT 6041 ms, 3.90 s after the press
+desk, seen, run 3: first paint 1780, the C shown 1768, the loader live 1612, the key at 2087 (475 ms after the loader is live); THE SKY AT 6039 ms, 3.95 s after the press
+desk, seen, run 4: first paint 1780, the C shown 1769, the loader live 1613, the key at 2087 (475 ms after the loader is live); THE SKY AT 6040 ms, 3.95 s after the press
+desk, seen-late, run 1: first paint 1644, the C shown 1635, the loader live 2764, the key at 1953 (811 ms BEFORE the loader is live); THE SKY AT 6189 ms, 4.24 s after the press
+desk, seen-late, run 2: first paint 1632, the C shown 1622, the loader live 2757, the key at 1940 (817 ms BEFORE the loader is live); THE SKY AT 6192 ms, 4.25 s after the press
+desk, seen-late, run 3: first paint 1636, the C shown 1624, the loader live 2756, the key at 1942 (814 ms BEFORE the loader is live); THE SKY AT 6194 ms, 4.25 s after the press
+desk, seen-late, run 4: first paint 1636, the C shown 1622, the loader live 2756, the key at 1940 (816 ms BEFORE the loader is live); THE SKY AT 6192 ms, 4.25 s after the press
+desk, mount-late, run 1: first paint 1632, the C shown 1620, the loader live 2756, the key at 2761 (5 ms after the loader is live); THE SKY AT 6192 ms, 3.43 s after the press
+desk, mount-late, run 2: first paint 1644, the C shown 1632, the loader live 2756, the key at 2766 (11 ms after the loader is live); THE SKY AT 6185 ms, 3.42 s after the press
+desk, mount-late, run 3: first paint 1644, the C shown 1632, the loader live 2757, the key at 2767 (10 ms after the loader is live); THE SKY AT 6186 ms, 3.42 s after the press
+desk, mount-late, run 4: first paint 1632, the C shown 1618, the loader live 2756, the key at 2769 (13 ms after the loader is live); THE SKY AT 6188 ms, 3.42 s after the press
+desk, quiet, run 1: first paint 1036, the C shown 1770, the loader live 1612, the quiet keys at 1005 (607 ms BEFORE the loader is live); THE SKY AT 9141 ms, 8.14 s after the press
+desk, quiet, run 2: first paint 1036, the C shown 1772, the loader live 1612, the quiet keys at 1007 (605 ms BEFORE the loader is live); THE SKY AT 9143 ms, 8.14 s after the press
+desk, THE WINDOW'S LISTENERS in one early skip. Before the loader is live: keydown: the markup's script; pointerdown: not the page's + the markup's script. Just after it is live: keydown: index; pointerdown: not the page's + index. With the sky on: keydown: sky; pointerdown: not the page's + sky. Left on window.__loaderEarly for a second taker: []
+desk: THE SKY, ms after navigation: nothing pressed 9141 to 9143; a skip at the mount 6021 to 6056; A SKIP BEFORE THE SCRIPT (1.0 s) 6040 to 6054; 0.3 s after the C is seen 6039 to 6043; the same with the script held back 1.5 s 6189 to 6194 (a skip at THAT mount 6185 to 6192); Tab and modifiers before the script 9141 to 9143
+reduced motion (the device setting): 0.7 s after navigation (the page's script not yet there) the window's listeners: keydown: none; pointerdown: not the page's; window.__loaderEarly is undefined
+?scene=sky: 0.7 s after navigation (the page's script not yet there) the window's listeners: keydown: none; pointerdown: not the page's; window.__loaderEarly is undefined
+the page's script never arrives (its request fails), a key pressed while the cover stood: after the load event the window's listeners: keydown: none; pointerdown: not the page's; left to take: []; the scene: (none: the page without script); the cover's display: none

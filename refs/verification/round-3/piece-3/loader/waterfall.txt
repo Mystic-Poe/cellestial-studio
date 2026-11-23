@@ -1,64 +1,52 @@
-desk, slow 4G, run 1: first contentful paint 1792 ms; the page showed the unlit C at 1781 ms; the loader live at 1562; its canvas first drawn at 3273; the sky at 9084 ms
+desk, slow 4G, run 1: first contentful paint 1788 ms; the page showed the unlit C at 1778 ms; the loader live at 1611; its canvas first drawn at 3273; the sky at 9131 ms
       asked  first byte  last byte   KB   priority   what
-          0    156        191      7  VeryHigh   the page
-        162    993        992     28  High       the font
-        162    320        405      5  VeryHigh   css index
-        174    349        541      8  VeryHigh   css Base
-        174    341        634     13  Low        chrome/c-logo.webp
-        184    370       1449     43  Low        roots/e4-node-alpha.webp
-        191    384       1763     60  High       c-unlit.webp
-        191   1371       1370     32  High       the page script
-        643    828       1885     44  Low>High   ui/brass-main.webp
-        643    835       1656     33  Low>High   ui/brass-dark.webp
-        645   1185       3173    117  Low        roots/soil-landscape-woven.avif
-        646    646        646      0  Low        image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%2026%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2026L0%2017.6L4%2017.9L8%2017.6L12%2017.6L16%2017.8L20%2017.2L24%2015.5L28%2014.4L32%2014.6L36%2015.2L40%2015.3L44%2015.8L48%2017.1L52%2017.9L56%2017.4L60%2016.9L64%2017.5L68%2018.4L72%2018.7L76%2018.7L80%2019.3L84%2019.6L88%2018.4L92%2016.6L96%2015.8L100%2015.7L104%2015.3L108%2014.9L112%2015.3L116%2016.2L120%2015.9L124%2014.8L128%2014.3L132%2014.7L136%2014.8L140%2014.4L144%2014.7L148%2015.5L152%2015.4L156%2013.9L160%2012.7L164%2012.4L168%2012.3L172%2012.0L176%2012.3L180%2013.8L184%2015.0L188%2015.1L192%2014.9L196%2015.7L200%2016.6L204%2017.0L208%2017.6L212%2019.0L216%2020.3L220%2020.2L224%2019.2L228%2018.6L232%2018.5L236%2017.8L240%2017.1L244%2017.6L248%2018.8L252%2019.0L256%2018.2L260%2017.9L264%2018.0L268%2017.8L272%2017.2L276%2017.4L280%2018.4L284%2018.7L288%2017.6L292%2016.4L296%2015.7L300%2014.7L304%2013.2L308%2012.6L312%2013.3L316%2014.0L320%2013.8L324%2013.3L328%2013.5L332%2013.8L336%2013.4L340%2013.3L344%2014.3L348%2015.7L352%2015.8L356%2015.1L360%2014.6L364%2014.2L368%2012.8L372%2011.3L376%2011.0L380%2011.6L384%2011.6L388%2010.8L392%2010.4L396%2010.4L400%209.7L404%208.5L408%208.2L412%209.1L416%209.5L420%208.8L424%208.1L428%207.7L432%206.6L436%204.7L440%203.3L444%203.4L448%203.8L452%203.6L456%203.4L460%203.8L464%204.2L468%203.7L472%203.4L476%204.5L480%206.1L484%207.1L488%207.5L492%208.3L496%208.9L500%208.2L504%207.1L508%207.0L512%207.8L516%208.3L520%208.3L524%208.8L528%209.6L532%209.5L536%208.7L540%208.7L544%209.8L548%2010.8L552%2011.0L556%2011.5L560%2012.2L564%2012.0L568%2010.5L572%209.2L576%209.1L580%209.2L584%208.8L588%208.7L592%209.4L596%209.9L600%209.3L604%208.6L608%209.2L612%2010.4L616%2011.2L620%2011.9L624%2013.2L628%2014.4L632%2014.2L636%2013.1L640%2012.8L644%2013.1L648%2013.0L652%2012.7L656%2013.2L660%2014.1L664%2014.0L668%2013.0L672%2012.4L676%2012.9L680%2013.3L684%2013.2L688%2013.7L692%2014.9L696%2015.1L700%2013.9L704%2012.5L708%2011.8L712%2011.2L716%2010.1L720%209.5L724%209.9L728%2010.2L732%209.3L736%208.2L740%208.1L744%208.6L748%208.6L752%209.0L756%2010.5L760%2012.2L764%2012.7L768%2012.2L772%2012.1L776%2012.5L780%2012.2L784%2011.8L788%2012.5L792%2013.8L796%2014.3L800%2013.9L804%2013.7L808%2014.3L812%2014.6L816%2014.6L820%2015.4L824%2017.3L828%2018.6L832%2018.6L836%2018.2L840%2018.3L844%2018.0L848%2016.9L852%2016.3L856%2016.8L860%2017.5L864%2017.0L868%2016.3L872%2016.2L876%2016.2L880%2015.7L884%2015.6L888%2016.8L892%2018.7L896%2019.6L900%2019.8L904%2020.2L908%2020.7L912%2020.2L916%2019.4L920%2019.7L924%2020.8L928%2021.3L932%2020.9L936%2020.8L940%2021.1L944%2020.8L948%2019.9L952%2020.0L956%2021.4L960%2022.5L964%2022.7L968%2022.7L972%2022.9L976%2022.5L980%2020.9L984%2019.5L988%2019.3L992%2019.3L996%2018.4L1000%2017.3L1004%2016.7L1008%2016.0L1012%2014.4L1016%2012.9L1020%2012.8L1024%2013.6L1028%2013.9L1032%2013.9L1036%2014.3L1040%2014.7L1044%2014.0L1048%2012.6L1052%2012.2L1056%2012.6L1060%2012.7L1064%2012.3L1068%2012.2L1072%2012.6L1076%2012.1L1080%2010.8L1084%2010.3L1088%2011.1L1092%2012.0L1096%2012.4L1100%2013.1L1104%2014.2L1108%2014.6L1112%2013.6L1116%2012.6L1120%2012.5L1124%2012.7L1128%2012.1L1132%2011.6L1136%2011.7L1140%2011.5L1144%2010.1L1148%208.5L1152%208.1L1156%208.5L1160%208.6L1164%208.8L1168%209.9L1172%2011.1L1176%2011.1L1180%2010.2L1184%2010.0L1188%2010.5L1192%2010.7L1196%2010.5L1200%2010.9L1204%2011.9L1208%2011.9L1212%2010.8L1216%2010.2L1220%2010.6L1224%2011.1L1228%2011.3L1232%2012.2L1236%2013.9L1240%2015.1L1244%2014.8L1248%2014.2L1252%2014.3L1256%2014.4L1260%2013.7L1264%2013.3L1268%2013.6L1272%2013.8L1276%2012.6L1280%2010.8L1284%209.8L1288%209.3L1292%208.4L1296%207.7L1300%208.3L1304%209.4L1308%209.5L1312%208.6L1316%208.1L1320%208.1L1324%207.6L1328%206.8L1332%206.9L1336%207.7L1340%207.8L1344%206.7L1348%205.8L1352%205.6L1356%205.2L1360%204.6L1364%204.9L1368%206.5L1372%207.9L1376%208.1L1380%208.1L1384%208.6L1388%208.9L1392%208.3L1396%208.0L1400%208.8L1404%209.6L1408%209.3L1412%208.2L1416%207.6L1420%207.2L1424%206.0L1428%205.0L1432%205.5L1436%206.8L1440%207.4L1444%207.3L1448%207.6L1452%208.2L1456%208.0L1460%207.3L1464%207.7L1468%209.0L1472%209.8L1476%209.6L1480%209.5L1484%209.8L1488%209.6L1492%208.8L1496%208.8L1500%2010.4L1504%2012.1L1508%2013.0L1512%2013.9L1516%2015.3L1520%2016.3L1524%2016.1L1528%2016.2L1532%2017.3L1536%2018.7L1540%2019.1L1544%2019.0L1548%2019.2L1552%2019.1L1556%2017.9L1560%2016.5L1564%2016.3L1568%2017.1L1572%2017.4L1576%2017.4L1580%2017.9L1584%2018.6L1588%2018.2L1592%2017.1L1596%2016.8L1600%2017.6L1600%2026Z%22%2F%3E%3C%2Fsvg%3E
-        647    647        647      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cmask id='a'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 34.3 28 18.3 43 34.3' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3Cmask id='b'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 31.4 28 15.4 43 31.4' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='56' height='48' fill='%23fff4de' fill-opacity='.8' mask='url(%23a)'/%3E%3Crect width='56' height='48' fill='%23180c02' fill-opacity='.66' mask='url(%23b)'/%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23100801' stroke-opacity='.74' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E
-        648    648        648      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E
-        649    649        649      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cfilter id='f' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='1.5'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='3.4' stroke-opacity='.4' filter='url(%23f)'/%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='1.2'/%3E%3Ccircle cx='13' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3Ccircle cx='43' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3C/g%3E%3Ccircle cx='13' cy='33' r='2'/%3E%3Ccircle cx='43' cy='33' r='2'/%3E%3C/svg%3E
-       1372   1558       1557      1  High       contact-submit.3fcaacsQ.js
-       1561   1736       3223    102  Low        c-lit.webp
-       1561   1744       2779     52  Low        wordmark.webp
-       1561   2252       2708     25  Low        wordmark-matte.webp
-       1561   2087       2086     11  High       roots.Dw8jJJXY.js
-       1561   2180       2179     12  High       fx.CctcWuSU.js
-       1562   2073       2072      1  High       chrome.uXABp9y1.js
-       3226   3381       3388      2  High       /favicon.ico
-       3272   4198       4196    158  High       the sky script
-       4203   4361       4467      6  Low        sky/b3-core.webp
-       4203   4369       5090     86  Low        sky/b3-ring.webp
-       4203   4376       4739     19  Low        sky/b4-empty.webp
-       4203   4383       4717     16  Low        sky/b4-station.webp
-       4203   4391       4775     21  Low        sky/b5-lit-add.webp
-      THE UNLIT C's file is complete at 1763 ms; of the other three, complete BEFORE it: none
-phone, slow 4G, run 1: first contentful paint 1792 ms; the page showed the unlit C at 1782 ms; the loader live at 1611; its canvas first drawn at 3175; the sky at 9136 ms
+          0    156        190      7  VeryHigh   the page
+        162    950        949     28  High       the font
+        163    327        441      5  VeryHigh   css index
+        174    350        548      8  VeryHigh   css Base
+        190    378       1757     60  High       c-unlit.webp
+        191   1422       1420     32  High       the page script
+       1611   1779       3223    102  Low        c-lit.webp
+       1611   1787       2801     52  Low        wordmark.webp
+       1611   2236       2694     25  Low        wordmark-matte.webp
+       3273   4199       4196    158  High       the sky script
+      THE UNLIT C's file is complete at 1757 ms; of the other three, complete BEFORE it: none
+desk, slow 4G, run 2: first contentful paint 1788 ms; the page showed the unlit C at 1776 ms; the loader live at 1613; its canvas first drawn at 3274; the sky at 9130 ms
+      asked  first byte  last byte   KB   priority   what
+          0    157        192      7  VeryHigh   the page
+        163    951        950     28  High       the font
+        163    328        443      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1422     32  High       the page script
+       1612   1780       3224    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2238       2695     25  Low        wordmark-matte.webp
+       3274   4199       4197    158  High       the sky script
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none
+phone, slow 4G, run 1: first contentful paint 1780 ms; the page showed the unlit C at 1771 ms; the loader live at 1612; its canvas first drawn at 3175; the sky at 9141 ms
       asked  first byte  last byte   KB   priority   what
           0    157        191      7  VeryHigh   the page
         163    951        950     28  High       the font
-        164    328        442      5  VeryHigh   css index
-        174    350        549      8  VeryHigh   css Base
-        175    342        642     13  Low        chrome/c-logo.webp
-        185    372       1436     43  Low        roots/e4-node-alpha.webp
-        191    379       1757     60  High       c-unlit.webp
-        191   1423       1422     32  High       the page script
-        651    836       1865     44  Low>High   ui/brass-main.webp
-        651    844       1665     33  Low>High   ui/brass-dark.webp
-        653   1143       2952     95  Low        roots/soil-portrait-woven.avif
-        654    654        654      0  Low        image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%2026%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2026L0%2017.6L4%2017.9L8%2017.6L12%2017.6L16%2017.8L20%2017.2L24%2015.5L28%2014.4L32%2014.6L36%2015.2L40%2015.3L44%2015.8L48%2017.1L52%2017.9L56%2017.4L60%2016.9L64%2017.5L68%2018.4L72%2018.7L76%2018.7L80%2019.3L84%2019.6L88%2018.4L92%2016.6L96%2015.8L100%2015.7L104%2015.3L108%2014.9L112%2015.3L116%2016.2L120%2015.9L124%2014.8L128%2014.3L132%2014.7L136%2014.8L140%2014.4L144%2014.7L148%2015.5L152%2015.4L156%2013.9L160%2012.7L164%2012.4L168%2012.3L172%2012.0L176%2012.3L180%2013.8L184%2015.0L188%2015.1L192%2014.9L196%2015.7L200%2016.6L204%2017.0L208%2017.6L212%2019.0L216%2020.3L220%2020.2L224%2019.2L228%2018.6L232%2018.5L236%2017.8L240%2017.1L244%2017.6L248%2018.8L252%2019.0L256%2018.2L260%2017.9L264%2018.0L268%2017.8L272%2017.2L276%2017.4L280%2018.4L284%2018.7L288%2017.6L292%2016.4L296%2015.7L300%2014.7L304%2013.2L308%2012.6L312%2013.3L316%2014.0L320%2013.8L324%2013.3L328%2013.5L332%2013.8L336%2013.4L340%2013.3L344%2014.3L348%2015.7L352%2015.8L356%2015.1L360%2014.6L364%2014.2L368%2012.8L372%2011.3L376%2011.0L380%2011.6L384%2011.6L388%2010.8L392%2010.4L396%2010.4L400%209.7L404%208.5L408%208.2L412%209.1L416%209.5L420%208.8L424%208.1L428%207.7L432%206.6L436%204.7L440%203.3L444%203.4L448%203.8L452%203.6L456%203.4L460%203.8L464%204.2L468%203.7L472%203.4L476%204.5L480%206.1L484%207.1L488%207.5L492%208.3L496%208.9L500%208.2L504%207.1L508%207.0L512%207.8L516%208.3L520%208.3L524%208.8L528%209.6L532%209.5L536%208.7L540%208.7L544%209.8L548%2010.8L552%2011.0L556%2011.5L560%2012.2L564%2012.0L568%2010.5L572%209.2L576%209.1L580%209.2L584%208.8L588%208.7L592%209.4L596%209.9L600%209.3L604%208.6L608%209.2L612%2010.4L616%2011.2L620%2011.9L624%2013.2L628%2014.4L632%2014.2L636%2013.1L640%2012.8L644%2013.1L648%2013.0L652%2012.7L656%2013.2L660%2014.1L664%2014.0L668%2013.0L672%2012.4L676%2012.9L680%2013.3L684%2013.2L688%2013.7L692%2014.9L696%2015.1L700%2013.9L704%2012.5L708%2011.8L712%2011.2L716%2010.1L720%209.5L724%209.9L728%2010.2L732%209.3L736%208.2L740%208.1L744%208.6L748%208.6L752%209.0L756%2010.5L760%2012.2L764%2012.7L768%2012.2L772%2012.1L776%2012.5L780%2012.2L784%2011.8L788%2012.5L792%2013.8L796%2014.3L800%2013.9L804%2013.7L808%2014.3L812%2014.6L816%2014.6L820%2015.4L824%2017.3L828%2018.6L832%2018.6L836%2018.2L840%2018.3L844%2018.0L848%2016.9L852%2016.3L856%2016.8L860%2017.5L864%2017.0L868%2016.3L872%2016.2L876%2016.2L880%2015.7L884%2015.6L888%2016.8L892%2018.7L896%2019.6L900%2019.8L904%2020.2L908%2020.7L912%2020.2L916%2019.4L920%2019.7L924%2020.8L928%2021.3L932%2020.9L936%2020.8L940%2021.1L944%2020.8L948%2019.9L952%2020.0L956%2021.4L960%2022.5L964%2022.7L968%2022.7L972%2022.9L976%2022.5L980%2020.9L984%2019.5L988%2019.3L992%2019.3L996%2018.4L1000%2017.3L1004%2016.7L1008%2016.0L1012%2014.4L1016%2012.9L1020%2012.8L1024%2013.6L1028%2013.9L1032%2013.9L1036%2014.3L1040%2014.7L1044%2014.0L1048%2012.6L1052%2012.2L1056%2012.6L1060%2012.7L1064%2012.3L1068%2012.2L1072%2012.6L1076%2012.1L1080%2010.8L1084%2010.3L1088%2011.1L1092%2012.0L1096%2012.4L1100%2013.1L1104%2014.2L1108%2014.6L1112%2013.6L1116%2012.6L1120%2012.5L1124%2012.7L1128%2012.1L1132%2011.6L1136%2011.7L1140%2011.5L1144%2010.1L1148%208.5L1152%208.1L1156%208.5L1160%208.6L1164%208.8L1168%209.9L1172%2011.1L1176%2011.1L1180%2010.2L1184%2010.0L1188%2010.5L1192%2010.7L1196%2010.5L1200%2010.9L1204%2011.9L1208%2011.9L1212%2010.8L1216%2010.2L1220%2010.6L1224%2011.1L1228%2011.3L1232%2012.2L1236%2013.9L1240%2015.1L1244%2014.8L1248%2014.2L1252%2014.3L1256%2014.4L1260%2013.7L1264%2013.3L1268%2013.6L1272%2013.8L1276%2012.6L1280%2010.8L1284%209.8L1288%209.3L1292%208.4L1296%207.7L1300%208.3L1304%209.4L1308%209.5L1312%208.6L1316%208.1L1320%208.1L1324%207.6L1328%206.8L1332%206.9L1336%207.7L1340%207.8L1344%206.7L1348%205.8L1352%205.6L1356%205.2L1360%204.6L1364%204.9L1368%206.5L1372%207.9L1376%208.1L1380%208.1L1384%208.6L1388%208.9L1392%208.3L1396%208.0L1400%208.8L1404%209.6L1408%209.3L1412%208.2L1416%207.6L1420%207.2L1424%206.0L1428%205.0L1432%205.5L1436%206.8L1440%207.4L1444%207.3L1448%207.6L1452%208.2L1456%208.0L1460%207.3L1464%207.7L1468%209.0L1472%209.8L1476%209.6L1480%209.5L1484%209.8L1488%209.6L1492%208.8L1496%208.8L1500%2010.4L1504%2012.1L1508%2013.0L1512%2013.9L1516%2015.3L1520%2016.3L1524%2016.1L1528%2016.2L1532%2017.3L1536%2018.7L1540%2019.1L1544%2019.0L1548%2019.2L1552%2019.1L1556%2017.9L1560%2016.5L1564%2016.3L1568%2017.1L1572%2017.4L1576%2017.4L1580%2017.9L1584%2018.6L1588%2018.2L1592%2017.1L1596%2016.8L1600%2017.6L1600%2026Z%22%2F%3E%3C%2Fsvg%3E
-        655    655        655      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cmask id='a'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 34.3 28 18.3 43 34.3' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3Cmask id='b'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23fff' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 31.4 28 15.4 43 31.4' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='56' height='48' fill='%23fff4de' fill-opacity='.8' mask='url(%23a)'/%3E%3Crect width='56' height='48' fill='%23180c02' fill-opacity='.66' mask='url(%23b)'/%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23100801' stroke-opacity='.74' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E
-        656    656        656      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cpath d='M13 33 28 17 43 33' fill='none' stroke='%23000' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E
-        656    656        656      0  Low        image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 48'%3E%3Cdefs%3E%3Cfilter id='f' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='1.5'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='3.4' stroke-opacity='.4' filter='url(%23f)'/%3E%3Cpath d='M13 33 28 17 43 33' stroke-width='1.2'/%3E%3Ccircle cx='13' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3Ccircle cx='43' cy='33' r='4.3' stroke-width='.7' stroke-opacity='.6'/%3E%3C/g%3E%3Ccircle cx='13' cy='33' r='2'/%3E%3Ccircle cx='43' cy='33' r='2'/%3E%3C/svg%3E
-       1423   1608       1608      1  High       contact-submit.3fcaacsQ.js
-       1611   1780       3124    102  Low        c-lit.webp
-       1611   1788       2802     52  Low        wordmark.webp
-       1611   2238       2694     25  Low        wordmark-matte.webp
-       1611   2102       2101     11  High       roots.Dw8jJJXY.js
-       1611   2180       2180     12  High       fx.CctcWuSU.js
-       1612   2059       2059      1  High       chrome.uXABp9y1.js
-       3127   3283       3289      2  High       /favicon.ico
+        164    329        442      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1422     32  High       the page script
+       1612   1780       3124    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2231       2688     25  Low        wordmark-matte.webp
        3175   4099       4096    158  High       the sky script
-       4103   4262       4368      6  Low        sky/b3-core.webp
-       4103   4270       4990     86  Low        sky/b3-ring.webp
-       4103   4277       4640     19  Low        sky/b4-empty.webp
-       4103   4284       4618     16  Low        sky/b4-station.webp
-       4103   4291       4675     21  Low        sky/b5-lit-add.webp
-      THE UNLIT C's file is complete at 1757 ms; of the other three, complete BEFORE it: none
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none
+phone, slow 4G, run 2: first contentful paint 1792 ms; the page showed the unlit C at 1784 ms; the loader live at 1613; its canvas first drawn at 3174; the sky at 9138 ms
+      asked  first byte  last byte   KB   priority   what
+          0    157        191      7  VeryHigh   the page
+        163    950        949     28  High       the font
+        163    329        442      5  VeryHigh   css index
+        174    351        549      8  VeryHigh   css Base
+        192    379       1758     60  High       c-unlit.webp
+        192   1423       1421     32  High       the page script
+       1612   1780       3124    102  Low        c-lit.webp
+       1612   1788       2802     52  Low        wordmark.webp
+       1612   2238       2695     25  Low        wordmark-matte.webp
+       3174   4099       4096    158  High       the sky script
+      THE UNLIT C's file is complete at 1758 ms; of the other three, complete BEFORE it: none

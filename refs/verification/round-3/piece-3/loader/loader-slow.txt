@@ -1,0 +1,12 @@
+desk, fast line: first paint 292 ms, loader live 37 ms, the sky 7609 ms after navigation; in the recording the first frame that is not black comes 333 ms after navigation and the sky 7291 ms after that
+desk, slow line: first paint 1784 ms, loader live 1611 ms, the sky 9143 ms after navigation; in the recording the first frame that is not black comes 16 ms after navigation and the sky 9142 ms after that
+phone, fast line: first paint 72 ms, loader live 37 ms, the sky 7493 ms after navigation; in the recording the first frame that is not black comes 126 ms after navigation and the sky 7382 ms after that
+phone, slow line: first paint 1784 ms, loader live 1611 ms, the sky 9129 ms after navigation; in the recording the first frame that is not black comes 18 ms after navigation and the sky 9126 ms after that
+desk, slow 4G, a key 300 ms after the first paint (the script not yet there), run 1: first paint 1780, loader live 1612, the key at 2132, the sky at 6040 ms: 3.91 s after it (an unskipped visit reaches the sky at about 8300 ms)
+desk, slow 4G, a key 300 ms after the first paint (the script not yet there), run 2: first paint 1780, loader live 1612, the key at 2146, the sky at 6042 ms: 3.90 s after it (an unskipped visit reaches the sky at about 8300 ms)
+desk, slow 4G, a key 300 ms after the loader goes live, run 1: first paint 1780, loader live 1612, the key at 1920, the sky at 6039 ms: 4.12 s after it (an unskipped visit reaches the sky at about 8300 ms)
+desk, slow 4G, a key 300 ms after the loader goes live, run 2: first paint 1780, loader live 1612, the key at 1920, the sky at 6023 ms: 4.10 s after it (an unskipped visit reaches the sky at about 8300 ms)
+phone, slow 4G, a tap 300 ms after the first paint (the script not yet there), run 1: first paint 1788, loader live 1612, the tap at 2128, the sky at 5951 ms: 3.82 s after it (an unskipped visit reaches the sky at about 8300 ms)
+phone, slow 4G, a tap 300 ms after the first paint (the script not yet there), run 2: first paint 1776, loader live 1613, the tap at 2129, the sky at 5939 ms: 3.81 s after it (an unskipped visit reaches the sky at about 8300 ms)
+phone, slow 4G, a tap 300 ms after the loader goes live, run 1: first paint 1804, loader live 1584, the tap at 1896, the sky at 5949 ms: 4.05 s after it (an unskipped visit reaches the sky at about 8300 ms)
+phone, slow 4G, a tap 300 ms after the loader goes live, run 2: first paint 1776, loader live 1613, the tap at 1919, the sky at 5938 ms: 4.02 s after it (an unskipped visit reaches the sky at about 8300 ms)
