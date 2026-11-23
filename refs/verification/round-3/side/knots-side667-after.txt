@@ -1,0 +1,6 @@
+THE KNOTS AND CELLESTIAL'S STAR at 667x375 (side667), after: http://localhost:4615
+Taurus slot-77/slot-64: 6.4 px apart, radii 6.0 and 6.0 px, 47% into each other
+Taurus slot-1/slot-54: 12.0 px apart, radii 8.7 and 8.7 px, 31% into each other
+Sagittarius slot-80/slot-33: 9.5 px apart, radii 6.8 and 6.8 px, 31% into each other
+Scorpius slot-41/slot-18: 12.4 px apart, radii 8.9 and 8.9 px, 31% into each other
+Virgo: Cellestial's star at 334,188, the middle of its outer band 31.9 px out; the nearest star slot-3: centre 47.1 px away, radius 10.2 px

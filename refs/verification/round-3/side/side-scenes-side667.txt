@@ -14,12 +14,12 @@ PASS     Scorpius upright again: 0 of 1000500 pixels differ from the first pictu
 PASS     Taurus upright again: 0 of 1000500 pixels differ from the first picture
 PASS     Leo upright again: 0 of 1000500 pixels differ from the first picture
 THE FALL from Libra at 667x375: 6 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
-FAIL     every star leaves from where it stood: 6 of 6 fall; the first step off its place is at most 0.3 px; steps upward 6; sideways at most 0.00 px
+PASS     every star leaves from where it stood: 6 of 6 fall; the first step off its place is at most 0.3 px; steps upward 0; sideways at most 0.00 px
 THE FALL from Sagittarius at 667x375: 25 stars; before the press they stand still (largest drift 0.000 px over 15 frames); scene after roots
-FAIL     every star leaves from where it stood: 25 of 25 fall; the first step off its place is at most 0.4 px; steps upward 25; sideways at most 0.00 px
+PASS     every star leaves from where it stood: 25 of 25 fall; the first step off its place is at most 0.4 px; steps upward 0; sideways at most 0.00 px
 REDUCED MOTION at 667x375: scene sky, data-motion off; the exit button shown at 198,291 271x52
 PASS     the still sky with the exit button there
 PASS     nothing moves: 0 pixels change in 1.5 s
 PASS     Virgo's 13 stars are all on screen, the nearest 54.1 px from the exit button
    console errors: none
-2 FAILED
+ALL PASS

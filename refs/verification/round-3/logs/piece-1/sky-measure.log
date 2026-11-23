@@ -266,3 +266,12 @@ THE CLAIM, sent for real, 390x844
 FRAME TIMES WITH THE BEADS, real GPU: ten bead runs in a row
   1440x900  10 runs, 541 frames: average 16.67 ms, 95th percentile 16.80 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 2, pixel ratio 1
   ok    desk: ten runs, smooth
+  390x844   10 runs, 559 frames: average 16.67 ms, 95th percentile 16.70 ms, worst 16.80 ms, 0 frames over 33 ms; governor at level 0 of 4, pixel ratio 2
+  ok    phone: ten runs, smooth
+
+FRAME TIMES WITH THE BEADS, 390x844, software rendering (SwiftShader), CPU slowed 4x
+  at rest, the governor settled and held at level 3 of 4, pixel ratio 1: average 17.61 ms, 95th percentile 33.30 ms, worst 33.40 ms, 5 frames over 33 ms
+  during 10 bead runs, 546 frames: average 18.19 ms, 95th percentile 33.30 ms, worst 50.00 ms, 17 frames over 33 ms
+  ok    the beads cost little: the frame time with them is within 25% of the frame time at rest: 17.61 ms at rest, 18.19 ms with the beads
+
+written to /home/poe/cellestial-studio/refs/sky/measure.txt
