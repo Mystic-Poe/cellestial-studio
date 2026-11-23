@@ -6,6 +6,9 @@
 // it is inside the screen, off the logo, the menu and the exit button, and off every other star.
 // Reduced motion, so that a tap marks its star at once (the placing is the same code either way; the
 // two taps the third look found are run in real time by f8.mjs and f8-close.mjs). Production build.
+// A touch 10 px under the logo is taken by the logo (the browser's own fat-finger rule) and the sky is
+// entered again at Virgo: so on a touch screen the grid begins 130 px down, and after every tap the
+// script checks that the visitor still stands at the station (a tap that moved him is a FAIL).
 //   node f8-all.mjs [--sizes desk,phone,small,short,side] [--pair]
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -41,12 +44,15 @@ for (const size of values.sizes.split(',')) {
 		const nMeanings = await o.page.evaluate(() => document.querySelectorAll('.sky-meaning:not([hidden])').length);
 		if (nMeanings < 1) { say(`FAIL  ${size} ${c.name}: no meaning is showing`); fails++; }
 		for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-			const pt = [30 + ((W - 60) * i) / (cols - 1), 100 + ((H - 100 - 100) * j) / (rows - 1)];
+			const top = SIZES[size].hasTouch ? 130 : 100;
+			const pt = [30 + ((W - 60) * i) / (cols - 1), top + ((H - top - 100) * j) / (rows - 1)];
 			const hit = await o.page.evaluate(([x, y]) => { const el = document.elementFromPoint(x, y); return el ? (el.closest('button, a, .sky-claim') ? 'a control' : 'sky') : 'nothing'; }, pt);
 			if (hit !== 'sky') continue;
 			taps++;
 			await o.pressAt(...pt);
 			await sleep(140);
+			const at = await o.page.evaluate(() => window.__cellestial.sky.hooks.flight().coord);
+			if (at !== k) { fails++; bad++; say(`FAIL  ${size} ${c.name}: the tap at ${pt.map(Math.round)} moved the visitor to station ${at + 1}; the rest of this station is not counted`); j = rows; break; }
 			const r = await o.page.evaluate((all) => {
 				const w = document.querySelector('[data-claim-words]');
 				if (!w || w.hidden || getComputedStyle(w).visibility === 'hidden') return null;

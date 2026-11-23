@@ -1,0 +1,1 @@
+PASS  side (844x390): 493 taps on empty sky at twelve stations, "claim yours" shown 462 times: under its star 462, above 0, right 0, left 0; the nearest to a meaning 42 px (Capricornus, tap at 520,130, slot-134, under); within 40 px: 0

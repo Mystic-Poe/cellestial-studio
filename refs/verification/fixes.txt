@@ -1720,3 +1720,23 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
   its star), Taurus tap 1 69 px, tap 3 60 px; the other 26 lines of f8.txt as before. f8-close:
   the letters 67 and 68 px apart, the star between them (b7/claim-yours-close-desk.jpg, looked at).
   pnpm test 155 of 155 (it was 148): src/experience/sky-meaning-place.test.ts, 7 new.
+
+  CUT OFF (22 Nov, 18:58), noted by the orchestrator. This piece's fixer was stopped by the
+  account's usage limit while its last suites were running. Its code is in and pushed (a0ed6a6:
+  2a and 2b; d165f03: 2c) and nothing of the site was left uncommitted. As it stands now: pnpm
+  test 155 of 155 (and the Workers' 15, 16, 14), pnpm typecheck and pnpm lint clean.
+  WHAT IT HAD RUN SINCE ITS LAST COMMIT (committed with this note as it left it):
+  - round-3/tools/f8-all.mjs (its own: every station, taps on empty sky all over the screen, how
+    far each "claim yours" stands from a meaning) and its runs: b7/f8-all.txt, f8-all-side.txt
+    ("PASS side (844x390): 493 taps ... within 40 px: 0"), claim-yours-moved-*.jpg; the same on
+    the build as it stood, before-2/b7/. Its last run (the touch sizes on the build as it stood)
+    was still going and is not complete.
+  - Suites on the dev server (round-3/logs/piece-2/): tools/sky/meaning.mjs 38 of 38;
+    meaning-all.mjs 24 of 24; tools/sky/measure.mjs was killed with the fixer after 189 of its
+    201 checks (its log ends in the runner's own crash, not in a failed check).
+  STILL TO DO: the f8-all runs at every size read and recorded; tools/sky/measure.mjs (201) run
+  to its end; pnpm build; two meanings watched being written (the desktop, a phone on its side);
+  reduced motion; the sheets in refs/sky/compare/ (the suites had rewritten the B7 and meaning
+  sheets; they were restored to the committed ones, since at the owner's two sizes no place had
+  moved: rebuild and commit them only if one has); the full record; the box ticked. The three
+  servers it left (4500, 4615, and the build as it stood on 4616) were stopped.
