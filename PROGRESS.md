@@ -14,9 +14,9 @@
 
 ## Exact next step
 
-**Round 3 is done (23 Nov): all four boxes are ticked. Next: a fourth, narrow look, which the
-orchestrator launches (item 1c); then the owner's decisions (item 2) and the question of
-publishing (item 3).** The third look (22 Nov; `refs/verification/third-look.txt`; its
+**Round 3 is done (23 Nov): all four boxes are ticked. The fourth, narrow look is running
+(item 1c: if no inspector is at work, launch its brief again); then the owner's decisions
+(item 2) and the question of publishing (item 3).** The third look (22 Nov; `refs/verification/third-look.txt`; its
 evidence and scripts under `refs/verification/third-look/`) ruled that at the owner's two
 sizes, 390×844 and 1440×900, every scene is done, with no blocker and nothing major; outside
 them it found one major (a phone held on its side) and six minors. Round 3 put those right,
@@ -262,10 +262,17 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
    other at the rule's floor) and Cellestial's star is 67 to 80 px; at 375×667 the star is 77
    px; three small things of B7 off the owner's sizes (360×740, 320×568, 932×430); on slow 4G
    the sky comes 9.1 s after navigation where it came at 8.3 s.
-1c. **A fourth, narrow look: NEXT.** At what round 3 changed, by an inspector who built none
-   of it: the phone on its side, the short phone, the slow line, "claim yours", and that the
-   owner's two sizes are what the third look ruled done. The orchestrator launches it now that
-   round 3's four boxes are ticked. Then the final report to the owner.
+1c. **A fourth, narrow look: RUNNING (launched 23 Nov).** At what round 3 changed, by an
+   inspector who built none of it: the phone on its side, the short phone, the slow line,
+   "claim yours", and that the owner's two sizes are what the third look ruled done. The brief
+   is `refs/briefs/fourth-look.js` (one inspector; it changes no file of the site). Its own
+   copy of the measuring scripts is `refs/verification/fourth-look/tools/` (round 3's, as its
+   fixers left them; they write under `refs/verification/fourth-look/`). It writes
+   `refs/verification/fourth-look.txt` as it goes and commits it. If it is cut off, launch the
+   same brief again: it reads its own report and goes on from where it stopped. When it is
+   done: a blocker or a major in its closing list is put right (one bounded fix, then that
+   item looked at again) before the build is called finished; otherwise the final report to
+   the owner.
 2. **Six things only the owner can decide** (the first five are the first inspector's
    findings, by number, in `refs/verification/business-and-code.txt`; the sixth came out of
    the close-out):
