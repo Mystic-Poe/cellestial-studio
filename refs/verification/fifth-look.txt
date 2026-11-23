@@ -62,7 +62,7 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
        slot-90 and slot-21, Taurus slot-69) are stars whose taps opened the panel outright before.
      No tap that gave a label before gives none now. No star is no longer offered in the empty sky.
 
-   WHAT I SAW (every label, both sizes: labels/desk-moved-1..2, desk-under-1..2, phone-moved-1..3,
+   WHAT I SAW (every label, both sizes, but desk-under-3.jpg's last four: labels/desk-moved-1..2, desk-under-1..2, phone-moved-1..3,
    phone-under-1..2; the doubtful ones at twice the size: zoom-phone-1.jpg)
      1440x900: all 37 that moved read as their own star's: tight beside it, clear of every disc, level
        with it or centred over it. The three corner ones (Scorpius 15, Sagittarius 80, Taurus 54) hang a
@@ -115,13 +115,15 @@ part 1, after 62 tool uses. Everything it had made is committed with this note, 
    Virgo complete: slot-25 (desktop), which could only be written across Cellestial's star, is no longer
    offered (the next nearest is): right. slot-88 (phone) is still offered and its words now stand above-left
    of it, clear of the rings, but ACROSS A LIT STAR OF VIRGO (finding 2 below).
+   (My measure also names phone Sagittarius slot-103 as 0.6 px "on Cellestial's core": that is the page's word
+   for where the star would be, nine stations off, where it is no longer drawn; nothing is there in the picture.)
    The third look's two taps in real time (f8.mjs, f8-close.mjs; logs/f8.log, f8-close.log): Aries 67 px and
    Taurus 68 px from the meaning's letters, as the fourth look had them; all 30 taps 41 px or more.
    label-on-stars.mjs, both builds side by side (b7/label-on-stars.jpg, looked at): Libra and Aries complete:
    the words now stand right of, or above-right of, the far star, over nothing bright; before they lay over
    the far figure's points. Virgo complete: off Cellestial's star at both sizes.
    WHAT THE WORDS DO NOW OVER THE FAR FIGURE (labels/zoom-complete-1.jpg, phone-complete-touching-1.jpg, looked
-   at; desk-complete-touching-1.jpg made, not opened): where they still touch, it is a dim point or two behind
+   at; desk-complete-touching-1.jpg, looked at later: the same on the desktop): where they still touch, it is a dim point or two behind
    a letter, and they read. What is NOT right is something else: the star offered is a speck, and the words,
    16 times its width, stand as near to a LIT star of the near figure as to their own: on the phone about ten
    of the 91 distinct labels read as a lit star's label ("claim yours" centred under Virgo's lit slot-3; level
