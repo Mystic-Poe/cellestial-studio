@@ -1783,3 +1783,48 @@ PIECE 2 — WHERE THE MEANINGS STAND (third look: closing list 1 (its part on B7
         375x667   11 of 12 as that file; the twelfth is Leo, above
         Of the 72 lines at the six upright sizes, 68 are the lines of before-2/; the four that
         moved are the four named under 2b.
+
+  THE OWNER'S TWO SIZES COME OUT AS THEY WENT IN (sky-same.mjs after --all, R3_OUT=piece-2, on
+  the final build, 2c in it, against the pictures taken of the build as piece 1 left it,
+  db9112b: round-3/piece-2/same/desk-before/, phone-before/; the PNGs are not committed, the
+  counts are: desk-after/sky-same.txt, phone-after/sky-same.txt)
+    1440x900  36 captures (twelve stations: the empty sky, eight stars lit, EVERY star lit with
+              all twelve meanings there): 0 pixels differ, console errors none
+    390x844   36 captures: 0 pixels differ, console errors none
+  One thing at 390x844 is not as it was, and is what 2c asks for (below): with Pisces complete,
+  a tap in the upper left of the sky.
+
+  2c RUN AGAIN ON THE FINAL BUILD (round-3/b7/)
+    f8.mjs (five figures complete, three taps each, 1440x900 and 390x844; f8.txt): the nearest
+      "claim yours" to a meaning 52 px on the desktop (Cancer, tap 2: as the third look had it)
+      and 49 px on the phone (Aries, tap 2: as it had it). Aries tap 1 and tap 3: 59 px (they
+      were 11 px, and on the meaning's box); Taurus tap 1 69 px (10), tap 3 60 px (on its box).
+      The other 26 lines are the third look's, number for number.
+    f8-close.mjs (f8-close.txt; claim-yours-close-desk.jpg, enlarged 3x, looked at): Aries, the
+      letters of "claim yours" at x 845..925, y 549..565, the meaning's at x 515..778, y 562..632:
+      67 px apart sideways (5 before). Taurus: 779..859 against 195..711: 68 px (6 before). In
+      the picture the label stands to the right of its own star, the star between it and the
+      line above "the Lamb" and "He comes to judge"; nobody reads the two as one line.
+    f8-all.mjs (one figure complete at a time, all twelve stations, a grid of taps over the
+      whole sky; f8-all.txt; before: before-2/b7/f8-all.txt and f8-all-phone-small-short-side.txt)
+                 taps  shown  under  right  nearest to a meaning   within 40 px   (before)
+      1440x900   849   849    825    24     42 px                  0              (40)
+      390x844    444   419    419    0      40 px                  0              (6)
+      360x740    431   410    399    11     40 px                  0              (12)
+      375x667    271   262    255    7      43 px                  0              (7)
+      844x390    493   462    462    0      42 px                  0              (199)
+      Every label that left its place under the star (42 of them: Aries and Taurus on the
+      desktop, Aries on the two smaller phones) is inside the screen, off the logo, the menu
+      and the exit button, and on no other star (17 px or more from the nearest). No tap moved
+      the visitor from his station. Looked at: claim-yours-moved-small.jpg (360x740, Aries:
+      "claim yours" to the right of its star, 48 px over "the Lamb").
+    WHAT IS DIFFERENT AT 390x844, AND WHY IT IS WANTED: Pisces complete, six of the 444 taps
+      (the upper left of the sky: 30,130 113,130 30,218 113,218 195,218 195,305). Before, the
+      beads ran to slot-23 and "claim yours" stood under it 39 px from "His people": 1 px inside
+      the 40 this piece asks for. No other side of that star is free (the figure's own stars),
+      so that star is no longer offered from those taps and the beads run to the next nearest
+      empty star, slot-99, whose label stands under it, 40 px clear. Nothing else at 390x844
+      and nothing at 1440x900 but the 24 taps at Aries and Taurus, which are 2c itself.
+    Which was chosen, and why: the LABEL gives way; no meaning moved for 2c (the twelve desktop
+    lines are the third look's, above). To keep 40 px from the label of every empty star on
+    screen the words at Aries and Taurus would have had to leave the places round 2 gave them.
