@@ -241,7 +241,7 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
      every run); new scripts in `refs/verification/round-3/tools/`: `early-skip.mjs`,
      `loader-waterfall.mjs`, `loader-first3.mjs`, `loader-canvas.mjs`, `nojs-same.mjs`,
      `static.mjs`; `clock-all.mjs` counts from the first sight.
-   - [ ] 4. **Close-out.** No file of the site changed and no check. Build, test (174 of 174),
+   - [x] 4. **Close-out** `bccef76`. No file of the site changed and no check. Build, test (174 of 174),
      lint and typecheck pass. `tools/run-all.sh`: thirteen tools, thirteen `exit 0`, the counts
      what they were before the round (loader 13 of 13 at each size, sky 201, meaning 38 and 24,
      roots 197 and 245, transitions 148, chrome 48). The third look's scripts on the production
