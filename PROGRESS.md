@@ -1815,3 +1815,10 @@ than two tries. All four were reached.
   the addendum. Built in a second working copy while the fifth look ran in this one. The fifth
   look finished at 15:55: no blocker, nothing major, three minors about "claim yours" in the
   tightest knots.
+- **23 Nov, 16:00 — a false alarm, set down so that nobody chases it again.** After the last
+  push GitHub's check for Cloudflare's build read "completed, failure" for two commits in a
+  row (`6e59ba0`, and the empty `4c614ba` pushed to try again), while the same commits built
+  from a clean clone here on Node 26 and Node 22. Minutes later both checks read "success" and
+  Cloudflare lists both deployments (22:59 and 23:01 UTC). The check flips: read it again
+  before believing a failure. The commit message of `4c614ba` says the build failed; it did
+  not.
