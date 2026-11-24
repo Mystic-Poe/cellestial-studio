@@ -12,12 +12,7 @@
 
 import type { ClaimsStore, SceneContext, ScreenCircle, SlotId } from '../contracts.ts';
 import type { SkyHooks } from './hooks.ts';
-
-/** Room kept between a panel and the screen's edges, and between it and its star. Pixels. */
-const MARGIN = 12;
-const GAP = 12;
-/** The logo and the menu button stand here: no panel is laid over them. */
-const CHROME = { w: 118, h: 88 } as const;
+import { placePanel, type Rect } from './panel-place.ts';
 
 type Kind = 'empty' | 'lit';
 
@@ -49,54 +44,37 @@ export function createPanels(hooks: SkyHooks, ctx: SceneContext): Panels {
 	let spent = false;
 	/** A press on the star whose panel it has just closed: the click that follows does not open it again. */
 	let toggled: SlotId | null = null;
-	const at = { x: Number.NaN, y: Number.NaN, r: Number.NaN, w: 0, h: 0 };
+	const at = { x: Number.NaN, y: Number.NaN, r: Number.NaN, w: 0, h: 0, exit: false };
 
 	const starButton = (slot: SlotId) =>
 		ui.querySelector<HTMLElement>(`button.sky-star[data-slot="${slot}"]:not([hidden])`);
 
 	// ── placing ──
-	/** Beside the star: to its right, else its left, else under it, else over it; always whole on the screen. */
+	const exitButton = ui.querySelector<HTMLElement>('[data-descend]');
+	/** The exit button where it stands, in the same pixels as the panel, or null while it is hidden. */
+	const exitRect = (): Rect | null => {
+		if (!exitButton || exitButton.hidden || exitButton.offsetParent === null) return null;
+		const b = exitButton.getBoundingClientRect();
+		const o = ui.getBoundingClientRect();
+		return {
+			left: b.left - o.left,
+			top: b.top - o.top,
+			right: b.right - o.left,
+			bottom: b.bottom - o.top,
+		};
+	};
+	/** Beside the star, whole on the screen, clear of the exit button (panel-place.ts). */
 	const place = (el: HTMLElement, c: ScreenCircle) => {
 		const { w, h } = hooks.layout();
-		const pw = el.offsetWidth;
-		const ph = el.offsetHeight;
-		const clampX = (x: number) => Math.min(Math.max(x, MARGIN), Math.max(MARGIN, w - MARGIN - pw));
-		const clampY = (y: number, x: number) => {
-			const top = x < CHROME.w ? Math.max(MARGIN, CHROME.h) : MARGIN;
-			return Math.min(Math.max(y, top), Math.max(top, h - MARGIN - ph));
-		};
-		const reach = c.r + GAP;
-		const tries: [number, number][] = [
-			[c.x + reach, c.y - ph / 2],
-			[c.x - reach - pw, c.y - ph / 2],
-			[c.x - pw / 2, c.y + reach],
-			[c.x - pw / 2, c.y - reach - ph],
-		];
-		let best: [number, number] | null = null;
-		let bestOver = Number.POSITIVE_INFINITY;
-		for (const [tx, ty] of tries) {
-			const x = clampX(tx);
-			const y = clampY(ty, x);
-			// How far the panel, once it is kept on the screen, reaches into the star's room;
-			// with the star's centre under it, how deep under.
-			const dx = Math.max(x - c.x, c.x - (x + pw));
-			const dy = Math.max(y - c.y, c.y - (y + ph));
-			const away =
-				dx > 0 || dy > 0 ? Math.hypot(Math.max(dx, 0), Math.max(dy, 0)) : Math.max(dx, dy);
-			const over = Math.max(0, reach - away);
-			if (over < bestOver - 0.5) {
-				bestOver = over;
-				best = [x, y];
-			}
-			if (over <= 0.5) break;
-		}
-		const [x, y] = best ?? [MARGIN, MARGIN];
+		const exit = exitRect();
+		const { x, y } = placePanel(c, { w: el.offsetWidth, h: el.offsetHeight }, { w, h }, exit);
 		el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
 		at.x = c.x;
 		at.y = c.y;
 		at.r = c.r;
 		at.w = w;
 		at.h = h;
+		at.exit = exit !== null;
 	};
 
 	const follow = () => {
@@ -110,7 +88,8 @@ export function createPanels(hooks: SkyHooks, ctx: SceneContext): Panels {
 			Math.abs(c.y - at.y) > 0.5 ||
 			Math.abs(c.r - at.r) > 0.5 ||
 			w !== at.w ||
-			h !== at.h
+			h !== at.h ||
+			(exitButton !== null && !exitButton.hidden) !== at.exit
 		)
 			place(s.el, c);
 	};

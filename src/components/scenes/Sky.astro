@@ -318,6 +318,8 @@ import Panel from '../ui/Panel.astro';
 		position: absolute;
 		top: 0;
 		left: 0;
+		/* Over the exit button, where a short screen leaves no room beside it. */
+		z-index: 2;
 		max-width: min(19rem, calc(100% - 1.5rem));
 		max-height: calc(100% - 1.5rem);
 		overflow: auto;
@@ -409,6 +411,7 @@ import Panel from '../ui/Panel.astro';
 	   so the kit's pressed state (a transform of its own) cannot move it. */
 	.sky-exit {
 		position: absolute;
+		z-index: 1;
 		inset: auto 0 0;
 		display: flex;
 		justify-content: center;
