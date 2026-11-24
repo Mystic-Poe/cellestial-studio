@@ -54,9 +54,10 @@ export const BEADS = {
 	edge: 1,
 	/**
 	 * How many runs can be on their way at once. A touch never puts out the beads of the
-	 * touch before it: it sends more. Past this many, the oldest run gives way.
+	 * touch before it: it sends more. Past this many, the oldest run gives way. (Twelve: the
+	 * first light sends to all of Virgo's empty stars in three waves, while the visitor taps.)
 	 */
-	runs: 6,
+	runs: 12,
 } as const;
 
 const EDGE = LATTICE.edge;

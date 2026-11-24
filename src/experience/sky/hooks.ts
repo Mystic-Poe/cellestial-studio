@@ -51,6 +51,12 @@ export interface SkyEvents {
 	rest: { layer: number; figure: number };
 	/** The stage has handed the sky to the visitor, or taken it back (setActive). */
 	active: { on: boolean };
+	/**
+	 * The sky has just been handed over by the loader, for the first time this visit (the
+	 * owner, 24 Nov): Cellestial's star pulses three times and its beads go to the stars of
+	 * the figure in front (answer.ts). Never with reduced motion. `layer` is that figure's.
+	 */
+	'first-light': { layer: number };
 	/** The camera is at, or has just flown through, a layer's station. */
 	station: { layer: number; figure: number };
 	/** All twelve figures have been at their stations. Fired once per page. */
@@ -120,6 +126,8 @@ export interface SkyHooks {
 	nearestEmptyStar(x: number, y: number): SlotId | null;
 	/** Extra light on one star, 0..1: its rim brightens and it swells a little. For the B9 pulse. */
 	setStarGlow(slot: SlotId, level: number): void;
+	/** Extra light on Cellestial's star, 0..1: its core swells a little and its halo brightens. */
+	setCorePulse(level: number): void;
 
 	/**
 	 * Pick a star as a click on its button does: an empty one is remembered (or takes the

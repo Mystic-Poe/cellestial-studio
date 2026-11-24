@@ -345,6 +345,7 @@ uniform sampler2D tCore;
 uniform vec3 uDisc;
 uniform vec3 uBlue;
 uniform float uAlpha;
+uniform float uPulse;
 uniform float uHalo;
 uniform float uTime;
 uniform float uIdle;
@@ -362,7 +363,9 @@ void main() {
 	pic *= 1.0 - smoothstep(2.85, 3.15, r);
 	float breath = 1.0 + uIdle * 0.07 * sin(uTime * 0.8) * smoothstep(0.95, 1.5, r);
 	float halo = uHalo * (exp(-r / 1.7) + 0.35 * exp(-r / 4.0)) * (1.0 - smoothstep(6.5, 9.0, r));
-	vec3 rgb = pic * breath + uBlue * halo;
+	// A pulse: the surface brightens and the halo swells out with it.
+	halo *= 1.0 + uPulse * (1.6 + 1.2 * smoothstep(1.0, 4.0, r));
+	vec3 rgb = pic * breath * (1.0 + 0.35 * uPulse) + uBlue * halo;
 	float hide = 1.0 - smoothstep(0.9, 0.99, r);
 	float fade = uAlpha * smoothstep(uNear.x, uNear.y, vDepth) * farFade(vDepth, uFar);
 	gl_FragColor = vec4(rgb * fade, hide * fade);

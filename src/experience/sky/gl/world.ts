@@ -123,6 +123,8 @@ export interface B3Frame {
 	ringAlpha: number;
 	/** The rings' size as a multiple of their rest size. */
 	ringScale: number;
+	/** Extra light on the core, 0..1 (the first light's three pulses). */
+	pulse: number;
 	/** Turn of each ring, radians. */
 	angles: readonly [number, number, number];
 	/** Extra squash of each ring: its tilt breathing. */
@@ -611,6 +613,7 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 			},
 			uBlue: { value: v3(BLUE_RGB) },
 			uAlpha: { value: 0 },
+			uPulse: { value: 0 },
 			uHalo: { value: LOOK.halo },
 			uTime,
 			uIdle,
@@ -789,8 +792,10 @@ export function createWorld(canvas: HTMLCanvasElement, comb: Honeycomb, first: L
 		}
 		const cu = core.material.uniforms;
 		cu.uCentre?.value.set(cx, cy, cz);
-		if (cu.uRadius) cu.uRadius.value = B3.ring * B3.core * size;
+		// A pulse swells the core a little; its light is the shader's (uPulse).
+		if (cu.uRadius) cu.uRadius.value = B3.ring * B3.core * size * (1 + 0.1 * b.pulse);
 		if (cu.uAlpha) cu.uAlpha.value = b.coreAlpha;
+		if (cu.uPulse) cu.uPulse.value = b.pulse;
 		core.renderOrder = order + 4;
 		for (const [i, ring] of B3.rings.entries()) {
 			for (const [mesh, at] of [

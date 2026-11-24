@@ -40,6 +40,49 @@ const TOO_NEAR = 0.6;
 const LAYERS_SEEN = 5;
 /** How long after the sky is entered, or the flight rests, the beads go by themselves. Milliseconds. */
 const AUTO_MS = { enter: 900, rest: 350 } as const;
+/**
+ * The first light (the owner, 24 Nov): when the loader has handed the sky over, Cellestial's
+ * star pulses three times, and each pulse sends beads to a third of the empty stars in front,
+ * the nearest first; each star they reach does the "claim yours" pulse for a while. Seconds.
+ */
+export const FIRST_LIGHT = {
+	/** After the hand-off, before the first pulse: the sky has settled. */
+	delay: 0.6,
+	pulses: 3,
+	/** From one pulse to the next. */
+	every: 1.3,
+	/** A pulse rises this long and dies away over about this long. */
+	rise: 0.18,
+	fall: 0.45,
+	/** The beads set off this long after a pulse begins: as it is brightest. */
+	send: 0.12,
+	/** A star the beads reach breathes this many times (PULSE.period each), then settles over `fade`. */
+	breaths: 2,
+	fade: 1.2,
+} as const;
+
+/** The light on Cellestial's star `t` seconds into the first light, 0..1. */
+export function firstLightPulse(t: number): number {
+	let level = 0;
+	for (let i = 0; i < FIRST_LIGHT.pulses; i++) {
+		const u = t - i * FIRST_LIGHT.every;
+		if (u < 0) continue;
+		const up = Math.min(1, u / FIRST_LIGHT.rise);
+		const rise = up * up * (3 - 2 * up);
+		const down = u <= FIRST_LIGHT.rise ? 1 : Math.exp(-(u - FIRST_LIGHT.rise) / FIRST_LIGHT.fall);
+		level = Math.max(level, rise * down);
+	}
+	return level;
+}
+
+/** The empty stars split into the waves of the first light: nearest the centre first. */
+export function firstLightWaves<T extends { d: number }>(stars: readonly T[]): T[][] {
+	const sorted = [...stars].sort((a, b) => a.d - b.d);
+	const per = Math.ceil(sorted.length / FIRST_LIGHT.pulses);
+	const waves: T[][] = [];
+	for (let i = 0; i < FIRST_LIGHT.pulses; i++) waves.push(sorted.slice(i * per, (i + 1) * per));
+	return waves;
+}
 
 export interface Answer {
 	readonly beads: Beads;
@@ -53,6 +96,10 @@ export interface Answer {
 	touch(x: number, y: number): Route | null;
 	/** Put out the beads, the pulse and the words. */
 	clear(): void;
+	/** Play the first light now, at the figure in front (the loader's hand-off does it by itself). False if it cannot. */
+	firstLight(): boolean;
+	/** True while the first light is playing. */
+	firstLightOn(): boolean;
 }
 
 export interface AnswerOptions {
@@ -339,6 +386,139 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		hooks.pick(pulse.slot);
 	});
 
+	// ── the first light ──
+	interface Glowing {
+		/** When the beads struck it, and when it began to settle (or NaN). */
+		t0: number;
+		end: number;
+	}
+	let first: {
+		t0: number;
+		layer: number;
+		waves: { slot: SlotId; star: PlanStar }[][];
+		/** The next wave to send. */
+		next: number;
+		release: () => void;
+	} | null = null;
+	const glowing = new Map<SlotId, Glowing>();
+
+	/** Settle every star the first light is lighting, from now. */
+	const settleGlows = (now: number) => {
+		for (const g of glowing.values()) if (!Number.isFinite(g.end)) g.end = now;
+	};
+
+	const stopFirstLight = () => {
+		const f = first;
+		if (!f) return;
+		first = null;
+		hooks.setCorePulse(0);
+		f.release();
+		settleGlows(hooks.time());
+		hooks.requestFrame();
+	};
+
+	const firstLight = (layer: number): boolean => {
+		stopFirstLight();
+		if (!hooks.isActive() || hooks.isStill()) return false;
+		const layout = hooks.layout();
+		const figure = mod(layer, FIGURES);
+		const plan = layout.plans[figure];
+		if (!plan) return false;
+		const centre = plan.stars[plan.epicentre];
+		const cx = centre?.x ?? 0;
+		const cy = centre?.y ?? 0;
+		// The empty stars of the figure in front that are on the screen: the first page only.
+		const candidates: { slot: SlotId; star: PlanStar; d: number }[] = [];
+		for (const star of plan.stars) {
+			if (!star.slot || hooks.isLit(star.slot)) continue;
+			const p = hooks.project(star.x, star.y, -layer * SPACING);
+			if (p.scale <= 0 || p.x < 0 || p.x > layout.w || p.y < 0 || p.y > layout.h) continue;
+			candidates.push({ slot: star.slot, star, d: Math.hypot(star.x - cx, star.y - cy) });
+		}
+		first = {
+			t0: hooks.time() + FIRST_LIGHT.delay,
+			layer,
+			waves: firstLightWaves(candidates),
+			next: 0,
+			release: hooks.keepAwake(),
+		};
+		hooks.requestFrame();
+		return true;
+	};
+
+	const sendWave = (f: NonNullable<typeof first>, wave: number) => {
+		const { x, y } = (() => {
+			const plan = hooks.layout().plans[mod(f.layer, FIGURES)];
+			const c = plan?.stars[plan.epicentre];
+			return { x: c?.x ?? 0, y: c?.y ?? 0 };
+		})();
+		for (const { slot, star } of f.waves[wave] ?? []) {
+			if (hooks.isLit(slot)) continue;
+			const route = planRoute(hooks.lattice.graph, slot, { x, y }, f.layer, star, f.layer);
+			if (!route) continue;
+			beads.start(route, () => {
+				// The visitor's own pulse on this star wins; a lit one has its own light.
+				if (hooks.isLit(slot) || pulse?.slot === slot) return;
+				glowing.set(slot, { t0: hooks.time(), end: Number.NaN });
+				hooks.requestFrame();
+			});
+		}
+	};
+
+	hooks.on('frame', ({ time }) => {
+		const f = first;
+		if (f) {
+			const t = time - f.t0;
+			hooks.setCorePulse(t > 0 ? firstLightPulse(t) : 0);
+			while (f.next < FIRST_LIGHT.pulses && t >= f.next * FIRST_LIGHT.every + FIRST_LIGHT.send) {
+				sendWave(f, f.next);
+				f.next++;
+			}
+			const last = (FIRST_LIGHT.pulses - 1) * FIRST_LIGHT.every;
+			if (f.next >= FIRST_LIGHT.pulses && t > last + FIRST_LIGHT.rise + 5 * FIRST_LIGHT.fall) {
+				first = null;
+				hooks.setCorePulse(0);
+				f.release();
+				// An ask waiting for a star: its beads go now, as they would have on entering.
+				auto(AUTO_MS.rest);
+			}
+		}
+		// The stars the first light reached: the "claim yours" pulse, then they settle.
+		for (const [slot, g] of glowing) {
+			if (pulse?.slot === slot) {
+				glowing.delete(slot);
+				continue;
+			}
+			const age = time - g.t0;
+			if (!Number.isFinite(g.end) && age >= FIRST_LIGHT.breaths * PULSE.period) g.end = time;
+			const wave = 0.5 + 0.5 * Math.cos((2 * Math.PI * age) / PULSE.period);
+			let level = PULSE.low + (PULSE.high - PULSE.low) * wave;
+			if (Number.isFinite(g.end)) {
+				const u = Math.min(1, (time - g.end) / FIRST_LIGHT.fade);
+				level *= 1 - u * u * (3 - 2 * u);
+				if (u >= 1) {
+					glowing.delete(slot);
+					if (!hooks.isLit(slot)) hooks.setStarGlow(slot, 0);
+					continue;
+				}
+			}
+			if (!hooks.isLit(slot)) hooks.setStarGlow(slot, level);
+		}
+	});
+
+	hooks.on('first-light', ({ layer }) => {
+		firstLight(layer);
+	});
+	// Whatever the visitor does first, the first light gives way to it: the waves still to
+	// come are not sent, and the stars it lit settle.
+	hooks.on('tap-empty', stopFirstLight);
+	hooks.on('star-pick', stopFirstLight);
+	hooks.on('dismiss', () => {
+		stopFirstLight();
+		for (const slot of glowing.keys()) if (!hooks.isLit(slot)) hooks.setStarGlow(slot, 0);
+		glowing.clear();
+	});
+
 	// ── what ends it ──
 	hooks.on('dismiss', clear);
 	hooks.on('star-pick', clear);
@@ -355,7 +535,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		window.clearTimeout(autoTimer);
 		autoTimer = window.setTimeout(() => {
 			if (!claims || claims.unplaced() === null) return;
-			if (!hooks.isActive() || opts.busy() || hooks.focused() || beads.run()) return;
+			if (!hooks.isActive() || opts.busy() || hooks.focused() || beads.run() || first) return;
 			const { mode } = hooks.flight();
 			if (mode === 'thrust' || mode === 'glide') return;
 			const { w, h } = hooks.layout();
@@ -382,5 +562,14 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		})
 		.catch(() => {});
 
-	return { beads, pulsing: () => pulse?.slot ?? null, run: () => beads.run(), plan, touch, clear };
+	return {
+		beads,
+		pulsing: () => pulse?.slot ?? null,
+		run: () => beads.run(),
+		plan,
+		touch,
+		clear,
+		firstLight: () => firstLight(FIGURES * Math.ceil(hooks.lattice.layer() / FIGURES)),
+		firstLightOn: () => first !== null,
+	};
 }

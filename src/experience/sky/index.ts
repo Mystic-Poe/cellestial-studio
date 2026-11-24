@@ -132,6 +132,25 @@ const REACH = 1.75;
 
 const IGNITE_TOTAL = IGNITE.fire + IGNITE.flash + IGNITE.settle;
 
+/** sessionStorage: the first light has played this visit. */
+const FIRST_LIGHT_KEY = 'cellestial:first-light';
+
+function readFirstLight(): boolean {
+	try {
+		return window.sessionStorage.getItem(FIRST_LIGHT_KEY) === '1';
+	} catch {
+		return false;
+	}
+}
+
+function writeFirstLight(): void {
+	try {
+		window.sessionStorage.setItem(FIRST_LIGHT_KEY, '1');
+	} catch {
+		// Blocked storage: it may play again on a return this visit; no harm.
+	}
+}
+
 function readRound(): boolean {
 	try {
 		return window.sessionStorage.getItem(ROUND_KEY) === '1';
@@ -269,6 +288,10 @@ export const mount: MountSky = (ctx) => {
 	const wake = schedule;
 
 	// ── the hand-off from the loader ──
+	/** The loader primed the sky and it has not been handed to the visitor since. */
+	let primed = false;
+	/** Extra light on Cellestial's star (the first light's pulses), 0..1. */
+	let corePulse = 0;
 	let introAt: ScreenCircle | null = null;
 	let introT = 1;
 	let introHold = 0;
@@ -857,6 +880,7 @@ export const mount: MountSky = (ctx) => {
 			coreAlpha: 1,
 			ringAlpha: 1,
 			ringScale: 1,
+			pulse: 0,
 			angles: [0, 0, 0],
 			tilts: [1, 1, 1],
 		},
@@ -932,6 +956,7 @@ export const mount: MountSky = (ctx) => {
 		b3.coreAlpha = coreAlpha;
 		b3.ringAlpha = ringAlpha;
 		b3.ringScale = ringScale;
+		b3.pulse = still || fall || fallen ? 0 : corePulse;
 		b3.angles = angles;
 		b3.tilts = tilts;
 		// B3 stands in every Virgo layer; only the next one ahead can be in sight.
@@ -1192,6 +1217,10 @@ export const mount: MountSky = (ctx) => {
 			}
 			return best;
 		},
+		setCorePulse(level) {
+			corePulse = clamp(level);
+			requestFrame();
+		},
 		setStarGlow(slot, glow) {
 			const v = clamp(glow);
 			if (v > 0) askedGlow.set(slot, v);
@@ -1349,6 +1378,14 @@ export const mount: MountSky = (ctx) => {
 				emitter.emit('dismiss', { reason: 'inactive' });
 			}
 			emitter.emit('active', { on });
+			// The first time the loader hands the sky over this visit: the first light.
+			if (on && primed) {
+				primed = false;
+				if (!still && !readFirstLight()) {
+					writeFirstLight();
+					emitter.emit('first-light', { layer: FIGURES * Math.ceil(nearLayer() / FIGURES) });
+				}
+			}
 			governor.reset();
 			last = -1;
 			requestFrame();
@@ -1392,6 +1429,7 @@ export const mount: MountSky = (ctx) => {
 		},
 
 		introPrime(at) {
+			primed = true;
 			introAt = { x: at.x, y: at.y, r: at.r };
 			introT = 0;
 			emitter.emit('dismiss', { reason: 'reset' });
