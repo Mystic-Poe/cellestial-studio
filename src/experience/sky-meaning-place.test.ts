@@ -599,3 +599,23 @@ test('steady in flight: while the sky moves the words keep their place; they giv
 	// Words that have no place yet take the first free one, moving or not.
 	assert.equal(placeLabel(STAR, scene([], [STAR, deep]), null, true)?.side, 'under');
 });
+
+test('the first light: words by one star keep 8 px from the words by another', () => {
+	const star: Disc = { x: 700, y: 400, r: 5 };
+	const alone = placeLabel(star, scene([]));
+	assert.equal(alone?.side, 'under');
+	// Other words where these would stand under the star: they stand beside it instead.
+	const other = alone?.box as Box;
+	const placed = placeLabel(star, { ...scene([]), words: [other] });
+	assert.ok(placed, 'there is room beside it');
+	assert.notEqual(placed.side, 'under');
+	assert.ok(
+		boxGap(placed.box, other) >= LABEL.apart,
+		`${boxGap(placed.box, other).toFixed(1)} px apart`,
+	);
+	// Words all round it: no place, and the star only glows.
+	const ring = LABEL_SPOTS.map((s) => labelAt(star, s.side, 1440, s.slide).box);
+	assert.equal(placeLabel(star, { ...scene([]), words: ring }), null);
+	// Without other words the rule is as it was.
+	assert.deepEqual(placeLabel(star, { ...scene([]), words: [] }), alone);
+});

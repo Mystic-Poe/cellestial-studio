@@ -16,8 +16,10 @@
 // NEVER, in any place: across Cellestial's star or inside the reach of its
 // turning rings; within 40 px of a meaning's words; outside the screen, or
 // with their letters nearer than 16 px to its left or right side; on the
-// logo, the menu or the exit button. A star with no place that keeps all of
-// that is shown without the words, and is not offered by a tap.
+// logo, the menu or the exit button; within 8 px of other words "claim
+// yours" that are showing (the first light writes them by several stars, one
+// after another). A star with no place that keeps all of that is shown
+// without the words, and is not offered by a tap.
 //
 // FREE is a place that keeps all of that and whose box stands 4 px clear of
 // the disc of every other star that is drawn. The far figures' POINTS (a
@@ -119,7 +121,7 @@ export const LABEL_SPOTS: readonly LabelSpot[] = [
  * is also how much of the stars words that have a place may come to cover before they
  * leave it, and what the place under the star is forgiven when no place is free; and how
  * far in the middle of the words is held from a side of the screen when they stand under
- * or above their star.
+ * or above their star; and how far apart two showings of the words keep.
  */
 export const LABEL = {
 	half: 48,
@@ -132,6 +134,7 @@ export const LABEL = {
 	dot: 3,
 	point: 30,
 	hold: 56,
+	apart: 8,
 } as const;
 
 /** The logo and the menu button (16..118 by 12..90 on every screen), with a little air. */
@@ -147,6 +150,8 @@ export interface LabelScene {
 	meanings: readonly Box[];
 	/** Every star that is drawn, the words' own among them (it is skipped), and Cellestial's star as the reach of its rings. */
 	stars: () => readonly Disc[];
+	/** The boxes of other words "claim yours" that are showing, if any: these words keep `LABEL.apart` from them. */
+	words?: readonly Box[];
 }
 
 export interface LabelPlace extends LabelSpot {
@@ -240,6 +245,7 @@ function allowed(box: Box, star: Disc, scene: LabelScene): boolean {
 	};
 	if (overlaps(box, exit)) return false;
 	if (!clearOfMeanings(box, scene.meanings)) return false;
+	for (const w of scene.words ?? []) if (boxGap(box, w) < LABEL.apart) return false;
 	for (const s of scene.stars()) {
 		if (s.rings && !own(s, star) && discGap(box, s) < 0) return false;
 	}

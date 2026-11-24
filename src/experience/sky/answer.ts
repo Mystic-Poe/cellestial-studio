@@ -20,6 +20,7 @@ import {
 	type Box,
 	type Disc,
 	hadPlace,
+	LABEL,
 	type LabelScene,
 	type LabelSpot,
 	placeLabel,
@@ -59,7 +60,27 @@ export const FIRST_LIGHT = {
 	/** A star the beads reach breathes this many times (PULSE.period each), then settles over `fade`. */
 	breaths: 2,
 	fade: 1.2,
+	/**
+	 * The words "claim yours" by the stars it reaches (the owner, 24 Nov: "space out the timing
+	 * so it's not all at once"): one star's words after another's, in the order the beads
+	 * arrive, never two within `every` of each other. Each is struck white-hot, cools into the
+	 * brass and is gone, over `life`, and its star flares as they are struck. Words that find
+	 * no room (other words, a meaning, the screen's edge) wait up to `wait` for it; after that
+	 * their star only glows. When the visitor does something first they go, over `out`.
+	 */
+	words: { every: 0.35, life: 1.15, wait: 1.2, out: 0.25 },
 } as const;
+
+/** When the first light writes the words by each star, from when its beads arrive: one after another, `every` apart at least. */
+export function firstLightWordTimes(arrivals: readonly number[]): number[] {
+	const times: number[] = [];
+	let last = Number.NEGATIVE_INFINITY;
+	for (const at of [...arrivals].sort((a, b) => a - b)) {
+		last = Math.max(at, last + FIRST_LIGHT.words.every);
+		times.push(last);
+	}
+	return times;
+}
 
 /** The light on Cellestial's star `t` seconds into the first light, 0..1. */
 export function firstLightPulse(t: number): number {
@@ -402,6 +423,134 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	} | null = null;
 	const glowing = new Map<SlotId, Glowing>();
 
+	// The words of the first light: "claim yours" by the stars it reached, one after another.
+	interface Flash {
+		slot: SlotId;
+		el: HTMLElement;
+		/** When they were struck. */
+		t0: number;
+		spot: LabelSpot | null;
+		/** Where they stand now, or null while they have no place. */
+		box: Box | null;
+	}
+	const flashes: Flash[] = [];
+	/** The stars the beads have reached whose words are still to come, in the order they were reached. */
+	const waiting: { slot: SlotId; at: number }[] = [];
+	let lastFlash = Number.NEGATIVE_INFINITY;
+	let flashHold: (() => void) | null = null;
+	/** True once the visitor has done something first: the beads still on their way write no more words. */
+	let hushed = false;
+
+	const letGo = () => {
+		if (flashes.length || waiting.length) return;
+		flashHold?.();
+		flashHold = null;
+	};
+	const dropFlash = (f: Flash) => {
+		const i = flashes.indexOf(f);
+		if (i >= 0) flashes.splice(i, 1);
+		f.el.remove();
+		letGo();
+	};
+	/** Put out the words of the first light, and those still to come: at once, or quickly fading. */
+	const endFlashes = (fade: boolean) => {
+		hushed = true;
+		waiting.length = 0;
+		for (const f of [...flashes]) {
+			if (!fade) dropFlash(f);
+			else if (f.el.dataset.out === undefined) {
+				f.el.dataset.out = '';
+				window.setTimeout(() => dropFlash(f), FIRST_LIGHT.words.out * 1000);
+			}
+		}
+		letGo();
+	};
+
+	/** The other words showing: the first light's, and the visitor's own. */
+	const wordsBesides = (f: Flash): Box[] => {
+		const boxes: Box[] = [];
+		for (const o of flashes) if (o !== f && o.box) boxes.push(o.box);
+		if (pulse && words && !words.hidden && Number.isFinite(wordsAt.x)) {
+			const { x, y } = wordsAt;
+			boxes.push({ x0: x - LABEL.half, y0: y, x1: x + LABEL.half, y1: y + LABEL.height });
+		}
+		return boxes;
+	};
+
+	/** Stand the words by their star by the same rule as the visitor's own; false if they have no place. */
+	const placeFlash = (f: Flash, view: LabelScene, moving: boolean): boolean => {
+		const c = hooks.starCircle(f.slot);
+		const place = c ? placeLabel(c, { ...view, words: wordsBesides(f) }, f.spot, moving) : null;
+		if (!place) {
+			f.el.style.visibility = 'hidden';
+			f.box = null;
+			return false;
+		}
+		f.spot = { side: place.side, slide: place.slide };
+		f.box = place.box;
+		// Placed by `translate`: the stylesheet's `transform` is the strike's swell.
+		f.el.style.translate = `calc(${place.x.toFixed(1)}px - 50%) ${place.y.toFixed(1)}px`;
+		f.el.style.visibility = '';
+		return true;
+	};
+
+	const strike = (slot: SlotId, now: number, view: LabelScene, moving: boolean): boolean => {
+		if (!words) return false;
+		const el = document.createElement('p');
+		el.className = 'sky-claim sky-claim--flash';
+		el.dataset.slot = slot;
+		el.dataset.glow = words.dataset.glow ?? '';
+		el.textContent = words.textContent;
+		// The stars' own buttons are what is read; these are seen.
+		el.setAttribute('aria-hidden', 'true');
+		el.style.setProperty('--life', `${FIRST_LIGHT.words.life}s`);
+		const f: Flash = { slot, el, t0: now, spot: null, box: null };
+		if (!placeFlash(f, view, moving)) return false;
+		// As the visitor's own words are, they are their star: a click on them is a click on it.
+		el.addEventListener('click', (e) => {
+			e.preventDefault();
+			if (el.dataset.out === undefined) hooks.pick(slot);
+		});
+		words.after(el);
+		flashes.push(f);
+		flashHold ??= hooks.keepAwake();
+		return true;
+	};
+
+	hooks.on('frame', ({ time }) => {
+		if (!flashes.length && !waiting.length) return;
+		const { mode } = hooks.flight();
+		const moving = mode === 'thrust' || mode === 'glide';
+		const view = scene();
+		for (const f of [...flashes]) {
+			const done = time - f.t0 >= FIRST_LIGHT.words.life;
+			if (done || hooks.isLit(f.slot) || pulse?.slot === f.slot) dropFlash(f);
+			else placeFlash(f, view, moving);
+		}
+		for (let i = 0; i < waiting.length; ) {
+			const w = waiting[i] as (typeof waiting)[number];
+			const gone = hooks.isLit(w.slot) || pulse?.slot === w.slot;
+			if (gone || time - w.at > FIRST_LIGHT.words.wait) waiting.splice(i, 1);
+			else i++;
+		}
+		// The next words when it is time: by the first star waiting that has room for them.
+		if (time - lastFlash >= FIRST_LIGHT.words.every) {
+			for (const [i, w] of waiting.entries()) {
+				if (!strike(w.slot, time, view, moving)) continue;
+				waiting.splice(i, 1);
+				lastFlash = time;
+				// The star flares as its words are struck, and breathes on from there.
+				const g = glowing.get(w.slot);
+				if (g) {
+					g.t0 = time;
+					g.end = Number.NaN;
+				}
+				break;
+			}
+		}
+		letGo();
+	});
+
 	/** Settle every star the first light is lighting, from now. */
 	const settleGlows = (now: number) => {
 		for (const g of glowing.values()) if (!Number.isFinite(g.end)) g.end = now;
@@ -435,6 +584,7 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 			if (p.scale <= 0 || p.x < 0 || p.x > layout.w || p.y < 0 || p.y > layout.h) continue;
 			candidates.push({ slot: star.slot, star, d: Math.hypot(star.x - cx, star.y - cy) });
 		}
+		hushed = false;
 		first = {
 			t0: hooks.time() + FIRST_LIGHT.delay,
 			layer,
@@ -460,6 +610,10 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 				// The visitor's own pulse on this star wins; a lit one has its own light.
 				if (hooks.isLit(slot) || pulse?.slot === slot) return;
 				glowing.set(slot, { t0: hooks.time(), end: Number.NaN });
+				if (!hushed) {
+					waiting.push({ slot, at: hooks.time() });
+					flashHold ??= hooks.keepAwake();
+				}
 				hooks.requestFrame();
 			});
 		}
@@ -513,8 +667,14 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 	// come are not sent, and the stars it lit settle.
 	hooks.on('tap-empty', stopFirstLight);
 	hooks.on('star-pick', stopFirstLight);
+	hooks.on('tap-empty', () => endFlashes(true));
+	hooks.on('star-pick', () => endFlashes(true));
+	hooks.on('active', ({ on }) => {
+		if (!on) endFlashes(false);
+	});
 	hooks.on('dismiss', () => {
 		stopFirstLight();
+		endFlashes(false);
 		for (const slot of glowing.keys()) if (!hooks.isLit(slot)) hooks.setStarGlow(slot, 0);
 		glowing.clear();
 	});
@@ -568,7 +728,10 @@ export function createAnswer(hooks: SkyHooks, opts: AnswerOptions): Answer {
 		run: () => beads.run(),
 		plan,
 		touch,
-		clear,
+		clear: () => {
+			clear();
+			endFlashes(false);
+		},
 		firstLight: () => firstLight(FIGURES * Math.ceil(hooks.lattice.layer() / FIGURES)),
 		firstLightOn: () => first !== null,
 	};
