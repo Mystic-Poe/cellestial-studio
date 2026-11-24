@@ -11,8 +11,8 @@ ok   showGrown(): the network is drawn and all five nodes are lit — 346093 lit
 ok   setActive(false): the ground is bare again — 0 samples, 0 nodes
 ok   setActive(true) alone shows nothing (the arrival grows it)
      the network: 1950 threads, 32156 points, 1922 joints, in 6 bands
-ok   growFrom(x) resolves once the light has passed the first node — 443 ms after an impact at 30% of the width, 1 node(s) lit then; nodes light at 233, 794, 1348, 1920, 2451 ms; all grown at 4115 ms
-ok   growFrom(x) goes on to the whole network — 5 nodes, 346093 samples (showGrown: 346093), 6303 ms on this machine
+ok   growFrom(x) resolves once the light has passed the first node — 430 ms after an impact at 30% of the width, 1 node(s) lit then; nodes light at 233, 794, 1348, 1920, 2451 ms; all grown at 4115 ms
+ok   growFrom(x) goes on to the whole network — 5 nodes, 346093 samples (showGrown: 346093), 6073 ms on this machine
 ok   showGrown() after another arrival draws the same network — 346093 samples
 ok   five nodes, each a real button
 ok   node 1 is named "Site" — 1 button(s) by that name
@@ -36,8 +36,8 @@ ok   showGrown(): the network is drawn and all five nodes are lit — 559519 lit
 ok   setActive(false): the ground is bare again — 0 samples, 0 nodes
 ok   setActive(true) alone shows nothing (the arrival grows it)
      the network: 626 threads, 9138 points, 598 joints, in 5 bands
-ok   growFrom(x) resolves once the light has passed the first node — 463 ms after an impact at 30% of the width, 1 node(s) lit then; nodes light at 209, 704, 1200, 1693, 2185 ms; all grown at 3370 ms
-ok   growFrom(x) goes on to the whole network — 5 nodes, 559519 samples (showGrown: 559519), 5410 ms on this machine
+ok   growFrom(x) resolves once the light has passed the first node — 395 ms after an impact at 30% of the width, 1 node(s) lit then; nodes light at 209, 704, 1200, 1693, 2185 ms; all grown at 3370 ms
+ok   growFrom(x) goes on to the whole network — 5 nodes, 559519 samples (showGrown: 559519), 4566 ms on this machine
 ok   showGrown() after another arrival draws the same network — 559519 samples
 ok   five nodes, each a real button
 ok   node 1 is named "Site" — 1 button(s) by that name
@@ -201,29 +201,29 @@ ok   the soil is there
 ok   the two links, both to /contact, under the last tile
 
 ## the guided light, desk
-ok   nothing read: the light runs from the surface down towards node 1 — seen at y 22, 61, 125, 184, 228, 258, 271, 24 … (node 1 is at 336)
+ok   nothing read: the light runs from the surface down towards node 1 — seen at y 22, 61, 113, 173, 221, 253, 270, 22 … (node 1 is at 336)
 ok   while a tile is open the light is still: no animation frame is asked for — 0 frames in 1.5 s
 ok   tile 1 closed: the light sets off at once — first seen 46 ms after Escape
-ok   it leaves node 1 and travels down the trunk to node 2 — y 402, 411, 442, 487, 548, 606, 681, 767, 836, 907, 962, 997, 1021, 1029 (node 1 at 336, node 2 at 1092)
-ok   node 2 answers when the light arrives — 1765 ms after Escape
-ok   it rests and sets off again, every few seconds — second run began 5113 ms after the first
+ok   it leaves node 1 and travels down the trunk to node 2 — y 402, 411, 438, 475, 532, 591, 657, 734, 817, 882, 943, 984, 1014, 1027, 402 (node 1 at 336, node 2 at 1092)
+ok   node 2 answers when the light arrives — 1756 ms after Escape
+ok   it rests and sets off again, every few seconds — second run began 5095 ms after the first
 ok   it never scrolls the page and never opens a tile — scrollY 0 → 0; open: null
 ok   any node can be opened at any time (node 3 before node 2); the light then leads to node 4 — read site, app; next 4
 ok   with that stretch off screen no animation frame is asked for — 0 frames in 1.5 s
-ok   all five read: the light runs from node 5 down to "Claim your star", whose line answers — y 3426, 3448, 3502, 3588, 3704, 3804, 3885, 3934, 3951, 3435, 3477, 3550, 3653, 3763 (node 5 at 3360, F1 at 3951)
+ok   all five read: the light runs from node 5 down to "Claim your star", whose line answers — y 3426, 3448, 3502, 3588, 3704, 3804, 3885, 3934, 3951, 3438, 3483, 3560, 3665, 3774 (node 5 at 3360, F1 at 3951)
 ok   no page errors
 
 ## the guided light, phone
-ok   nothing read: the light runs from the surface down towards node 1 — seen at y 28, 44, 83, 126, 173, 208, 229, 238 … (node 1 is at 286)
+ok   nothing read: the light runs from the surface down towards node 1 — seen at y 34, 57, 107, 156, 195, 222, 236, 29 … (node 1 is at 286)
 ok   while a tile is open the light is still: no animation frame is asked for — 0 frames in 1.5 s
-ok   tile 1 closed: the light sets off at once — first seen 44 ms after Escape
-ok   it leaves node 1 and travels down the trunk to node 2 — y 335, 346, 375, 416, 477, 546, 655, 749, 825, 883, 918, 942, 335, 346 (node 1 at 286, node 2 at 995)
-ok   node 2 answers when the light arrives — 1588 ms after Escape
-ok   it rests and sets off again, every few seconds — second run began 4793 ms after the first
+ok   tile 1 closed: the light sets off at once — first seen 45 ms after Escape
+ok   it leaves node 1 and travels down the trunk to node 2 — y 335, 346, 375, 416, 477, 546, 642, 728, 808, 870, 910, 938, 947, 342 (node 1 at 286, node 2 at 995)
+ok   node 2 answers when the light arrives — 1597 ms after Escape
+ok   it rests and sets off again, every few seconds — second run began 4804 ms after the first
 ok   it never scrolls the page and never opens a tile — scrollY 0 → 0; open: null
 ok   any node can be opened at any time (node 3 before node 2); the light then leads to node 4 — read site, app; next 4
 ok   with that stretch off screen no animation frame is asked for — 0 frames in 1.5 s
-ok   all five read: the light runs from node 5 down to "Claim your star", whose line answers — y 3171, 3194, 3248, 3335, 3454, 3568, 3649, 3699, 3716, 3183, 3228, 3306, 3415, 3538 (node 5 at 3122, F1 at 3716)
+ok   all five read: the light runs from node 5 down to "Claim your star", whose line answers — y 3171, 3187, 3234, 3315, 3428, 3548, 3636, 3691, 3715, 3175, 3206, 3271, 3368, 3492 (node 5 at 3122, F1 at 3716)
 ok   no page errors
 
 ## keyboard, 1440x900
@@ -276,7 +276,7 @@ ok   no page errors
 
 ## reduced motion, desk
 ok   the network is whole at once and all five nodes are lit
-ok   growFrom() does not animate: it resolves at once with everything grown — 0 animation frames; 76 ms to draw what is on screen
+ok   growFrom() does not animate: it resolves at once with everything grown — 0 animation frames; 75 ms to draw what is on screen
 ok   no travelling light
 ok   nothing breathes: no animation is running — 0 animations
 ok   the next unread node is marked by a steady, stronger glow — node 1 glow 0.85 and halo 1; the others 0.08 and 0.25
@@ -287,7 +287,7 @@ ok   no page errors
 
 ## reduced motion, phone
 ok   the network is whole at once and all five nodes are lit
-ok   growFrom() does not animate: it resolves at once with everything grown — 0 animation frames; 28 ms to draw what is on screen
+ok   growFrom() does not animate: it resolves at once with everything grown — 0 animation frames; 27 ms to draw what is on screen
 ok   no travelling light
 ok   nothing breathes: no animation is running — 0 animations
 ok   the next unread node is marked by a steady, stronger glow — node 1 glow 0.85 and halo 1; the others 0.08 and 0.25
@@ -304,8 +304,8 @@ ok   at rest with a tile open: animation frames asked for — 0 in 2 s
 ok   no page errors
 
 ## scrolling the whole page at 390x844, CPU slowed 4x, software rendering
-ok   down: 3125 px at 1400 px/s — 131 frames, average 19.34 ms, 95th percentile 33.3 ms, worst 33.4 ms, 4 over 33 ms, 0 over 50 ms
-ok   back up: 3125 px at 1400 px/s — 137 frames, average 18.00 ms, 95th percentile 33.3 ms, worst 33.4 ms, 0 over 33 ms, 0 over 50 ms
+ok   down: 3125 px at 1400 px/s — 138 frames, average 18.36 ms, 95th percentile 33.3 ms, worst 33.4 ms, 3 over 33 ms, 0 over 50 ms
+ok   back up: 3125 px at 1400 px/s — 138 frames, average 17.63 ms, 95th percentile 33.3 ms, worst 33.4 ms, 0 over 33 ms, 0 over 50 ms
 ok   at rest with a tile open: animation frames asked for — 0 in 2 s
      with the guided light running from node 1 to node 2 and resting: 132 frames asked for in 3 s (it travels for about 1.5 s of every 3)
 ok   no page errors

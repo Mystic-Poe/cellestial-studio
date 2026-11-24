@@ -14,6 +14,10 @@
 
 ## Exact next step
 
+**24 NOV, THE OWNER'S TWO MORE (item 6): the star's panel keeps clear of the exit button, and
+the first light (after the loader, Cellestial's star pulses three times and its beads light the
+first page's stars). Both built, tested, published.**
+
 **WHERE IT STANDS (23 Nov, 16:00): the redesign is LIVE, and so are the owner's changes of the
 same afternoon (item 5: stars 100 to 146 in his email, the shared sky, the beads that never
 start over, clean spacing, the meanings in the addendum). `main` is at `d7c3062` or later and
@@ -474,6 +478,22 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
      email's approve link has been exercised in the Worker's tests only. Roll back the page:
      the Cloudflare deployment before 15:50; the Worker: `wrangler rollback --config
      workers/contact/wrangler.jsonc`.
+6. **The owner's changes of 24 Nov.** (A friend's claim had not lit: he had used "Contact me",
+   which claims nothing; a claim made from the sky then lit for everyone, as built.)
+   - **The panel and the exit button.** "See what holds up the sky" stood over the panel of
+     stars low on the screen, and over its "Claim your star": 78 of 438 panel openings at
+     1440×900, 390×844 and 375×667. The placing is `sky/panel-place.ts` (tested): the panel
+     keeps above the button while it is shown; where nothing is clear of it, the least cover,
+     and the panel is drawn over the button. 0 of 438 (`refs/verification/owner-24nov/`).
+   - **The first light.** The first time the loader hands the sky over in a visit (a
+     sessionStorage flag; never on a same-session return, never with reduced motion, never
+     from `?scene=sky`): 0.6 s after, Cellestial's core pulses three times, 1.3 s apart (a
+     `uPulse` in its shader, the core swelling 10%); each pulse sends beads to a third of the
+     empty stars of the figure in front, nearest first; each star they reach does the "claim
+     yours" pulse (no words) for two breaths and settles. A tap, a star picked or a flight
+     stops the waves still to come. `FIRST_LIGHT` in `sky/answer.ts`; `BEADS.runs` is 12.
+     Frame times 16.6 ms with and without it, also with the CPU slowed 4×. All thirteen
+     suites exit 0 with their counts; the loader's hand-off sheet is what it was.
 4. **What only a person with the device can do** (unchanged): a real phone (every frame time
    here is headless Chromium on a desktop GPU, or with the CPU slowed 4×), a screen reader, a
    browser without popovers, a phone held on its side in the hand (round 3 measured and put
@@ -1822,3 +1842,5 @@ than two tries. All four were reached.
   Cloudflare lists both deployments (22:59 and 23:01 UTC). The check flips: read it again
   before believing a failure. The commit message of `4c614ba` says the build failed; it did
   not.
+- **24 Nov — the owner's two more.** The star's panel no longer goes under the exit button
+  (78 of 438 to 0); the first light after the loader. Both published.
