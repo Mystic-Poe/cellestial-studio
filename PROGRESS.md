@@ -18,7 +18,18 @@
 the first light (after the loader, Cellestial's star pulses three times and its beads light the
 first page's stars). Both built, tested, published. Then, on his word, the first light writes
 "claim yours" by each star it reaches, one after another (item 6, "The first light's words"):
-built, tested, published. NOTHING IS RUNNING.**
+built, tested, published (live 24 Nov 23:28 UTC, checked there: 12 stars' words, none
+touching, 0 console errors). NOTHING IS RUNNING.
+
+FOUND ON THE LIVE CHECK, 24 Nov 23:29 UTC, WAITING ON THE OWNER: the shared sky is empty.
+The friend's star 65 ("Fly me to the moon", approved) was in the live list at 18:43 UTC; at
+23:29 the list is `{"stars":[]}` and the KV namespace `cellestial-stars` holds no keys
+(`wrangler kv key list`, and a direct read of `star:slot-65` finds nothing). Star records have
+no expiry; the one code path that deletes one is the owner page's "Take the star back (empty
+it)" (a signed link in the owner's email), or a delete in the Cloudflare dashboard. This
+session deleted only its own test star `star:slot-146`, earlier. The contact Worker was last
+deployed 23 Nov 22:19 UTC. Not restored: putting the record back is a write to live data and
+the owner's call (he may have taken it back himself).**
 
 **WHERE IT STANDS (23 Nov, 16:00): the redesign is LIVE, and so are the owner's changes of the
 same afternoon (item 5: stars 100 to 146 in his email, the shared sky, the beads that never
