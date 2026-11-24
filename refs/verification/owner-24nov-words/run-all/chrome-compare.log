@@ -1,0 +1,53 @@
+  wrote /home/poe/cellestial-studio/refs/chrome/compare/closed.jpg
+  wrote /home/poe/cellestial-studio/refs/chrome/compare/logo.jpg
+  wrote /home/poe/cellestial-studio/refs/chrome/compare/bars.jpg
+  wrote /home/poe/cellestial-studio/refs/chrome/compare/menu.jpg
+ok   desk: the only words in the chrome are "studio" and the four items, in order (studio / The Sky / What we build / Claim your star / Contact me)
+ok   desk: the logo is one link named "Cellestial studio" to "/"; five links in all
+ok   desk: one button, named "Menu", aria-expanded false
+ok   desk: the button's hit area is 44x44 px
+ok   desk: the logo and the button end at 118, 90 px from the corner
+ok   desk: "studio" is set in Quicksand-2467c83bd1e4413d, 15px
+ok   desk: the items are links to /, #roots, /contact, /contact
+ok   desk: the header is at z-index 40 and takes no pointer events itself
+ok   desk: its one picture is /cellestial/chrome/c-logo.webp
+ok   desk: a click opens the menu: aria-expanded true, focus on "The Sky"
+ok   desk: each item is 44, 44, 44, 44 px tall and the panel is whole on screen
+ok   desk: the four items asked the director for sky, build, claim, contact: once each
+ok   desk: choosing an item closes the menu and returns focus to the button
+ok   desk: the logo asks for the sky and does not navigate
+ok   desk: Tab reaches Skip to content, then Cellestial studio, then Menu
+ok   desk: Enter on the button opens the menu and focus goes to "The Sky"
+ok   desk: Tab walks the items: What we build, Claim your star, Contact me
+ok   desk: Escape closes it and focus is back on the button
+ok   desk: a click outside closes it
+ok   desk: while the scene is "loading" the chrome is hidden and cannot take focus
+ok   desk: when the loader ends the chrome fades in: fully there 412 ms after the scene changes (21 frames in between)
+ok   desk: reduced motion: no breathing (none), no fade (0s), no drop (0s)
+ok   desk: with script off the button opens the menu (164x206 px) and its links go to /, #roots, /contact, /contact
+ok   desk: with script off "Claim your star" goes to /contact; the chrome heads the page (position absolute)
+ok   phone: the only words in the chrome are "studio" and the four items, in order (studio / The Sky / What we build / Claim your star / Contact me)
+ok   phone: the logo is one link named "Cellestial studio" to "/"; five links in all
+ok   phone: one button, named "Menu", aria-expanded false
+ok   phone: the button's hit area is 44x44 px
+ok   phone: the logo and the button end at 110, 76 px from the corner
+ok   phone: "studio" is set in Quicksand-2467c83bd1e4413d, 13px
+ok   phone: the items are links to /, #roots, /contact, /contact
+ok   phone: the header is at z-index 40 and takes no pointer events itself
+ok   phone: its one picture is /cellestial/chrome/c-logo.webp
+ok   phone: a click opens the menu: aria-expanded true, focus on "The Sky"
+ok   phone: each item is 44, 44, 44, 44 px tall and the panel is whole on screen
+ok   phone: the four items asked the director for sky, build, claim, contact: once each
+ok   phone: choosing an item closes the menu and returns focus to the button
+ok   phone: the logo asks for the sky and does not navigate
+ok   phone: Tab reaches Skip to content, then Cellestial studio, then Menu
+ok   phone: Enter on the button opens the menu and focus goes to "The Sky"
+ok   phone: Tab walks the items: What we build, Claim your star, Contact me
+ok   phone: Escape closes it and focus is back on the button
+ok   phone: a tap outside closes it
+ok   phone: while the scene is "loading" the chrome is hidden and cannot take focus
+ok   phone: when the loader ends the chrome fades in: fully there 413 ms after the scene changes (21 frames in between)
+ok   phone: reduced motion: no breathing (none), no fade (0s), no drop (0s)
+ok   phone: with script off the button opens the menu (164x206 px) and its links go to /, #roots, /contact, /contact
+ok   phone: with script off "Claim your star" goes to /contact; the chrome heads the page (position absolute)
+48 checks, 0 failed, 0 page error(s)

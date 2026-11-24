@@ -16,7 +16,9 @@
 
 **24 NOV, THE OWNER'S TWO MORE (item 6): the star's panel keeps clear of the exit button, and
 the first light (after the loader, Cellestial's star pulses three times and its beads light the
-first page's stars). Both built, tested, published.**
+first page's stars). Both built, tested, published. Then, on his word, the first light writes
+"claim yours" by each star it reaches, one after another (item 6, "The first light's words"):
+built, tested, published. NOTHING IS RUNNING.**
 
 **WHERE IT STANDS (23 Nov, 16:00): the redesign is LIVE, and so are the owner's changes of the
 same afternoon (item 5: stars 100 to 146 in his email, the shared sky, the beads that never
@@ -494,6 +496,20 @@ verification", part "Round 3"). `git status` is clean but for the untracked `cla
      stops the waves still to come. `FIRST_LIGHT` in `sky/answer.ts`; `BEADS.runs` is 12.
      Frame times 16.6 ms with and without it, also with the CPU slowed 4×. All thirteen
      suites exit 0 with their counts; the loader's hand-off sheet is what it was.
+   - **The first light's words.** The owner: "I want the claim yours to appear. Just space
+     out the timing so it's not all at once and is a cool flashy sequence." Each star the
+     beads reach gets "claim yours" in its turn, in the order the beads arrive and never two
+     within 0.35 s (`FIRST_LIGHT.words`, `firstLightWordTimes`, tested): struck white-hot,
+     cooling into the brass and gone over 1.15 s, the star flaring with them. They stand by
+     the visitor's words' own rule (`placeLabel`), and 8 px from other words showing
+     (`LabelScene.words`, `LABEL.apart`, tested); words with no room wait up to 1.2 s, then
+     the star only glows. A tap on the sky or a star picked puts them out over 0.25 s and
+     the beads still on their way write no more; leaving the sky removes them; a tap on the
+     words opens that star's panel. Measured: all 12 of Virgo's empty stars get their
+     words, one every 0.35 to 0.4 s, 4 at most showing at once, never touching (closest
+     14 px on the phone), frames 16.7 ms at x1 and x4. 207 tests; all thirteen suites exit
+     0 with their counts (`refs/verification/owner-24nov-words/`, with its probes and
+     sheets).
 4. **What only a person with the device can do** (unchanged): a real phone (every frame time
    here is headless Chromium on a desktop GPU, or with the CPU slowed 4×), a screen reader, a
    browser without popovers, a phone held on its side in the hand (round 3 measured and put
@@ -1844,3 +1860,5 @@ than two tries. All four were reached.
   not.
 - **24 Nov — the owner's two more.** The star's panel no longer goes under the exit button
   (78 of 438 to 0); the first light after the loader. Both published.
+- **24 Nov — the first light's words.** "claim yours" by each star the first light reaches,
+  one after another, struck white-hot; published.
