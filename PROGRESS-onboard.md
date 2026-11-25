@@ -29,13 +29,16 @@ Tests: `pnpm test` all green (Worker: client 19, store 9, files 7, access 10, ad
 
 ## Exact next step
 
-1. Gabriel enables R2 (Cloudflare → R2 → "Add R2 subscription", $0, card on file).
-2. Claude: `wrangler r2 bucket create cellestial-onboard-photos`;
-   `wrangler d1 migrations apply cellestial-onboard --remote` (drops the old test rows);
-   delete secrets `CF_USER_TOKEN`, `GH_TOKEN`, `INVITE_SALT`; deploy the Worker;
-   fast-forward `main` to `done-for-you` and push (site build);
-   live checks: admin → Access login, bad code 404, `/start/` 200, `/api/onboard/invites` 404.
-3. Offer wording: approved and committed on the branch 2026-11-25 (ships with the merge; spec, last section).
+**Shipped 2026-11-25.** R2 activated ($0, card 8546, at Gabriel's word); bucket
+`cellestial-onboard-photos` created; D1 migration 0002 applied (old test rows
+gone); Worker deployed (version 1e3516e3); secrets CF_USER_TOKEN, GH_TOKEN,
+INVITE_SALT deleted (RESEND_API_KEY remains); `main` fast-forwarded to d8cbd45,
+site build live (version 82f6ed00). Live checks: /dashboard/ and admin API 302
+to Access login; bad code 404; /api/onboard/invites 404; /start/ 200 serving
+the new intake bundle. Offer wording shipped.
+
+Next: Gabriel creates a real client from /dashboard and runs it on a phone;
+confirm the "[TEST]"/live notification emails arrive.
 
 Rollback: the old flow is `main` at `995e132`; the old D1 schema can't come
 back without its migration reverted (only test rows existed).
