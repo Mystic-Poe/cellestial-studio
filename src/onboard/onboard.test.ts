@@ -30,6 +30,20 @@ test('GitHub signup pre-fills the email and chains to free org creation', () => 
 	assert.equal(url.searchParams.get('return_to'), '/account/organizations/new?plan=free');
 });
 
+// Nov 24 live test: with the return_to chain, Google sign-up jumped to the
+// org page before the username screen, leaving a half-made account that
+// looped on sign-in. The Google lane lets GitHub finish its own flow.
+test('Google lane: plain GitHub signup, no chain, says when it is finished', () => {
+	const s = buildSteps({ ...base, l: 'g' })[0];
+	const url = new URL(s.url);
+	assert.equal(url.origin + url.pathname, 'https://github.com/signup');
+	assert.equal(url.searchParams.get('return_to'), null);
+	const words = s.lines.join(' ');
+	assert.match(words, /username/i);
+	assert.match(words, /home page/i);
+	assert.match(words, /sign-in page/i);
+});
+
 test('lanes change the instructions, not the order', () => {
 	const ms = buildSteps(base)[0].lines.join(' ');
 	const g = buildSteps({ ...base, l: 'g' })[0].lines.join(' ');

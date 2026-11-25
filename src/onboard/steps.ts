@@ -38,7 +38,11 @@ export function buildSteps(c: ClientConfig): Step[] {
 	if (c.t === 2) {
 		const signup = new URL('https://github.com/signup');
 		signup.searchParams.set('user_email', c.e);
-		signup.searchParams.set('return_to', '/account/organizations/new?plan=free');
+		// Microsoft lane only: after email sign-up GitHub is signed in, so it can
+		// go straight on to the org page. With Google sign-up the jump happens
+		// before the username screen and leaves a half-made account that loops
+		// on sign-in (live test, Nov 24), so that lane lets GitHub finish first.
+		if (ms) signup.searchParams.set('return_to', '/account/organizations/new?plan=free');
 		steps.push({
 			id: 'gh-signup',
 			title: 'Create your GitHub account',
@@ -51,7 +55,8 @@ export function buildSteps(c: ClientConfig): Step[] {
 					]
 				: [
 						'Tap "Continue with Google" and pick your business account.',
-						'Choose a username when asked.',
+						'GitHub then asks for a username (and may show a short puzzle). Finish both — you’re done when you see your GitHub home page.',
+						'If you land on a sign-in page instead, come back here and tap the button again to finish.',
 					],
 		});
 		steps.push({
