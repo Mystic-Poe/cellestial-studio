@@ -14,14 +14,19 @@ const t = async (name, fn) => {
 	pass++;
 };
 
-const fields = {
-	name: 'Test Bakery',
-	email: 'owner@example.com',
-	domain: 'example.com',
-	lane: 'ms',
-	tier: 2,
-	mode: 'test',
-};
+const fields = { name: 'Test Bakery', email: 'owner@example.com', mode: 'test' };
+const photo = (client_id, over = {}) => ({
+	id: store.newId(),
+	client_id,
+	kind: 'original',
+	of: null,
+	source: 'studio',
+	name: 'shop.jpg',
+	type: 'image/jpeg',
+	size: 1000,
+	has_thumb: true,
+	...over,
+});
 
 await t('newCode is 43 base64url characters and never repeats', () => {
 	const a = store.newCode();
@@ -29,107 +34,106 @@ await t('newCode is 43 base64url characters and never repeats', () => {
 	assert.notEqual(a, store.newCode());
 });
 
-await t('create, then find by id and by code', async () => {
+await t('create starts at intake with an empty intake and checklist', async () => {
 	const db = fakeD1();
 	const c = await store.createClient(db, fields, 1000);
-	assert.equal(c.name, 'Test Bakery');
-	assert.equal(c.step, 0);
-	assert.deepEqual(c.done, []);
-	assert.deepEqual(c.checklist, { invites: false, billing: false, domain: false, card: false });
+	assert.equal(c.stage, 'intake');
+	assert.equal(c.mode, 'test');
+	assert.equal(c.intake.about, '');
+	assert.deepEqual(c.intake.pages, []);
+	assert.equal(c.checklist.domain, false);
 	assert.equal(c.status, 'active');
-	assert.equal(c.created_at, 1000);
-	assert.equal(c.last_seen_at, null);
-	assert.deepEqual(await store.getById(db, c.id), c);
-	assert.deepEqual(await store.getByCode(db, c.code), c);
-	assert.equal(await store.getById(db, 'nope'), null);
-	assert.equal(await store.getByCode(db, 'nope'), null);
+	assert.equal(c.intake_at, null);
+	assert.equal((await store.getByCode(db, c.code)).id, c.id);
 });
 
-await t('list splits archived from the rest, most recently changed first', async () => {
+await t('update writes only allowed columns and keeps JSON whole', async () => {
 	const db = fakeD1();
-	const a = await store.createClient(db, { ...fields, name: 'A' }, 1000);
-	const b = await store.createClient(db, { ...fields, name: 'B' }, 2000);
-	const c = await store.createClient(db, { ...fields, name: 'C' }, 3000);
-	await store.updateClient(db, c.id, { status: 'archived' }, 4000);
-	await store.updateClient(db, b.id, { status: 'done' }, 5000);
-	assert.deepEqual(
-		(await store.listClients(db, false)).map((x) => x.name),
-		['B', 'A'],
-	);
-	assert.deepEqual(
-		(await store.listClients(db, true)).map((x) => x.name),
-		['C'],
-	);
-	assert.ok(a);
-});
-
-await t('update merges fields, JSON columns included, and stamps updated_at', async () => {
-	const db = fakeD1();
-	const c = await store.createClient(db, fields, 1000);
-	const u = await store.updateClient(
-		db,
-		c.id,
-		{
-			name: 'Renamed',
-			step: 2,
-			done: ['gh-signup', 'gh-org'],
-			checklist: { invites: true, billing: false, domain: false, card: false },
-			notes: 'Call Tuesday',
-		},
-		2000,
-	);
-	assert.equal(u.name, 'Renamed');
-	assert.equal(u.email, fields.email);
-	assert.equal(u.step, 2);
-	assert.deepEqual(u.done, ['gh-signup', 'gh-org']);
-	assert.equal(u.checklist.invites, true);
-	assert.equal(u.notes, 'Call Tuesday');
-	assert.equal(u.updated_at, 2000);
+	const c = await store.createClient(db, fields);
+	const u = await store.updateClient(db, c.id, {
+		stage: 'design',
+		intake: { ...c.intake, about: 'Bread' },
+		checklist: { ...c.checklist, paid: true },
+		code: 'hijack',
+		id: 'other',
+	});
+	assert.equal(u.stage, 'design');
+	assert.equal(u.intake.about, 'Bread');
+	assert.equal(u.checklist.paid, true);
 	assert.equal(u.code, c.code);
-	assert.equal(await store.updateClient(db, 'nope', { name: 'x' }, 1), null);
-});
-
-await t('update ignores columns it must never set (id, code, created_at)', async () => {
-	const db = fakeD1();
-	const c = await store.createClient(db, fields, 1000);
-	const u = await store.updateClient(
-		db,
-		c.id,
-		{ id: 'x', code: 'y', created_at: 5, name: 'N' },
-		2000,
-	);
 	assert.equal(u.id, c.id);
-	assert.equal(u.code, c.code);
-	assert.equal(u.created_at, 1000);
+	assert.equal(await store.updateClient(db, 'nope', { notes: 'x' }), null);
 });
 
-await t('rotate gives a new code; the old one stops working', async () => {
+await t('list counts originals and those still without a finished version', async () => {
 	const db = fakeD1();
-	const c = await store.createClient(db, fields, 1000);
-	const r = await store.rotateCode(db, c.id, 2000);
-	assert.notEqual(r.code, c.code);
-	assert.equal(await store.getByCode(db, c.code), null);
-	assert.equal((await store.getByCode(db, r.code)).id, c.id);
-	assert.equal(await store.rotateCode(db, 'nope', 1), null);
+	const c = await store.createClient(db, fields);
+	const a = await store.addPhoto(db, photo(c.id));
+	await store.addPhoto(db, photo(c.id));
+	await store.addPhoto(db, photo(c.id, { kind: 'finished', of: a.id }));
+	const [row] = await store.listClients(db, false);
+	assert.equal(row.photo_count, 2);
+	assert.equal(row.to_finish, 1);
+	assert.deepEqual(await store.listClients(db, true), []);
+});
+
+await t('deleting an original takes its finished version with it', async () => {
+	const db = fakeD1();
+	const c = await store.createClient(db, fields);
+	const a = await store.addPhoto(db, photo(c.id));
+	const f = await store.addPhoto(db, photo(c.id, { kind: 'finished', of: a.id }));
+	const b = await store.addPhoto(db, photo(c.id));
+	const gone = await store.deletePhoto(db, c.id, a.id);
+	assert.deepEqual(gone.map((p) => p.id).sort(), [a.id, f.id].sort());
+	assert.deepEqual(
+		(await store.listPhotos(db, c.id)).map((p) => p.id),
+		[b.id],
+	);
+	assert.deepEqual(await store.deletePhoto(db, 'other-client', b.id), []);
+});
+
+await t('photos are per client; client upload count only counts theirs', async () => {
+	const db = fakeD1();
+	const c = await store.createClient(db, fields);
+	const d = await store.createClient(db, fields);
+	const p = await store.addPhoto(db, photo(c.id, { source: 'client' }));
+	await store.addPhoto(db, photo(c.id));
+	assert.equal(await store.getPhoto(db, d.id, p.id), null);
+	assert.equal((await store.getPhoto(db, c.id, p.id)).has_thumb, true);
+	assert.equal(await store.countClientPhotos(db, c.id), 1);
+});
+
+await t('delete removes the client, photos and reviews', async () => {
+	const db = fakeD1();
+	const c = await store.createClient(db, fields);
+	await store.addPhoto(db, photo(c.id));
+	await store.addReview(db, { client_id: c.id, verdict: 'ok', text: '' });
+	assert.equal(await store.deleteClient(db, c.id), true);
+	assert.equal(await store.getById(db, c.id), null);
+	assert.deepEqual(await store.listPhotos(db, c.id), []);
+	assert.deepEqual(await store.listReviews(db, c.id), []);
+	assert.equal(await store.deleteClient(db, c.id), false);
+});
+
+await t('reviews list newest first', async () => {
+	const db = fakeD1();
+	const c = await store.createClient(db, fields);
+	await store.addReview(db, { client_id: c.id, verdict: 'changes', text: 'Bigger logo' }, 1);
+	await store.addReview(db, { client_id: c.id, verdict: 'ok', text: '' }, 2);
+	assert.deepEqual(
+		(await store.listReviews(db, c.id)).map((r) => r.verdict),
+		['ok', 'changes'],
+	);
 });
 
 await t('touchSeen writes at most once a minute', async () => {
 	const db = fakeD1();
-	const c = await store.createClient(db, fields, 1000);
+	const c = await store.createClient(db, fields);
 	await store.touchSeen(db, c.id, 100_000);
-	assert.equal((await store.getById(db, c.id)).last_seen_at, 100_000);
 	await store.touchSeen(db, c.id, 130_000);
 	assert.equal((await store.getById(db, c.id)).last_seen_at, 100_000);
-	await store.touchSeen(db, c.id, 161_000);
-	assert.equal((await store.getById(db, c.id)).last_seen_at, 161_000);
-});
-
-await t('delete removes the row', async () => {
-	const db = fakeD1();
-	const c = await store.createClient(db, fields, 1000);
-	assert.equal(await store.deleteClient(db, c.id), true);
-	assert.equal(await store.getById(db, c.id), null);
-	assert.equal(await store.deleteClient(db, c.id), false);
+	await store.touchSeen(db, c.id, 170_000);
+	assert.equal((await store.getById(db, c.id)).last_seen_at, 170_000);
 });
 
 console.log(`store: ${pass} passed`);
