@@ -36,6 +36,13 @@
       "migrations_dir": "migrations"
     }
   ],
+  // Cloudflare Access app "Onboarding dashboard" (guards /dashboard and
+  // /api/onboard/admin). Neither value is secret: the team domain is the login
+  // page and the AUD is inside every Access token.
+  "vars": {
+    "ACCESS_TEAM": "late-dawn-ae37.cloudflareaccess.com",
+    "ACCESS_AUD": "96bc4eddbce40a3ce5e145bd58024c4eb3be2bb0189477fe11aeda666298c0fa"
+  },
   // Secrets are set by Gabriel on this Worker; see README. keep_vars stops a
   // deploy from wiping NOTIFY_TO / NOTIFY_FROM set in the dashboard.
   "keep_vars": true
