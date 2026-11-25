@@ -252,7 +252,7 @@ export async function addPhoto(db: D1, p: Omit<PhotoRow, 'created_at'>, now = Da
 
 export async function listPhotos(db: D1, clientId: string): Promise<PhotoRow[]> {
 	const { results } = await db
-		.prepare('SELECT * FROM photos WHERE client_id = ? ORDER BY created_at, id')
+		.prepare('SELECT * FROM photos WHERE client_id = ? ORDER BY created_at, rowid')
 		.bind(clientId)
 		.all();
 	return results.map(toPhoto);
@@ -305,7 +305,7 @@ export async function addReview(
 
 export async function listReviews(db: D1, clientId: string): Promise<ReviewRow[]> {
 	const { results } = await db
-		.prepare('SELECT * FROM reviews WHERE client_id = ? ORDER BY created_at DESC, id')
+		.prepare('SELECT * FROM reviews WHERE client_id = ? ORDER BY created_at DESC, rowid DESC')
 		.bind(clientId)
 		.all();
 	return results as unknown as ReviewRow[];

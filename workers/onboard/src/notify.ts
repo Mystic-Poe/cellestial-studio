@@ -1,7 +1,7 @@
-// Gabriel's "a client finished a step" email. Built only from the stored
-// record, so nothing a client's browser sends ever reaches the email.
+// Gabriel's emails: a client sent their answers, added photos, or answered a
+// review. Built only from the stored record; the one piece of client text (a
+// change request) goes in as plain text, never as HTML.
 
-import { buildSteps } from '../../../src/onboard/steps.ts';
 import type { ClientRow } from './store.ts';
 
 export interface MailEnv {
@@ -10,40 +10,30 @@ export interface MailEnv {
 	NOTIFY_FROM?: string;
 }
 
-const config = (c: ClientRow) => ({
-	n: c.name,
-	e: c.email,
-	d: c.domain,
-	l: c.lane,
-	t: c.tier,
-	m: c.mode,
-});
+export type MailKind = 'intake' | 'photos' | 'ok' | 'changes';
+
+const SUBJECT: Record<MailKind, string> = {
+	intake: 'sent their answers',
+	photos: 'added photos',
+	ok: 'approved their site',
+	changes: 'asked for changes',
+};
 
 /** True when Resend accepted the email. Never throws. */
-export async function sendStepEmail(
+export async function sendMail(
 	env: MailEnv,
 	c: ClientRow,
-	stepIndex: number,
-	via: 'invite' | 'button',
+	kind: MailKind,
+	text = '',
 ): Promise<boolean> {
-	if (c.mode === 'person') return false;
 	if (!env.RESEND_API_KEY || !env.NOTIFY_TO || !env.NOTIFY_FROM) return false;
-	const steps = buildSteps(config(c));
-	const step = steps[stepIndex];
-	if (!step) return false;
-
 	const name = c.name.replace(/[^\p{L}\p{N} .'&-]/gu, '').slice(0, 60) || 'A client';
 	const prefix = c.mode === 'test' ? '[TEST] ' : '';
-	const n = stepIndex + 1;
-	const last = n === steps.length;
-	const subject = `${prefix}Onboarding: ${name} ${via === 'invite' ? 'sent your invite' : 'finished a step'} (step ${n} of ${steps.length})`;
 	const lines = [
-		`${name} finished step ${n} of ${steps.length}: ${step.title}.`,
-		via === 'invite' ? 'Their invite has reached you. Accept it from your email or dashboard.' : '',
-		last ? 'That was the last step — your follow-up checklist is on the dashboard.' : '',
-		'',
-		'https://cellestialstudio.com/dashboard/',
-	].filter((l, i, a) => l !== '' || a[i - 1] !== '');
+		`${name} ${SUBJECT[kind]}.`,
+		kind === 'changes' && text ? `\nWhat they asked for:\n\n${text.slice(0, 2000)}\n` : '',
+		`https://cellestialstudio.com/dashboard/#c/${encodeURIComponent(c.id)}`,
+	].filter(Boolean);
 	try {
 		const res = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
@@ -54,7 +44,7 @@ export async function sendStepEmail(
 			body: JSON.stringify({
 				from: env.NOTIFY_FROM,
 				to: [env.NOTIFY_TO],
-				subject,
+				subject: `${prefix}Onboarding: ${name} ${SUBJECT[kind]}`,
 				text: lines.join('\n'),
 			}),
 		});

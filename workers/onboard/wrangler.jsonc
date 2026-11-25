@@ -5,25 +5,25 @@
   "compatibility_date": "2026-11-10",
   "compatibility_flags": ["global_fetch_strictly_public"],
   "observability": { "enabled": true },
-  // Trailing * so the sub-paths (/invites, /ping) and query strings match.
+  // Trailing * so every sub-path and query string matches.
   "routes": [
     {
       "pattern": "cellestialstudio.com/api/onboard*",
       "zone_name": "cellestialstudio.com"
     }
   ],
-  // 5 pings per minute per IP. Caps how hard anyone can make Gabriel's inbox ring.
+  // 5 emails per minute per IP. Caps how hard anyone can make Gabriel's inbox ring.
   "ratelimits": [
     {
       "name": "RATE",
       "namespace_id": "1701",
       "simple": { "limit": 5, "period": 60 }
     },
-    // 30 progress writes per minute per client link.
+    // 60 writes (saves, photo uploads, review answers) per minute per client link.
     {
-      "name": "RATE_PROGRESS",
-      "namespace_id": "1702",
-      "simple": { "limit": 30, "period": 60 }
+      "name": "RATE_CLIENT",
+      "namespace_id": "1703",
+      "simple": { "limit": 60, "period": 60 }
     }
   ],
   // Client records. Schema in migrations/; apply with
@@ -34,6 +34,14 @@
       "database_name": "cellestial-onboard",
       "database_id": "f95e8c28-527e-4374-b85e-ef82e99b0ec6",
       "migrations_dir": "migrations"
+    }
+  ],
+  // Photo files (private; every read goes through this Worker). Keys:
+  // c/<client id>/<photo id>[.thumb]
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "cellestial-onboard-photos"
     }
   ],
   // Cloudflare Access app "Onboarding dashboard" (guards /dashboard and

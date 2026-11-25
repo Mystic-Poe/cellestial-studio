@@ -1,9 +1,13 @@
-// Run: node workers/onboard/test/admin.test.mjs
+// Gabriel's routes. Run: node workers/onboard/test/admin.test.mjs
 import assert from 'node:assert/strict';
-import { dirname, resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AUD, accessToken, certs, TEAM } from './access-token.mjs';
 import { fakeD1 } from './fake-d1.mjs';
+import { fakeR2 } from './fake-r2.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const worker = (await import(resolve(here, '../src/index.ts'))).default;
@@ -13,58 +17,71 @@ globalThis.fetch = async (url) => {
 	return new Response('{}', { status: 500 });
 };
 
+const ORIGIN = 'https://cellestialstudio.com';
 let db;
-const env = () => ({ ACCESS_TEAM: TEAM, ACCESS_AUD: AUD, DB: db });
+let bucket;
+const env = () => ({ ACCESS_TEAM: TEAM, ACCESS_AUD: AUD, DB: db, PHOTOS: bucket });
 const good = await accessToken();
 
-const call = async (path, { method = 'GET', json, token = good, e = env() } = {}) => {
-	const headers = { 'content-type': 'application/json' };
-	if (token) headers['cf-access-jwt-assertion'] = token;
+const call = async (
+	path,
+	{ method = 'GET', json, form, token = good, e = env(), headers = {} } = {},
+) => {
+	const h = { ...headers };
+	if (token) h['cf-access-jwt-assertion'] = token;
+	let body;
+	if (form) {
+		body = new FormData();
+		for (const [k, v] of Object.entries(form)) body.append(k, v);
+		h.origin ??= ORIGIN;
+		h['sec-fetch-site'] ??= 'same-origin';
+	} else if (method !== 'GET') {
+		h['content-type'] = 'application/json';
+		if (json !== undefined) body = JSON.stringify(json);
+	}
 	const r = await worker.fetch(
-		new Request(`https://cellestialstudio.com/api/onboard/admin${path}`, {
-			method,
-			headers,
-			...(json !== undefined ? { body: JSON.stringify(json) } : {}),
-		}),
+		new Request(`${ORIGIN}/api/onboard/admin${path}`, { method, headers: h, body }),
 		e,
-		{ waitUntil() {} },
+		{
+			waitUntil() {},
+		},
 	);
-	return { status: r.status, body: await r.json().catch(() => null) };
+	const type = r.headers.get('content-type') ?? '';
+	return {
+		status: r.status,
+		headers: r.headers,
+		body: type.includes('json') ? await r.json() : new Uint8Array(await r.arrayBuffer()),
+	};
 };
 
 let pass = 0;
 const t = async (name, fn) => {
 	db = fakeD1();
+	bucket = fakeR2();
 	await fn();
 	console.log('  ok  -', name);
 	pass++;
 };
 
-const fields = {
-	name: 'Test Bakery',
-	email: 'owner@example.com',
-	domain: 'https://www.Example.com/about',
-	lane: 'ms',
-	tier: 2,
-	mode: 'test',
-};
 const create = async (over = {}) =>
-	(await call('/clients', { method: 'POST', json: { ...fields, ...over } })).body;
+	(
+		await call('/clients', {
+			method: 'POST',
+			json: { name: 'Test Bakery', email: 'owner@example.com', ...over },
+		})
+	).body;
+const jpeg = (n = 10, name = 'shop.jpg', fill = 7) =>
+	new File([new Uint8Array(n).fill(fill)], name, { type: 'image/jpeg' });
+const upload = (id, form) => call(`/clients/${id}/photos`, { method: 'POST', form });
 
 await t('every admin route is 503 without the Access settings, even with a token', async () => {
 	for (const [path, method] of [
 		['/clients', 'GET'],
 		['/clients', 'POST'],
-		['/clients/x', 'GET'],
 		['/clients/x', 'PATCH'],
-		['/clients/x', 'DELETE'],
-		['/clients/x/rotate', 'POST'],
+		['/clients/x/photos.zip', 'GET'],
 	]) {
-		const r = await call(path, {
-			method,
-			json: method === 'GET' || method === 'DELETE' ? undefined : {},
-			e: { DB: db },
-		});
+		const r = await call(path, { method, json: {}, e: { DB: db, PHOTOS: bucket } });
 		assert.equal(r.status, 503, `${method} ${path}`);
 	}
 });
@@ -73,35 +90,18 @@ await t('every admin route is 401 without a valid token', async () => {
 	const expired = await accessToken({ exp: Math.floor(Date.now() / 1000) - 5 });
 	for (const token of [null, 'junk', expired]) {
 		assert.equal((await call('/clients', { token })).status, 401);
-		assert.equal((await call('/clients/x', { method: 'DELETE', token })).status, 401);
+		assert.equal((await call('/clients/x/photos/y', { token })).status, 401);
 	}
 });
 
-await t('create returns the client with its link and steps; domain normalised', async () => {
-	const r = await call('/clients', { method: 'POST', json: fields });
-	assert.equal(r.status, 201);
-	assert.equal(r.body.domain, 'example.com');
-	assert.equal(r.body.step, 0);
-	assert.equal(r.body.status, 'active');
-	assert.equal(r.body.link, `https://cellestialstudio.com/start/#${r.body.code}`);
-	assert.deepEqual(
-		r.body.steps.map((s) => s.id),
-		['gh-signup', 'gh-org', 'cf-signup', 'cf-invite'],
-	);
-});
-
-await t('domain is optional: blank or missing saves as empty', async () => {
-	const { domain, ...noDomain } = fields;
-	assert.ok(domain);
-	for (const json of [{ ...fields, domain: '' }, { ...fields, domain: '   ' }, noDomain]) {
-		const r = await call('/clients', { method: 'POST', json });
-		assert.equal(r.status, 201);
-		assert.equal(r.body.domain, '');
-	}
-	const made = await call('/clients', { method: 'POST', json: fields });
-	const cleared = await call(`/clients/${made.body.id}`, { method: 'PATCH', json: { domain: '' } });
-	assert.equal(cleared.status, 200);
-	assert.equal(cleared.body.domain, '');
+await t('create: name and email; live by default; link; empty photos and reviews', async () => {
+	const c = await create();
+	assert.equal(c.mode, 'live');
+	assert.equal(c.stage, 'intake');
+	assert.equal(c.link, `${ORIGIN}/start/#${c.code}`);
+	assert.deepEqual(c.photos, []);
+	assert.deepEqual(c.reviews, []);
+	assert.equal((await create({ mode: 'test' })).mode, 'test');
 });
 
 await t('create refuses bad fields and names the field', async () => {
@@ -109,150 +109,212 @@ await t('create refuses bad fields and names the field', async () => {
 		['name', ''],
 		['name', 'x'.repeat(81)],
 		['email', 'not-an-email'],
-		['domain', 'nodot'],
-		['lane', 'apple'],
-		['tier', 3],
 		['mode', 'admin'],
 	]) {
-		const r = await call('/clients', { method: 'POST', json: { ...fields, [k]: v } });
+		const r = await call('/clients', {
+			method: 'POST',
+			json: { name: 'A', email: 'a@example.com', [k]: v },
+		});
 		assert.equal(r.status, 400, k);
 		assert.equal(r.body.field, k);
 	}
-	const { name, ...noName } = fields;
-	assert.equal((await call('/clients', { method: 'POST', json: noName })).body.field, 'name');
-	assert.ok(name);
+	assert.equal(
+		(await call('/clients', { method: 'POST', json: { email: 'a@example.com' } })).body.field,
+		'name',
+	);
 });
 
-await t('list: active and archived', async () => {
-	const a = await create({ name: 'Alpha' });
-	await create({ name: 'Beta' });
-	await call(`/clients/${a.id}`, { method: 'PATCH', json: { status: 'archived' } });
-	const active = (await call('/clients')).body.clients.map((c) => c.name);
-	const archived = (await call('/clients?status=archived')).body.clients.map((c) => c.name);
-	assert.deepEqual(active, ['Beta']);
-	assert.deepEqual(archived, ['Alpha']);
+await t('list: active and archived, with photo counts', async () => {
+	const a = await create();
+	const b = await create({ name: 'Other' });
+	await call(`/clients/${b.id}`, { method: 'PATCH', json: { status: 'archived' } });
+	await upload(a.id, { file: jpeg() });
+	const active = (await call('/clients')).body.clients;
+	assert.deepEqual(
+		active.map((c) => c.id),
+		[a.id],
+	);
+	assert.equal(active[0].photo_count, 1);
+	assert.equal(active[0].to_finish, 1);
+	assert.ok(active[0].link);
+	assert.deepEqual(
+		(await call('/clients?status=archived')).body.clients.map((c) => c.id),
+		[b.id],
+	);
 });
 
-await t('get one; unknown id is 404', async () => {
-	const c = await create();
-	assert.equal((await call(`/clients/${c.id}`)).body.name, 'Test Bakery');
-	assert.equal((await call('/clients/nope')).status, 404);
-	assert.equal((await call('/clients/nope', { method: 'PATCH', json: { name: 'X' } })).status, 404);
-});
-
-await t('patch edits fields; the client link stays the same', async () => {
+await t('patch: stage moves stamp the time; addresses must be https', async () => {
 	const c = await create();
 	const r = await call(`/clients/${c.id}`, {
 		method: 'PATCH',
-		json: { name: 'New Name', email: 'new@example.com' },
+		json: { stage: 'review', preview_url: 'preview.example.com/x' },
 	});
 	assert.equal(r.status, 200);
-	assert.equal(r.body.name, 'New Name');
-	assert.equal(r.body.email, 'new@example.com');
-	assert.equal(r.body.link, c.link);
+	assert.equal(r.body.stage, 'review');
+	assert.ok(r.body.stage_at > 0);
+	assert.equal(r.body.preview_url, 'https://preview.example.com/x');
+	for (const [k, v] of [
+		['stage', 'done'],
+		['live_url', 'http://example.com'],
+		['live_url', 'javascript:alert(1)'],
+	]) {
+		const bad = await call(`/clients/${c.id}`, { method: 'PATCH', json: { [k]: v } });
+		assert.equal(bad.status, 400, `${k}=${v}`);
+		assert.equal(bad.body.field, k);
+	}
+	const again = await call(`/clients/${c.id}`, {
+		method: 'PATCH',
+		json: { stage: 'review', notes: 'n' },
+	});
+	assert.equal(again.body.stage_at, r.body.stage_at, 'same stage keeps its time');
 });
 
-await t('patch merges the checklist and saves notes', async () => {
+await t('patch: intake filled in person counts as sent, by the studio', async () => {
 	const c = await create();
-	await call(`/clients/${c.id}`, { method: 'PATCH', json: { checklist: { invites: true } } });
 	const r = await call(`/clients/${c.id}`, {
 		method: 'PATCH',
-		json: { checklist: { card: true }, notes: 'Call Tue' },
+		json: { intake: { about: 'Bread', likes: ['example.com'] } },
 	});
-	assert.deepEqual(r.body.checklist, { invites: true, billing: false, domain: false, card: true });
+	assert.equal(r.body.intake.about, 'Bread');
+	assert.equal(r.body.intake_by, 'studio');
+	assert.ok(r.body.intake_at);
+	const bad = await call(`/clients/${c.id}`, { method: 'PATCH', json: { intake: { likes: 'x' } } });
+	assert.equal(bad.body.field, 'likes');
+});
+
+await t('patch: checklist merges; notes save; the link stays the same', async () => {
+	const c = await create();
+	await call(`/clients/${c.id}`, { method: 'PATCH', json: { checklist: { domain: true } } });
+	const r = await call(`/clients/${c.id}`, {
+		method: 'PATCH',
+		json: { checklist: { paid: true }, notes: 'Call Tue' },
+	});
+	assert.equal(r.body.checklist.domain, true);
+	assert.equal(r.body.checklist.paid, true);
 	assert.equal(r.body.notes, 'Call Tue');
-	assert.equal(
-		(await call(`/clients/${c.id}`, { method: 'PATCH', json: { checklist: { hacked: true } } }))
-			.status,
-		400,
-	);
-	assert.equal(
-		(await call(`/clients/${c.id}`, { method: 'PATCH', json: { checklist: { card: 'yes' } } }))
-			.status,
-		400,
-	);
-});
-
-await t('patch sets the step and ticks; finishing marks done; reset makes active', async () => {
-	const c = await create({ tier: 1 });
-	let r = await call(`/clients/${c.id}`, {
+	assert.equal(r.body.code, c.code);
+	const bad = await call(`/clients/${c.id}`, {
 		method: 'PATCH',
-		json: { step: 2, done: ['cf-invite', 'cf-signup'] },
+		json: { checklist: { paid: 'yes' } },
 	});
-	assert.equal(r.body.step, 2);
-	assert.deepEqual(r.body.done, ['cf-signup', 'cf-invite']);
-	assert.equal(r.body.status, 'done');
-	r = await call(`/clients/${c.id}`, { method: 'PATCH', json: { step: 0, done: [] } });
-	assert.equal(r.body.status, 'active');
-	assert.equal(
-		(await call(`/clients/${c.id}`, { method: 'PATCH', json: { step: 3 } })).body.field,
-		'step',
-	);
-	assert.equal(
-		(await call(`/clients/${c.id}`, { method: 'PATCH', json: { done: ['gh-org'] } })).body.field,
-		'done',
-	);
-});
-
-await t('a tier change drops ticks that no longer exist', async () => {
-	const c = await create();
-	await call(`/clients/${c.id}`, {
-		method: 'PATCH',
-		json: { step: 3, done: ['gh-signup', 'gh-org', 'cf-signup'] },
-	});
-	const r = await call(`/clients/${c.id}`, { method: 'PATCH', json: { tier: 1 } });
-	assert.deepEqual(r.body.done, ['cf-signup']);
-	assert.equal(r.body.step, 1);
-	assert.deepEqual(
-		r.body.steps.map((s) => s.id),
-		['cf-signup', 'cf-invite'],
-	);
-});
-
-await t('an archived client stays archived through other edits', async () => {
-	const c = await create();
-	await call(`/clients/${c.id}`, { method: 'PATCH', json: { status: 'archived' } });
-	const r = await call(`/clients/${c.id}`, { method: 'PATCH', json: { notes: 'x' } });
-	assert.equal(r.body.status, 'archived');
+	assert.equal(bad.body.field, 'checklist');
 });
 
 await t('rotate gives a new link and the old one stops working', async () => {
 	const c = await create();
-	const r = await call(`/clients/${c.id}/rotate`, { method: 'POST' });
-	assert.equal(r.status, 200);
+	const r = await call(`/clients/${c.id}/rotate`, { method: 'POST', json: {} });
 	assert.notEqual(r.body.code, c.code);
-	const old = await worker.fetch(
-		new Request(`https://cellestialstudio.com/api/onboard/client/${c.code}`),
-		env(),
-		{
-			waitUntil() {},
-		},
-	);
+	const old = await worker.fetch(new Request(`${ORIGIN}/api/onboard/client/${c.code}`), env(), {
+		waitUntil() {},
+	});
 	assert.equal(old.status, 404);
-	assert.equal((await call('/clients/nope/rotate', { method: 'POST' })).status, 404);
 });
 
-await t('delete removes the client', async () => {
+await t('photos: original keeps full size; finished replaces per original', async () => {
 	const c = await create();
+	const o = await upload(c.id, {
+		file: jpeg(50, 'IMG_1.jpg'),
+		thumb: jpeg(5, 't.jpg', 1),
+		kind: 'original',
+	});
+	assert.equal(o.status, 201);
+	assert.equal(o.body.kind, 'original');
+	assert.equal(o.body.source, 'studio');
+	assert.equal(bucket.objects.get(`c/${c.id}/${o.body.id}`).bytes.length, 50);
+	const f1 = await upload(c.id, { file: jpeg(40, 'edit.jpg'), kind: 'finished', of: o.body.id });
+	assert.equal(f1.body.of, o.body.id);
+	const f2 = await upload(c.id, { file: jpeg(41, 'edit2.jpg'), kind: 'finished', of: o.body.id });
+	const photos = (await call(`/clients/${c.id}`)).body.photos;
+	assert.deepEqual(photos.map((p) => p.id).sort(), [o.body.id, f2.body.id].sort());
+	assert.equal(bucket.objects.has(`c/${c.id}/${f1.body.id}`), false, 'old finished file removed');
+	const list = (await call('/clients')).body.clients[0];
+	assert.equal(list.to_finish, 0);
+});
+
+await t('photos: finished must point at an original of the same client', async () => {
+	const c = await create();
+	const d = await create({ name: 'Other' });
+	const o = await upload(d.id, { file: jpeg() });
+	assert.equal(
+		(await upload(c.id, { file: jpeg(), kind: 'finished', of: o.body.id })).body.field,
+		'of',
+	);
+	assert.equal((await upload(c.id, { file: jpeg(), kind: 'finished' })).body.field, 'of');
+	const mine = await upload(c.id, { file: jpeg() });
+	const fin = await upload(c.id, { file: jpeg(), kind: 'finished', of: mine.body.id });
+	assert.equal(
+		(await upload(c.id, { file: jpeg(), kind: 'finished', of: fin.body.id })).body.field,
+		'of',
+	);
+});
+
+await t('photos: thumb or full size, with a safe download name', async () => {
+	const c = await create();
+	const o = await upload(c.id, { file: jpeg(30, 'Shop "front".jpg'), thumb: jpeg(3) });
+	const thumb = await call(`/clients/${c.id}/photos/${o.body.id}?size=thumb`);
+	assert.equal(thumb.body.length, 3);
+	const full = await call(`/clients/${c.id}/photos/${o.body.id}?download=1`);
+	assert.equal(full.body.length, 30);
+	assert.match(full.headers.get('content-disposition'), /^attachment; filename="Shop front.jpg"/);
+	assert.equal((await call(`/clients/${c.id}/photos/nope`)).status, 404);
+});
+
+await t('photos: deleting an original removes its finished version and both files', async () => {
+	const c = await create();
+	const o = await upload(c.id, { file: jpeg(), thumb: jpeg(2) });
+	await upload(c.id, { file: jpeg(), kind: 'finished', of: o.body.id });
+	const r = await call(`/clients/${c.id}/photos/${o.body.id}`, { method: 'DELETE' });
+	assert.equal(r.status, 200);
+	assert.equal(bucket.objects.size, 0);
+	assert.deepEqual((await call(`/clients/${c.id}`)).body.photos, []);
+});
+
+await t('download all: a zip of every original, in order', async () => {
+	const c = await create();
+	const a = await upload(c.id, { file: jpeg(100, 'a.jpg', 1) });
+	await upload(c.id, { file: jpeg(200, 'b.jpg', 2) });
+	await upload(c.id, { file: jpeg(5, 'done.jpg'), kind: 'finished', of: a.body.id });
+	const r = await call(`/clients/${c.id}/photos.zip`);
+	assert.equal(r.status, 200);
+	assert.match(r.headers.get('content-disposition'), /test-bakery-originals\.zip/);
+	const dir = mkdtempSync(join(tmpdir(), 'zipadmin-'));
+	try {
+		writeFileSync(join(dir, 'z.zip'), r.body);
+		const list = execFileSync('unzip', ['-Z1', join(dir, 'z.zip')], { encoding: 'utf8' });
+		assert.deepEqual(list.trim().split('\n'), ['1-a.jpg', '2-b.jpg']);
+		assert.match(
+			execFileSync('unzip', ['-t', join(dir, 'z.zip')], { encoding: 'utf8' }),
+			/No errors/,
+		);
+	} finally {
+		rmSync(dir, { recursive: true, force: true });
+	}
+});
+
+await t('delete removes the client and every file', async () => {
+	const c = await create();
+	await upload(c.id, { file: jpeg(), thumb: jpeg(2) });
+	await call(`/clients/${c.id}/rotate`, { method: 'POST', json: {} });
 	assert.equal((await call(`/clients/${c.id}`, { method: 'DELETE' })).status, 200);
 	assert.equal((await call(`/clients/${c.id}`)).status, 404);
-	assert.equal((await call(`/clients/${c.id}`, { method: 'DELETE' })).status, 404);
+	assert.equal(bucket.objects.size, 0);
 });
 
-await t('unknown admin paths are 404', async () => {
-	assert.equal((await call('/other')).status, 404);
-	assert.equal((await call('/clients/x/y/z')).status, 404);
-	assert.equal((await call('/clients/x/nope', { method: 'POST' })).status, 404);
-});
-
-await t('changes from another site, or not as JSON, are refused', async () => {
+await t('unknown admin paths and clients are 404', async () => {
+	assert.equal((await call('/nope')).status, 404);
+	assert.equal((await call('/clients/x')).status, 404);
 	const c = await create();
-	const send = (headers, method = 'POST', path = `/clients/${c.id}/rotate`) =>
+	assert.equal((await call(`/clients/${c.id}/nope`, { method: 'POST', json: {} })).status, 404);
+});
+
+await t('changes from another site are refused, uploads included', async () => {
+	const c = await create();
+	const send = (headers, method = 'POST', path = `/clients/${c.id}/rotate`, body = '{}') =>
 		worker.fetch(
-			new Request(`https://cellestialstudio.com/api/onboard/admin${path}`, {
+			new Request(`${ORIGIN}/api/onboard/admin${path}`, {
 				method,
 				headers: { 'cf-access-jwt-assertion': good, ...headers },
-				body: method === 'DELETE' ? undefined : '{}',
+				body: method === 'DELETE' ? undefined : body,
 			}),
 			env(),
 			{ waitUntil() {} },
@@ -268,13 +330,25 @@ await t('changes from another site, or not as JSON, are refused', async () => {
 		403,
 	);
 	assert.equal((await send({}, 'DELETE', `/clients/${c.id}`)).status, 403);
-	assert.equal((await call(`/clients/${c.id}`)).body.code, c.code, 'nothing changed');
-	const ok = await send({
-		'content-type': 'application/json',
-		origin: 'https://cellestialstudio.com',
-		'sec-fetch-site': 'same-origin',
-	});
-	assert.equal(ok.status, 200);
+	// A cross-site form upload carries cookies without a preflight: it must prove it came from here.
+	const form = new FormData();
+	form.append('file', jpeg());
+	const asForm = (headers) =>
+		worker.fetch(
+			new Request(`${ORIGIN}/api/onboard/admin/clients/${c.id}/photos`, {
+				method: 'POST',
+				headers: { 'cf-access-jwt-assertion': good, ...headers },
+				body: form,
+			}),
+			env(),
+			{ waitUntil() {} },
+		);
+	assert.equal((await asForm({})).status, 403);
+	assert.equal((await asForm({ origin: 'https://evil.example' })).status, 403);
+	assert.equal((await asForm({ 'sec-fetch-site': 'same-site' })).status, 403);
+	assert.equal(bucket.objects.size, 0);
+	assert.equal((await asForm({ origin: ORIGIN })).status, 201);
+	assert.equal((await call(`/clients/${c.id}`)).body.code, c.code);
 });
 
 console.log(`onboard admin: ${pass} passed`);
