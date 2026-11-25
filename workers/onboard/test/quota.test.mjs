@@ -71,4 +71,12 @@ await t('usage view for the dashboard', async (db) => {
 	});
 });
 
+await t('a client link gets 100 uploads a day; Gabriel and other links still can', async (db) => {
+	for (let i = 0; i < 100; i++) assert.equal((await q.admitUpload(db, 1, DAY, 'leaked')).ok, true);
+	assert.deepEqual(await q.admitUpload(db, 1, DAY, 'leaked'), { ok: false, reason: 'busy' });
+	assert.deepEqual(await q.admitUpload(db, 1, DAY, 'other'), { ok: true });
+	assert.deepEqual(await q.admitUpload(db, 1, DAY), { ok: true }, 'studio upload');
+	assert.deepEqual(await q.admitUpload(db, 1, DAY + 86_400_000, 'leaked'), { ok: true });
+});
+
 console.log(`onboard quota: ${pass} passed`);

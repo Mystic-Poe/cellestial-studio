@@ -144,7 +144,7 @@ export async function clientRoute(
 				});
 			const up = await readUpload(request, CLIENT_PHOTO_MAX);
 			if (!up.ok) return json(up.status, { error: up.error });
-			const admit = await admitUpload(db, up.file.size + (up.thumb?.size ?? 0));
+			const admit = await admitUpload(db, up.file.size + (up.thumb?.size ?? 0), Date.now(), c.id);
 			if (!admit.ok) return refuseUpload(db, env, admit.reason);
 			const id = newId();
 			const meta = (f: File) => ({ httpMetadata: { contentType: f.type || 'image/jpeg' } });

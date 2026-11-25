@@ -216,6 +216,7 @@ export async function deleteClient(db: D1, id: string): Promise<boolean> {
 		db.prepare('DELETE FROM clients WHERE id = ?').bind(id),
 		db.prepare('DELETE FROM photos WHERE client_id = ?').bind(id),
 		db.prepare('DELETE FROM reviews WHERE client_id = ?').bind(id),
+		db.prepare('DELETE FROM link_uploads WHERE client_id = ?').bind(id),
 	]);
 	return c.meta.changes > 0;
 }

@@ -37,7 +37,7 @@ shared by both pages and this Worker.
 R2 is the only thing on the account that bills past its free tier, so
 `src/quota.ts` keeps it there: uploads stop once everything stored reaches
 8 GB (Gabriel is emailed once a day while full), and at 1,500 uploads a UTC
-day. Client photo views are rate limited per link and served from the edge
+day (100 of them at most from any one client link). Client photo views are rate limited per link and served from the edge
 cache after the first read. The dashboard list shows storage and today's
 uploads.
 

@@ -11,6 +11,9 @@ export const STORAGE_CAP = 8 * 1024 ** 3;
 /** About 3,000 R2 writes a day at most (photo + thumbnail), under a tenth of the free 1M a month. */
 export const DAILY_UPLOADS = 1500;
 
+/** Per client link: a leaked link can use at most this share of the day. */
+export const LINK_DAILY_UPLOADS = 100;
+
 export const FULL_MESSAGE = 'Photo storage is full right now. Gabriel’s been told.';
 export const BUSY_MESSAGE = 'Too many photos today. Try again tomorrow, or send them to Gabriel.';
 
@@ -35,11 +38,28 @@ export type Admit = { ok: true } | { ok: false; reason: 'full' | 'busy' };
 
 /**
  * May an upload of this many bytes go in? Counts it against today when it may.
- * The count is taken in one statement, so two uploads at once can't both slip
- * past the last slot.
+ * Each count is taken in one statement, so two uploads at once can't both slip
+ * past the last slot. A client's upload (`linkOf` = their id) also counts
+ * against that link's own daily share; Gabriel's uploads don't.
  */
-export async function admitUpload(db: D1, bytes: number, now = Date.now()): Promise<Admit> {
+export async function admitUpload(
+	db: D1,
+	bytes: number,
+	now = Date.now(),
+	linkOf?: string,
+): Promise<Admit> {
 	if ((await storageUsed(db)) + bytes > STORAGE_CAP) return { ok: false, reason: 'full' };
+	if (linkOf) {
+		const mine = await db
+			.prepare(
+				`INSERT INTO link_uploads (client_id, day, uploads) VALUES (?, ?, 1)
+				 ON CONFLICT (client_id, day) DO UPDATE SET uploads = uploads + 1 WHERE uploads < ?
+				 RETURNING uploads`,
+			)
+			.bind(linkOf, today(now), LINK_DAILY_UPLOADS)
+			.first<{ uploads: number }>();
+		if (!mine) return { ok: false, reason: 'busy' };
+	}
 	const r = await db
 		.prepare(
 			`INSERT INTO usage (day, uploads) VALUES (?, 1)
