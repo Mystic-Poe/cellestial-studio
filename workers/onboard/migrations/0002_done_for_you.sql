@@ -11,6 +11,7 @@ CREATE TABLE clients (
 	mode TEXT NOT NULL DEFAULT 'live' CHECK (mode IN ('live', 'test')),
 	stage TEXT NOT NULL DEFAULT 'intake'
 		CHECK (stage IN ('intake', 'design', 'building', 'review', 'live')),
+	stage_at INTEGER NOT NULL DEFAULT 0,
 	intake TEXT NOT NULL DEFAULT '{}',
 	intake_by TEXT CHECK (intake_by IN ('client', 'studio')),
 	intake_at INTEGER,

@@ -35,6 +35,7 @@ export interface ClientRow extends NewClient {
 	id: string;
 	code: string;
 	stage: Stage;
+	stage_at: number;
 	intake: Intake;
 	intake_by: 'client' | 'studio' | null;
 	intake_at: number | null;
@@ -61,6 +62,7 @@ export type ClientPatch = Partial<
 		| 'email'
 		| 'mode'
 		| 'stage'
+		| 'stage_at'
 		| 'intake'
 		| 'intake_by'
 		| 'intake_at'
@@ -78,6 +80,7 @@ const EDITABLE = [
 	'email',
 	'mode',
 	'stage',
+	'stage_at',
 	'intake',
 	'intake_by',
 	'intake_at',
