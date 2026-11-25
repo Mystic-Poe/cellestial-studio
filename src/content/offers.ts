@@ -84,7 +84,7 @@ export const OFFERS: readonly Offer[] = [
 			],
 			[
 				{ text: 'You own your site and your data.', brass: true },
-				{ text: ' The systems are built for you and saved to your accounts.' },
+				{ text: " The systems are built for you, and they're yours to keep." },
 			],
 		],
 	},
@@ -102,10 +102,7 @@ export const OFFERS: readonly Offer[] = [
 					text: ' Bigger asks get a longer window — we will be honest about cost and time up front.',
 				},
 			],
-			[
-				{ text: 'You own your site and your app.', brass: true },
-				{ text: ' Built in your name, from day one.' },
-			],
+			[{ text: 'You own your site and your app.', brass: true }, { text: ' Yours from day one.' }],
 		],
 	},
 	{

@@ -7,7 +7,7 @@
     "eyebrow": "Showpiece websites · Denver, CO",
     "headline": "Your node among",
     "headline_accent": "the stars",
-    "subcopy": "Websites built to be remembered, and owned by you forever: code, domain and hosting in your name from day one.",
+    "subcopy": "Websites built to be remembered, and owned by you forever: code, domain and content, yours from day one.",
     "cta_primary": "Claim your star",
     "cta_secondary": "See the work",
     "chips": ["Lighthouse 100", "You own the code"]
@@ -79,11 +79,11 @@
     "eyebrow": "Ownership",
     "title": "You own it.",
     "title_accent": "Forever.",
-    "body": "Your code, your domain, your hosting, your repository, all in your name from day one. If you ever leave, you take everything with you. We'd rather earn your stay.",
+    "body": "Your code, your domain, your content, yours from day one. If you ever leave, you take everything with you. We'd rather earn your stay.",
     "points": [
-      "Code and repo in your GitHub",
-      "Domain registered to you",
-      "Hosting on your account",
+      "Your code and content",
+      "Your domain",
+      "We handle the hosting",
       "A care plan you can cancel anytime"
     ]
   },

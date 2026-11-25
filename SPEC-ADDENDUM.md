@@ -23,9 +23,9 @@
 
 **1. Site:** A custom site built for your business. Fast, beautiful, and made to be found. Includes: your pages, a working contact form, domain set up in your account. **$990 slashed → FREE** — founding cohort. Plus care: **$69/mo slashed → $39/mo**, locked for life on basic. **You own it. Forever.** Site, domain, and content are yours.
 
-**2. Site + Systems:** Everything in Site, plus the work behind it wired in. Includes: intake or booking, follow-ups, payments, and lead capture — set up to run as one system. **Price: by quote.** We see the ask first, then give you an honest number. **You own your site and your data.** The systems are built for you and saved to your accounts.
+**2. Site + Systems:** Everything in Site, plus the work behind it wired in. Includes: intake or booking, follow-ups, payments, and lead capture — set up to run as one system. **Price: by quote.** We see the ask first, then give you an honest number. **You own your site and your data.** The systems are built for you, and they're yours to keep.
 
-**3. Site + App:** Everything in Site, plus a real app your customers actually use. Built for phones first, connected to your site. **Price: by quote.** Bigger asks get a longer window — we will be honest about cost and time up front. **You own your site and your app.** Built in your name, from day one.
+**3. Site + App:** Everything in Site, plus a real app your customers actually use. Built for phones first, connected to your site. **Price: by quote.** Bigger asks get a longer window — we will be honest about cost and time up front. **You own your site and your app.** Yours from day one.
 
 **4. Add-ons — AI + automation:** Upgrades that take work off your plate. AI that answers, sorts, and drafts. Automations that move the repetitive work for you. **Price: by quote.**
 (Note: NO ownership line in this tile. Ownership on these builds is scoped per build once the ask is known.)

@@ -35,7 +35,7 @@ Tests: `pnpm test` all green (Worker: client 19, store 9, files 7, access 10, ad
    delete secrets `CF_USER_TOKEN`, `GH_TOKEN`, `INVITE_SALT`; deploy the Worker;
    fast-forward `main` to `done-for-you` and push (site build);
    live checks: admin → Access login, bad code 404, `/start/` 200, `/api/onboard/invites` 404.
-3. Offer wording on the site stays a draft until Gabriel approves (spec, last section).
+3. Offer wording: approved and committed on the branch 2026-11-25 (ships with the merge; spec, last section).
 
 Rollback: the old flow is `main` at `995e132`; the old D1 schema can't come
 back without its migration reverted (only test rows existed).
