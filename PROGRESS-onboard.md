@@ -11,7 +11,7 @@ Public repo: no client data in any file, test or log.
 
 - [x] Task 1 — progress rules (`src/onboard/progress.ts`), link codec removed.
   `src/scripts/start-flow.ts` / `start-builder.ts` still import the codec until Tasks 4–5.
-- [ ] Task 2 — D1 store, fake D1, Access check
+- [x] Task 2 — D1 store (`store.ts`), fake D1 over node:sqlite, Access check (`access.ts`)
 - [ ] Task 3 — Worker routes
 - [ ] Task 4 — client page
 - [ ] Task 5 — dashboard
@@ -19,4 +19,4 @@ Public repo: no client data in any file, test or log.
 
 ## Exact next step
 
-Task 2.
+Task 3: Worker routes.
