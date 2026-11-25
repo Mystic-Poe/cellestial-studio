@@ -90,6 +90,20 @@ await t('create returns the client with its link and steps; domain normalised', 
 	);
 });
 
+await t('domain is optional: blank or missing saves as empty', async () => {
+	const { domain, ...noDomain } = fields;
+	assert.ok(domain);
+	for (const json of [{ ...fields, domain: '' }, { ...fields, domain: '   ' }, noDomain]) {
+		const r = await call('/clients', { method: 'POST', json });
+		assert.equal(r.status, 201);
+		assert.equal(r.body.domain, '');
+	}
+	const made = await call('/clients', { method: 'POST', json: fields });
+	const cleared = await call(`/clients/${made.body.id}`, { method: 'PATCH', json: { domain: '' } });
+	assert.equal(cleared.status, 200);
+	assert.equal(cleared.body.domain, '');
+});
+
 await t('create refuses bad fields and names the field', async () => {
 	for (const [k, v] of [
 		['name', ''],

@@ -274,7 +274,7 @@ export function startFlow(root: HTMLElement): void {
 				el(
 					'p',
 					{ class: 'text-secondary' },
-					`Thank you, ${c.n}. Gabriel takes it from here — he’ll set up ${c.d} and let you know when it’s live.`,
+					`Thank you, ${c.n}. Gabriel takes it from here — he’ll set up ${c.d || 'your site'} and let you know when it’s live.`,
 				),
 				el(
 					'p',

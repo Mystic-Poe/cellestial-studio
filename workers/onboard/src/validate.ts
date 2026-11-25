@@ -52,9 +52,10 @@ export function checkFields(body: Record<string, unknown>, partial: boolean): Ch
 			return { ok: false, field: 'email', error: 'That email doesn’t look right.' };
 		out.email = v;
 	}
+	// Optional: most clients have no domain yet (buying one is part of the job).
 	if (need('domain')) {
 		const v = typeof body.domain === 'string' ? normaliseDomain(body.domain) : '';
-		if (!v || v.length > 253 || !v.includes('.') || /\s/.test(v))
+		if (v && (v.length > 253 || !v.includes('.') || /\s/.test(v)))
 			return { ok: false, field: 'domain', error: 'Domain: like example.com.' };
 		out.domain = v;
 	}

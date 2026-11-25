@@ -237,7 +237,11 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 			{ class: 'ob-form', novalidate: true },
 			text('name', 'Business name', 'text', c.name, { maxlength: '80' }),
 			text('email', 'Business email', 'email', c.email, { maxlength: '254' }),
-			text('domain', 'Domain', 'text', c.domain, { maxlength: '253', placeholder: 'example.com' }),
+			text('domain', 'Domain (only if they already have one)', 'text', c.domain, {
+				maxlength: '253',
+				placeholder: 'Leave blank if not',
+				required: false,
+			}),
 			radios(
 				'lane',
 				'Does their business run on…',
