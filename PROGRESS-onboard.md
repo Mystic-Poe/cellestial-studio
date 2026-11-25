@@ -37,6 +37,14 @@ site build live (version 82f6ed00). Live checks: /dashboard/ and admin API 302
 to Access login; bad code 404; /api/onboard/invites 404; /start/ 200 serving
 the new intake bundle. Offer wording shipped.
 
+**Free-tier caps, 2026-11-25** (Gabriel approved the numbers). R2 is the only
+billable product (Workers Free, D1, KV, Access Free stop at limits, never bill).
+Uploads stop at 8 GB stored and 1,500 a UTC day, 100 per client link (migrations
+0003, 0004); client photo views 120/min per link (RATE_READ) and edge-cached;
+dashboard list shows usage. Cloudflare: rate-limit rule "API flood guard"
+(/api/*, 100 req/10 s per IP, block 10 s) and a $1 billing budget alert to the
+account email. Cloudflare's own spend caps cover Workers/DO only, not R2.
+
 Next: Gabriel creates a real client from /dashboard and runs it on a phone;
 confirm the "[TEST]"/live notification emails arrive.
 
