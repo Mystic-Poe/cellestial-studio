@@ -38,6 +38,16 @@ export const adminView = (c: ClientRow) => ({
 	steps: buildSteps(configOf(c)).map((s) => ({ id: s.id, title: s.title })),
 });
 
+function sameSite(request: Request): boolean {
+	const h = request.headers;
+	if (!(h.get('content-type') ?? '').toLowerCase().startsWith('application/json')) return false;
+	const site = h.get('sec-fetch-site');
+	if (site && site !== 'same-origin') return false;
+	const origin = h.get('origin');
+	if (origin && origin !== ORIGIN) return false;
+	return true;
+}
+
 const missing = () => json(404, { error: 'No such client.' });
 const bad = (field: string, error: string) => json(400, { field, error });
 
@@ -52,6 +62,12 @@ export async function adminRoute(
 	if (!env.DB) return json(503, { error: 'Not configured.' });
 	const db = env.DB;
 	const m = request.method;
+
+	// Access signs Gabriel in with a cookie, which a browser sends even on a
+	// request another site starts. Changes must come from this site, as JSON
+	// (which a cross-site form can't send without a preflight).
+	if (m !== 'GET' && m !== 'HEAD' && !sameSite(request))
+		return json(403, { error: 'Changes must come from the dashboard.' });
 
 	if (rest[0] !== 'clients' || rest.length > 3) return json(404, { error: 'Not found.' });
 

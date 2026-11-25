@@ -231,4 +231,36 @@ await t('unknown admin paths are 404', async () => {
 	assert.equal((await call('/clients/x/nope', { method: 'POST' })).status, 404);
 });
 
+await t('changes from another site, or not as JSON, are refused', async () => {
+	const c = await create();
+	const send = (headers, method = 'POST', path = `/clients/${c.id}/rotate`) =>
+		worker.fetch(
+			new Request(`https://cellestialstudio.com/api/onboard/admin${path}`, {
+				method,
+				headers: { 'cf-access-jwt-assertion': good, ...headers },
+				body: method === 'DELETE' ? undefined : '{}',
+			}),
+			env(),
+			{ waitUntil() {} },
+		);
+	assert.equal((await send({ 'content-type': 'text/plain' })).status, 403);
+	assert.equal((await send({ 'content-type': 'application/x-www-form-urlencoded' })).status, 403);
+	assert.equal(
+		(await send({ 'content-type': 'application/json', origin: 'https://evil.example' })).status,
+		403,
+	);
+	assert.equal(
+		(await send({ 'content-type': 'application/json', 'sec-fetch-site': 'cross-site' })).status,
+		403,
+	);
+	assert.equal((await send({}, 'DELETE', `/clients/${c.id}`)).status, 403);
+	assert.equal((await call(`/clients/${c.id}`)).body.code, c.code, 'nothing changed');
+	const ok = await send({
+		'content-type': 'application/json',
+		origin: 'https://cellestialstudio.com',
+		'sec-fetch-site': 'same-origin',
+	});
+	assert.equal(ok.status, 200);
+});
+
 console.log(`onboard admin: ${pass} passed`);
