@@ -1,0 +1,381 @@
+/* The onboarding pages (/start and /dashboard): the site's own look, with a
+   still star field in place of the moving sky so a phone stays quick.
+   Colours come from tokens.css; brass words use --color-brass-text. */
+
+.ob-sky {
+	position: relative;
+	min-height: 100dvh;
+	background: var(--color-black);
+	isolation: isolate;
+}
+.ob-sky::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	opacity: 0.55;
+	background-image:
+		radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+		radial-gradient(1px 1px at 78% 9%, var(--color-blue-white) 50%, transparent 51%),
+		radial-gradient(1.5px 1.5px at 33% 71%, #fff 50%, transparent 51%),
+		radial-gradient(1px 1px at 91% 44%, #fff 50%, transparent 51%),
+		radial-gradient(1px 1px at 57% 32%, var(--color-brass-hi) 50%, transparent 51%),
+		radial-gradient(1px 1px at 6% 88%, #fff 50%, transparent 51%),
+		radial-gradient(1.5px 1.5px at 68% 86%, var(--color-blue-white) 50%, transparent 51%),
+		radial-gradient(1px 1px at 45% 6%, #fff 50%, transparent 51%),
+		radial-gradient(1px 1px at 22% 47%, #fff 50%, transparent 51%),
+		radial-gradient(1px 1px at 86% 67%, var(--color-brass-hi) 50%, transparent 51%),
+		radial-gradient(
+			60% 40% at 50% 0%,
+			color-mix(in srgb, var(--color-blue) 10%, transparent),
+			transparent
+		);
+	background-size:
+		240px 240px,
+		310px 310px,
+		280px 280px,
+		350px 350px,
+		420px 420px,
+		260px 260px,
+		390px 390px,
+		330px 330px,
+		300px 300px,
+		370px 370px,
+		100% 100%;
+}
+
+.ob-home {
+	align-self: flex-start;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-brass-text);
+	text-decoration: underline;
+	text-decoration-color: var(--color-brass);
+	text-underline-offset: 4px;
+}
+.ob-home:hover {
+	color: var(--color-brass-hi);
+}
+
+.ob-kicker {
+	font-size: 0.75rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--color-brass-text);
+}
+
+/* Fields: the contact form's black face and brass hairline. */
+.ob-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.ob-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-secondary);
+}
+.ob-input,
+.ob-field input:not([type="radio"]):not([type="checkbox"]),
+.ob-field textarea,
+.ob-field select {
+	border: 1px solid var(--color-brass);
+	border-radius: 10px;
+	background: var(--color-black);
+	color: var(--color-white);
+	padding: 0.65rem 0.8rem;
+	font: inherit;
+	font-weight: 400;
+	transition:
+		border-color 160ms ease-out,
+		box-shadow 160ms ease-out;
+}
+.ob-field textarea {
+	min-height: 7rem;
+	resize: vertical;
+}
+.ob-field input:hover,
+.ob-field textarea:hover {
+	border-color: var(--color-brass-text);
+}
+.ob-field input:focus-visible,
+.ob-field textarea:focus-visible,
+.ob-choice input:focus-visible,
+.ob-steps button:focus-visible,
+.ob-tab:focus-visible,
+.ob-row:focus-visible {
+	border-color: var(--color-blue);
+	outline: 2px solid var(--color-blue);
+	outline-offset: 2px;
+	box-shadow: 0 0 12px 0 color-mix(in srgb, var(--color-blue) 45%, transparent);
+}
+.ob-field input:autofill {
+	-webkit-text-fill-color: #fff;
+	box-shadow: inset 0 0 0 100px var(--color-black);
+}
+.ob-field[data-invalid] input {
+	border-color: #d9776b;
+}
+.ob-choices {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font-size: 0.875rem;
+}
+.ob-choices legend {
+	margin-bottom: 0.4rem;
+	font-weight: 600;
+	color: var(--color-secondary);
+}
+.ob-choice {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.55rem;
+	color: var(--color-body);
+}
+.ob-choice input {
+	margin-top: 0.2rem;
+	accent-color: var(--color-blue);
+}
+
+/* The step bar: one button per step. Ticked steps are brass, the current one
+   is lit blue, the ones not open yet are a faint hairline. */
+.ob-steps {
+	display: flex;
+	gap: 0.4rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ob-steps li {
+	flex: 1;
+}
+.ob-steps button {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.35rem;
+	border: 0;
+	border-radius: 8px;
+	background: none;
+	padding: 0.3rem 0;
+	color: var(--color-faint);
+	font: inherit;
+	font-size: 0.75rem;
+	cursor: pointer;
+}
+.ob-steps button::before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 6px;
+	border-radius: 999px;
+	background: var(--color-border);
+}
+.ob-steps button[data-state="done"] {
+	color: var(--color-brass-text);
+}
+.ob-steps button[data-state="done"]::before {
+	background: var(--color-brass-text);
+}
+.ob-steps button[data-state="current"] {
+	color: var(--color-blue-white);
+	font-weight: 600;
+}
+.ob-steps button[data-state="current"]::before {
+	background: var(--color-blue);
+	box-shadow: 0 0 10px color-mix(in srgb, var(--color-blue) 60%, transparent);
+}
+.ob-steps button:disabled {
+	cursor: default;
+	opacity: 0.7;
+}
+
+.ob-status {
+	min-height: 1.5rem;
+	font-size: 0.875rem;
+	color: var(--color-blue-white);
+}
+.ob-note {
+	font-size: 0.75rem;
+	color: var(--color-faint);
+}
+.ob-test {
+	border: 1px solid var(--color-blue);
+	border-radius: 10px;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.75rem;
+	color: var(--color-blue-white);
+}
+.ob-error {
+	border: 1px solid #d9776b;
+	border-radius: 10px;
+	padding: 0.6rem 0.8rem;
+	font-size: 0.875rem;
+	color: #f1c2bb;
+}
+.ob-ok {
+	color: var(--color-brass-text);
+	font-weight: 600;
+}
+
+.ob-copy {
+	display: block;
+	width: 100%;
+	border: 1px solid var(--color-brass);
+	border-radius: 10px;
+	background: var(--color-black);
+	padding: 0.55rem 0.8rem;
+	text-align: left;
+	font: inherit;
+	cursor: pointer;
+}
+.ob-copy small {
+	display: block;
+	font-size: 0.75rem;
+	color: var(--color-brass-text);
+}
+.ob-copy span {
+	word-break: break-all;
+	color: var(--color-body);
+}
+
+/* Dashboard pieces. */
+.ob-tabs {
+	display: flex;
+	gap: 0.25rem;
+	border-bottom: 1px solid var(--color-hairline);
+}
+.ob-tab {
+	border: 0;
+	border-bottom: 2px solid transparent;
+	background: none;
+	padding: 0.5rem 0.9rem;
+	color: var(--color-secondary);
+	font: inherit;
+	font-size: 0.875rem;
+	cursor: pointer;
+}
+.ob-tab[aria-selected="true"] {
+	border-bottom-color: var(--color-blue);
+	color: var(--color-body);
+	font-weight: 600;
+}
+.ob-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ob-row {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 0.35rem 1rem;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-card);
+	padding: 0.8rem 1rem;
+	color: inherit;
+	text-decoration: none;
+}
+.ob-row:hover {
+	border-color: var(--color-brass-text);
+}
+.ob-row strong {
+	color: var(--color-body);
+}
+.ob-meta {
+	font-size: 0.75rem;
+	color: var(--color-muted);
+}
+.ob-chip {
+	align-self: start;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	padding: 0.1rem 0.6rem;
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-secondary);
+}
+.ob-chip[data-status="done"] {
+	border-color: var(--color-brass-text);
+	color: var(--color-brass-text);
+}
+.ob-chip[data-status="active"] {
+	border-color: var(--color-blue);
+	color: var(--color-blue-white);
+}
+.ob-bar {
+	grid-column: 1 / -1;
+	display: flex;
+	gap: 3px;
+}
+.ob-bar i {
+	flex: 1;
+	height: 4px;
+	border-radius: 999px;
+	background: var(--color-border);
+}
+.ob-bar i[data-on] {
+	background: var(--color-brass-text);
+}
+.ob-section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+.ob-section h2 {
+	font-size: 0.8rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--color-brass-text);
+}
+.ob-steplist {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ob-steplist li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 0.75rem;
+	font-size: 0.875rem;
+}
+.ob-steplist li[data-current] > label {
+	color: var(--color-blue-white);
+	font-weight: 600;
+}
+.ob-linkbox {
+	word-break: break-all;
+	font-size: 0.8rem;
+	color: var(--color-blue-white);
+}
+.ob-qr {
+	width: 11rem;
+	border-radius: 8px;
+	background: #fff;
+	padding: 0.4rem;
+}
+.ob-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+}
+.ob-danger {
+	color: #f1c2bb !important;
+}
