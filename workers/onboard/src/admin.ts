@@ -14,6 +14,8 @@
 import { type AccessEnv, verifyAccess } from './access.ts';
 import { photoKey, type R2Like, readUpload, safeName, zipNames, zipStream } from './files.ts';
 import { json, readJson } from './http.ts';
+import type { MailEnv } from './notify.ts';
+import { admitUpload, refuseUpload, usageView } from './quota.ts';
 import {
 	addPhoto,
 	type ClientRow,
@@ -33,7 +35,7 @@ import {
 } from './store.ts';
 import { checkNew, checkPatch } from './validate.ts';
 
-export interface AdminEnv extends AccessEnv {
+export interface AdminEnv extends AccessEnv, MailEnv {
 	DB?: D1;
 	PHOTOS?: R2Like;
 }
@@ -100,7 +102,10 @@ export async function adminRoute(
 	if (rest.length === 1) {
 		if (m === 'GET') {
 			const archived = new URL(request.url).searchParams.get('status') === 'archived';
-			return json(200, { clients: (await listClients(db, archived)).map(adminView) });
+			return json(200, {
+				clients: (await listClients(db, archived)).map(adminView),
+				usage: await usageView(db),
+			});
 		}
 		if (m === 'POST') {
 			const body = await readJson(request);
@@ -200,6 +205,8 @@ export async function adminRoute(
 			for (const o of old) await deletePhoto(db, id, o.id);
 			await removeFiles(bucket, id, old);
 		}
+		const admit = await admitUpload(db, up.file.size + (up.thumb?.size ?? 0));
+		if (!admit.ok) return refuseUpload(db, env, admit.reason);
 		const pid = newId();
 		const meta = (f: File) => ({ httpMetadata: { contentType: f.type || 'image/jpeg' } });
 		await bucket.put(photoKey(id, pid), up.file.stream(), meta(up.file));
@@ -215,6 +222,7 @@ export async function adminRoute(
 			type: up.file.type || 'image/jpeg',
 			size: up.file.size,
 			has_thumb: Boolean(up.thumb),
+			thumb_size: up.thumb?.size ?? 0,
 		});
 		await updateClient(db, id, {});
 		return json(201, p);

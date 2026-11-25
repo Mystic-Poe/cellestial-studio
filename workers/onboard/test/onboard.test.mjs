@@ -11,6 +11,7 @@ const store = await import(resolve(here, '../src/store.ts'));
 
 let allowMail = true;
 let allowClient = true;
+let allowRead = true;
 let db;
 let bucket;
 let mails = [];
@@ -29,6 +30,7 @@ const env = () => ({
 	NOTIFY_FROM: 'site@cellestialstudio.com',
 	RATE: { limit: async () => ({ success: allowMail }) },
 	RATE_CLIENT: { limit: async () => ({ success: allowClient }) },
+	RATE_READ: { limit: async () => ({ success: allowRead }) },
 	DB: db,
 	PHOTOS: bucket,
 });
@@ -64,7 +66,7 @@ const t = async (name, fn) => {
 	db = fakeD1();
 	bucket = fakeR2();
 	mails = [];
-	allowMail = allowClient = mailOk = true;
+	allowMail = allowClient = allowRead = mailOk = true;
 	await fn();
 	console.log('  ok  -', name);
 	pass++;
@@ -369,6 +371,116 @@ await t('old routes are gone; other paths 404', async () => {
 		404,
 	);
 	assert.equal((await call('/nope')).status, 404);
+});
+
+const q = await import(resolve(here, '../src/quota.ts'));
+const upload = (c, file = jpeg()) =>
+	call(`/client/${c.code}/photos`, { method: 'POST', form: { file } });
+
+await t('a full store refuses uploads, keeps nothing, and tells Gabriel once a day', async () => {
+	const c = await make();
+	await db
+		.prepare(
+			`INSERT INTO photos (id, client_id, kind, source, name, type, size, has_thumb, created_at)
+			 VALUES ('big', ?, 'original', 'studio', 'big.jpg', 'image/jpeg', ?, 0, 0)`,
+		)
+		.bind(c.id, q.STORAGE_CAP - 5)
+		.run();
+	const r = await upload(c);
+	assert.equal(r.status, 409);
+	assert.equal(r.body.error, q.FULL_MESSAGE);
+	await upload(c);
+	assert.equal(bucket.objects.size, 0, 'nothing written to R2');
+	assert.deepEqual(
+		mails.map((m) => m.subject),
+		['Onboarding: photo storage is full'],
+	);
+	assert.match(mails[0].text, /8 GB/);
+});
+
+await t('past 1,500 uploads today, uploads are refused until tomorrow', async () => {
+	const c = await make();
+	const day = new Date().toISOString().slice(0, 10);
+	await db.prepare('INSERT INTO usage (day, uploads) VALUES (?, 1500)').bind(day).run();
+	const r = await upload(c);
+	assert.equal(r.status, 409);
+	assert.equal(r.body.error, q.BUSY_MESSAGE);
+	assert.equal(bucket.objects.size, 0);
+	assert.deepEqual(mails, []);
+});
+
+await t('uploads count toward the day and the store, thumbnails included', async () => {
+	const c = await make();
+	await call(`/client/${c.code}/photos`, {
+		method: 'POST',
+		form: { file: jpeg(40), thumb: jpeg(7, 'thumb.jpg') },
+	});
+	assert.equal(await q.uploadsToday(db), 1);
+	assert.equal(await q.storageUsed(db), 47);
+});
+
+await t('photo views have their own per-link limit', async () => {
+	const c = await make();
+	const up = await upload(c);
+	allowRead = false;
+	assert.equal((await call(`/client/${c.code}/photos/${up.body.id}`)).status, 429);
+	allowRead = true;
+	allowClient = false;
+	assert.equal(
+		(await call(`/client/${c.code}/photos/${up.body.id}`)).status,
+		200,
+		'writes limit is separate',
+	);
+});
+
+await t('a repeat view comes from the edge cache, not R2; deleting drops it', async () => {
+	const stored = new Map();
+	globalThis.caches = {
+		default: {
+			async match(k) {
+				const v = stored.get(k);
+				return v ? new Response(v.bytes, { headers: v.headers }) : undefined;
+			},
+			async put(k, res) {
+				stored.set(k, { bytes: new Uint8Array(await res.arrayBuffer()), headers: res.headers });
+			},
+			async delete(k) {
+				return stored.delete(k);
+			},
+		},
+	};
+	const pending = [];
+	const e = env();
+	const ctxCall = async (path, init = {}) => {
+		const r = await worker.fetch(
+			new Request(`https://cellestialstudio.com/api/onboard${path}`, init),
+			e,
+			{ waitUntil: (p) => pending.push(p) },
+		);
+		await Promise.all(pending.splice(0));
+		return r;
+	};
+	try {
+		const c = await make();
+		const up = await upload(c, jpeg(30));
+		let reads = 0;
+		const get = bucket.get.bind(bucket);
+		bucket.get = async (k) => {
+			reads++;
+			return get(k);
+		};
+		const a = await ctxCall(`/client/${c.code}/photos/${up.body.id}`);
+		assert.equal((await a.arrayBuffer()).byteLength, 30);
+		const b = await ctxCall(`/client/${c.code}/photos/${up.body.id}`);
+		assert.equal((await b.arrayBuffer()).byteLength, 30);
+		assert.equal(b.headers.get('cache-control'), 'private, max-age=3600');
+		assert.equal(reads, 1, 'second view never reached R2');
+		await ctxCall(`/client/${c.code}/photos/${up.body.id}`, { method: 'DELETE' });
+		assert.equal(stored.size, 0);
+		assert.equal((await ctxCall(`/client/${c.code}/photos/${up.body.id}`)).status, 404);
+	} finally {
+		delete globalThis.caches;
+	}
 });
 
 console.log(`onboard client: ${pass} passed`);

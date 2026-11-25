@@ -74,6 +74,17 @@ createServer(async (req, res) => {
 	const url = new URL(req.url, `http://localhost:${port}`);
 	if (url.pathname === '/__mails')
 		return res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(mails));
+	// Fills photo storage to its cap, so the "storage is full" answer can be seen.
+	if (url.pathname === '/__fill-storage' && req.method === 'POST') {
+		const { STORAGE_CAP } = await import('../src/quota.ts');
+		await env.DB.prepare(
+			`INSERT INTO photos (id, client_id, kind, source, name, type, size, has_thumb, created_at)
+			 VALUES (?, ?, 'original', 'studio', 'filler.jpg', 'image/jpeg', ?, 0, 0)`,
+		)
+			.bind(`filler-${Date.now()}`, url.searchParams.get('client') ?? '', STORAGE_CAP)
+			.run();
+		return res.writeHead(204).end();
+	}
 	if (!url.pathname.startsWith('/api/onboard')) return serveFile(url.pathname, res);
 
 	const chunks = [];

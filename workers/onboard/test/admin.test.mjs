@@ -351,4 +351,28 @@ await t('changes from another site are refused, uploads included', async () => {
 	assert.equal((await call(`/clients/${c.id}`)).body.code, c.code);
 });
 
+const q = await import(resolve(here, '../src/quota.ts'));
+
+await t('list carries storage and upload use for the dashboard', async () => {
+	const c = await create();
+	await upload(c.id, { file: jpeg(100), thumb: jpeg(5, 'thumb.jpg') });
+	const r = await call('/clients');
+	assert.deepEqual(r.body.usage, {
+		bytes: 105,
+		cap: q.STORAGE_CAP,
+		uploads_today: 1,
+		upload_cap: 1500,
+	});
+});
+
+await t('studio uploads stop at the same caps', async () => {
+	const c = await create();
+	const day = new Date().toISOString().slice(0, 10);
+	await db.prepare('INSERT INTO usage (day, uploads) VALUES (?, 1500)').bind(day).run();
+	const r = await upload(c.id, { file: jpeg() });
+	assert.equal(r.status, 409);
+	assert.equal(r.body.error, q.BUSY_MESSAGE);
+	assert.equal(bucket.objects.size, 0);
+});
+
 console.log(`onboard admin: ${pass} passed`);

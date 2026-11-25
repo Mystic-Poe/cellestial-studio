@@ -112,6 +112,16 @@ await page.waitForSelector('.ob-steps');
 assert.deepEqual((await mails()).slice(1), ['[TEST] Onboarding: Test Bakery added photos']);
 ok('change answers and add a photo after sending; Gabriel told once');
 
+await fetch(`${base}/__fill-storage?client=${c.id}`, { method: 'POST' });
+await page.click('text=Change my answers or add photos');
+await page.setInputFiles('#ob-add-photos', { name: 'more.jpg', mimeType: 'image/jpeg', buffer: photo });
+await page.waitForSelector('text=Photo storage is full right now. Gabriel’s been told.');
+assert.equal((await mails()).at(-1), 'Onboarding: photo storage is full');
+await page.screenshot({ path: `${out}/start-storage-full.png`, fullPage: true });
+await page.click('text=Save changes');
+await page.waitForSelector('.ob-steps');
+ok('a full store says so on the photo, and Gabriel gets one email');
+
 await api(`/clients/${c.id}`, 'PATCH', { stage: 'design' });
 await page.waitForFunction(() => document.querySelector('[data-flow] h1')?.textContent === 'Design', null, { timeout: 15000 });
 ok('the page follows the stage Gabriel sets');

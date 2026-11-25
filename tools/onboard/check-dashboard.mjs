@@ -145,8 +145,9 @@ ok('copy link; new link asks twice, then replaces it');
 await page.goto(`${base}/dashboard/`);
 await page.waitForSelector(`[data-client="${id}"]`);
 assert.match(await page.locator(`[data-client="${id}"] .ob-meta`).innerText(), /Test · 2 photos · 1 to edit/);
+assert.match(await page.locator('.ob-usage').innerText(), /^Photo storage: 0\.00 GB of 8\.0 GB · 3 of 1,500 uploads today$/);
 await page.screenshot({ path: `${out}/dash-list.png`, fullPage: true });
-ok('list shows stage, test, photos and what is left to edit');
+ok('list shows stage, test, photos, what is left to edit, and storage used');
 
 await page.click(`[data-client="${id}"]`);
 await page.waitForSelector('button:has-text("Archive")');

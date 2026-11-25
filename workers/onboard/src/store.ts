@@ -103,6 +103,8 @@ export interface PhotoRow {
 	type: string;
 	size: number;
 	has_thumb: boolean;
+	/** Bytes of the thumbnail, 0 when there is none; counts toward the storage cap. */
+	thumb_size?: number;
 	created_at: number;
 }
 
@@ -231,8 +233,8 @@ export async function touchSeen(db: D1, id: string, now = Date.now()): Promise<v
 export async function addPhoto(db: D1, p: Omit<PhotoRow, 'created_at'>, now = Date.now()) {
 	await db
 		.prepare(
-			`INSERT INTO photos (id, client_id, kind, of, source, name, type, size, has_thumb, created_at)
-			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO photos (id, client_id, kind, of, source, name, type, size, has_thumb, thumb_size, created_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		)
 		.bind(
 			p.id,
@@ -244,6 +246,7 @@ export async function addPhoto(db: D1, p: Omit<PhotoRow, 'created_at'>, now = Da
 			p.type,
 			p.size,
 			p.has_thumb ? 1 : 0,
+			p.thumb_size ?? 0,
 			now,
 		)
 		.run();

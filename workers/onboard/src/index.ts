@@ -21,6 +21,7 @@ export interface Env {
 	PHOTOS?: R2Like;
 	RATE?: Limiter;
 	RATE_CLIENT?: Limiter;
+	RATE_READ?: Limiter;
 }
 
 const notFound = () =>

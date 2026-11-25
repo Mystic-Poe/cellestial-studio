@@ -17,6 +17,7 @@ import {
 	type Patch,
 	type Photo,
 	photoUrl,
+	type Usage,
 	zipUrl,
 } from './dashboard-api.ts';
 import { intakeForm } from './intake-form.ts';
@@ -94,13 +95,15 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 			tabs.append(b);
 		}
 		const list = el('ul', { class: 'ob-list', 'aria-live': 'polite' });
-		view.replaceChildren(el('h1', { class: 'display text-4xl' }, 'Onboarding'), tabs, list);
+		const usage = el('p', { class: 'ob-meta ob-usage' });
+		view.replaceChildren(el('h1', { class: 'display text-4xl' }, 'Onboarding'), tabs, list, usage);
 
 		const fill = async () => {
 			try {
-				const clients = await api.list(tab === 'archived');
+				const { clients, usage: u } = await api.list(tab === 'archived');
 				if (mine !== token) return;
 				clearError();
+				usage.textContent = u ? usageLine(u) : '';
 				if (clients.length === 0) {
 					list.replaceChildren(
 						el(
@@ -121,6 +124,10 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 		await fill();
 		every(fill);
 	}
+
+	const gb = (n: number) => `${(n / 1024 ** 3).toFixed(n < 1024 ** 3 ? 2 : 1)} GB`;
+	const usageLine = (u: Usage) =>
+		`Photo storage: ${gb(u.bytes)} of ${gb(u.cap)} · ${u.uploads_today.toLocaleString()} of ${u.upload_cap.toLocaleString()} uploads today`;
 
 	const row = (c: AdminClient) => {
 		const at = STAGES.indexOf(c.stage);

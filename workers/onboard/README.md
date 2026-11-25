@@ -32,6 +32,15 @@ its origin). Without `ACCESS_TEAM`/`ACCESS_AUD` every admin route answers 503.
 The intake fields and stages are defined once, in `src/onboard/intake.ts`,
 shared by both pages and this Worker.
 
+## Free-tier caps
+
+R2 is the only thing on the account that bills past its free tier, so
+`src/quota.ts` keeps it there: uploads stop once everything stored reaches
+8 GB (Gabriel is emailed once a day while full), and at 1,500 uploads a UTC
+day. Client photo views are rate limited per link and served from the edge
+cache after the first read. The dashboard list shows storage and today's
+uploads.
+
 ## Settings
 
 | Name             | Kind   | What it is                                           |
@@ -40,6 +49,7 @@ shared by both pages and this Worker.
 | `PHOTOS`         | R2     | `cellestial-onboard-photos` (in `wrangler.jsonc`)    |
 | `RATE`           | limit  | 5 emails a minute per IP                             |
 | `RATE_CLIENT`    | limit  | 60 writes a minute per client link                   |
+| `RATE_READ`      | limit  | 120 photo views a minute per client link             |
 | `RESEND_API_KEY` | secret | Same Resend key as the contact form                  |
 | `NOTIFY_TO`      | var    | Where Gabriel's emails land                          |
 | `NOTIFY_FROM`    | var    | A verified sender on the Resend domain               |

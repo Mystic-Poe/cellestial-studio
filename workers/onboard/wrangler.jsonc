@@ -24,6 +24,14 @@
       "name": "RATE_CLIENT",
       "namespace_id": "1703",
       "simple": { "limit": 60, "period": 60 }
+    },
+    // 120 photo views per minute per client link: even a link hammered all
+    // month stays under half of R2's 10M free reads (and the edge cache
+    // answers most repeats before R2 is asked).
+    {
+      "name": "RATE_READ",
+      "namespace_id": "1704",
+      "simple": { "limit": 120, "period": 60 }
     }
   ],
   // Client records. Schema in migrations/; apply with

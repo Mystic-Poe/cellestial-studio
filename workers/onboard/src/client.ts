@@ -11,6 +11,8 @@ import { cleanIntake, editable, readyToSend } from '../../../src/onboard/intake.
 import { photoKey, type R2Like, readUpload } from './files.ts';
 import { type Ctx, json, type Limiter, readJson } from './http.ts';
 import { type MailEnv, type MailKind, sendMail } from './notify.ts';
+import { forgetPhotos, readPhoto } from './photo-cache.ts';
+import { admitUpload, refuseUpload } from './quota.ts';
 import {
 	addPhoto,
 	addReview,
@@ -33,6 +35,8 @@ export interface ClientEnv extends MailEnv {
 	PHOTOS?: R2Like;
 	RATE?: Limiter;
 	RATE_CLIENT?: Limiter;
+	/** Photo reads per link (120 a minute): keeps R2 reads inside the free tier. */
+	RATE_READ?: Limiter;
 }
 
 const CODE = /^[A-Za-z0-9_-]{20,64}$/;
@@ -97,10 +101,11 @@ export async function clientRoute(
 		return json(200, await clientView(db, c));
 	}
 
-	// Reading a thumbnail is not a write; everything else is.
+	// Reading a thumbnail has its own, looser limit; everything else is a write.
 	const isRead = rest[0] === 'photos' && rest.length === 2 && m === 'GET';
-	if (!isRead && env.RATE_CLIENT) {
-		const { success } = await env.RATE_CLIENT.limit({ key: code });
+	const limiter = isRead ? env.RATE_READ : env.RATE_CLIENT;
+	if (limiter) {
+		const { success } = await limiter.limit({ key: code });
 		if (!success) return json(429, { error: 'Slow down a moment, then try again.' });
 	}
 
@@ -139,6 +144,8 @@ export async function clientRoute(
 				});
 			const up = await readUpload(request, CLIENT_PHOTO_MAX);
 			if (!up.ok) return json(up.status, { error: up.error });
+			const admit = await admitUpload(db, up.file.size + (up.thumb?.size ?? 0));
+			if (!admit.ok) return refuseUpload(db, env, admit.reason);
 			const id = newId();
 			const meta = (f: File) => ({ httpMetadata: { contentType: f.type || 'image/jpeg' } });
 			await bucket.put(photoKey(c.id, id), await up.file.arrayBuffer(), meta(up.file));
@@ -154,6 +161,7 @@ export async function clientRoute(
 				type: up.file.type || 'image/jpeg',
 				size: up.file.size,
 				has_thumb: Boolean(up.thumb),
+				thumb_size: up.thumb?.size ?? 0,
 			});
 			const now = Date.now();
 			if (
@@ -170,13 +178,13 @@ export async function clientRoute(
 		const p = await getPhoto(db, c.id, rest[1]);
 		if (!p || p.source !== 'client') return json(404, { error: 'No such photo.' });
 		if (m === 'GET') {
-			const obj =
-				(p.has_thumb ? await bucket.get(photoKey(c.id, p.id, true)) : null) ??
-				(await bucket.get(photoKey(c.id, p.id)));
+			const keys = [photoKey(c.id, p.id)];
+			if (p.has_thumb) keys.unshift(photoKey(c.id, p.id, true));
+			const obj = await readPhoto(bucket, keys, ctx);
 			if (!obj) return json(404, { error: 'No such photo.' });
 			return new Response(obj.body, {
 				headers: {
-					'content-type': obj.httpMetadata?.contentType ?? 'image/jpeg',
+					'content-type': obj.type ?? 'image/jpeg',
 					'cache-control': 'private, max-age=3600',
 					'x-content-type-options': 'nosniff',
 				},
@@ -185,9 +193,9 @@ export async function clientRoute(
 		if (m === 'DELETE') {
 			if (!editable(c.stage)) return locked();
 			const removed = await deletePhoto(db, c.id, p.id);
-			await bucket.delete(
-				removed.flatMap((r) => [photoKey(c.id, r.id), photoKey(c.id, r.id, true)]),
-			);
+			const keys = removed.flatMap((r) => [photoKey(c.id, r.id), photoKey(c.id, r.id, true)]);
+			await bucket.delete(keys);
+			forgetPhotos(keys, ctx);
 			return json(200, { ok: true });
 		}
 		return json(405, { error: 'Method not allowed.' });

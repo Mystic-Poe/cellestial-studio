@@ -33,6 +33,14 @@ export interface Review {
 	text: string;
 	created_at: number;
 }
+/** How much of the free-tier photo storage and today's uploads are used. */
+export interface Usage {
+	bytes: number;
+	cap: number;
+	uploads_today: number;
+	upload_cap: number;
+}
+
 export interface AdminClient {
 	id: string;
 	code: string;
@@ -116,7 +124,7 @@ export const zipUrl = (clientId: string) => `${BASE}/${enc(clientId)}/photos.zip
 
 export const api = {
 	list: (archived: boolean) =>
-		call<{ clients: AdminClient[] }>(archived ? '?status=archived' : '').then((r) => r.clients),
+		call<{ clients: AdminClient[]; usage?: Usage }>(archived ? '?status=archived' : ''),
 	create: (f: { name: string; email: string; mode: Mode }) => call<AdminClient>('', 'POST', f),
 	get: (id: string) => call<AdminClient>(`/${enc(id)}`),
 	patch: (id: string, p: Patch) => call<AdminClient>(`/${enc(id)}`, 'PATCH', p),

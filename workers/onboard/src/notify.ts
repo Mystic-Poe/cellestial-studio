@@ -34,6 +34,12 @@ export async function sendMail(
 		kind === 'changes' && text ? `\nWhat they asked for:\n\n${text.slice(0, 2000)}\n` : '',
 		`https://cellestialstudio.com/dashboard/#c/${encodeURIComponent(c.id)}`,
 	].filter(Boolean);
+	return sendNotice(env, `${prefix}Onboarding: ${name} ${SUBJECT[kind]}`, lines.join('\n'));
+}
+
+/** A plain-text email to Gabriel. True when Resend accepted it. Never throws. */
+export async function sendNotice(env: MailEnv, subject: string, text: string): Promise<boolean> {
+	if (!env.RESEND_API_KEY || !env.NOTIFY_TO || !env.NOTIFY_FROM) return false;
 	try {
 		const res = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
@@ -41,12 +47,7 @@ export async function sendMail(
 				authorization: `Bearer ${env.RESEND_API_KEY}`,
 				'content-type': 'application/json',
 			},
-			body: JSON.stringify({
-				from: env.NOTIFY_FROM,
-				to: [env.NOTIFY_TO],
-				subject: `${prefix}Onboarding: ${name} ${SUBJECT[kind]}`,
-				text: lines.join('\n'),
-			}),
+			body: JSON.stringify({ from: env.NOTIFY_FROM, to: [env.NOTIFY_TO], subject, text }),
 		});
 		return res.ok;
 	} catch {
