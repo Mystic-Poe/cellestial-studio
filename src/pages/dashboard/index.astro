@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import '../../styles/onboard.css';
+---
+
+<Base title="Onboarding — Cellestial Studio" description="Studio only.">
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	<meta slot="head" name="referrer" content="no-referrer" />
+	<div class="ob-sky">
+		<main id="main" class="mx-auto flex min-h-dvh max-w-2xl flex-col gap-6 px-4 py-8">
+			<header class="flex flex-wrap items-end justify-between gap-3">
+				<div class="flex flex-col gap-1">
+					<a class="ob-home" href="/">Cellestial Studio</a>
+					<p class="ob-kicker">Studio only</p>
+				</div>
+				<a class="brass-btn brass-btn--small" href="#new" data-new-link>New client</a>
+			</header>
+			<div class="ob-error" role="alert" data-banner hidden></div>
+			<div class="flex flex-col gap-6" data-view>
+				<p class="text-secondary">Loading…</p>
+				<noscript><p class="text-secondary">The dashboard needs JavaScript turned on.</p></noscript>
+			</div>
+		</main>
+	</div>
+	<script>
+		import { startDashboard } from '../../scripts/dashboard.ts';
+		const view = document.querySelector<HTMLElement>('[data-view]');
+		const banner = document.querySelector<HTMLElement>('[data-banner]');
+		if (view && banner) startDashboard(view, banner);
+	</script>
+</Base>
