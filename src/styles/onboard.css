@@ -105,7 +105,7 @@
 .ob-field input:focus-visible,
 .ob-field textarea:focus-visible,
 .ob-choice input:focus-visible,
-.ob-steps button:focus-visible,
+.ob-steps :is(button, .ob-stage):focus-visible,
 .ob-tab:focus-visible,
 .ob-row:focus-visible {
 	border-color: var(--color-blue);
@@ -157,7 +157,7 @@
 .ob-steps li {
 	flex: 1;
 }
-.ob-steps button {
+.ob-steps :is(button, .ob-stage) {
 	display: flex;
 	width: 100%;
 	flex-direction: column;
@@ -172,7 +172,7 @@
 	font-size: 0.75rem;
 	cursor: pointer;
 }
-.ob-steps button::before {
+.ob-steps :is(button, .ob-stage)::before {
 	content: "";
 	display: block;
 	width: 100%;
@@ -180,21 +180,21 @@
 	border-radius: 999px;
 	background: var(--color-border);
 }
-.ob-steps button[data-state="done"] {
+.ob-steps :is(button, .ob-stage)[data-state="done"] {
 	color: var(--color-brass-text);
 }
-.ob-steps button[data-state="done"]::before {
+.ob-steps :is(button, .ob-stage)[data-state="done"]::before {
 	background: var(--color-brass-text);
 }
-.ob-steps button[data-state="current"] {
+.ob-steps :is(button, .ob-stage)[data-state="current"] {
 	color: var(--color-blue-white);
 	font-weight: 600;
 }
-.ob-steps button[data-state="current"]::before {
+.ob-steps :is(button, .ob-stage)[data-state="current"]::before {
 	background: var(--color-blue);
 	box-shadow: 0 0 10px color-mix(in srgb, var(--color-blue) 60%, transparent);
 }
-.ob-steps button:disabled {
+.ob-steps :is(button, .ob-stage):disabled {
 	cursor: default;
 	opacity: 0.7;
 }
@@ -378,4 +378,179 @@
 }
 .ob-danger {
 	color: #f1c2bb !important;
+}
+
+/* Done-for-you onboarding (Nov 24): intake hints and errors, photo tiles, the
+   dashboard's stage bar, review answers. */
+.ob-hint {
+	font-weight: 400;
+	font-size: 0.8rem;
+	color: var(--color-muted);
+}
+.ob-field-error {
+	font-weight: 400;
+	font-size: 0.8rem;
+	color: #f1c2bb;
+}
+.ob-field-error:empty {
+	display: none;
+}
+.ob-field[data-invalid] textarea,
+[data-field="likes"][data-invalid] input {
+	border-color: #d9776b;
+}
+.ob-choices--grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ob-choices--grid legend {
+	grid-column: 1 / -1;
+}
+.ob-stage {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.3rem 0;
+	color: var(--color-faint);
+	font-size: 0.7rem;
+}
+.ob-photos {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+	gap: 0.5rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ob-photo {
+	position: relative;
+	display: grid;
+	aspect-ratio: 1;
+	place-items: center;
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: var(--color-black);
+}
+.ob-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.ob-photo[data-failed] {
+	border-color: #d9776b;
+}
+.ob-photo-msg {
+	border: 0;
+	background: none;
+	padding: 0.4rem;
+	color: var(--color-secondary);
+	font: inherit;
+	font-size: 0.7rem;
+	text-align: center;
+}
+.ob-photo-x {
+	position: absolute;
+	top: 0.25rem;
+	right: 0.25rem;
+	width: 1.75rem;
+	height: 1.75rem;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--color-black) 80%, transparent);
+	color: var(--color-body);
+	font-size: 1rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+/* Dashboard: the stage bar Gabriel taps, photo pairs, review answers. */
+.ob-stagebar {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 0.3rem;
+}
+.ob-stagebar button {
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background: var(--color-black);
+	padding: 0.5rem 0.2rem;
+	color: var(--color-secondary);
+	font: inherit;
+	font-size: 0.75rem;
+	cursor: pointer;
+}
+.ob-stagebar button[aria-pressed="true"] {
+	border-color: var(--color-blue);
+	color: var(--color-blue-white);
+	font-weight: 600;
+	box-shadow: 0 0 10px color-mix(in srgb, var(--color-blue) 45%, transparent);
+}
+.ob-stagebar button[data-past] {
+	border-color: var(--color-brass);
+	color: var(--color-brass-text);
+}
+.ob-pairs {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ob-pair {
+	display: grid;
+	grid-template-columns: 5rem 5rem 1fr;
+	align-items: center;
+	gap: 0.6rem;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: var(--color-card);
+	padding: 0.5rem;
+}
+.ob-pair .ob-photo {
+	width: 5rem;
+}
+.ob-pair[data-needs] {
+	border-color: var(--color-brass);
+}
+.ob-pair-meta {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 0.35rem;
+	font-size: 0.75rem;
+	color: var(--color-muted);
+}
+.ob-pair-meta strong {
+	overflow: hidden;
+	color: var(--color-body);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ob-pair-meta a,
+.ob-pair-meta button,
+.ob-pair-meta label {
+	border: 0;
+	background: none;
+	padding: 0;
+	color: var(--color-blue-white);
+	font: inherit;
+	font-size: 0.75rem;
+	text-align: left;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.ob-review {
+	border-left: 2px solid var(--color-brass);
+	padding-left: 0.75rem;
+	font-size: 0.875rem;
+	white-space: pre-wrap;
+	color: var(--color-body);
+}
+.ob-review small {
+	display: block;
+	color: var(--color-muted);
 }

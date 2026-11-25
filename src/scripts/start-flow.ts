@@ -1,406 +1,434 @@
-// The client's guided onboarding page. The link carries only a random code
-// (after the #); the client's setup and progress live in the onboarding
-// Worker, so Gabriel can edit them from the dashboard and the client can close
-// the tab and come back.
+// The client's page. The link carries only a random code (after the #);
+// everything else comes from the onboarding Worker.
 //
-// Every move is applied here at once (with the same rules the Worker uses)
-// and then saved. A save that can't get through waits in a queue and is sent
-// on the next check; the Worker has the last word.
+//   Not sent yet  → the intake form (saved as they type) and photos
+//   Sent          → where their site is up to; "Change my answers" while allowed
+//   Review        → see the site; Looks good / Request changes
+//   Live          → their address
+//
+// No accounts, no outside sites.
 
-import type { ClientConfig } from '../onboard/link.ts';
-import { applyProgress, type Progress, type ProgressAction } from '../onboard/progress.ts';
-import { buildSteps, newInvites, type Step } from '../onboard/steps.ts';
+import { type Intake, readyToSend, STAGE_TEXT, STAGES, type Stage } from '../onboard/intake.ts';
+import { type IntakeForm, intakeForm } from './intake-form.ts';
+import { preparePhoto, sendPhoto } from './photo-prep.ts';
+import { debounce, el } from './ui.ts';
 
-const POLL_MS = 5000;
+const POLL_MS = 10_000;
+const CLIENT_SIDE = 2560;
 
-type Feed = { github: string[]; cloudflare: string[] };
-interface ClientRecord extends Progress {
+interface View {
 	name: string;
-	email: string;
-	domain: string;
-	lane: ClientConfig['l'];
-	tier: ClientConfig['t'];
-	mode: ClientConfig['m'];
-}
-interface Move {
-	action: ProgressAction;
-	step: number;
-	via?: 'invite' | 'button';
-}
-
-function el<K extends keyof HTMLElementTagNameMap>(
-	tag: K,
-	attrs: { [k: string]: string } = {},
-	...kids: (Node | string)[]
-): HTMLElementTagNameMap[K] {
-	const node = document.createElement(tag);
-	for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
-	node.append(...kids);
-	return node;
-}
-
-const configOf = (r: ClientRecord): ClientConfig => ({
-	n: r.name,
-	e: r.email,
-	d: r.domain,
-	l: r.lane,
-	t: r.tier,
-	m: r.mode,
-});
-
-async function fetchFeed(): Promise<Feed | null> {
-	try {
-		const res = await fetch('/api/onboard/invites', { headers: { accept: 'application/json' } });
-		if (!res.ok) return null;
-		return (await res.json()) as Feed;
-	} catch {
-		return null;
-	}
+	stage: Stage;
+	intake: Intake;
+	sent: boolean;
+	editable: boolean;
+	preview_url: string;
+	live_url: string;
+	answered: 'ok' | 'changes' | null;
+	photos: { id: string; name: string }[];
 }
 
 export function startFlow(root: HTMLElement): void {
-	window.addEventListener('hashchange', () => location.reload());
 	const code = location.hash.slice(1);
 	const base = `/api/onboard/client/${encodeURIComponent(code)}`;
+	let view: View | null = null;
+	let editing = false;
+	let form: IntakeForm | null = null;
+	let poll: number | undefined;
 
-	let rec: ClientRecord | null = null;
-	let steps: Step[] = [];
-	let p: Progress = { step: 0, done: [] };
-	const queue: Move[] = [];
-	let sending = false;
-	let opened = false;
-	let detectTimer: number | undefined;
-	let baseline: string[] | null = null;
-	let shownKey = '';
-
-	const message = (title: string, text: string, retry = false) => {
-		stopDetect();
-		shownKey = '';
-		const kids: (Node | string)[] = [
-			el('h1', { class: 'display text-4xl' }, title),
-			el('p', { class: 'text-secondary' }, text),
-		];
-		if (retry) {
-			const b = el('button', { type: 'button', class: 'brass-btn self-start' }, 'Try again');
-			b.addEventListener('click', () => load());
-			kids.push(b);
-		}
-		root.replaceChildren(...kids);
-	};
-	const inactive = () => {
-		rec = null;
-		message('This link isn’t active', 'Contact Gabriel and he’ll send you a fresh one.');
-	};
-
-	const flash = (text: string) => {
-		const s = root.querySelector<HTMLElement>('[data-status]');
-		if (s) s.textContent = text;
-	};
-
-	// ── Saving ──────────────────────────────────────────────────────────────
-
-	async function flush(): Promise<void> {
-		if (sending) return;
-		sending = true;
-		try {
-			while (queue.length > 0) {
-				const m = queue[0];
-				let res: Response;
-				try {
-					res = await fetch(`${base}/progress`, {
-						method: 'POST',
-						headers: { 'content-type': 'application/json' },
-						body: JSON.stringify(m),
-						keepalive: true,
-					});
-				} catch {
-					flash('No connection — your progress is kept here and saves when you’re back online.');
-					return;
-				}
-				if (res.status === 404) {
-					queue.length = 0;
-					inactive();
-					return;
-				}
-				if (res.status === 429 || res.status >= 500) return; // sent again on the next check
-				queue.shift();
-				const body = (await res.json().catch(() => null)) as Progress | null;
-				// 200: the saved state; 400: the move no longer fits, and this is the true state.
-				if (body && Array.isArray(body.done) && queue.length === 0) adopt(body);
-			}
-		} finally {
-			sending = false;
-		}
-	}
-
-	function adopt(next: Progress): void {
-		p = { step: next.step, done: [...next.done] };
-		render();
-	}
-
-	function move(m: Move): void {
-		const r = applyProgress(
-			p,
-			m.action,
-			m.step,
-			steps.map((s) => s.id),
+	const dead = () => {
+		clearInterval(poll);
+		root.replaceChildren(
+			el('h1', { class: 'display text-4xl' }, 'This link isn’t active'),
+			el(
+				'p',
+				{ class: 'text-secondary' },
+				'It may have been replaced with a new one. Contact Gabriel and he’ll send you the right link.',
+			),
 		);
-		if (!r.ok) return;
-		p = r.progress;
-		queue.push(m);
-		render();
-		flush();
-	}
+	};
 
-	// ── Loading and checking ────────────────────────────────────────────────
-
-	async function fetchRecord(): Promise<ClientRecord | 'gone' | null> {
+	async function load(): Promise<View | 'dead' | null> {
 		try {
 			const res = await fetch(base, { headers: { accept: 'application/json' } });
-			if (res.status === 404) return 'gone';
+			if (res.status === 404) return 'dead';
 			if (!res.ok) return null;
-			return (await res.json()) as ClientRecord;
+			return (await res.json()) as View;
 		} catch {
 			return null;
 		}
 	}
 
-	async function load(): Promise<void> {
-		if (!/^[A-Za-z0-9_-]{20,64}$/.test(code)) return inactive();
-		const r = await fetchRecord();
-		if (r === 'gone') return inactive();
-		if (!r) {
-			if (!rec)
-				message(
-					'We’re having trouble',
-					'Your setup didn’t load. Check your connection and try again in a minute.',
-					true,
-				);
-			return;
+	// ── Saving the intake ───────────────────────────────────────────────────
+
+	const saveLine = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+	let saving: Promise<unknown> = Promise.resolve();
+	let retry: number | undefined;
+
+	async function put(send: boolean): Promise<{ ok: boolean; field?: string; error?: string }> {
+		if (!form) return { ok: false };
+		const intake = form.read();
+		try {
+			const res = await fetch(`${base}/intake`, {
+				method: 'PUT',
+				headers: { 'content-type': 'application/json', accept: 'application/json' },
+				body: JSON.stringify({ intake, send }),
+			});
+			const data = (await res.json().catch(() => null)) as
+				| (View & { field?: string; error?: string })
+				| null;
+			if (res.status === 404) {
+				dead();
+				return { ok: false };
+			}
+			if (!res.ok) return { ok: false, field: data?.field, error: data?.error ?? 'Couldn’t save.' };
+			if (data) view = data;
+			return { ok: true };
+		} catch {
+			return { ok: false, error: 'No connection.' };
 		}
-		rec = r;
-		steps = buildSteps(configOf(r));
-		if (queue.length === 0 && !sending) adopt(r);
-		else render();
 	}
 
-	setInterval(async () => {
-		if (document.visibilityState !== 'visible' || !rec) return;
-		if (queue.length > 0) await flush();
-		else await load();
-	}, POLL_MS);
-
-	// ── Invite detection (as in the first build) ────────────────────────────
-
-	function stopDetect(): void {
-		if (detectTimer !== undefined) clearInterval(detectTimer);
-		detectTimer = undefined;
-	}
-
-	function startDetect(step: Step, index: number): void {
-		const source = step.detect;
-		if (!source) return;
-		baseline = null;
-		const tick = async () => {
-			if (document.visibilityState !== 'visible') return;
-			const feed = await fetchFeed();
-			if (!feed) {
-				stopDetect(); // not configured or unreachable: the Done button is the whole story
-				return;
+	const autosave = debounce(() => {
+		saving = saving.then(async () => {
+			clearTimeout(retry);
+			const r = await put(false);
+			if (r.ok) {
+				form?.mark(null);
+				saveLine.textContent = 'Saved.';
+			} else if (r.field) {
+				form?.mark(r.field, r.error);
+				saveLine.textContent = '';
+			} else {
+				saveLine.textContent = 'Not saved yet — retrying…';
+				retry = window.setTimeout(() => autosave.poke(), 5000);
 			}
-			if (baseline === null) {
-				baseline = feed[source];
-				return;
-			}
-			if (newInvites(baseline, feed[source]).length > 0) {
-				stopDetect();
-				flash('Got it — your invite arrived.');
-				setTimeout(() => {
-					if (p.step === index) move({ action: 'done', step: index, via: 'invite' });
-				}, 1200);
-			}
+		});
+	}, 800);
+
+	// ── Photos ──────────────────────────────────────────────────────────────
+
+	function photosBlock(): HTMLElement {
+		const grid = el('ul', { class: 'ob-photos', 'aria-live': 'polite' });
+		const tile = (id: string, src: string, name: string) => {
+			const remove = el(
+				'button',
+				{ type: 'button', class: 'ob-photo-x', 'aria-label': `Remove ${name}` },
+				'×',
+			);
+			const li = el(
+				'li',
+				{ class: 'ob-photo' },
+				el('img', { src, alt: name, loading: 'lazy' }),
+				remove,
+			);
+			remove.addEventListener('click', async () => {
+				remove.disabled = true;
+				const res = await fetch(`${base}/photos/${encodeURIComponent(id)}`, {
+					method: 'DELETE',
+				}).catch(() => null);
+				if (res?.ok) li.remove();
+				else remove.disabled = false;
+			});
+			return li;
 		};
-		tick();
-		detectTimer = window.setInterval(tick, POLL_MS);
+		for (const p of view?.photos ?? [])
+			grid.append(tile(p.id, `${base}/photos/${encodeURIComponent(p.id)}`, p.name));
+
+		const input = el('input', {
+			type: 'file',
+			accept: 'image/*',
+			multiple: true,
+			class: 'sr-only',
+			id: 'ob-add-photos',
+		});
+		const add = el(
+			'label',
+			{ for: 'ob-add-photos', class: 'brass-btn brass-btn--quiet brass-btn--small' },
+			'Add photos',
+		);
+
+		const upload = async (file: File, li: HTMLElement) => {
+			li.replaceChildren(el('span', { class: 'ob-photo-msg' }, 'Uploading…'));
+			li.removeAttribute('data-failed');
+			const p = await preparePhoto(file, CLIENT_SIDE);
+			const r = await sendPhoto(`${base}/photos`, p);
+			if (r.ok && r.data) {
+				const src = p.thumb
+					? URL.createObjectURL(p.thumb)
+					: `${base}/photos/${encodeURIComponent(String(r.data.id))}`;
+				li.replaceWith(tile(String(r.data.id), src, String(r.data.name)));
+				return;
+			}
+			const why =
+				r.status === 409 || r.status === 413 || r.status === 415
+					? String(r.data?.error)
+					: 'Didn’t upload — tap to retry';
+			li.setAttribute('data-failed', '');
+			const again = el('button', { type: 'button', class: 'ob-photo-msg' }, why);
+			if (r.status !== 409 && r.status !== 413 && r.status !== 415)
+				again.addEventListener('click', () => upload(file, li));
+			li.replaceChildren(again);
+		};
+
+		input.addEventListener('change', async () => {
+			const files = [...(input.files ?? [])];
+			input.value = '';
+			for (const f of files) {
+				const li = el('li', { class: 'ob-photo' });
+				grid.append(li);
+				await upload(f, li);
+			}
+		});
+
+		return el(
+			'section',
+			{ class: 'ob-section' },
+			el('h2', {}, 'Photos and logo'),
+			el(
+				'p',
+				{ class: 'ob-note' },
+				'Optional — Gabriel will take photos too. Add any you already love, and your logo if you have one.',
+			),
+			grid,
+			el('div', { class: 'ob-actions' }, add, input),
+		);
 	}
 
-	// ── Drawing ─────────────────────────────────────────────────────────────
+	// ── Views ───────────────────────────────────────────────────────────────
 
-	const stepBar = () => {
-		const done = new Set(p.done);
+	function showIntake(v: View): void {
+		form = intakeForm(v.intake, { voice: 'client', onChange: () => autosave.poke() });
+		const sendBtn = el(
+			'button',
+			{ type: 'button', class: 'brass-btn brass-btn--primary' },
+			v.sent ? 'Save changes' : 'Send it to Gabriel →',
+		);
+		const note = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+		sendBtn.addEventListener('click', async () => {
+			if (!form) return;
+			const missing = readyToSend(form.read());
+			if (missing) {
+				form.mark('about', missing);
+				return;
+			}
+			sendBtn.disabled = true;
+			autosave.flush();
+			await saving;
+			const r = await put(true);
+			sendBtn.disabled = false;
+			if (r.ok) {
+				editing = false;
+				draw();
+				window.scrollTo({ top: 0 });
+			} else if (r.field) form.mark(r.field, r.error);
+			else note.textContent = r.error ?? 'Couldn’t send. Try again in a moment.';
+		});
+		root.replaceChildren(
+			el(
+				'h1',
+				{ class: 'display text-4xl' },
+				v.sent ? 'Change your answers' : `Hi ${v.name}, let’s get your site started`,
+			),
+			el(
+				'p',
+				{ class: 'text-secondary' },
+				v.sent
+					? 'Everything saves as you go.'
+					: 'About 5 minutes. Everything saves as you go, so you can stop and come back to this link.',
+			),
+			form.form,
+			photosBlock(),
+			el('div', { class: 'flex flex-col gap-2' }, sendBtn, note, saveLine),
+		);
+	}
+
+	function track(stage: Stage): HTMLElement {
+		const at = STAGES.indexOf(stage);
 		return el(
 			'ol',
-			{ class: 'ob-steps', 'aria-label': 'Your steps' },
-			...steps.map((s, i) => {
-				const ticked = done.has(s.id);
-				const state = i === p.step ? 'current' : ticked ? 'done' : 'todo';
-				const open = i <= p.step || ticked;
-				const b = el(
-					'button',
-					{
-						type: 'button',
-						'data-state': state,
-						'aria-label': `Step ${i + 1}: ${s.title}${ticked ? ' (done)' : ''}`,
-						...(state === 'current' ? { 'aria-current': 'step' } : {}),
-					},
-					ticked ? `✓ ${i + 1}` : String(i + 1),
-				);
-				if (!open) b.disabled = true;
-				else if (i !== p.step) b.addEventListener('click', () => move({ action: 'goto', step: i }));
-				return el('li', {}, b);
-			}),
+			{ class: 'ob-steps', 'aria-label': 'Where your site is up to' },
+			...STAGES.map((s, i) =>
+				el(
+					'li',
+					{},
+					el(
+						'span',
+						{
+							class: 'ob-stage',
+							'data-state': i < at ? 'done' : i === at ? 'current' : 'todo',
+							...(i === at ? { 'aria-current': 'step' } : {}),
+						},
+						STAGE_TEXT[s].title,
+					),
+				),
+			),
 		);
-	};
+	}
 
-	function render(): void {
-		if (!rec) return;
-		const c = configOf(rec);
-		const key = `${p.step}|${p.done.join()}|${JSON.stringify(c)}`;
-		if (key === shownKey) return; // nothing changed: leave the page (and its status line) alone
-		shownKey = key;
-		stopDetect();
-		opened = false;
-
-		const banner =
-			c.m === 'test'
-				? el('p', { class: 'ob-test' }, 'TEST MODE — Gabriel gets a [TEST] email at each step.')
-				: '';
-
-		if (p.step >= steps.length) {
-			root.replaceChildren(
-				banner,
-				stepBar(),
-				el('h1', { class: 'display text-5xl' }, 'All done'),
+	function reviewBlock(v: View): HTMLElement[] {
+		const out: HTMLElement[] = [];
+		if (v.preview_url)
+			out.push(
+				el(
+					'a',
+					{
+						class: 'brass-btn brass-btn--primary',
+						href: v.preview_url,
+						target: '_blank',
+						rel: 'noopener noreferrer',
+					},
+					'See your site',
+				),
+			);
+		if (v.answered) {
+			out.push(
+				el('p', { class: 'ob-ok' }, 'Thanks — Gabriel has it.'),
 				el(
 					'p',
 					{ class: 'text-secondary' },
-					`Thank you, ${c.n}. Gabriel takes it from here — he’ll set up ${c.d || 'your site'} and let you know when it’s live.`,
+					v.answered === 'ok'
+						? 'He’ll put your site live and let you know.'
+						: 'He’ll make your changes and let you know when they’re ready to see.',
 				),
+			);
+			return out;
+		}
+		const status = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+		const box = el(
+			'label',
+			{ class: 'ob-field', hidden: true },
+			'What would you like changed?',
+			el('textarea', { name: 'changes', maxlength: '2000', rows: '5' }),
+		);
+		const ok = el('button', { type: 'button', class: 'brass-btn' }, 'Looks good');
+		const changes = el(
+			'button',
+			{ type: 'button', class: 'brass-btn brass-btn--quiet' },
+			'Request changes',
+		);
+		const send = async (verdict: 'ok' | 'changes') => {
+			const text = box.querySelector('textarea')?.value.trim() ?? '';
+			if (verdict === 'changes' && box.hidden) {
+				box.hidden = false;
+				changes.textContent = 'Send my changes';
+				box.querySelector('textarea')?.focus();
+				return;
+			}
+			if (verdict === 'changes' && !text) {
+				status.textContent = 'Tell Gabriel what to change first.';
+				return;
+			}
+			ok.disabled = changes.disabled = true;
+			try {
+				const res = await fetch(`${base}/review`, {
+					method: 'POST',
+					headers: { 'content-type': 'application/json', accept: 'application/json' },
+					body: JSON.stringify({ verdict, text }),
+				});
+				const data = await res.json().catch(() => null);
+				if (res.ok && data) {
+					view = data as View;
+					draw();
+					return;
+				}
+				status.textContent =
+					(data as { error?: string } | null)?.error ?? 'Couldn’t send. Try again.';
+			} catch {
+				status.textContent = 'No connection. Try again.';
+			}
+			ok.disabled = changes.disabled = false;
+		};
+		ok.addEventListener('click', () => send('ok'));
+		changes.addEventListener('click', () => send('changes'));
+		out.push(box, el('div', { class: 'ob-actions' }, ok, changes), status);
+		return out;
+	}
+
+	function showStatus(v: View): void {
+		form = null;
+		const parts: (HTMLElement | string)[] = [
+			el(
+				'h1',
+				{ class: 'display text-4xl' },
+				v.stage === 'live' ? 'Your site is live' : STAGE_TEXT[v.stage].title,
+			),
+			track(v.stage),
+			el('p', { class: 'text-secondary' }, STAGE_TEXT[v.stage].client),
+		];
+		if (v.stage === 'review') parts.push(...reviewBlock(v));
+		if (v.stage === 'live' && v.live_url)
+			parts.push(
+				el(
+					'a',
+					{
+						class: 'brass-btn brass-btn--primary',
+						href: v.live_url,
+						target: '_blank',
+						rel: 'noopener noreferrer',
+					},
+					v.live_url.replace(/^https:\/\//, '').replace(/\/$/, ''),
+				),
+			);
+		if (v.editable) {
+			const change = el(
+				'button',
+				{ type: 'button', class: 'brass-btn brass-btn--quiet brass-btn--small' },
+				'Change my answers or add photos',
+			);
+			change.addEventListener('click', () => {
+				editing = true;
+				draw();
+			});
+			parts.push(change);
+		}
+		parts.push(el('p', { class: 'ob-note' }, 'Questions? Just message Gabriel.'));
+		root.replaceChildren(...parts);
+	}
+
+	function draw(): void {
+		if (!view) return;
+		if (!view.sent || (editing && view.editable)) showIntake(view);
+		else showStatus(view);
+	}
+
+	// ── Start ───────────────────────────────────────────────────────────────
+
+	const refresh = async () => {
+		if (document.visibilityState !== 'visible' || form) return; // never redraw under someone typing
+		const v = await load();
+		if (v === 'dead') return dead();
+		if (!v) return;
+		const before = JSON.stringify(view);
+		view = v;
+		if (JSON.stringify(v) !== before) draw();
+	};
+
+	(async () => {
+		if (!/^[A-Za-z0-9_-]{20,64}$/.test(code)) return dead();
+		const v = await load();
+		if (v === 'dead') return dead();
+		if (!v) {
+			const again = el(
+				'button',
+				{ type: 'button', class: 'brass-btn brass-btn--small' },
+				'Try again',
+			);
+			again.addEventListener('click', () => location.reload());
+			root.replaceChildren(
 				el(
 					'p',
-					{ class: 'ob-note' },
-					'Need to change something? Tap any step above to go back to it.',
+					{ class: 'text-secondary' },
+					'We’re having trouble loading your page. Try again in a minute.',
 				),
+				again,
 			);
 			return;
 		}
-
-		const index = p.step;
-		const step = steps[index];
-		const ticked = p.done.includes(step.id);
-		const site = step.url.includes('github.com') ? 'GitHub' : 'Cloudflare';
-
-		const open = el(
-			'a',
-			{
-				href: step.url,
-				target: '_blank',
-				rel: 'noopener',
-				class: 'brass-btn brass-btn--primary w-full',
-			},
-			`Open ${site}${step.copy ? ' (copies for you)' : ''}`,
-		);
-		open.addEventListener('click', () => {
-			// Not awaited: the new tab must open inside the same tap (iOS rule).
-			if (step.copy) navigator.clipboard?.writeText(step.copy.value).catch(() => {});
-			opened = true;
-			flash(step.copy ? `${step.copy.label} copied — just paste it.` : '');
-		});
-
-		let copyChip: Node | string = '';
-		if (step.copy) {
-			const value = step.copy.value;
-			const chip = el(
-				'button',
-				{ type: 'button', class: 'ob-copy' },
-				el('small', {}, `${step.copy.label} (tap to copy)`),
-				el('span', {}, value),
-			);
-			chip.addEventListener('click', () => {
-				navigator.clipboard?.writeText(value).then(
-					() => flash('Copied.'),
-					() => flash('Copy didn’t work — press and hold the text to copy it.'),
-				);
-			});
-			copyChip = chip;
-		}
-
-		const controls = el('div', { class: 'flex flex-col gap-3' });
-		if (ticked) {
-			const next = el(
-				'button',
-				{ type: 'button', class: 'brass-btn w-full', 'data-next': '' },
-				index === steps.length - 1 ? 'Back to the finish' : 'Next step →',
-			);
-			next.addEventListener('click', () => move({ action: 'goto', step: index + 1 }));
-			controls.append(el('p', { class: 'ob-ok' }, '✓ You’ve done this step.'), next);
-		} else {
-			const next = el(
-				'button',
-				{ type: 'button', class: 'brass-btn w-full', 'data-next': '' },
-				index === steps.length - 1 ? 'I sent the invite → Finish' : 'Done → Next step',
-			);
-			next.addEventListener('click', () => move({ action: 'done', step: index }));
-			controls.append(next);
-		}
-
-		const small = el('div', { class: 'flex flex-wrap gap-3' });
-		if (index > 0) {
-			const back = el(
-				'button',
-				{ type: 'button', class: 'brass-btn brass-btn--quiet', 'data-back': '' },
-				'← Back',
-			);
-			back.addEventListener('click', () => move({ action: 'goto', step: index - 1 }));
-			small.append(back);
-		}
-		if (ticked) {
-			const redo = el(
-				'button',
-				{ type: 'button', class: 'brass-btn brass-btn--quiet', 'data-redo': '' },
-				'Redo this step',
-			);
-			redo.addEventListener('click', () => {
-				move({ action: 'undo', step: index });
-				flash('Okay — do this step again, then tap Done.');
-			});
-			small.append(redo);
-		}
-
-		root.replaceChildren(
-			banner,
-			stepBar(),
-			el(
-				'section',
-				{ class: 'panel flex flex-col gap-4' },
-				el('p', { class: 'ob-kicker' }, `Step ${index + 1} of ${steps.length}`),
-				el('h1', { class: 'display text-3xl leading-tight' }, step.title),
-				el(
-					'ul',
-					{ class: 'flex list-disc flex-col gap-2 pl-5 text-secondary' },
-					...step.lines.map((l) => el('li', {}, l)),
-				),
-				copyChip,
-				open,
-				el('p', { class: 'ob-status', 'data-status': '', 'aria-live': 'polite' }),
-				controls,
-				step.detect && !ticked
-					? el('p', { class: 'ob-note' }, 'This page moves on by itself once your invite arrives.')
-					: '',
-			),
-			small,
-		);
-		if (!ticked) startDetect(step, index);
-	}
-
-	// Coming back from the other tab: light up the button for steps that can't be detected.
-	document.addEventListener('visibilitychange', () => {
-		if (document.visibilityState !== 'visible' || !opened) return;
-		const nextBtn = root.querySelector<HTMLElement>('[data-next]');
-		if (!nextBtn) return;
-		nextBtn.classList.add('brass-btn--primary');
-		flash('Finished there? Tap below to keep going.');
-	});
-
-	load();
+		view = v;
+		draw();
+		poll = window.setInterval(refresh, POLL_MS);
+		document.addEventListener('visibilitychange', refresh);
+		window.addEventListener('pagehide', () => autosave.flush());
+	})();
 }

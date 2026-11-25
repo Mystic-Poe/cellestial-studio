@@ -1,30 +1,51 @@
-// The dashboard's calls to the onboarding Worker. Every request is JSON (the
-// Worker refuses changes that aren't), and Cloudflare Access's cookie rides
+// The dashboard's calls to the onboarding Worker. Changes go as JSON (photo
+// uploads as forms, from this same page); Cloudflare Access's cookie rides
 // along on its own.
 
-import type { Lane, Mode, Tier } from '../onboard/link.ts';
-import type { StepId } from '../onboard/steps.ts';
+import type { Intake, Stage } from '../onboard/intake.ts';
+import { type Prepared, sendPhoto } from './photo-prep.ts';
 
-export type Status = 'active' | 'done' | 'archived';
-export interface Checklist {
-	invites: boolean;
-	billing: boolean;
-	domain: boolean;
-	card: boolean;
-}
-export interface ClientFields {
+export type Mode = 'live' | 'test';
+export type Status = 'active' | 'archived';
+export const CHECKLIST = [
+	['domain', 'Domain bought'],
+	['built', 'Site built'],
+	['preview', 'Preview sent'],
+	['approved', 'Approved'],
+	['live', 'Live'],
+	['paid', 'Paid'],
+] as const;
+export type Checklist = Record<(typeof CHECKLIST)[number][0], boolean>;
+
+export interface Photo {
+	id: string;
+	kind: 'original' | 'finished';
+	of: string | null;
+	source: 'studio' | 'client';
 	name: string;
-	email: string;
-	domain: string;
-	lane: Lane;
-	tier: Tier;
-	mode: Mode;
+	size: number;
+	has_thumb: boolean;
+	created_at: number;
 }
-export interface AdminClient extends ClientFields {
+export interface Review {
+	id: string;
+	verdict: 'ok' | 'changes';
+	text: string;
+	created_at: number;
+}
+export interface AdminClient {
 	id: string;
 	code: string;
-	step: number;
-	done: StepId[];
+	name: string;
+	email: string;
+	mode: Mode;
+	stage: Stage;
+	stage_at: number;
+	intake: Intake;
+	intake_by: 'client' | 'studio' | null;
+	intake_at: number | null;
+	preview_url: string;
+	live_url: string;
 	checklist: Checklist;
 	notes: string;
 	status: Status;
@@ -32,17 +53,25 @@ export interface AdminClient extends ClientFields {
 	updated_at: number;
 	last_seen_at: number | null;
 	link: string;
-	steps: { id: StepId; title: string }[];
+	/** On the detail only */
+	photos?: Photo[];
+	reviews?: Review[];
+	/** On the list only */
+	photo_count?: number;
+	to_finish?: number;
 }
-export type Patch = Partial<
-	ClientFields & {
-		step: number;
-		done: StepId[];
-		checklist: Partial<Checklist>;
-		notes: string;
-		status: Status;
-	}
->;
+export type Patch = Partial<{
+	name: string;
+	email: string;
+	mode: Mode;
+	stage: Stage;
+	intake: Intake;
+	preview_url: string;
+	live_url: string;
+	checklist: Partial<Checklist>;
+	notes: string;
+	status: Status;
+}>;
 
 export class ApiError extends Error {
 	constructor(
@@ -54,7 +83,8 @@ export class ApiError extends Error {
 	}
 }
 
-const BASE = '/api/onboard/admin/clients';
+export const BASE = '/api/onboard/admin/clients';
+const enc = encodeURIComponent;
 
 async function call<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
 	let res: Response;
@@ -76,12 +106,27 @@ async function call<T>(path: string, method = 'GET', body?: unknown): Promise<T>
 	return data as T;
 }
 
+export const photoUrl = (
+	clientId: string,
+	photoId: string,
+	size: 'thumb' | 'full',
+	download = false,
+) => `${BASE}/${enc(clientId)}/photos/${enc(photoId)}?size=${size}${download ? '&download=1' : ''}`;
+export const zipUrl = (clientId: string) => `${BASE}/${enc(clientId)}/photos.zip`;
+
 export const api = {
 	list: (archived: boolean) =>
 		call<{ clients: AdminClient[] }>(archived ? '?status=archived' : '').then((r) => r.clients),
-	create: (f: ClientFields) => call<AdminClient>('', 'POST', f),
-	get: (id: string) => call<AdminClient>(`/${encodeURIComponent(id)}`),
-	patch: (id: string, p: Patch) => call<AdminClient>(`/${encodeURIComponent(id)}`, 'PATCH', p),
-	rotate: (id: string) => call<AdminClient>(`/${encodeURIComponent(id)}/rotate`, 'POST'),
-	remove: (id: string) => call<{ ok: true }>(`/${encodeURIComponent(id)}`, 'DELETE'),
+	create: (f: { name: string; email: string; mode: Mode }) => call<AdminClient>('', 'POST', f),
+	get: (id: string) => call<AdminClient>(`/${enc(id)}`),
+	patch: (id: string, p: Patch) => call<AdminClient>(`/${enc(id)}`, 'PATCH', p),
+	rotate: (id: string) => call<AdminClient>(`/${enc(id)}/rotate`, 'POST'),
+	remove: (id: string) => call<{ ok: true }>(`/${enc(id)}`, 'DELETE'),
+	removePhoto: (id: string, pid: string) =>
+		call<{ ok: true }>(`/${enc(id)}/photos/${enc(pid)}`, 'DELETE'),
+	async upload(id: string, p: Prepared, fields: Record<string, string>): Promise<Photo> {
+		const r = await sendPhoto(`${BASE}/${enc(id)}/photos`, p, fields);
+		if (!r.ok) throw new ApiError(r.status, String(r.data?.error ?? `Error ${r.status}.`));
+		return r.data as unknown as Photo;
+	},
 };

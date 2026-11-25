@@ -1,67 +1,61 @@
 # cellestial-onboard
 
-Backs client onboarding: the client page (`/start/#<code>`) and Gabriel's
-dashboard (`/dashboard/`). Client records live in the D1 database
-`cellestial-onboard`; nothing about a client is ever in this repo.
+Done-for-you client onboarding: the client page (`/start/#<code>`) and
+Gabriel's dashboard (`/dashboard/`). The client never makes an account
+anywhere; the studio hosts their site and hands everything over on request.
+
+Records live in the D1 database `cellestial-onboard`; photo files in the
+private R2 bucket `cellestial-onboard-photos`. Nothing about a client is ever
+in this repo.
 
 ## Routes
 
-- `GET /api/onboard/invites` — Gabriel's own pending GitHub org and Cloudflare
-  account invites, as salted hashes. The client page notices a new one and
-  moves on by itself.
-- `GET /api/onboard/client/<code>` — the client's own setup (name, email,
-  domain, lane, tier, mode, step, ticks). Nothing else.
-- `POST /api/onboard/client/<code>/progress` — `{action: done|undo|goto, step,
-  via?}`. Saves the move; on `done` in remote/test mode emails Gabriel, built
-  from the stored record only. 30 moves a minute per link; 5 emails a minute
-  per IP.
-- `/api/onboard/admin/clients[/<id>[/rotate]]` — the dashboard's list, create,
-  read, edit, new link, delete. Behind Cloudflare Access **and** checked again
-  here (the Access token's signature, audience and issuer). Changes must come
-  from the site itself as JSON. Without `ACCESS_TEAM`/`ACCESS_AUD` every admin
-  route answers 503, never open.
+Client (anyone holding a live link code):
 
-The progress rules are in `src/onboard/progress.ts`, shared with the page.
+- `GET /api/onboard/client/<code>`: what their page shows: name, stage,
+  their answers, whether sent, their own uploads, preview/live address once
+  reached. Never notes, checklist, id or reviews.
+- `PUT …/intake` `{intake, send?}`: saves answers; the first `send` emails
+  Gabriel. Locked once the stage passes Design.
+- `POST …/photos` (form: `file`, `thumb?`): photos only, 25 MB each, 25 per
+  client. `GET`/`DELETE …/photos/<id>`: their own uploads only.
+- `POST …/review` `{verdict: ok|changes, text?}`: only at Review; emails Gabriel.
+
+Admin (`/api/onboard/admin/clients…`): list, create, read (with photos and
+reviews), edit (stage, answers, addresses, checklist, notes, status), new
+link, delete (files too), photo upload (original or finished, full size),
+photo read (`?size=thumb|full&download=1`), photo delete, `photos.zip` (every
+original, streamed). Behind Cloudflare Access **and** checked again here.
+Changes must come from the site itself (JSON, or a form upload that proves
+its origin). Without `ACCESS_TEAM`/`ACCESS_AUD` every admin route answers 503.
+
+The intake fields and stages are defined once, in `src/onboard/intake.ts`,
+shared by both pages and this Worker.
 
 ## Settings
 
-| Name             | Kind   | What it is                                                     |
-| ---------------- | ------ | -------------------------------------------------------------- |
-| `DB`             | D1     | `cellestial-onboard` (in `wrangler.jsonc`)                     |
-| `INVITE_SALT`    | secret | Any long random string. Turns invite detection on.             |
-| `CF_USER_TOKEN`  | secret | Cloudflare **user** API token with _User → Memberships → Read_ |
-| `GH_TOKEN`       | secret | GitHub **classic** token, scope `read:org` only                |
-| `RESEND_API_KEY` | secret | Same Resend key as the contact form                            |
-| `NOTIFY_TO`      | var    | Where step emails land                                         |
-| `NOTIFY_FROM`    | var    | A verified sender on the Resend domain                         |
-| `ACCESS_TEAM`    | var    | Access team domain, e.g. `yourteam.cloudflareaccess.com`       |
-| `ACCESS_AUD`     | var    | The Access application's Audience (AUD) tag                    |
+| Name             | Kind   | What it is                                           |
+| ---------------- | ------ | ---------------------------------------------------- |
+| `DB`             | D1     | `cellestial-onboard` (in `wrangler.jsonc`)           |
+| `PHOTOS`         | R2     | `cellestial-onboard-photos` (in `wrangler.jsonc`)    |
+| `RATE`           | limit  | 5 emails a minute per IP                             |
+| `RATE_CLIENT`    | limit  | 60 writes a minute per client link                   |
+| `RESEND_API_KEY` | secret | Same Resend key as the contact form                  |
+| `NOTIFY_TO`      | var    | Where Gabriel's emails land                          |
+| `NOTIFY_FROM`    | var    | A verified sender on the Resend domain               |
+| `ACCESS_TEAM`    | var    | Access team domain (in `wrangler.jsonc`)             |
+| `ACCESS_AUD`     | var    | The Access application's AUD tag (in `wrangler.jsonc`) |
 
 `keep_vars` is on, so a deploy never wipes vars set in the dashboard.
-
-### Turning the dashboard on (Gabriel, once)
-
-1. Cloudflare dashboard → **Zero Trust** (pick the free plan if asked; choose a
-   team name — that is your team domain, `<name>.cloudflareaccess.com`).
-2. **Access → Applications → Add an application → Self-hosted.**
-   - Name: `Onboarding dashboard`. Session duration: 24 hours.
-   - Public hostnames: `cellestialstudio.com` path `dashboard`, and a second one
-     `cellestialstudio.com` path `api/onboard/admin`.
-   - Policy: Action **Allow**, Include **Emails** → `cellestial.studio@gmail.com`.
-   - Login method: One-time PIN.
-3. Open the new application → **Overview** → copy the **Application Audience
-   (AUD) Tag**.
-4. Workers & Pages → `cellestial-onboard` → Settings → Variables and Secrets →
-   add `ACCESS_TEAM` (the team domain, no `https://`) and `ACCESS_AUD` (the tag),
-   both as plain text. Deploy.
 
 ## Commands
 
 ```
+pnpm dlx wrangler r2 bucket create cellestial-onboard-photos          # once
 pnpm dlx wrangler d1 migrations apply cellestial-onboard --remote --config workers/onboard/wrangler.jsonc
 pnpm dlx wrangler deploy --config workers/onboard/wrangler.jsonc
 pnpm test                                   # unit tests, all Workers
 pnpm build && node workers/onboard/test/dev-server.mjs    # local site + Worker on port 4410
-node tools/onboard/check-start.mjs          # browser walk of /start   (dev server running)
-node tools/onboard/check-dashboard.mjs      # browser walk of /dashboard
+node tools/onboard/check-start.mjs          # browser walk of the client page (dev server running)
+node tools/onboard/check-dashboard.mjs      # browser walk of the dashboard
 ```

@@ -1,62 +1,29 @@
 // Gabriel's onboarding dashboard. Three views in one page, picked by the hash:
 //   #            the client list (Active / Archived)
 //   #new         a new client
-//   #c/<id>      one client: link, progress, details, checklist, notes
+//   #c/<id>      one client: stage, intake, photos, review answers, checklist,
+//                link, details
 //
 // Nothing about a client is kept in this page's code or in the browser's
 // storage; it all comes from the Worker each time.
 
 import qrcode from 'qrcode-generator';
-import type { StepId } from '../onboard/steps.ts';
+import { STAGE_TEXT, STAGES, type Stage } from '../onboard/intake.ts';
 import {
 	type AdminClient,
 	ApiError,
 	api,
-	type Checklist,
-	type ClientFields,
+	CHECKLIST,
 	type Patch,
+	type Photo,
+	photoUrl,
+	zipUrl,
 } from './dashboard-api.ts';
+import { intakeForm } from './intake-form.ts';
+import { preparePhoto } from './photo-prep.ts';
+import { confirmButton, debounce, el, type Kid, shortDate } from './ui.ts';
 
 const REFRESH_MS = 15_000;
-
-type Kid = Node | string;
-function el<K extends keyof HTMLElementTagNameMap>(
-	tag: K,
-	attrs: { [k: string]: string | boolean } = {},
-	...kids: Kid[]
-): HTMLElementTagNameMap[K] {
-	const node = document.createElement(tag);
-	for (const [k, v] of Object.entries(attrs)) {
-		if (v === false) continue;
-		node.setAttribute(k, v === true ? '' : v);
-	}
-	node.append(...kids);
-	return node;
-}
-
-const LANE = { ms: 'Microsoft', g: 'Google' } as const;
-const MODE = { person: 'In person', remote: 'Remote', test: 'Test' } as const;
-const CHECKS: { key: keyof Checklist; label: string; href?: string; hint?: string }[] = [
-	{
-		key: 'invites',
-		label: 'Accept both invites',
-		href: 'https://github.com/settings/organizations',
-		hint: 'GitHub orgs; Cloudflare from its email',
-	},
-	{
-		key: 'card',
-		label: 'Add the studio card in their Cloudflare account',
-		href: 'https://dash.cloudflare.com/?to=/:account/billing',
-		hint: 'Billing',
-	},
-	{
-		key: 'domain',
-		label: 'Buy their domain',
-		href: 'https://dash.cloudflare.com/?to=/:account/registrar/register',
-		hint: 'Registrar',
-	},
-	{ key: 'billing', label: 'Billing set up with the client' },
-];
 
 export function ago(ms: number | null, now = Date.now()): string {
 	if (!ms) return 'not opened yet';
@@ -69,9 +36,6 @@ export function ago(ms: number | null, now = Date.now()): string {
 	const d = Math.round(h / 24);
 	return `active ${d} day${d === 1 ? '' : 's'} ago`;
 }
-
-const stepWord = (c: AdminClient) =>
-	c.step >= c.steps.length ? 'Finished' : `Step ${c.step + 1} of ${c.steps.length}`;
 
 export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 	let timer: number | undefined;
@@ -108,30 +72,9 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 		}, REFRESH_MS);
 	};
 
-	/** A button that asks for a second tap before doing something it can't undo. */
-	const confirmButton = (label: string, ask: string, cls: string, run: () => Promise<void>) => {
-		const b = el('button', { type: 'button', class: cls }, label);
-		let armed = false;
-		let reset: number | undefined;
-		b.addEventListener('click', async () => {
-			if (!armed) {
-				armed = true;
-				b.textContent = ask;
-				reset = window.setTimeout(() => {
-					armed = false;
-					b.textContent = label;
-				}, 4000);
-				return;
-			}
-			clearTimeout(reset);
-			b.disabled = true;
-			await run();
-			b.disabled = false;
-			armed = false;
-			b.textContent = label;
-		});
-		return b;
-	};
+	const section = (title: string, ...kids: Kid[]) =>
+		el('section', { class: 'panel ob-section' }, el('h2', {}, title), ...kids);
+	const back = () => el('a', { href: '#', class: 'ob-home' }, '← All clients');
 
 	// ── List ────────────────────────────────────────────────────────────────
 
@@ -180,8 +123,16 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 	}
 
 	const row = (c: AdminClient) => {
+		const at = STAGES.indexOf(c.stage);
 		const bar = el('span', { class: 'ob-bar', 'aria-hidden': 'true' });
-		for (const s of c.steps) bar.append(el('i', { 'data-on': c.done.includes(s.id) }));
+		for (let i = 0; i < STAGES.length; i++) bar.append(el('i', { 'data-on': i <= at }));
+		const bits = [
+			c.mode === 'test' ? 'Test' : '',
+			c.intake_at ? '' : 'answers not in',
+			c.photo_count ? `${c.photo_count} photo${c.photo_count === 1 ? '' : 's'}` : '',
+			c.to_finish ? `${c.to_finish} to edit` : '',
+			ago(c.last_seen_at),
+		].filter(Boolean);
 		return el(
 			'a',
 			{ class: 'ob-row', href: `#c/${c.id}`, 'data-client': c.id },
@@ -189,156 +140,78 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 				'span',
 				{ class: 'flex flex-col gap-1' },
 				el('strong', {}, c.name),
-				el(
-					'span',
-					{ class: 'ob-meta' },
-					`${LANE[c.lane]} · Tier ${c.tier === 2 ? '2/3' : '1'} · ${MODE[c.mode]} · ${stepWord(c)} · ${ago(c.last_seen_at)}`,
-				),
+				el('span', { class: 'ob-meta' }, bits.join(' · ')),
 			),
-			el('span', { class: 'ob-chip', 'data-status': c.status }, c.status),
+			el(
+				'span',
+				{ class: 'ob-chip', 'data-status': c.stage === 'live' ? 'done' : 'active' },
+				STAGE_TEXT[c.stage].title,
+			),
 			bar,
 		);
 	};
-
-	// ── The client form (new and edit) ──────────────────────────────────────
-
-	function fieldsForm(c: Partial<ClientFields>, submitLabel: string) {
-		const text = (name: string, label: string, type: string, value = '', extra = {}) =>
-			el(
-				'label',
-				{ class: 'ob-field', 'data-field': name },
-				label,
-				el('input', {
-					name,
-					type,
-					value,
-					required: true,
-					autocomplete: 'off',
-					...extra,
-				}),
-			);
-		const radios = (name: string, legend: string, options: [string, string][], value: string) =>
-			el(
-				'fieldset',
-				{ class: 'ob-choices', 'data-field': name },
-				el('legend', {}, legend),
-				...options.map(([v, l]) =>
-					el(
-						'label',
-						{ class: 'ob-choice' },
-						el('input', { type: 'radio', name, value: v, checked: v === value }),
-						l,
-					),
-				),
-			);
-		const status = el('p', { class: 'ob-status', 'aria-live': 'polite' });
-		const form = el(
-			'form',
-			{ class: 'ob-form', novalidate: true },
-			text('name', 'Business name', 'text', c.name, { maxlength: '80' }),
-			text('email', 'Business email', 'email', c.email, { maxlength: '254' }),
-			text('domain', 'Domain (only if they already have one)', 'text', c.domain, {
-				maxlength: '253',
-				placeholder: 'Leave blank if not',
-				required: false,
-			}),
-			radios(
-				'lane',
-				'Does their business run on…',
-				[
-					['ms', 'Microsoft'],
-					['g', 'Google'],
-				],
-				c.lane ?? 'ms',
-			),
-			radios(
-				'tier',
-				'Tier',
-				[
-					['2', 'Tier 2/3 — GitHub + Cloudflare'],
-					['1', 'Tier 1 — Cloudflare only (repo stays in the studio org)'],
-				],
-				String(c.tier ?? 2),
-			),
-			radios(
-				'mode',
-				'How you’ll run it',
-				[
-					['person', 'In person — no emails'],
-					['remote', 'Remote — email me at each step'],
-					['test', 'Test — like remote, emails marked [TEST]'],
-				],
-				c.mode ?? 'person',
-			),
-			el(
-				'button',
-				{ type: 'submit', class: 'brass-btn brass-btn--primary self-start' },
-				submitLabel,
-			),
-			status,
-		);
-		const read = (): ClientFields => {
-			const f = new FormData(form);
-			const g = (k: string) => String(f.get(k) ?? '').trim();
-			return {
-				name: g('name'),
-				email: g('email'),
-				domain: g('domain'),
-				lane: g('lane') as ClientFields['lane'],
-				tier: Number(g('tier')) as ClientFields['tier'],
-				mode: g('mode') as ClientFields['mode'],
-			};
-		};
-		const markField = (field?: string) => {
-			for (const n of form.querySelectorAll('[data-invalid]')) n.removeAttribute('data-invalid');
-			if (field) form.querySelector(`[data-field="${field}"]`)?.setAttribute('data-invalid', '');
-		};
-		return { form, read, status, markField };
-	}
-
-	async function runForm(
-		f: ReturnType<typeof fieldsForm>,
-		doing: string,
-		send: (x: ClientFields) => Promise<void>,
-	) {
-		const button = f.form.querySelector<HTMLButtonElement>('button[type=submit]');
-		if (button) button.disabled = true;
-		f.status.textContent = 'Saving…';
-		try {
-			await send(f.read());
-			f.markField();
-			clearError();
-			f.status.textContent = 'Saved.';
-		} catch (e) {
-			f.status.textContent = '';
-			if (e instanceof ApiError && e.field) {
-				f.markField(e.field);
-				f.status.textContent = e.message;
-			} else showError(e, doing);
-		} finally {
-			if (button) button.disabled = false;
-		}
-	}
 
 	// ── New ─────────────────────────────────────────────────────────────────
 
 	function showNew(): void {
 		++token;
 		stopRefresh();
-		const f = fieldsForm({}, 'Create client');
-		f.form.addEventListener('submit', (e) => {
+		const status = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+		const field = (name: string, label: string, type: string, max: string) =>
+			el(
+				'label',
+				{ class: 'ob-field', 'data-field': name },
+				label,
+				el('input', { name, type, maxlength: max, required: true, autocomplete: 'off' }),
+				el('span', { class: 'ob-field-error', 'aria-live': 'polite' }),
+			);
+		const form = el(
+			'form',
+			{ class: 'ob-form', novalidate: true },
+			field('name', 'Business name', 'text', '80'),
+			field('email', 'Their email', 'email', '254'),
+			el(
+				'label',
+				{ class: 'ob-choice' },
+				el('input', { type: 'checkbox', name: 'test' }),
+				'Test client (emails say [TEST])',
+			),
+			el('button', { type: 'submit', class: 'brass-btn brass-btn--primary' }, 'Create client'),
+			status,
+		);
+		form.addEventListener('submit', async (e) => {
 			e.preventDefault();
-			runForm(f, 'create the client', async (fields) => {
-				const c = await api.create(fields);
+			const get = (n: string) => form.querySelector<HTMLInputElement>(`[name="${n}"]`);
+			for (const f of form.querySelectorAll('[data-field]')) f.removeAttribute('data-invalid');
+			status.textContent = 'Saving…';
+			try {
+				const c = await api.create({
+					name: get('name')?.value.trim() ?? '',
+					email: get('email')?.value.trim() ?? '',
+					mode: get('test')?.checked ? 'test' : 'live',
+				});
 				location.hash = `#c/${c.id}`;
-			});
+			} catch (err) {
+				status.textContent = '';
+				if (err instanceof ApiError && err.field) {
+					const f = form.querySelector(`[data-field="${err.field}"]`);
+					f?.setAttribute('data-invalid', '');
+					const msg = f?.querySelector('.ob-field-error');
+					if (msg) msg.textContent = err.message;
+				} else showError(err, 'create the client');
+			}
 		});
 		view.replaceChildren(
-			el('a', { href: '#', class: 'ob-home' }, '← All clients'),
+			back(),
 			el('h1', { class: 'display text-4xl' }, 'New client'),
-			el('section', { class: 'panel' }, f.form),
+			el(
+				'p',
+				{ class: 'text-secondary' },
+				'Just a name and email. Everything else — answers, photos, stage — goes on their page next.',
+			),
+			el('section', { class: 'panel' }, form),
 		);
-		f.form.querySelector<HTMLInputElement>('input[name=name]')?.focus();
+		form.querySelector<HTMLInputElement>('input[name=name]')?.focus();
 	}
 
 	// ── Detail ──────────────────────────────────────────────────────────────
@@ -353,7 +226,7 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 			if (mine !== token) return;
 			if (e instanceof ApiError && e.status === 404) {
 				view.replaceChildren(
-					el('a', { href: '#', class: 'ob-home' }, '← All clients'),
+					back(),
 					el('p', { class: 'text-secondary' }, 'That client isn’t here any more.'),
 				);
 				return;
@@ -365,19 +238,22 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 		clearError();
 
 		const heading = el('h1', { class: 'display text-4xl' }, c.name);
+		const chips = el('div', { class: 'flex flex-wrap gap-2' });
 		const meta = el('p', { class: 'ob-meta' });
-		const chip = el('span', { class: 'ob-chip' });
+		const stageBox = el('div', { class: 'flex flex-col gap-3' });
+		const intakeNote = el('p', { class: 'ob-meta' });
+		const photoBox = el('div', { class: 'flex flex-col gap-3' });
+		const reviewBox = el('div', { class: 'flex flex-col gap-3' });
 		const linkBox = el('div', { class: 'flex flex-col gap-3' });
-		const progressBox = el('div', { class: 'flex flex-col gap-3' });
 		const manageBox = el('div', { class: 'ob-actions' });
+		let uploading = 0;
 
 		const save = async (p: Patch, doing: string): Promise<boolean> => {
 			try {
-				c = await api.patch(c.id, p);
+				const fresh = await api.patch(c.id, p);
+				c = { ...fresh, notes: 'notes' in p ? fresh.notes : c.notes };
 				clearError();
 				drawTop();
-				drawProgress();
-				drawManage();
 				return true;
 			} catch (e) {
 				showError(e, doing);
@@ -387,9 +263,285 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 
 		const drawTop = () => {
 			heading.textContent = c.name;
-			chip.textContent = c.status;
-			chip.setAttribute('data-status', c.status);
-			meta.textContent = `${LANE[c.lane]} · Tier ${c.tier === 2 ? '2/3' : '1'} · ${MODE[c.mode]} · ${stepWord(c)} · ${ago(c.last_seen_at)}`;
+			chips.replaceChildren(
+				el(
+					'span',
+					{ class: 'ob-chip', 'data-status': c.stage === 'live' ? 'done' : 'active' },
+					STAGE_TEXT[c.stage].title,
+				),
+				...(c.mode === 'test' ? [el('span', { class: 'ob-chip' }, 'Test')] : []),
+				...(c.status === 'archived' ? [el('span', { class: 'ob-chip' }, 'Archived')] : []),
+			);
+			meta.textContent = `${c.email} · ${ago(c.last_seen_at)}`;
+			intakeNote.textContent = c.intake_at
+				? `${c.intake_by === 'studio' ? 'Filled in by you' : 'Sent by the client'} ${shortDate(c.intake_at)}. Changes save as you type.`
+				: 'Not sent yet. Fill it in with them here — that counts as sent, and their page moves on.';
+			drawStage();
+		};
+
+		// Stage, preview and live addresses.
+		const drawStage = () => {
+			const at = STAGES.indexOf(c.stage);
+			const bar = el('div', { class: 'ob-stagebar', role: 'group', 'aria-label': 'Stage' });
+			STAGES.forEach((s: Stage, i) => {
+				const b = el(
+					'button',
+					{ type: 'button', 'aria-pressed': String(s === c.stage), 'data-past': i < at },
+					STAGE_TEXT[s].title,
+				);
+				b.addEventListener('click', () => {
+					if (s !== c.stage) save({ stage: s }, 'move the stage');
+				});
+				bar.append(b);
+			});
+			const addr = (key: 'preview_url' | 'live_url', label: string, hint: string) => {
+				const input = el('input', {
+					type: 'url',
+					inputmode: 'url',
+					name: key,
+					placeholder: 'https://',
+					autocomplete: 'off',
+				});
+				input.value = c[key];
+				const err = el('span', { class: 'ob-field-error', 'aria-live': 'polite' });
+				const box = el(
+					'label',
+					{ class: 'ob-field' },
+					label,
+					el('span', { class: 'ob-hint' }, hint),
+					input,
+					err,
+				);
+				input.addEventListener('change', async () => {
+					try {
+						const fresh = await api.patch(c.id, { [key]: input.value });
+						c = { ...fresh, notes: c.notes };
+						input.value = c[key];
+						err.textContent = '';
+						box.removeAttribute('data-invalid');
+						clearError();
+					} catch (e) {
+						if (e instanceof ApiError && e.field === key) {
+							err.textContent = e.message;
+							box.setAttribute('data-invalid', '');
+						} else showError(e, 'save the address');
+					}
+				});
+				return box;
+			};
+			const focused = stageBox.contains(document.activeElement);
+			if (focused) {
+				// Only refresh the buttons; never rebuild an address box mid-typing.
+				stageBox.querySelector('.ob-stagebar')?.replaceWith(bar);
+				return;
+			}
+			stageBox.replaceChildren(
+				bar,
+				el(
+					'p',
+					{ class: 'ob-meta' },
+					`Their page says: “${STAGE_TEXT[c.stage].client}” It follows within seconds.`,
+				),
+				addr(
+					'preview_url',
+					'Preview address',
+					'Shown to them at Review, with Looks good / Request changes.',
+				),
+				addr('live_url', 'Live address', 'Shown to them at Live.'),
+			);
+		};
+
+		// Intake: the same form the client sees.
+		const intake = intakeForm(c.intake, {
+			voice: 'studio',
+			onChange: () => intakeSave.poke(),
+		});
+		const intakeStatus = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+		const intakeSave = debounce(async () => {
+			intakeStatus.textContent = 'Saving…';
+			try {
+				const fresh = await api.patch(c.id, { intake: intake.read() });
+				c = { ...fresh, notes: c.notes };
+				intake.mark(null);
+				intakeStatus.textContent = 'Saved.';
+				drawTop();
+			} catch (e) {
+				intakeStatus.textContent = '';
+				if (e instanceof ApiError && e.field) intake.mark(e.field, e.message);
+				else showError(e, 'save the intake');
+			}
+		}, 800);
+
+		// Photos: originals and their finished versions.
+		const drawPhotos = () => {
+			const photos = c.photos ?? [];
+			const originals = photos.filter((p) => p.kind === 'original');
+			const finishedOf = new Map(photos.filter((p) => p.kind === 'finished').map((p) => [p.of, p]));
+			const progress = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+
+			const pick = (multiple: boolean, onFiles: (files: File[]) => void) => {
+				const input = el('input', {
+					type: 'file',
+					accept: 'image/*',
+					class: 'sr-only',
+					...(multiple ? { multiple: true } : {}),
+				});
+				input.addEventListener('change', () => {
+					const files = [...(input.files ?? [])];
+					input.value = '';
+					if (files.length) onFiles(files);
+				});
+				return input;
+			};
+			const sendAll = async (files: File[], fields: (f: File) => Record<string, string>) => {
+				uploading++;
+				let done = 0;
+				for (const f of files) {
+					progress.textContent = `Uploading ${done + 1} of ${files.length}…`;
+					try {
+						const p = await preparePhoto(f, null);
+						await api.upload(c.id, p, fields(f));
+						done++;
+					} catch (e) {
+						showError(e, `upload ${f.name}`);
+					}
+				}
+				uploading--;
+				progress.textContent =
+					done === files.length ? `${done} uploaded.` : `${done} of ${files.length} uploaded.`;
+				await reload();
+			};
+
+			const addInput = pick(true, (files) => sendAll(files, () => ({ kind: 'original' })));
+			const add = el('label', { class: 'brass-btn brass-btn--small' }, 'Add photos', addInput);
+			const actions = el('div', { class: 'ob-actions' }, add);
+			if (originals.length)
+				actions.append(
+					el(
+						'a',
+						{
+							class: 'brass-btn brass-btn--small brass-btn--quiet',
+							href: zipUrl(c.id),
+							download: '',
+						},
+						`Download all (${originals.length})`,
+					),
+				);
+
+			const tile = (p: Photo | undefined, label: string) =>
+				p
+					? el(
+							'a',
+							{
+								class: 'ob-photo',
+								href: photoUrl(c.id, p.id, 'full'),
+								target: '_blank',
+								rel: 'noopener',
+							},
+							el('img', { src: photoUrl(c.id, p.id, 'thumb'), alt: label, loading: 'lazy' }),
+						)
+					: el('span', { class: 'ob-photo' }, el('span', { class: 'ob-photo-msg' }, 'Needs edit'));
+
+			const pairs = el('ul', { class: 'ob-pairs' });
+			for (const o of originals) {
+				const fin = finishedOf.get(o.id);
+				const finInput = pick(false, (files) =>
+					sendAll(files, () => ({ kind: 'finished', of: o.id })),
+				);
+				const del = confirmButton('Delete', 'Delete both? Tap again', '', async () => {
+					try {
+						await api.removePhoto(c.id, o.id);
+						await reload();
+					} catch (e) {
+						showError(e, 'delete the photo');
+					}
+				});
+				pairs.append(
+					el(
+						'li',
+						{ class: 'ob-pair', 'data-needs': !fin },
+						tile(o, `Original: ${o.name}`),
+						tile(fin, `Finished: ${o.name}`),
+						el(
+							'div',
+							{ class: 'ob-pair-meta' },
+							el('strong', {}, o.name),
+							o.source === 'client' ? 'From the client' : `${(o.size / 1_048_576).toFixed(1)} MB`,
+							el('a', { href: photoUrl(c.id, o.id, 'full', true) }, 'Download original'),
+							el('label', {}, fin ? 'Replace finished version' : 'Add finished version', finInput),
+							...(fin
+								? [el('a', { href: photoUrl(c.id, fin.id, 'full', true) }, 'Download finished')]
+								: []),
+							del,
+						),
+					),
+				);
+			}
+			const left = originals.filter((o) => !finishedOf.has(o.id)).length;
+			photoBox.replaceChildren(
+				actions,
+				progress,
+				el(
+					'p',
+					{ class: 'ob-meta' },
+					originals.length
+						? `${originals.length} original${originals.length === 1 ? '' : 's'} · ${left ? `${left} still to edit` : 'all edited'}. Originals stay full size for Higgsfield.`
+						: 'No photos yet. On your phone, Add photos opens the camera or your library.',
+				),
+				pairs,
+			);
+		};
+
+		const drawReviews = () => {
+			const reviews = c.reviews ?? [];
+			reviewBox.replaceChildren(
+				...(reviews.length
+					? reviews.map((r) =>
+							el(
+								'p',
+								{ class: 'ob-review' },
+								el('small', {}, shortDate(r.created_at)),
+								r.verdict === 'ok' ? 'Looks good ✓' : `Asked for changes:\n${r.text}`,
+							),
+						)
+					: [
+							el(
+								'p',
+								{ class: 'ob-meta' },
+								'Nothing yet. Move them to Review with a preview address and they can answer from their page.',
+							),
+						]),
+			);
+		};
+
+		const drawChecklist = () => {
+			const box = el('div', { class: 'ob-choices ob-choices--grid' });
+			for (const [key, label] of CHECKLIST) {
+				const input = el('input', { type: 'checkbox', checked: c.checklist[key] });
+				input.addEventListener('change', () =>
+					save({ checklist: { [key]: input.checked } }, 'save the checklist'),
+				);
+				box.append(el('label', { class: 'ob-choice' }, input, label));
+			}
+			const notes = el('textarea', { name: 'notes', maxlength: '5000' });
+			notes.value = c.notes;
+			const saved = el('p', { class: 'ob-meta', 'aria-live': 'polite' });
+			const later = debounce(async () => {
+				saved.textContent = (await save({ notes: notes.value }, 'save your notes'))
+					? 'Saved.'
+					: 'Not saved.';
+			}, 600);
+			notes.addEventListener('input', () => {
+				saved.textContent = '…';
+				later.poke();
+			});
+			return el(
+				'div',
+				{ class: 'flex flex-col gap-4' },
+				box,
+				el('label', { class: 'ob-field' }, 'Notes', notes),
+				saved,
+			);
 		};
 
 		const drawLink = (message = '') => {
@@ -425,7 +577,7 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 				'brass-btn brass-btn--small brass-btn--quiet',
 				async () => {
 					try {
-						c = await api.rotate(c.id);
+						c = { ...(await api.rotate(c.id)), notes: c.notes };
 						clearError();
 						drawLink('New link made. The old one no longer works.');
 					} catch (e) {
@@ -433,122 +585,66 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 					}
 				},
 			);
-			linkBox.replaceChildren(a, el('div', { class: 'ob-actions' }, copy, rotate), note, qrBox);
-		};
-
-		const drawProgress = () => {
-			const list = el('ol', { class: 'ob-steplist' });
-			c.steps.forEach((s, i) => {
-				const tick = el('input', { type: 'checkbox', checked: c.done.includes(s.id) });
-				tick.addEventListener('change', () => {
-					const done = tick.checked ? [...c.done, s.id] : c.done.filter((d) => d !== s.id);
-					save({ done: done as StepId[] }, 'update the steps');
-				});
-				const current = i === c.step;
-				const here = el(
-					'button',
-					{
-						type: 'button',
-						class: 'brass-btn brass-btn--small brass-btn--quiet',
-						disabled: current,
-					},
-					current ? 'Client is here' : 'Put client here',
-				);
-				here.addEventListener('click', () => save({ step: i }, 'move the client'));
-				list.append(
-					el(
-						'li',
-						{ 'data-current': current },
-						el('label', { class: 'ob-choice' }, tick, `${i + 1}. ${s.title}`),
-						here,
-					),
-				);
-			});
-			const finished = c.step >= c.steps.length;
-			const finish = el(
-				'button',
-				{ type: 'button', class: 'brass-btn brass-btn--small', disabled: finished },
-				'Mark all done',
-			);
-			finish.addEventListener('click', () =>
-				save({ step: c.steps.length, done: c.steps.map((s) => s.id) }, 'mark it done'),
-			);
-			const reset = confirmButton(
-				'Reset to step 1',
-				'Clears every tick. Tap again',
-				'brass-btn brass-btn--small brass-btn--quiet',
-				async () => {
-					await save({ step: 0, done: [] }, 'reset the steps');
-				},
-			);
-			progressBox.replaceChildren(
+			linkBox.replaceChildren(
 				el(
 					'p',
 					{ class: 'ob-meta' },
-					`${stepWord(c)}. Changes reach the client’s open page within a few seconds.`,
+					'Only for clients you can’t meet: they fill in the same answers and add photos, then follow along and review here.',
 				),
-				list,
-				el('div', { class: 'ob-actions' }, finish, reset),
+				a,
+				el('div', { class: 'ob-actions' }, copy, rotate),
+				note,
+				qrBox,
 			);
 		};
 
-		const drawChecklist = () => {
-			const box = el('div', { class: 'flex flex-col gap-3' });
-			for (const item of CHECKS) {
-				const input = el('input', { type: 'checkbox', checked: c.checklist[item.key] });
-				input.addEventListener('change', () =>
-					save({ checklist: { [item.key]: input.checked } }, 'save the checklist'),
-				);
-				box.append(
-					el(
-						'label',
-						{ class: 'ob-choice' },
-						input,
-						el(
-							'span',
-							{},
-							item.label,
-							item.href
-								? el(
-										'span',
-										{ class: 'ob-meta' },
-										' — ',
-										el(
-											'a',
-											{ href: item.href, target: '_blank', rel: 'noopener', class: 'underline' },
-											item.hint ?? 'open',
-										),
-									)
-								: '',
-						),
-					),
-				);
-			}
-			const notes = el('textarea', { name: 'notes', maxlength: '5000' });
-			notes.value = c.notes;
-			const saved = el('p', { class: 'ob-meta', 'aria-live': 'polite' });
-			let wait: number | undefined;
-			notes.addEventListener('input', () => {
-				clearTimeout(wait);
-				saved.textContent = '…';
-				wait = window.setTimeout(async () => {
-					saved.textContent = (await save({ notes: notes.value }, 'save your notes'))
-						? 'Saved.'
-						: 'Not saved.';
-				}, 600);
-			});
-			return el(
-				'div',
-				{ class: 'flex flex-col gap-4' },
-				box,
-				el('label', { class: 'ob-field' }, 'Notes', notes),
-				saved,
+		const details = () => {
+			const status = el('p', { class: 'ob-status', 'aria-live': 'polite' });
+			const input = (name: 'name' | 'email', label: string, type: string) =>
 				el(
-					'p',
-					{ class: 'ob-meta' },
-					'Cloudflare links open whichever account is selected — switch to the client’s first.',
-				),
+					'label',
+					{ class: 'ob-field', 'data-field': name },
+					label,
+					el('input', { name, type, value: c[name], autocomplete: 'off' }),
+					el('span', { class: 'ob-field-error' }),
+				);
+			const test = el('input', { type: 'checkbox', name: 'test', checked: c.mode === 'test' });
+			const form = el(
+				'form',
+				{ class: 'ob-form', novalidate: true },
+				input('name', 'Business name', 'text'),
+				input('email', 'Their email', 'email'),
+				el('label', { class: 'ob-choice' }, test, 'Test client (emails say [TEST])'),
+				el('button', { type: 'submit', class: 'brass-btn brass-btn--small' }, 'Save details'),
+				status,
 			);
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault();
+				const v = (n: string) =>
+					form.querySelector<HTMLInputElement>(`[name="${n}"]`)?.value.trim() ?? '';
+				for (const f of form.querySelectorAll('[data-field]')) f.removeAttribute('data-invalid');
+				try {
+					c = {
+						...(await api.patch(c.id, {
+							name: v('name'),
+							email: v('email'),
+							mode: test.checked ? 'test' : 'live',
+						})),
+						notes: c.notes,
+					};
+					status.textContent = 'Saved.';
+					clearError();
+					drawTop();
+				} catch (err) {
+					if (err instanceof ApiError && err.field) {
+						const f = form.querySelector(`[data-field="${err.field}"]`);
+						f?.setAttribute('data-invalid', '');
+						const m = f?.querySelector('.ob-field-error');
+						if (m) m.textContent = err.message;
+					} else showError(err, 'save the details');
+				}
+			});
+			return form;
 		};
 
 		const drawManage = () => {
@@ -558,13 +654,18 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 				{ type: 'button', class: 'brass-btn brass-btn--small' },
 				archived ? 'Unarchive' : 'Archive',
 			);
-			arch.addEventListener('click', () => {
-				const status = archived ? (c.step >= c.steps.length ? 'done' : 'active') : 'archived';
-				save({ status }, archived ? 'unarchive' : 'archive');
+			arch.addEventListener('click', async () => {
+				if (
+					await save(
+						{ status: archived ? 'active' : 'archived' },
+						archived ? 'unarchive' : 'archive',
+					)
+				)
+					drawManage();
 			});
 			const del = confirmButton(
 				'Delete',
-				`Delete ${c.name} for good? Tap again`,
+				`Delete ${c.name} and every photo for good? Tap again`,
 				'brass-btn brass-btn--small brass-btn--quiet ob-danger',
 				async () => {
 					try {
@@ -583,56 +684,46 @@ export function startDashboard(view: HTMLElement, banner: HTMLElement): void {
 					{ class: 'ob-meta w-full' },
 					archived
 						? 'Archived: their link is switched off until you unarchive.'
-						: 'Archiving switches their link off and moves them out of the Active list.',
+						: 'Archiving switches their link off and keeps everything, photos included.',
 				),
 			);
 		};
 
-		const edit = fieldsForm(c, 'Save details');
-		edit.form.addEventListener('submit', (e) => {
-			e.preventDefault();
-			runForm(edit, 'save the details', async (fields) => {
-				c = await api.patch(c.id, fields);
-				drawTop();
-				drawProgress();
-			});
-		});
-
-		const section = (title: string, ...kids: Kid[]) =>
-			el('section', { class: 'panel ob-section' }, el('h2', {}, title), ...kids);
-
-		drawTop();
-		drawLink();
-		drawProgress();
-		drawManage();
-		view.replaceChildren(
-			el('a', { href: '#', class: 'ob-home' }, '← All clients'),
-			el('div', { class: 'flex flex-wrap items-center gap-3' }, heading, chip),
-			meta,
-			section('Their link', linkBox),
-			section('Progress', progressBox),
-			section('Your side', drawChecklist()),
-			section('Details', edit.form),
-			section('Manage', manageBox),
-		);
-
-		// Keep progress and "last active" fresh without touching anything being typed.
-		every(async () => {
+		const reload = async () => {
 			try {
 				const fresh = await api.get(c.id);
 				if (mine !== token) return;
-				const moved =
-					fresh.step !== c.step || fresh.done.join() !== c.done.join() || fresh.status !== c.status;
+				const photosChanged = JSON.stringify(fresh.photos) !== JSON.stringify(c.photos);
+				const reviewsChanged = JSON.stringify(fresh.reviews) !== JSON.stringify(c.reviews);
 				c = { ...fresh, notes: c.notes };
 				drawTop();
-				if (moved) {
-					drawProgress();
-					drawManage();
-				}
+				intake.fill(c.intake);
+				if (photosChanged && uploading === 0) drawPhotos();
+				if (reviewsChanged) drawReviews();
 			} catch {
 				/* the next tick tries again */
 			}
-		});
+		};
+
+		drawTop();
+		drawPhotos();
+		drawReviews();
+		drawLink();
+		drawManage();
+		view.replaceChildren(
+			back(),
+			el('div', { class: 'flex flex-wrap items-center gap-3' }, heading, chips),
+			meta,
+			section('Stage', stageBox),
+			section('Their answers', intakeNote, intake.form, intakeStatus),
+			section('Photos', photoBox),
+			section('Review answers', reviewBox),
+			section('Your checklist', drawChecklist()),
+			section('Their link', linkBox),
+			section('Details', details()),
+			section('Manage', manageBox),
+		);
+		every(reload);
 	}
 
 	// ── Routing ─────────────────────────────────────────────────────────────

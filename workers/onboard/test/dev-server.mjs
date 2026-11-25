@@ -11,6 +11,7 @@ import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AUD, accessToken, certs, TEAM } from './access-token.mjs';
 import { fakeD1 } from './fake-d1.mjs';
+import { fakeR2 } from './fake-r2.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(here, '../../../dist');
@@ -33,6 +34,7 @@ globalThis.fetch = async (url, init = {}) => {
 
 const env = {
 	DB: fakeD1(),
+	PHOTOS: fakeR2(),
 	ACCESS_TEAM: TEAM,
 	ACCESS_AUD: AUD,
 	RESEND_API_KEY: 'dev',
