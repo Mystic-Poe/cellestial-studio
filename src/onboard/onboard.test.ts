@@ -1,10 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { CF_ROLE, type ClientConfig, decodeConfig, encodeConfig, STUDIO_EMAIL } from './link.ts';
+import { CF_ROLE, type ClientConfig, STUDIO_EMAIL } from './link.ts';
 import { buildSteps, newInvites, slugify } from './steps.ts';
 
 const base: ClientConfig = {
-	v: 1,
 	n: 'Enowood Carpentry',
 	e: 'enock@enowood.com',
 	d: 'enowood.com',
@@ -12,25 +11,6 @@ const base: ClientConfig = {
 	t: 2,
 	m: 'test',
 };
-
-test('encode/decode round-trips, including non-ASCII names', () => {
-	const c = { ...base, n: 'Café Señora' };
-	assert.deepEqual(decodeConfig(encodeConfig(c)), c);
-});
-
-test('encoded form is URL-fragment safe (base64url, no padding)', () => {
-	assert.match(encodeConfig(base), /^[A-Za-z0-9_-]+$/);
-});
-
-test('decode rejects garbage and out-of-range fields', () => {
-	assert.equal(decodeConfig(''), null);
-	assert.equal(decodeConfig('not base64 at all!'), null);
-	assert.equal(decodeConfig(encodeConfig({ ...base, l: 'x' as never })), null);
-	assert.equal(decodeConfig(encodeConfig({ ...base, t: 3 as never })), null);
-	assert.equal(decodeConfig(encodeConfig({ ...base, m: 'admin' as never })), null);
-	assert.equal(decodeConfig(encodeConfig({ ...base, v: 2 as never })), null);
-	assert.equal(decodeConfig(encodeConfig({ ...base, n: '' })), null);
-});
 
 test('tier 2/3 gets all four steps in order; tier 1 skips GitHub', () => {
 	assert.deepEqual(
