@@ -26,6 +26,16 @@
       "simple": { "limit": 30, "period": 60 }
     }
   ],
+  // Client records. Schema in migrations/; apply with
+  // `wrangler d1 migrations apply cellestial-onboard --remote --config workers/onboard/wrangler.jsonc`.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cellestial-onboard",
+      "database_id": "f95e8c28-527e-4374-b85e-ef82e99b0ec6",
+      "migrations_dir": "migrations"
+    }
+  ],
   // Secrets are set by Gabriel on this Worker; see README. keep_vars stops a
   // deploy from wiping NOTIFY_TO / NOTIFY_FROM set in the dashboard.
   "keep_vars": true

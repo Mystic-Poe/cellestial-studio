@@ -15,8 +15,8 @@ Public repo: no client data in any file, test or log.
 - [x] Task 3 — Worker routes (`client.ts`, `admin.ts`, `notify.ts`, `validate.ts`); `/ping` removed; 49 Worker tests
 - [x] Task 4 — client page on the site theme with step bar, Back, Redo; `tools/onboard/check-start.mjs` passes against `workers/onboard/test/dev-server.mjs`. Old builder deleted.
 - [x] Task 5 — dashboard (`/dashboard`, `src/scripts/dashboard*.ts`); `tools/onboard/check-dashboard.mjs` passes
-- [ ] Task 6 — ship
+- [x] Task 6 — D1 `cellestial-onboard` created + migrated; Worker deployed (version e5058265); merged to main
 
 ## Exact next step
 
-Task 6: create D1, add binding, migrate, deploy Worker, merge to main.
+Gabriel: set up Cloudflare Access (README "Turning the dashboard on"), then Claude verifies admin routes 401 → dashboard works signed in.
