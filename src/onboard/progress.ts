@@ -46,7 +46,7 @@ export function applyProgress(
 	}
 
 	if (action === 'undo') {
-		if (step >= ids.length || step > p.step)
+		if (step >= ids.length || (step > p.step && !done.has(ids[step])))
 			return { ok: false, error: 'Can’t redo a step ahead.' };
 		done.delete(ids[step]);
 		return { ok: true, progress: { step, done: ordered(ids, done) }, finished: false };

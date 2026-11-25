@@ -5,8 +5,12 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const worker = (await import(resolve(here, '../src/index.ts'))).default;
+const store = await import(resolve(here, '../src/store.ts'));
+const { fakeD1 } = await import('./fake-d1.mjs');
 
 let allow = true;
+let allowProgress = true;
+let db = fakeD1();
 const fullEnv = {
 	INVITE_SALT: 'salt',
 	CF_USER_TOKEN: 'cf_tok',
@@ -15,6 +19,10 @@ const fullEnv = {
 	NOTIFY_TO: 'gabriel@example.com',
 	NOTIFY_FROM: 'site@cellestialstudio.com',
 	RATE: { limit: async () => ({ success: allow }) },
+	RATE_PROGRESS: { limit: async () => ({ success: allowProgress }) },
+	get DB() {
+		return db;
+	},
 };
 
 const call = (path, { env = fullEnv, method = 'GET', json } = {}) =>
@@ -108,73 +116,146 @@ await t('invites: a missing token skips that source without calling it', async (
 	assert.ok(!calls.some((c) => c.u.includes('api.github.com')));
 });
 
-const ping = { client: 'Enowood Carpentry', step: 2, mode: 'test', event: 'invite' };
+// ── Client routes ──────────────────────────────────────────────────────────
 
-await t('ping: test mode sends a [TEST] email to Gabriel', async () => {
-	stub();
-	const r = await call('/api/onboard/ping', { method: 'POST', json: ping });
+const fields = {
+	name: 'Test Bakery',
+	email: 'owner@example.com',
+	domain: 'example.com',
+	lane: 'ms',
+	tier: 2,
+	mode: 'test',
+};
+const fresh = async (over = {}) => {
+	db = fakeD1();
+	return store.createClient(db, { ...fields, ...over });
+};
+const progress = (code, json) =>
+	call(`/api/onboard/client/${code}/progress`, { method: 'POST', json });
+
+await t('client GET returns their setup and nothing private', async () => {
+	const c = await fresh();
+	await store.updateClient(db, c.id, {
+		notes: 'private note',
+		checklist: { invites: true, billing: false, domain: false, card: false },
+	});
+	const r = await call(`/api/onboard/client/${c.code}`);
 	assert.equal(r.status, 200);
+	const text = await r.text();
+	assert.deepEqual(Object.keys(JSON.parse(text)).sort(), [
+		'domain',
+		'done',
+		'email',
+		'lane',
+		'mode',
+		'name',
+		'step',
+		'tier',
+	]);
+	assert.ok(!text.includes('private note') && !text.includes(c.id) && !text.includes(c.code));
+});
+
+await t('client GET: unknown, malformed, archived and rotated codes are 404', async () => {
+	const c = await fresh();
+	assert.equal((await call('/api/onboard/client/x'.padEnd(40, 'x'))).status, 404);
+	assert.equal((await call('/api/onboard/client/bad!code')).status, 404);
+	const r = await store.rotateCode(db, c.id);
+	assert.equal((await call(`/api/onboard/client/${c.code}`)).status, 404);
+	assert.equal((await call(`/api/onboard/client/${r.code}`)).status, 200);
+	await store.updateClient(db, c.id, { status: 'archived' });
+	assert.equal((await call(`/api/onboard/client/${r.code}`)).status, 404);
+});
+
+await t('progress done saves and sends a [TEST] email built from the record', async () => {
+	stub();
+	const c = await fresh();
+	const r = await progress(c.code, { action: 'done', step: 0, client: 'Injected <b>name</b>' });
+	assert.equal(r.status, 200);
+	assert.deepEqual(await r.json(), { step: 1, done: ['gh-signup'] });
 	assert.equal(mails.length, 1);
-	assert.match(mails[0].subject, /^\[TEST\] /);
-	assert.match(mails[0].subject, /Enowood Carpentry/);
-	assert.deepEqual(mails[0].to, ['gabriel@example.com']);
+	assert.match(
+		mails[0].subject,
+		/^\[TEST\] Onboarding: Test Bakery finished a step \(step 1 of 4\)$/,
+	);
+	assert.ok(!JSON.stringify(mails[0]).includes('Injected'));
+	assert.equal(mails[0].to[0], 'gabriel@example.com');
+	assert.equal((await store.getById(db, c.id)).step, 1);
 });
 
-await t('ping: remote mode has no [TEST] prefix', async () => {
+await t('progress via invite says so; remote mode has no [TEST]', async () => {
 	stub();
-	await call('/api/onboard/ping', { method: 'POST', json: { ...ping, mode: 'remote' } });
-	assert.ok(!mails[0].subject.startsWith('[TEST]'));
+	const c = await fresh({ mode: 'remote' });
+	await progress(c.code, { action: 'done', step: 0 });
+	await progress(c.code, { action: 'done', step: 1, via: 'invite' });
+	assert.equal(mails.length, 2);
+	assert.match(mails[1].subject, /^Onboarding: Test Bakery sent your invite \(step 2 of 4\)$/);
 });
 
-await t('ping: rejects bad shape without sending', async () => {
+await t('progress in person mode sends no email', async () => {
 	stub();
-	for (const bad of [
-		{ ...ping, step: 9 },
-		{ ...ping, mode: 'person' },
-		{ ...ping, event: 'x' },
-		{ ...ping, client: '' },
-		{ ...ping, client: 'x'.repeat(61) },
-	]) {
-		assert.equal((await call('/api/onboard/ping', { method: 'POST', json: bad })).status, 400);
-	}
+	const c = await fresh({ mode: 'person' });
+	assert.equal((await progress(c.code, { action: 'done', step: 0 })).status, 200);
 	assert.equal(mails.length, 0);
 });
 
-await t('ping: strips odd characters from the client name', async () => {
+await t('undo and goto send no email and move the step back', async () => {
 	stub();
-	await call('/api/onboard/ping', {
-		method: 'POST',
-		json: { ...ping, client: 'Bob <script>\nBcc: x' },
+	const c = await fresh({ mode: 'person' });
+	await progress(c.code, { action: 'done', step: 0 });
+	await progress(c.code, { action: 'done', step: 1 });
+	assert.deepEqual(await (await progress(c.code, { action: 'goto', step: 0 })).json(), {
+		step: 0,
+		done: ['gh-signup', 'gh-org'],
 	});
-	assert.ok(!/[<>\n]/.test(mails[0].subject));
-});
-
-await t('ping: 503 when mail is not configured', async () => {
-	stub();
-	const r = await call('/api/onboard/ping', {
-		method: 'POST',
-		json: ping,
-		env: { ...fullEnv, RESEND_API_KEY: undefined },
+	assert.deepEqual(await (await progress(c.code, { action: 'undo', step: 1 })).json(), {
+		step: 1,
+		done: ['gh-signup'],
 	});
-	assert.equal(r.status, 503);
-});
-
-await t('ping: 429 when rate-limited, no email', async () => {
-	stub();
-	allow = false;
-	const r = await call('/api/onboard/ping', { method: 'POST', json: ping });
-	allow = true;
-	assert.equal(r.status, 429);
 	assert.equal(mails.length, 0);
 });
 
-await t('ping: 502 when Resend fails', async () => {
+await t('a refused move is 400, carries the true state, and writes nothing', async () => {
+	const c = await fresh();
+	const r = await progress(c.code, { action: 'done', step: 2 });
+	assert.equal(r.status, 400);
+	const body = await r.json();
+	assert.equal(body.step, 0);
+	assert.deepEqual(body.done, []);
+	assert.equal((await store.getById(db, c.id)).updated_at, c.updated_at);
+	assert.equal((await progress(c.code, { action: 'jump', step: 0 })).status, 400);
+});
+
+await t('finishing marks the client done; going back makes them active again', async () => {
+	const c = await fresh({ tier: 1, mode: 'person' });
+	await progress(c.code, { action: 'done', step: 0 });
+	await progress(c.code, { action: 'done', step: 1 });
+	assert.equal((await store.getById(db, c.id)).status, 'done');
+	await progress(c.code, { action: 'goto', step: 1 });
+	assert.equal((await store.getById(db, c.id)).status, 'active');
+});
+
+await t('an email failure or mail rate limit never undoes the step', async () => {
 	stub({ resend: false });
-	assert.equal((await call('/api/onboard/ping', { method: 'POST', json: ping })).status, 502);
+	const c = await fresh();
+	assert.equal((await progress(c.code, { action: 'done', step: 0 })).status, 200);
+	allow = false;
+	stub();
+	assert.equal((await progress(c.code, { action: 'done', step: 1 })).status, 200);
+	assert.equal(mails.length, 0);
+	allow = true;
+	assert.equal((await store.getById(db, c.id)).step, 2);
 });
 
-await t('ping: GET is refused', async () => {
-	assert.equal((await call('/api/onboard/ping')).status, 405);
+await t('progress rate limit is 429 and writes nothing', async () => {
+	const c = await fresh();
+	allowProgress = false;
+	assert.equal((await progress(c.code, { action: 'done', step: 0 })).status, 429);
+	allowProgress = true;
+	assert.equal((await store.getById(db, c.id)).step, 0);
+});
+
+await t('the old ping route is gone', async () => {
+	assert.equal((await call('/api/onboard/ping', { method: 'POST', json: {} })).status, 404);
 });
 
 console.log(`onboard worker: ${pass} passed`);

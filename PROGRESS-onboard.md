@@ -12,11 +12,11 @@ Public repo: no client data in any file, test or log.
 - [x] Task 1 — progress rules (`src/onboard/progress.ts`), link codec removed.
   `src/scripts/start-flow.ts` / `start-builder.ts` still import the codec until Tasks 4–5.
 - [x] Task 2 — D1 store (`store.ts`), fake D1 over node:sqlite, Access check (`access.ts`)
-- [ ] Task 3 — Worker routes
+- [x] Task 3 — Worker routes (`client.ts`, `admin.ts`, `notify.ts`, `validate.ts`); `/ping` removed; 49 Worker tests
 - [ ] Task 4 — client page
 - [ ] Task 5 — dashboard
 - [ ] Task 6 — ship
 
 ## Exact next step
 
-Task 3: Worker routes.
+Task 4: client page (Worker has no D1 binding yet — added in Task 6).

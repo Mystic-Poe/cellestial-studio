@@ -49,8 +49,10 @@ test('undo on the current step is allowed (redo this step)', () => {
 	assert.deepEqual(r, { ok: true, progress: at(2, ['gh-signup', 'gh-org']), finished: false });
 });
 
-test('undo ahead of the current step is refused', () => {
+test('undo ahead of the current step is refused unless that step is ticked', () => {
 	assert.equal(applyProgress(at(1, ['gh-signup']), 'undo', 2, ids).ok, false);
+	const r = applyProgress(at(0, ['gh-signup', 'gh-org']), 'undo', 1, ids);
+	assert.deepEqual(r, { ok: true, progress: at(1, ['gh-signup']), finished: false });
 });
 
 test('goto back is allowed; done ticks stay', () => {

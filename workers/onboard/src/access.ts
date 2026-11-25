@@ -31,10 +31,12 @@ async function keysFor(team: string, refresh = false): Promise<Jwk[]> {
 	return keys;
 }
 
-const fromB64u = (s: string): Uint8Array => {
+const fromB64u = (s: string): Uint8Array<ArrayBuffer> => {
 	const b64 = s.replace(/-/g, '+').replace(/_/g, '/');
 	const bin = atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4));
-	return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+	const out = new Uint8Array(new ArrayBuffer(bin.length));
+	for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+	return out;
 };
 const parse = (s: string): Record<string, unknown> =>
 	JSON.parse(new TextDecoder().decode(fromB64u(s)));
