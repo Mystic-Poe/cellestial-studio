@@ -10,8 +10,10 @@
 // GET    /admin/clients/<id>/photos.zip          every original
 // GET    /admin/clients/<id>/photos/<pid>?size=thumb|full[&download=1]
 // DELETE /admin/clients/<id>/photos/<pid>
+// GET    /admin/billing, POST /admin/clients/<id>/billing[/link|/start]  (billing.ts)
 
 import { type AccessEnv, verifyAccess } from './access.ts';
+import { billingOverview, clientBilling, startOnLive } from './billing.ts';
 import { photoKey, type R2Like, readUpload, safeName, zipNames, zipStream } from './files.ts';
 import { json, readJson } from './http.ts';
 import type { MailEnv } from './notify.ts';
@@ -33,9 +35,10 @@ import {
 	rotateCode,
 	updateClient,
 } from './store.ts';
+import type { StripeEnv } from './stripe.ts';
 import { checkNew, checkPatch } from './validate.ts';
 
-export interface AdminEnv extends AccessEnv, MailEnv {
+export interface AdminEnv extends AccessEnv, MailEnv, StripeEnv {
 	DB?: D1;
 	PHOTOS?: R2Like;
 }
@@ -97,6 +100,10 @@ export async function adminRoute(
 	if (m !== 'GET' && m !== 'HEAD' && !sameSite(request))
 		return json(403, { error: 'Changes must come from the dashboard.' });
 
+	if (rest[0] === 'billing' && rest.length === 1) {
+		if (m !== 'GET') return json(405, { error: 'GET only.' });
+		return billingOverview(env, db);
+	}
 	if (rest[0] !== 'clients' || rest.length > 4) return json(404, { error: 'Not found.' });
 
 	if (rest.length === 1) {
@@ -149,10 +156,13 @@ export async function adminRoute(
 			},
 			now,
 		);
+		if (saved && c.value.stage === 'live' && current.stage !== 'live')
+			await startOnLive(env, db, id);
 		return saved ? json(200, await detail(db, saved)) : missing();
 	}
 
 	const sub = rest[2];
+	if (sub === 'billing') return clientBilling(request, env, db, current, rest[3]);
 	if (sub === 'rotate' && rest.length === 3) {
 		if (m !== 'POST') return json(405, { error: 'POST only.' });
 		const r = await rotateCode(db, id);

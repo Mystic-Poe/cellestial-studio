@@ -52,7 +52,16 @@ existing Access rule. Billing: offers as data (`src/billing/offers.ts`, cohort =
 build $0, care $39/mo locked; quoted = prices typed per client), "put a client
 on an offer" with real clients and a one-line summary (care starts at Live);
 Confirm disabled until Stripe. Figures/plans/invoices are sample rows.
-`check-billing.mjs` (7). Next: Stripe tonight.
+`check-billing.mjs` (7).
+
+**Stripe billing, 2026-11-25 (sandbox).** Sandbox product "Website care —
+founding cohort", $39/mo, lookup key `care_cohort_monthly` (made in Gabriel's
+dashboard). Confirm makes a customer + card link; care starts at Live or on
+Start care; Billing tab reads plans/invoices/figures from Stripe. Migration
+0005 (billing table). Gabriel puts the restricted key on the Worker himself
+(`wrangler secret put STRIPE_SECRET_KEY`). Tests: billing 11, check-billing 8.
+Next: quoted builds (build invoice + care at a typed price); live mode = a live
+product with the same lookup key and a live restricted key.
 
 Next: Gabriel creates a real client from /dashboard and runs it on a phone;
 confirm the "[TEST]"/live notification emails arrive.

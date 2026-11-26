@@ -22,6 +22,7 @@ export interface Env {
 	RATE?: Limiter;
 	RATE_CLIENT?: Limiter;
 	RATE_READ?: Limiter;
+	STRIPE_SECRET_KEY?: string;
 }
 
 const notFound = () =>

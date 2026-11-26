@@ -1,0 +1,22 @@
+---
+// Where Stripe sends a client after they save a card from Gabriel's card link.
+import Base from '../../../layouts/Base.astro';
+import '../../../styles/onboard.css';
+---
+
+<Base title="Card saved — Cellestial Studio" description="Your card is saved with Cellestial Studio.">
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	<div class="ob-sky">
+		<main id="main" class="mx-auto flex min-h-dvh max-w-md flex-col gap-5 px-4 py-8">
+			<a class="ob-home" href="/">Cellestial Studio</a>
+			<section class="panel ob-section">
+				<h1 class="display text-4xl">Thank you</h1>
+				<p>
+					If you saved your card, it’s with Stripe now. Nothing is charged until your site is
+					live. Then your care plan starts, and Stripe emails you a receipt each month.
+				</p>
+				<p class="ob-meta">Questions? Reply to any email from Gabriel.</p>
+			</section>
+		</main>
+	</div>
+</Base>

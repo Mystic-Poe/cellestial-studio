@@ -2,6 +2,9 @@
 // offer: to add an offer later, add an entry here. Tonight's Stripe work reads
 // the same list, so each entry becomes one Stripe product and its prices.
 //
+// To add an offer: make its care price in Stripe (Product catalog) with a
+// lookup key, then add an entry here with that key.
+//
 // Prices are whole US dollars. `null` means "quoted": Gabriel types the
 // number in for that client. The founding cohort's numbers must match the
 // locked copy on the site (offers.test.ts checks them against src/content).
@@ -21,6 +24,11 @@ export interface BillingOffer {
 	careWas?: number;
 	/** The care price never goes up for a client on this offer. */
 	locked: boolean;
+	/**
+	 * The lookup key of this offer's monthly care price in Stripe. An offer
+	 * with one can be started from the Billing tab; without one it can't yet.
+	 */
+	lookup?: string;
 }
 
 export const BILLING_OFFERS: readonly BillingOffer[] = [
@@ -33,6 +41,7 @@ export const BILLING_OFFERS: readonly BillingOffer[] = [
 		care: 39,
 		careWas: 69,
 		locked: true,
+		lookup: 'care_cohort_monthly',
 	},
 	{
 		id: 'quoted',

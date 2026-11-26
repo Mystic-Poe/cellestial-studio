@@ -51,6 +51,7 @@ uploads.
 | `RATE_CLIENT`    | limit  | 60 writes a minute per client link                   |
 | `RATE_READ`      | limit  | 120 photo views a minute per client link             |
 | `RESEND_API_KEY` | secret | Same Resend key as the contact form                  |
+| `STRIPE_SECRET_KEY` | secret | Restricted Stripe key (`rk_test_…` in the sandbox) |
 | `NOTIFY_TO`      | var    | Where Gabriel's emails land                          |
 | `NOTIFY_FROM`    | var    | A verified sender on the Resend domain               |
 | `ACCESS_TEAM`    | var    | Access team domain (in `wrangler.jsonc`)             |
@@ -74,11 +75,20 @@ node tools/onboard/check-billing.mjs        # Admin menu link, the two tabs, Bil
 check-start fills photo storage on purpose, so run it on a fresh dev server
 of its own; the other two can share one.
 
-## Billing (template)
+## Billing
 
 `/dashboard/billing/` sits next to Onboarding as a second tab, under the same
-Access rule. Offers are data in `src/billing/offers.ts`: one entry per offer
-(build price, care price, locked or not; `null` = quoted per client). Putting
-a client on an offer uses the real onboarding clients; Confirm does nothing
-until Stripe is connected. The money figures, plans and invoices are sample
-rows, marked "Sample".
+Access rule. Offers are data in `src/billing/offers.ts`; an offer with a
+`lookup` (the lookup key of its monthly care price in Stripe) can be started
+from the tab. The flow (`src/billing.ts`, `src/stripe.ts`):
+
+1. Confirm: a Stripe customer and a card link (Checkout in setup mode).
+   Nothing is charged. Links last 24 hours; "New card link" makes another.
+2. The client saves a card on Stripe's page and lands on `/start/card-saved/`.
+3. Their stage moves to Live (or Gabriel presses Start care): the plan starts
+   on the saved card. One plan per client (idempotency key `plan-<client id>`).
+
+Figures, plans and invoices on the tab come from Stripe on each load. Without
+`STRIPE_SECRET_KEY` the tab shows sample rows, marked so. The key is a
+restricted one: Customers, Checkout Sessions and Subscriptions write; Setup
+Intents, Prices, Products and Invoices read.

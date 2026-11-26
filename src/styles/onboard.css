@@ -646,3 +646,13 @@
 	cursor: not-allowed;
 	pointer-events: none;
 }
+.ob-row > .ob-actions,
+.ob-row > p.ob-meta {
+	grid-column: 1 / -1;
+}
+.ob-row > p.ob-meta:empty {
+	display: none;
+}
+.ob-linkbox strong {
+	word-break: normal;
+}

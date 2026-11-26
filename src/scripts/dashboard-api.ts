@@ -92,12 +92,41 @@ export class ApiError extends Error {
 }
 
 export const BASE = '/api/onboard/admin/clients';
+
+export interface BillingPlan {
+	client_id: string;
+	name: string;
+	stage: string;
+	offer: string;
+	care: number;
+	/** card_pending, card_saved, or Stripe's subscription status once started. */
+	status: string;
+	/** Next charge, seconds since 1970. */
+	next: number | null;
+	card_link: string | null;
+}
+export type BillingView =
+	| { connected: false }
+	| {
+			connected: true;
+			mode: 'test' | 'live';
+			figures: { monthly: number; owed: number; paid_this_month: number };
+			plans: BillingPlan[];
+			invoices: {
+				id: string;
+				date: number;
+				name: string;
+				amount: number;
+				status: string;
+				url: string | null;
+			}[];
+	  };
 const enc = encodeURIComponent;
 
-async function call<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
+async function call<T>(path: string, method = 'GET', body?: unknown, base = BASE): Promise<T> {
 	let res: Response;
 	try {
-		res = await fetch(`${BASE}${path}`, {
+		res = await fetch(`${base}${path}`, {
 			method,
 			headers: { 'content-type': 'application/json', accept: 'application/json' },
 			credentials: 'same-origin',
@@ -132,6 +161,12 @@ export const api = {
 	remove: (id: string) => call<{ ok: true }>(`/${enc(id)}`, 'DELETE'),
 	removePhoto: (id: string, pid: string) =>
 		call<{ ok: true }>(`/${enc(id)}/photos/${enc(pid)}`, 'DELETE'),
+	billing: () => call<BillingView>('', 'GET', undefined, '/api/onboard/admin/billing'),
+	startBilling: (id: string, offer: string) =>
+		call<{ status: string; card_link: string }>(`/${enc(id)}/billing`, 'POST', { offer }),
+	newCardLink: (id: string) =>
+		call<{ status: string; card_link: string }>(`/${enc(id)}/billing/link`, 'POST'),
+	startCare: (id: string) => call<{ status: string }>(`/${enc(id)}/billing/start`, 'POST'),
 	async upload(id: string, p: Prepared, fields: Record<string, string>): Promise<Photo> {
 		const r = await sendPhoto(`${BASE}/${enc(id)}/photos`, p, fields);
 		if (!r.ok) throw new ApiError(r.status, String(r.data?.error ?? `Error ${r.status}.`));

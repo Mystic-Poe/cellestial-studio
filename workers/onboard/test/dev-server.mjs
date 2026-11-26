@@ -5,6 +5,8 @@
 //
 // Run: pnpm build && node workers/onboard/test/dev-server.mjs [port]
 // Emails are never sent; each one is printed and kept at GET /__mails.
+// Stripe is a pretend one (fake-stripe.mjs), on unless DEV_NO_STRIPE=1;
+// POST /__save-card?client=<id> acts as the client saving a card.
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { dirname, extname, join, resolve } from 'node:path';
@@ -12,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { AUD, accessToken, certs, TEAM } from './access-token.mjs';
 import { fakeD1 } from './fake-d1.mjs';
 import { fakeR2 } from './fake-r2.mjs';
+import { fakeStripe } from './fake-stripe.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(here, '../../../dist');
@@ -20,8 +23,10 @@ const port = Number(process.argv[2] ?? 4410);
 const ORIGIN = 'https://cellestialstudio.com';
 
 const mails = [];
+const stripe = fakeStripe();
 globalThis.fetch = async (url, init = {}) => {
 	const u = String(url);
+	if (u.startsWith('https://api.stripe.com/')) return stripe.handle(u, init);
 	if (u.endsWith('/cdn-cgi/access/certs')) return Response.json(certs);
 	if (u.includes('api.resend.com')) {
 		const m = JSON.parse(init.body);
@@ -40,6 +45,7 @@ const env = {
 	RESEND_API_KEY: 'dev',
 	NOTIFY_TO: 'studio@example.com',
 	NOTIFY_FROM: 'site@example.com',
+	STRIPE_SECRET_KEY: process.env.DEV_NO_STRIPE === '1' ? undefined : 'rk_test_dev',
 };
 
 const types = {
@@ -83,6 +89,14 @@ createServer(async (req, res) => {
 		)
 			.bind(`filler-${Date.now()}`, url.searchParams.get('client') ?? '', STORAGE_CAP)
 			.run();
+		return res.writeHead(204).end();
+	}
+	if (url.pathname === '/__save-card' && req.method === 'POST') {
+		const row = await env.DB.prepare('SELECT setup_session FROM billing WHERE client_id = ?')
+			.bind(url.searchParams.get('client') ?? '')
+			.first();
+		if (!row) return res.writeHead(404).end();
+		stripe.saveCard(row.setup_session);
 		return res.writeHead(204).end();
 	}
 	if (!url.pathname.startsWith('/api/onboard')) return serveFile(url.pathname, res);
