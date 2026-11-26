@@ -4,6 +4,7 @@
 // marked so. No card details ever pass through this page: clients save cards
 // on Stripe's own page, from a link made here.
 
+import qrcode from 'qrcode-generator';
 import {
 	BILLING_OFFERS,
 	type BillingOffer,
@@ -19,6 +20,21 @@ import {
 	type BillingView,
 } from './dashboard-api.ts';
 import { el, type Kid } from './ui.ts';
+
+/** The card link as a QR code, for a client sitting across the table to scan. */
+const qrOf = (url: string) => {
+	const qr = qrcode(0, 'M');
+	qr.addData(url);
+	qr.make();
+	const box = el('div', {
+		class: 'ob-qr',
+		role: 'img',
+		'aria-label': 'QR code of the card link',
+		'data-card-qr': true,
+	});
+	box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+	return box;
+};
 
 const SAMPLE = {
 	figures: { monthly: 117, owed: 0, paid_this_month: 78 },
@@ -181,6 +197,8 @@ export function startBilling(view: HTMLElement, banner: HTMLElement): void {
 					{ class: 'ob-actions' },
 					small('Copy card link', () => copy(r.card_link, note)),
 				),
+				el('p', { class: 'ob-meta' }, 'Or have them scan this with their phone camera:'),
+				qrOf(r.card_link),
 				note,
 			);
 			result.hidden = false;
@@ -270,9 +288,22 @@ export function startBilling(view: HTMLElement, banner: HTMLElement): void {
 		const planRow = (p: BillingPlan) => {
 			const note = el('p', { class: 'ob-meta' });
 			const actions = el('div', { class: 'ob-actions' });
+			let qrSpot: HTMLElement | string = '';
 			if (p.status === 'card_pending' && p.card_link) {
 				const link = p.card_link;
+				const spot = el('div', { hidden: true }, qrOf(link));
+				qrSpot = spot;
+				const show = el(
+					'button',
+					{ type: 'button', class: 'brass-btn brass-btn--small' },
+					'Show QR code',
+				);
+				show.addEventListener('click', () => {
+					spot.hidden = !spot.hidden;
+					show.textContent = spot.hidden ? 'Show QR code' : 'Hide QR code';
+				});
 				actions.append(
+					show,
 					small('Copy card link', () => copy(link, note)),
 					small('New card link', async () => {
 						const r = await api.newCardLink(p.client_id);
@@ -299,6 +330,7 @@ export function startBilling(view: HTMLElement, banner: HTMLElement): void {
 					`${p.offer} · ${usd(p.care)}/mo${p.next ? ` · next charge ${day(p.next)}` : ''}`,
 				),
 				actions.childElementCount ? actions : '',
+				qrSpot,
 				note,
 			);
 		};

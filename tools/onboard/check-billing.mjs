@@ -77,7 +77,10 @@ assert.equal(
 	0,
 	'not offered twice',
 );
-ok('confirm: a card link to send, and the plan waits for their card');
+assert.equal(await page.locator('.ob-linkbox [data-card-qr] svg').count(), 1, 'QR under the link');
+await plan.locator('button:has-text("Show QR code")').click();
+await plan.locator('[data-card-qr] svg').waitFor();
+ok('confirm: a card link and a QR code to scan, and the plan waits for their card');
 await page.screenshot({ path: `${out}/billing-card-link.png`, fullPage: true });
 
 await fetch(`${base}/__save-card?client=${made.id}`, { method: 'POST' });

@@ -99,6 +99,8 @@ export async function cardLink(
 	return call(env, 'POST', 'checkout/sessions', {
 		mode: 'setup',
 		currency: 'usd',
+		// Cards only: Klarna, Cash App and bank debits don't suit a monthly plan.
+		payment_method_types: ['card'],
 		customer,
 		success_url: returnTo,
 		cancel_url: returnTo,

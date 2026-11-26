@@ -101,6 +101,12 @@ await t('confirm: a Stripe customer and a card link; nothing charged', async () 
 	assert.equal(stripe.customers.length, 1);
 	assert.equal(stripe.customers[0].email, 'owner@example.com');
 	assert.equal(stripe.sessions[0].success_url, `${ORIGIN}/start/card-saved/`);
+	assert.deepEqual(
+		stripe.calls
+			.find((x) => x.path === '/v1/checkout/sessions')
+			.form.getAll('payment_method_types[]'),
+		['card'],
+	);
 	assert.equal(stripe.subs.length, 0);
 	const o = await overview();
 	assert.equal(o.mode, 'test');

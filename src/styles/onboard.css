@@ -656,3 +656,6 @@
 .ob-linkbox strong {
 	word-break: normal;
 }
+.ob-row > div:has(> .ob-qr) {
+	grid-column: 1 / -1;
+}
