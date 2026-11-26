@@ -13,7 +13,7 @@
 // GET    /admin/billing, POST /admin/clients/<id>/billing[/link|/start]  (billing.ts)
 
 import { type AccessEnv, verifyAccess } from './access.ts';
-import { billingOverview, clientBilling, startOnLive } from './billing.ts';
+import { billingOverview, clientBilling, deleteBlocker, startOnLive } from './billing.ts';
 import { photoKey, type R2Like, readUpload, safeName, zipNames, zipStream } from './files.ts';
 import { json, readJson } from './http.ts';
 import type { MailEnv } from './notify.ts';
@@ -131,6 +131,8 @@ export async function adminRoute(
 	if (rest.length === 2) {
 		if (m === 'GET') return json(200, await detail(db, current));
 		if (m === 'DELETE') {
+			const blocked = await deleteBlocker(env, db, id);
+			if (blocked) return json(409, { error: blocked });
 			await removeFiles(env.PHOTOS, id, await listPhotos(db, id));
 			await deleteClient(db, id);
 			return json(200, { ok: true });

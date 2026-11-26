@@ -96,6 +96,10 @@ export function fakeStripe({ care = 3900 } = {}) {
 			return out(200, sub);
 		}
 		if (path === 'subscriptions' && method === 'GET') return out(200, { data: s.subs });
+		if (path.startsWith('subscriptions/') && method === 'GET') {
+			const sub = s.subs.find((v) => v.id === path.split('/')[1]);
+			return sub ? out(200, sub) : out(404, { error: { message: 'No such subscription.' } });
+		}
 		if (path === 'invoices' && method === 'GET') {
 			const status = form.get('status');
 			const gte = Number(form.get('created[gte]') ?? 0);

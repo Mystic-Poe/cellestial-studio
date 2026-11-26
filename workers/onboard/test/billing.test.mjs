@@ -202,6 +202,27 @@ await t('deleting a client forgets their billing row', async () => {
 	assert.deepEqual((await overview()).plans, []);
 });
 
+await t(
+	'a client with a running plan can’t be deleted until it is cancelled in Stripe',
+	async () => {
+		const c = await create();
+		await join(c);
+		stripe.saveCard(stripe.sessions[0].id);
+		await call(`/clients/${c.id}/billing/start`, { method: 'POST' });
+		const r = await call(`/clients/${c.id}`, { method: 'DELETE' });
+		assert.equal(r.status, 409);
+		assert.match(r.body.error, /Cancel it there first/);
+		assert.equal((await call(`/clients/${c.id}`)).status, 200, 'still there');
+		const off = await call(`/clients/${c.id}`, {
+			method: 'DELETE',
+			e: env({ STRIPE_SECRET_KEY: '' }),
+		});
+		assert.equal(off.status, 409, 'no key: still refused');
+		stripe.subs[0].status = 'canceled';
+		assert.equal((await call(`/clients/${c.id}`, { method: 'DELETE' })).status, 200);
+	},
+);
+
 await t('billing routes need Access like the rest', async () => {
 	const r = await worker.fetch(new Request(`${ORIGIN}/api/onboard/admin/billing`), env(), {
 		waitUntil() {},

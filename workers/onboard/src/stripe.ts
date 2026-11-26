@@ -154,6 +154,9 @@ export interface Invoice {
 	hosted_invoice_url: string | null;
 }
 
+export const subStatus = async (env: StripeEnv, id: string) =>
+	(await call<{ status: string }>(env, 'GET', `subscriptions/${id}`)).status;
+
 export const listSubs = async (env: StripeEnv) =>
 	(await call<{ data: Sub[] }>(env, 'GET', 'subscriptions', { status: 'all', limit: 100 })).data;
 

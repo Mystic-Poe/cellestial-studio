@@ -23,6 +23,7 @@ import {
 	savedCard,
 	startPlan,
 	stripeMode,
+	subStatus,
 } from './stripe.ts';
 
 const ORIGIN = 'https://cellestialstudio.com';
@@ -92,6 +93,26 @@ async function start(
 	});
 	await setRow(db, r.client_id, { status: 'started', subscription: sub });
 	return 'started';
+}
+
+/**
+ * Why this client can't be deleted yet, or null if they can. A started plan
+ * keeps charging in Stripe, so it must be cancelled there first.
+ */
+export async function deleteBlocker(
+	env: StripeEnv,
+	db: D1,
+	clientId: string,
+): Promise<string | null> {
+	const row = await getRow(db, clientId);
+	if (!row?.subscription) return null;
+	const ask = 'Their care plan is still running in Stripe. Cancel it there first, then delete.';
+	if (!stripeMode(env)) return ask;
+	try {
+		return (await subStatus(env, row.subscription)) === 'canceled' ? null : ask;
+	} catch {
+		return 'Couldn’t check their care plan with Stripe. Try again.';
+	}
 }
 
 /** Called when a client's stage moves to Live. Never throws: the stage change stands. */
