@@ -45,6 +45,15 @@ dashboard list shows usage. Cloudflare: rate-limit rule "API flood guard"
 (/api/*, 100 req/10 s per IP, block 10 s) and a $1 billing budget alert to the
 account email. Cloudflare's own spend caps cover Workers/DO only, not R2.
 
+**Admin menu + Billing template, 2026-11-25.** Main menu has a small "Admin"
+link (under a hairline) to /dashboard/; the studio pages are two tabs,
+Onboarding (/dashboard/) and Billing (/dashboard/billing/), both under the
+existing Access rule. Billing: offers as data (`src/billing/offers.ts`, cohort =
+build $0, care $39/mo locked; quoted = prices typed per client), "put a client
+on an offer" with real clients and a one-line summary (care starts at Live);
+Confirm disabled until Stripe. Figures/plans/invoices are sample rows.
+`check-billing.mjs` (7). Next: Stripe tonight.
+
 Next: Gabriel creates a real client from /dashboard and runs it on a phone;
 confirm the "[TEST]"/live notification emails arrive.
 

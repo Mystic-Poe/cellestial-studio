@@ -68,4 +68,17 @@ pnpm test                                   # unit tests, all Workers
 pnpm build && node workers/onboard/test/dev-server.mjs    # local site + Worker on port 4410
 node tools/onboard/check-start.mjs          # browser walk of the client page (dev server running)
 node tools/onboard/check-dashboard.mjs      # browser walk of the dashboard
+node tools/onboard/check-billing.mjs        # Admin menu link, the two tabs, Billing
 ```
+
+check-start fills photo storage on purpose, so run it on a fresh dev server
+of its own; the other two can share one.
+
+## Billing (template)
+
+`/dashboard/billing/` sits next to Onboarding as a second tab, under the same
+Access rule. Offers are data in `src/billing/offers.ts`: one entry per offer
+(build price, care price, locked or not; `null` = quoted per client). Putting
+a client on an offer uses the real onboarding clients; Confirm does nothing
+until Stripe is connected. The money figures, plans and invoices are sample
+rows, marked "Sample".

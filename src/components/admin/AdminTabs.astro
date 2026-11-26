@@ -1,0 +1,22 @@
+---
+// The two studio pages, as tabs. Each is its own address under /dashboard, so
+// the one Cloudflare Access rule on /dashboard* covers both.
+interface Props {
+	current: 'onboarding' | 'billing';
+}
+const { current } = Astro.props;
+const tabs = [
+	{ id: 'onboarding', label: 'Onboarding', href: '/dashboard/' },
+	{ id: 'billing', label: 'Billing', href: '/dashboard/billing/' },
+] as const;
+---
+
+<nav class="ob-tabs ob-pagetabs" aria-label="Studio">
+	{
+		tabs.map((t) => (
+			<a class="ob-tab" href={t.href} aria-current={t.id === current ? 'page' : undefined}>
+				{t.label}
+			</a>
+		))
+	}
+</nav>

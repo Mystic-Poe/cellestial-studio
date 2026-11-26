@@ -5,7 +5,8 @@
 //       under it in brass: one link, home
 //   C2  the menu button: three short bars of the brass skin, a hair-thin blue
 //       line along each
-//   C3  the menu: the site's small panel, four links, nothing else
+//   C3  the menu: the site's small panel, four links, and under a hairline
+//       a small Admin link for the studio (Cloudflare Access guards it)
 //
 // The menu is a native popover, so the button opens it, and Escape or a click
 // elsewhere closes it, with no script at all: without script its four links
@@ -52,6 +53,7 @@ const node = {
 				<li><a href="#roots" data-dest="build">What we build</a></li>
 				<li><a href="/contact" data-dest="claim">Claim your star</a></li>
 				<li><a href="/contact" data-dest="contact">Contact me</a></li>
+				<li class="chrome-menu-admin"><a href="/dashboard/">Admin</a></li>
 			</ul>
 		</nav>
 	</Panel>
@@ -274,6 +276,17 @@ const node = {
 	#chrome-menu a:hover,
 	#chrome-menu a:focus-visible {
 		color: var(--color-brass-hi);
+	}
+	/* The studio's way in: set apart from the four, smaller and quieter. */
+	#chrome-menu .chrome-menu-admin {
+		margin-top: 0.25rem;
+		border-top: 1px solid var(--color-border);
+		padding-top: 0.25rem;
+	}
+	#chrome-menu .chrome-menu-admin a {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		color: var(--color-secondary);
 	}
 	/* With no sky to go to, the menu does not offer it. */
 	html[data-no-sky] #chrome-menu li:has([data-dest='sky']) {

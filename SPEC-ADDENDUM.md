@@ -42,7 +42,7 @@
 - Return-to-sky button sits at the TOP of the ground — warp launch back up.
 
 ## Menu
-- Three brass bars next to the top-left logo. Items: The Sky / What we build / Claim your star / Contact me.
+- Three brass bars next to the top-left logo. Items: The Sky / What we build / Claim your star / Contact me. Under a hairline, a small **Admin** link to `/dashboard/` (studio only, behind Cloudflare Access; added 25 Nov on the owner's word).
 
 ## Constellation meanings (B7) — LOCKED VERBATIM (the owner's 18 Nov sheet; added here 23 Nov on his word)
 A meaning appears ONLY once its constellation is filled: every star of the figure claimed. Until then nothing is written. The sky starts empty, so it will be a while.
