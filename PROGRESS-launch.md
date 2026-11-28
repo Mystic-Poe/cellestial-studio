@@ -36,7 +36,11 @@ No new prices, offers or copy beyond the sheet. Uncommitted `.gitignore` and
   any opener → a foreign page can take Gabriel's GitHub token. Fix: post to and accept only location.origin.
   Broker is a do-not-touch Worker, so it waits for his word.
 - /start has no Turnstile by design (capability links + rate limits); reported, not changed.
-- Skill audit: running as one background agent, output ~/security-audit-skill/cellestial-studio/run-1.
+- Skill audit DONE (incomplete by the skill's own rules: quick profile, 10/10 agents, 3 of 6 candidates
+  validated; source only, so nothing could be "confirmed"). Report: ~/security-audit-skill/cellestial-studio/run-1/REPORT.md
+  (+ NEEDS-VALIDATION.md, findings.json; both validators PASS). Needs validation: (1) the broker token leak above;
+  (2) /admin loads decap-cms@^3.0.0 from unpkg, unpinned, no SRI, no CSP; (3) contact email subject keeps CR/LF
+  from the name. All three sit in do-not-touch Workers/pages: held for the owner. Hardening notes in REPORT.md §6.
 - Job 3: Turnstile shows an interactive "Verify you are human" box to automated browsers, and Claude does not
   solve bot checks: the contact TEST and survey TEST submissions are the owner's to click (survey also needs the
   two secrets). /start live: no code and a TEST code both say "This link isn't active", nothing created.
