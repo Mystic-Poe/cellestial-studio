@@ -47,5 +47,20 @@ No new prices, offers or copy beyond the sheet. Uncommitted `.gitignore` and
   Full /start flow walked on the local dev server (Stripe off): 16/16. Survey closing state on the live page
   (send faked in the browser, nothing sent): renders right at both sizes, review button disabled (placeholder).
 
+## Fixes approved by the owner and done (27 Nov, ~22:40 MT; commit `476141b`)
+The owner said "yes fix 1-3, and turn on always use https".
+- Broker: handshake posts only to the site's own origin, answers only its opener on that origin. 4 new tests run
+  the page script against a foreign opener (fail on the old code, pass now). Deployed cellestial-auth 6b3ce488;
+  live page shows `var origin = "https://cellestialstudio.com"`, no '*'.
+- /admin: decap-cms pinned to 3.18.0 (the version already live) with SRI sha384 (from npm's package, byte-identical
+  to unpkg) + its own CSP (unsafe-eval needed by Decap; scripts only self + the pinned file; connect self +
+  api.github.com). tools/security/admin-csp-check.mjs: login 0 violations, signed-in editor (fake GitHub) 0
+  violations, tampered file refused. Live via Workers Builds (success, version f3d3308b); live headers checked.
+  Not exercised: opening an entry / media library while really signed in: the owner should open /admin once.
+- Contact subject: CR/LF/tab stripped from the name, test added. Deployed cellestial-contact 94a71a1b; live
+  /api/contact still 405 on GET, 400 on an empty POST.
+- Always Use HTTPS: ON (zone setting via the Cloudflare API, SSL mode was already Full). http:// → 301 https://.
+- Full `pnpm test` passes; site CSP check (local) 0 violations on all pages.
+
 ## Exact next step
-Wait for: the audit agent's summary; the owner's answers on the broker fix, Always Use HTTPS, the survey secrets, and the two TEST submissions. Then the report to @gro (with his yes).
+Owner: survey secrets, the two TEST submissions, one look at /admin signed in. Then the report to @gro (with his yes).
