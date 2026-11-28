@@ -12,7 +12,8 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
 	const errors = [];
 	page.on('pageerror', (e) => errors.push(String(e)));
 	await page.route('**/api/survey', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
-	await page.goto(`${base}/survey`, { waitUntil: 'networkidle' });
+	await page.goto(`${base}/survey`, { waitUntil: 'load' });
+	await page.waitForTimeout(2500);
 	await page.screenshot({ path: `${out}/form-${w}.png`, fullPage: true });
 	await page.fill('#s-business', 'TEST');
 	await page.check('input[value="Mostly"]');

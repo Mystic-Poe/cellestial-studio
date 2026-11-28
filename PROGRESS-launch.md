@@ -25,5 +25,23 @@ No new prices, offers or copy beyond the sheet. Uncommitted `.gitignore` and
 - [ ] 3. Workflow test: contact TEST, /start TEST (clean up), survey TEST, review button state.
 - [ ] Report to @gro (with the owner's yes).
 
+## Job 2 and 3 state (27 Nov, ~21:45)
+- Headers LIVE (`aff569b`), verified with curl on /, /contact, /survey/, /start/, /admin/ (no CSP on /admin by
+  design). Live CSP check: zero violations on our pages (only Cloudflare's own Access login page reports one).
+- HTTP is NOT redirected to HTTPS (http://cellestialstudio.com/ answers 200). Fix = zone setting "Always Use
+  HTTPS". Asked the owner (zone setting, not code).
+- /dashboard/ → Cloudflare Access login (302). /admin/ shell is public (200); editing needs GitHub login with
+  push rights through the /api/auth broker.
+- FINDING, held for the owner's yes: `workers/auth/src/index.ts:48` posts the OAuth result to `event.origin` of
+  any opener → a foreign page can take Gabriel's GitHub token. Fix: post to and accept only location.origin.
+  Broker is a do-not-touch Worker, so it waits for his word.
+- /start has no Turnstile by design (capability links + rate limits); reported, not changed.
+- Skill audit: running as one background agent, output ~/security-audit-skill/cellestial-studio/run-1.
+- Job 3: Turnstile shows an interactive "Verify you are human" box to automated browsers, and Claude does not
+  solve bot checks: the contact TEST and survey TEST submissions are the owner's to click (survey also needs the
+  two secrets). /start live: no code and a TEST code both say "This link isn't active", nothing created.
+  Full /start flow walked on the local dev server (Stripe off): 16/16. Survey closing state on the live page
+  (send faked in the browser, nothing sent): renders right at both sizes, review button disabled (placeholder).
+
 ## Exact next step
-Confirm the headers are live (curl), run the live checks, then the audit run (one agent, quick profile).
+Wait for: the audit agent's summary; the owner's answers on the broker fix, Always Use HTTPS, the survey secrets, and the two TEST submissions. Then the report to @gro (with his yes).
