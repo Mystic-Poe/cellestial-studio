@@ -376,7 +376,9 @@ export default {
 				from: env.CONTACT_FROM,
 				to: [env.CONTACT_TO],
 				reply_to: email,
-				subject: `Cellestial Studio enquiry — ${name}`,
+				// One line whatever was typed: a line break in the name never reaches
+				// the mail headers (security audit, 27 Nov 2026).
+				subject: `Cellestial Studio enquiry — ${name.replace(/[\r\n\t]+/g, ' ').trim()}`,
 				text: `From: ${name} <${email}>\n\n${message}${starLine}`,
 			}),
 		});

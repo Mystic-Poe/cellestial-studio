@@ -3,9 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>Content Manager</title>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!--
+    Pinned to one Decap release, with its hash (security audit, 27 Nov 2026).
+    The browser refuses the file if unpkg ever serves different bytes. The hash
+    was taken from npm's own package for this version and matched unpkg's copy.
+    To upgrade: change the version, then the hash, taken the same way:
+      npm pack decap-cms@<version>, then
+      openssl dgst -sha384 -binary package/dist/decap-cms.js | base64 -w0
+  -->
+  <script
+    src="https://unpkg.com/decap-cms@3.18.0/dist/decap-cms.js"
+    integrity="sha384-Vu0vdYOBhK+2KywHCtNZ9sCqpzkwx358AT6pCSg8om/clLoDzpWYF41jrtEk/WMM"
+    crossorigin="anonymous"
+  ></script>
 </body>
 </html>

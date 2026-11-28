@@ -129,6 +129,12 @@ await t('reply_to is the sender so replies reach them', async () => {
 	assert.deepEqual(payload.to, ['hello@cellestialstudio.com']);
 	assert.ok(payload.text.includes('Need a site.'));
 });
+await t('a line break in the name cannot reach the subject', async () => {
+	stub();
+	await post(body({ name: 'Ada\r\nBcc: x@example.com' }));
+	assert.equal(bodies[0].subject, 'Cellestial Studio enquiry — Ada Bcc: x@example.com');
+});
+
 await t('GET is 405, other paths 404', async () => {
 	stub();
 	assert.equal((await post(undefined, { method: 'GET' })).status, 405);

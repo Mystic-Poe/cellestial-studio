@@ -21,8 +21,10 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
 
-# Decap CMS loads from unpkg and talks to GitHub from the browser. It keeps
-# every header above except the page policy, which would stop it working;
-# Cloudflare Access and the auth broker are what guard it.
+# Decap CMS (the editor at /admin) gets its own, narrower policy in place of
+# the one above: its script may come only from the pinned, hashed unpkg file
+# (public/admin/index.html), and it may talk only to this site and GitHub.
+# Cloudflare Access and the auth broker still guard who gets in.
 /admin/*
   ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com/decap-cms@3.18.0/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://avatars.githubusercontent.com https://raw.githubusercontent.com; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-src 'self' blob:; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'

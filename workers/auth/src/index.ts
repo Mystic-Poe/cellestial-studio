@@ -35,17 +35,26 @@ const clearState = `${STATE_COOKIE}=; Path=${COOKIE_PATH}; HttpOnly; Secure; Sam
  *   opener -> popup  : any message, which confirms the channel and origin
  *   popup  -> opener : "authorization:github:success:{...}" (or ":error:")
  * So the response has to be a page that runs script, not JSON.
+ *
+ * The editor is served from the broker's own origin (/admin on the same site),
+ * so the page talks to that origin only: it never posts to '*', and it answers
+ * only a message from the window that opened it, on that origin. Without this,
+ * any site that opened the popup could receive the GitHub token (security
+ * audit, 27 Nov 2026).
  */
-function handshakePage(message: string): Response {
+function handshakePage(message: string, origin: string): Response {
 	// JSON-encode, then neutralise `<` so no payload can close the script tag.
 	const safe = JSON.stringify(message).replace(/</g, '\\u003c');
+	const safeOrigin = JSON.stringify(origin).replace(/</g, '\\u003c');
 	return new Response(
 		`<!doctype html><html><head><meta charset="utf-8" /><title>Signing in…</title></head>
 <body><p>Completing sign-in…</p><script>
 (function () {
   var message = ${safe};
+  var origin = ${safeOrigin};
   function handshake(event) {
-    window.opener.postMessage(message, event.origin);
+    if (event.origin !== origin || event.source !== window.opener) return;
+    window.opener.postMessage(message, origin);
     window.removeEventListener('message', handshake, false);
   }
   if (!window.opener) {
@@ -53,7 +62,7 @@ function handshakePage(message: string): Response {
     return;
   }
   window.addEventListener('message', handshake, false);
-  window.opener.postMessage('authorizing:github', '*');
+  window.opener.postMessage('authorizing:github', origin);
 })();
 </script></body></html>`,
 		{
@@ -63,8 +72,11 @@ function handshakePage(message: string): Response {
 	);
 }
 
-function authError(reason: string): Response {
-	const res = handshakePage(`authorization:github:error:${JSON.stringify({ message: reason })}`);
+function authError(reason: string, origin: string): Response {
+	const res = handshakePage(
+		`authorization:github:error:${JSON.stringify({ message: reason })}`,
+		origin,
+	);
 	res.headers.append('set-cookie', clearState);
 	return res;
 }
@@ -104,12 +116,12 @@ async function callback(request: Request, env: Env): Promise<Response> {
 	const cookie = request.headers.get('cookie') ?? '';
 	const expected = new RegExp(`(?:^|;\\s*)${STATE_COOKIE}=([^;]+)`).exec(cookie)?.[1];
 
-	if (!code) return authError('GitHub did not return an authorization code.');
+	if (!code) return authError('GitHub did not return an authorization code.', url.origin);
 	if (!state || !expected || state !== expected) {
-		return authError('Login state did not match. Start again from /admin.');
+		return authError('Login state did not match. Start again from /admin.', url.origin);
 	}
 	if (!env.OAUTH_GITHUB_CLIENT_ID || !env.OAUTH_GITHUB_CLIENT_SECRET) {
-		return authError('OAuth credentials are not configured on this Worker yet.');
+		return authError('OAuth credentials are not configured on this Worker yet.', url.origin);
 	}
 
 	const exchange = await fetch('https://github.com/login/oauth/access_token', {
@@ -128,7 +140,7 @@ async function callback(request: Request, env: Env): Promise<Response> {
 	});
 
 	if (!exchange.ok) {
-		return authError(`GitHub rejected the token exchange (HTTP ${exchange.status}).`);
+		return authError(`GitHub rejected the token exchange (HTTP ${exchange.status}).`, url.origin);
 	}
 
 	const data = (await exchange.json()) as {
@@ -138,7 +150,10 @@ async function callback(request: Request, env: Env): Promise<Response> {
 	};
 
 	if (!data.access_token) {
-		return authError(data.error_description || data.error || 'No access token returned.');
+		return authError(
+			data.error_description || data.error || 'No access token returned.',
+			url.origin,
+		);
 	}
 
 	const res = handshakePage(
@@ -146,6 +161,7 @@ async function callback(request: Request, env: Env): Promise<Response> {
 			token: data.access_token,
 			provider: 'github',
 		})}`,
+		url.origin,
 	);
 	res.headers.append('set-cookie', clearState);
 	return res;

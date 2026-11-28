@@ -91,6 +91,43 @@ await t('success: posts authorization:github:success with the token', () => {
 	assert.ok(okHtml.includes('gho_TESTTOKEN'));
 	assert.ok(okHtml.includes("postMessage('authorizing:github'"));
 });
+// Run the page's own script against a fake opener, the way the popup runs it.
+const runHandshake = (html, event) => {
+	const script = /<script>([\s\S]*)<\/script>/.exec(html)[1];
+	const posted = [];
+	let listener;
+	const opener = { postMessage: (msg, target) => posted.push({ msg, target }) };
+	const window = {
+		opener,
+		addEventListener: (_type, fn) => {
+			listener = fn;
+		},
+		removeEventListener: () => {},
+	};
+	new Function('window', 'document', script)(window, { body: {} });
+	if (event) listener({ ...event, source: event.source === 'opener' ? opener : event.source });
+	return posted;
+};
+
+await t('handshake: never posts to "*", only to the site itself', () => {
+	assert.ok(!okHtml.includes("'*'"));
+	const posted = runHandshake(okHtml);
+	assert.deepEqual(posted, [{ msg: 'authorizing:github', target: 'https://cellestialstudio.com' }]);
+});
+await t('handshake: a foreign site that opened the popup gets no token', () => {
+	const posted = runHandshake(okHtml, { origin: 'https://evil.example', source: 'opener' });
+	assert.ok(posted.every((p) => !String(p.msg).includes('gho_TESTTOKEN')));
+});
+await t('handshake: a message from another window gets no token', () => {
+	const posted = runHandshake(okHtml, { origin: 'https://cellestialstudio.com', source: {} });
+	assert.ok(posted.every((p) => !String(p.msg).includes('gho_TESTTOKEN')));
+});
+await t('handshake: the editor on the site still gets the token', () => {
+	const posted = runHandshake(okHtml, { origin: 'https://cellestialstudio.com', source: 'opener' });
+	const last = posted.at(-1);
+	assert.equal(last.target, 'https://cellestialstudio.com');
+	assert.match(last.msg, /^authorization:github:success:.*gho_TESTTOKEN/);
+});
 await t('success: secret goes to github, never to the browser', () => {
 	assert.equal(seen.url, 'https://github.com/login/oauth/access_token');
 	assert.equal(seen.body.client_secret, 's3cret');
