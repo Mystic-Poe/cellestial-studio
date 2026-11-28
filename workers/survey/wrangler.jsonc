@@ -1,0 +1,27 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  // The founding-client survey (27 Nov build sheet). Separate from the
+  // contact, auth and onboard Workers on purpose.
+  "name": "cellestial-survey",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-10",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "observability": { "enabled": true },
+  // Trailing * so a query string still reaches the Worker. It refuses anything but POST.
+  "routes": [
+    {
+      "pattern": "cellestialstudio.com/api/survey*",
+      "zone_name": "cellestialstudio.com"
+    }
+  ],
+  // Not secrets: where surveys land and the verified Resend sender (the same
+  // sender the onboard Worker uses).
+  "vars": {
+    "SURVEY_TO": "cellestial.studio@gmail.com",
+    "SURVEY_FROM": "contact@cellestialstudio.com"
+  }
+  // TURNSTILE_SECRET_KEY and RESEND_API_KEY are secrets, set by Gabriel:
+  //   wrangler secret put TURNSTILE_SECRET_KEY --config workers/survey/wrangler.jsonc
+  //   wrangler secret put RESEND_API_KEY       --config workers/survey/wrangler.jsonc
+  // Until both are set the endpoint answers 503 and the page says nothing was sent.
+}

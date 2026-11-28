@@ -1,0 +1,269 @@
+---
+// The founding-client survey (the owner's decision, 27 Nov 2026). Link-only:
+// not in the menu, noindex. One short page, every question visible, every
+// field required. Copy is the owner's, verbatim: change none of it here
+// without him. Sends to the cellestial-survey Worker (workers/survey).
+import BrassButton from '../components/ui/BrassButton.astro';
+import Panel from '../components/ui/Panel.astro';
+import { REVIEW_LINK, TURNSTILE_SITE_KEY } from '../config.ts';
+import { ASSETS } from '../experience/assets.ts';
+import Base from '../layouts/Base.astro';
+
+const ready = TURNSTILE_SITE_KEY !== '';
+const logo = ASSETS.chrome.cLogo;
+---
+
+<Base title="One week in — Cellestial Studio" description="A short note for Cellestial Studio's founding clients.">
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	{ready && <script slot="head" is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
+
+	<main id="main" class="survey">
+		<img class="survey__mark" src={logo.url} width={logo.w} height={logo.h} alt="Cellestial Studio" decoding="async" />
+
+		<Panel as="section" class="survey__panel" aria-labelledby="survey-title" data-survey-form-panel>
+			<h1 id="survey-title" class="display survey__title">One week in — how's the site treating you?</h1>
+			<p class="survey__intro">
+				You trusted me with round one. Short and honest — this is how the next business gets a better build. Part of the founding deal: I may quote what you say here, and your site joins my examples.
+			</p>
+
+			<form id="survey" method="POST" action="/api/survey" class="sform">
+				<div class="sform__field">
+					<label for="s-business">1. Your business name</label>
+					<input id="s-business" name="business" type="text" required maxlength="200" autocomplete="organization" />
+				</div>
+
+				<fieldset class="sform__field">
+					<legend>2. Is the site doing its job?</legend>
+					<div class="sform__choices">
+						<label class="sform__choice"><input type="radio" name="doing" value="Yes" required /> <span>Yes</span></label>
+						<label class="sform__choice"><input type="radio" name="doing" value="Mostly" /> <span>Mostly</span></label>
+						<label class="sform__choice"><input type="radio" name="doing" value="Not yet" /> <span>Not yet</span></label>
+					</div>
+				</fieldset>
+
+				<div class="sform__field">
+					<label for="s-harder">3. What, if anything, has it made harder instead of easier?</label>
+					<p class="sform__help" id="s-harder-help">Write "nothing" if nothing.</p>
+					<textarea id="s-harder" name="harder" rows="4" required maxlength="5000" aria-describedby="s-harder-help"></textarea>
+				</div>
+
+				<div class="sform__field">
+					<label for="s-tell">4. What would you tell another owner who's thinking about getting a site from me?</label>
+					<textarea id="s-tell" name="tell" rows="4" required maxlength="5000"></textarea>
+				</div>
+
+				<div class="sform__field">
+					<label for="s-better">5. What should I do better next time?</label>
+					<p class="sform__help" id="s-better-help">"Can't think of anything" is a fine answer.</p>
+					<textarea id="s-better" name="better" rows="4" required maxlength="5000" aria-describedby="s-better-help"></textarea>
+				</div>
+
+				{ready && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" />}
+				<BrassButton variant="primary" type="submit" class="sform__send" disabled={!ready}>Send</BrassButton>
+				<p class="sform__status" data-status role="status" aria-live="polite"></p>
+			</form>
+		</Panel>
+
+		<Panel as="section" class="survey__panel survey__done" aria-labelledby="survey-done-title" data-survey-done hidden>
+			<h1 id="survey-done-title" class="display survey__title" tabindex="-1">Thank you — this genuinely helps.</h1>
+			<p class="survey__review">
+				Last part of the deal: the honest Google review. Whatever stars it honestly deserves — that's what helps the next owner find me.
+			</p>
+			{
+				REVIEW_LINK ? (
+					<BrassButton variant="primary" href={REVIEW_LINK} rel="noopener" target="_blank">Leave the review</BrassButton>
+				) : (
+					<BrassButton variant="primary" disabled data-review-placeholder>Leave the review</BrassButton>
+				)
+			}
+		</Panel>
+	</main>
+
+	<script>
+		const form = document.querySelector<HTMLFormElement>('#survey');
+		const status = form?.querySelector<HTMLElement>('[data-status]');
+		const formPanel = document.querySelector<HTMLElement>('[data-survey-form-panel]');
+		const done = document.querySelector<HTMLElement>('[data-survey-done]');
+		const turnstile = () => (window as unknown as { turnstile?: { reset(): void } }).turnstile;
+
+		form?.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			if (!form.reportValidity() || !button || !status) return;
+			button.disabled = true;
+			status.textContent = 'Sending…';
+			try {
+				const response = await fetch(form.action, {
+					method: 'POST',
+					headers: { accept: 'application/json' },
+					body: new FormData(form),
+				});
+				const body = (await response.json().catch(() => ({}))) as { error?: string };
+				if (response.ok) {
+					// The closing state replaces the form.
+					formPanel?.setAttribute('hidden', '');
+					done?.removeAttribute('hidden');
+					done?.querySelector<HTMLElement>('h1')?.focus();
+					window.scrollTo({ top: 0 });
+					return;
+				}
+				// Never cleared on a failure: every answer stays where it was typed.
+				status.textContent = body.error ?? 'That did not send, so nothing was lost: your answers are still here. Please try again.';
+			} catch {
+				status.textContent = 'That did not send — check your connection. Your answers are still here.';
+			}
+			button.disabled = false;
+			turnstile()?.reset();
+		});
+	</script>
+
+	<style>
+		.survey {
+			min-height: 100dvh;
+			max-width: 40rem;
+			margin: 0 auto;
+			padding: 2rem 1rem 4rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1.5rem;
+		}
+		.survey__mark {
+			width: 52px;
+			height: auto;
+			filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-blue) 45%, transparent));
+		}
+		.survey__panel {
+			width: 100%;
+		}
+		.survey__title {
+			font-size: clamp(1.75rem, 6vw, 2.5rem);
+			margin: 0;
+		}
+		.survey__intro,
+		.survey__review {
+			color: var(--color-white);
+			line-height: 1.6;
+		}
+		.survey__review {
+			font-size: 1.125rem;
+		}
+		.survey__title:focus {
+			outline: none;
+		}
+
+		.sform {
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
+			margin-top: 1.5rem;
+		}
+		.sform__field {
+			display: flex;
+			flex-direction: column;
+			gap: 0.45rem;
+			border: 0;
+			padding: 0;
+			margin: 0;
+			min-width: 0;
+		}
+		.sform label,
+		.sform legend {
+			font-weight: 600;
+			color: #fff;
+			line-height: 1.4;
+			padding: 0;
+		}
+		.sform legend {
+			margin-bottom: 0.45rem;
+		}
+		.sform__help {
+			margin: 0;
+			font-size: 0.875rem;
+			color: var(--color-brass-text);
+		}
+		.sform input[type='text'],
+		.sform textarea {
+			border: 1px solid var(--color-brass);
+			border-radius: 10px;
+			background: var(--color-black);
+			color: var(--color-white);
+			padding: 0.65rem 0.8rem;
+			font: inherit;
+			transition:
+				border-color 160ms ease-out,
+				box-shadow 160ms ease-out;
+		}
+		.sform textarea {
+			min-height: 6.5rem;
+			resize: vertical;
+		}
+		.sform input[type='text']:hover,
+		.sform textarea:hover {
+			border-color: var(--color-brass-text);
+		}
+		.sform input:focus-visible,
+		.sform textarea:focus-visible {
+			border-color: var(--color-blue);
+			outline: 2px solid var(--color-blue);
+			outline-offset: 2px;
+			box-shadow: 0 0 12px 0 color-mix(in srgb, var(--color-blue) 45%, transparent);
+		}
+		.sform__choices {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.6rem;
+		}
+		.sform .sform__choice {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 44px;
+			padding: 0 1rem;
+			border: 1px solid var(--color-brass);
+			border-radius: 999px;
+			font-weight: 500;
+			cursor: pointer;
+		}
+		.sform__choice:has(input:checked) {
+			border-color: var(--color-brass-hi);
+			color: var(--color-brass-hi);
+		}
+		.sform__choice input {
+			accent-color: var(--color-brass-hi);
+			width: 1.1rem;
+			height: 1.1rem;
+			margin: 0;
+		}
+		.sform__choice:has(input:focus-visible) {
+			outline: 2px solid var(--color-blue);
+			outline-offset: 2px;
+		}
+		.sform__send {
+			align-self: flex-start;
+		}
+		.sform__status {
+			min-height: 1.5em;
+			margin: 0;
+			color: var(--color-white);
+		}
+		@media (max-width: 22.75rem) {
+			.sform .cf-turnstile {
+				height: 56px;
+				transform: scale(0.85);
+				transform-origin: top left;
+			}
+		}
+		:global([data-motion='on']) .survey__done:not([hidden]) {
+			animation: survey-in 600ms ease-out both;
+		}
+		@keyframes survey-in {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+	</style>
+</Base>

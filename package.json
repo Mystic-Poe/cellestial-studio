@@ -13,7 +13,7 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "typecheck": "tsc -p tsconfig.typecheck.json",
-    "test": "node --test 'src/experience/*.test.ts' 'src/content/*.test.ts' 'src/onboard/*.test.ts' 'src/billing/*.test.ts' && node workers/contact/test/contact.test.mjs && node workers/auth/test/broker.test.mjs && node workers/onboard/test/onboard.test.mjs && node workers/onboard/test/store.test.mjs && node workers/onboard/test/files.test.mjs && node workers/onboard/test/quota.test.mjs && node workers/onboard/test/access.test.mjs && node workers/onboard/test/admin.test.mjs && node workers/onboard/test/billing.test.mjs"
+    "test": "node --test 'src/experience/*.test.ts' 'src/content/*.test.ts' 'src/onboard/*.test.ts' 'src/billing/*.test.ts' && node workers/contact/test/contact.test.mjs && node workers/survey/test/survey.test.mjs && node workers/auth/test/broker.test.mjs && node workers/onboard/test/onboard.test.mjs && node workers/onboard/test/store.test.mjs && node workers/onboard/test/files.test.mjs && node workers/onboard/test/quota.test.mjs && node workers/onboard/test/access.test.mjs && node workers/onboard/test/admin.test.mjs && node workers/onboard/test/billing.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.5",
