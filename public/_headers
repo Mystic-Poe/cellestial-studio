@@ -1,0 +1,28 @@
+# Security headers for every page and file the site Worker serves (27 Nov 2026,
+# the launch build sheet). Workers Static Assets read this file from dist/.
+# It covers the static site only: /api/contact, /api/survey, /api/onboard and
+# the /admin broker are separate Workers and send their own headers.
+#
+# The policy, origin by origin:
+#   challenges.cloudflare.com  Turnstile (script + its frame) on /contact, the
+#                              homepage dialog, /start and /survey
+#   'unsafe-inline' scripts    Astro writes small inline scripts into each page
+#                              (the reduced-motion switch, page wiring). Moving
+#                              to per-script hashes is the next step up.
+#   'unsafe-inline' styles     style="" attributes set by the scenes and scripts
+#   cloudflareinsights.com     Cloudflare Web Analytics, injected at the edge
+#   blob: / data: images       photo previews on /start; small inline images
+#   frame-ancestors 'none'     no site may frame these pages (clickjacking)
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+# Decap CMS loads from unpkg and talks to GitHub from the browser. It keeps
+# every header above except the page policy, which would stop it working;
+# Cloudflare Access and the auth broker are what guard it.
+/admin/*
+  ! Content-Security-Policy
